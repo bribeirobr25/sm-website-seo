@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "home": "Início",
+    "menu": "Cardápio",
+    "visit": "Visitar",
+    "skip": "Pular para o conteúdo"
+  },
+  "cta": {
+    "whatsapp": "Pedir no WhatsApp",
+    "whatsapp_short": "WhatsApp",
+    "call": "Ligar",
+    "directions": "Como chegar",
+    "directions_short": "Direções",
+    "menu": "Ver o cardápio",
+    "more_reviews": "Ver mais avaliações no Google"
+  },
+  "days": {
+    "monday": "Segunda",
+    "tuesday": "Terça",
+    "wednesday": "Quarta",
+    "thursday": "Quinta",
+    "friday": "Sexta",
+    "saturday": "Sábado",
+    "sunday": "Domingo",
+    "sun_thu": "Domingo a quinta",
+    "fri_sat": "Sexta e sábado"
+  },
+  "labels": {
+    "hours": "Horário",
+    "address": "Endereço",
+    "phone": "Telefone",
+    "whatsapp": "WhatsApp",
+    "rating": "Avaliação",
+    "reviews": "avaliações no Google",
+    "rating_aria": "{value} de 5 estrelas",
+    "languages": "Idiomas",
+    "open_now": "Aberto agora"
+  },
+  "sticky": {
+    "whatsapp_aria": "Pedir no WhatsApp"
+  },
+  "footer": {
+    "legal_name": "Porto dos Ribeiros — Comida Brasileira",
+    "legal_note": "NIF e CAE a confirmar com o restaurante",
+    "complaints_link": "Livro de reclamações eletrónico",
+    "privacy": "Política de privacidade",
+    "made_with": "Site por sm-website-seo"
+  },
+  "stub": {
+    "title": "Em breve",
+    "subtitle": "Esta página ainda está a ser preparada.",
+    "back_home": "Voltar ao início"
+  }
+}

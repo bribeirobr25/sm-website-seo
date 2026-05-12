@@ -1,0 +1,157 @@
+# ---------------------------------------------------------------------------
+# sm-website-seo — root .gitignore
+# Covers the whole monorepo. Per-client .gitignore files are kept as local
+# safety nets but everything below also applies to clients/<slug>/ subtrees.
+# ---------------------------------------------------------------------------
+
+
+# Dependencies --------------------------------------------------------------
+node_modules/
+.pnpm-store/
+jspm_packages/
+
+# Optional npm cache
+.npm
+.eslintcache
+.stylelintcache
+
+
+# Build outputs -------------------------------------------------------------
+dist/
+build/
+out/
+.cache/
+
+# Astro
+.astro/
+
+# Next.js
+.next/
+.swc/
+
+# Vite
+.vite/
+
+# Turborepo
+.turbo/
+
+# Parcel
+.parcel-cache/
+
+# TypeScript incremental
+*.tsbuildinfo
+*.tscache
+
+
+# Environment variables / secrets -------------------------------------------
+# Never commit anything that could be a secret. Use Vercel/host env vars instead.
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+
+
+# Vercel --------------------------------------------------------------------
+.vercel/
+.now/
+
+
+# Hosting / serverless caches ----------------------------------------------
+.netlify/
+.firebase/
+.serverless/
+.wrangler/
+
+
+# Testing / coverage --------------------------------------------------------
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+playwright-report/
+.playwright-mcp/
+__screenshots__/
+
+
+# Logs ----------------------------------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+
+# Editor / IDE state --------------------------------------------------------
+# JetBrains
+.idea/
+
+# VS Code — keep workspace-shared files trackable (settings.json, extensions.json)
+# but ignore personal overrides and per-user state.
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+*.code-workspace
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# vim / emacs / nano
+*.swp
+*.swo
+*.swn
+*~
+.\#*
+\#*\#
+
+
+# Claude Code — personal, machine-local state -------------------------------
+.claude/settings.local.json
+.claude/*.local.json
+.claude/cache/
+.claude/.todo
+.claude/logs/
+
+
+# OS junk -------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+.fuse_hidden*
+
+
+# Misc ----------------------------------------------------------------------
+# Package archives
+*.tgz
+*.tar.gz
+
+# Lockfile from other package managers (we only use pnpm — keep pnpm-lock.yaml)
+package-lock.json
+yarn.lock
+bun.lockb
+
+# Generated / temporary
+tmp/
+temp/
+.tmp/

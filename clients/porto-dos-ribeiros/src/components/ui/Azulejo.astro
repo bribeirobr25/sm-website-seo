@@ -1,0 +1,42 @@
+---
+type Props = {
+  size?: number;
+  class?: string;
+};
+
+const { size = 56, class: extraClass } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 40 40"
+  width={size}
+  height={size}
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  class:list={[extraClass]}
+>
+  <rect width="40" height="40" fill="var(--color-azulejo-light)" />
+  <g
+    stroke="var(--color-azulejo)"
+    stroke-width="0.9"
+    stroke-linecap="round"
+    fill="none"
+  >
+    <rect x="2" y="2" width="36" height="36" />
+    <circle cx="20" cy="20" r="9" />
+    <path
+      d="M20 9 C24 14, 26 16, 31 20 C26 24, 24 26, 20 31 C16 26, 14 24, 9 20 C14 16, 16 14, 20 9 Z"
+    />
+    <line x1="2" y1="2" x2="14" y2="14" />
+    <line x1="38" y1="2" x2="26" y2="14" />
+    <line x1="2" y1="38" x2="14" y2="26" />
+    <line x1="38" y1="38" x2="26" y2="26" />
+  </g>
+  <g fill="var(--color-azulejo)">
+    <circle cx="20" cy="20" r="1.4" />
+    <circle cx="2" cy="2" r="1.1" />
+    <circle cx="38" cy="2" r="1.1" />
+    <circle cx="2" cy="38" r="1.1" />
+    <circle cx="38" cy="38" r="1.1" />
+  </g>
+</svg>

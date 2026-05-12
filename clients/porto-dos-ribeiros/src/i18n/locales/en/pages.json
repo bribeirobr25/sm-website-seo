@@ -1,0 +1,86 @@
+{
+  "home": {
+    "meta_title": "Porto dos Ribeiros — Brazilian food in Porto",
+    "meta_description": "Brazilian restaurant on Rua da Constituição, Porto. Stroganoff, picanha, coxinhas. Kitchen open all day, from morning coffee to dinner. Order on WhatsApp.",
+    "hero": {
+      "ribbon": "Open all day, no break",
+      "eyebrow": "Brazilian restaurant · Rua da Constituição",
+      "headline": "Brazilian home cooking in Porto, from morning coffee to dinner",
+      "sub": "Stroganoff, picanha and coxinhas in Cedofeita. Kitchen open Sunday to Saturday — no afternoon break."
+    },
+    "hours": {
+      "kicker": "Hours",
+      "title": "No afternoon break",
+      "sub": "Kitchen open Sunday through Saturday, straight through lunch and dinner.",
+      "footnote": "Hours to confirm with the restaurant."
+    },
+    "menu_preview": {
+      "kicker": "Menu",
+      "title": "Dishes worth coming back for",
+      "sub": "Brazilian home cooking, on the counter and on the stove all day long.",
+      "feature_image_alt": "Beef stroganoff with white rice at Porto dos Ribeiros",
+      "see_full": "See the full menu",
+      "price_note": "Prices to confirm with the restaurant.",
+      "items": {
+        "jardineira": {
+          "name": "Jardineira",
+          "desc": "Beef and vegetable stew, on the counter daily."
+        },
+        "strogonoff": {
+          "name": "Beef stroganoff",
+          "desc": "Creamy, with white rice and crispy potato sticks."
+        },
+        "picanha": {
+          "name": "Picanha",
+          "desc": "Sliced to order, cooked the way you like it."
+        },
+        "coxinha": {
+          "name": "Chicken coxinha",
+          "desc": "Thin dough, creamy filling — the boteco classic."
+        },
+        "empadas": {
+          "name": "Mixed empadas",
+          "desc": "Baked in-house, on the counter all day."
+        },
+        "brigadeiros": {
+          "name": "Brigadeiros",
+          "desc": "Several flavors, always fresh."
+        }
+      }
+    },
+    "reviews": {
+      "kicker": "Reviews",
+      "title": "What people say on Google",
+      "trust_count": "{count} reviews on",
+      "feature_quote": "From the very first visit, this Brazilian restaurant completely stole our hearts. It's not just a place to eat — it feels like family.",
+      "feature_author": "Max D.",
+      "feature_when": "2 months ago",
+      "disclaimer": "Reviews shown from the public Google profile.",
+      "see_more_aria": "See more reviews on the Google profile"
+    },
+    "visit": {
+      "kicker": "Visit",
+      "title": "How to find us",
+      "address_line_1": "R. da Constituição 982",
+      "address_line_2": "4200-196 Porto",
+      "district": "Cedofeita",
+      "transit": "5 min walk from Carolina Michaëlis station (Metro · Line E)",
+      "open_in_maps": "Open in Google Maps",
+      "delivery_kicker": "Home delivery",
+      "delivery_title": "We deliver up to 3 km from Constituição",
+      "delivery_text": "Free delivery within 3 km, minimum order 13 €. For longer distances we quote the fee on WhatsApp."
+    }
+  },
+  "menu": {
+    "meta_title": "Menu — Porto dos Ribeiros",
+    "meta_description": "Porto dos Ribeiros menu, coming soon."
+  },
+  "visit": {
+    "meta_title": "Visit — Porto dos Ribeiros",
+    "meta_description": "How to find Porto dos Ribeiros, coming soon."
+  },
+  "privacy": {
+    "meta_title": "Privacy policy — Porto dos Ribeiros",
+    "meta_description": "Privacy policy for Porto dos Ribeiros."
+  }
+}

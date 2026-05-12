@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import featureStrogonoff from '../../assets/images/strogonoff.png';
+import { type Locale, localizePath, useTranslations } from '../../lib/site.ts';
+import Button from '../ui/Button.astro';
+
+type Props = {
+  locale: Locale;
+};
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const items = ['jardineira', 'strogonoff', 'picanha', 'coxinha', 'empadas', 'brigadeiros'] as const;
+---
+
+<section
+  aria-labelledby="menu-heading"
+  class="mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28"
+>
+  <div class="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+    <div class="order-2 lg:order-1">
+      <div class="relative aspect-[3/4] overflow-hidden rounded-2xl shadow-[var(--shadow-card)]">
+        <Image
+          src={featureStrogonoff}
+          alt={t('home.menu_preview.feature_image_alt')}
+          widths={[400, 600, 800]}
+          sizes="(max-width: 1024px) 100vw, 400px"
+          format="webp"
+          quality={78}
+          loading="lazy"
+          class="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+
+    <div class="order-1 lg:order-2 lg:pt-4">
+      <p class="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+        {t('home.menu_preview.kicker')}
+      </p>
+      <h2
+        id="menu-heading"
+        class="mt-2 font-display text-3xl leading-[1.1] sm:text-4xl"
+        style="font-family: var(--font-display); font-weight: 600"
+      >
+        {t('home.menu_preview.title')}
+      </h2>
+      <p class="mt-4 max-w-md text-base text-[var(--color-text-muted)]">
+        {t('home.menu_preview.sub')}
+      </p>
+
+      <ul class="mt-8 divide-y divide-[var(--color-border)]">
+        {
+          items.map((key) => (
+            <li class="grid grid-cols-[1fr_auto] items-baseline gap-x-4 py-3.5">
+              <div>
+                <h3
+                  class="font-display text-lg sm:text-xl"
+                  style="font-family: var(--font-display); font-weight: 600"
+                >
+                  {t(`home.menu_preview.items.${key}.name`)}
+                </h3>
+                <p class="mt-1 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                  {t(`home.menu_preview.items.${key}.desc`)}
+                </p>
+              </div>
+              <span
+                aria-hidden="true"
+                class="font-display text-sm text-[var(--color-border)]"
+              >
+                ·
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mt-4 text-xs italic text-[var(--color-text-muted)]">
+        {t('home.menu_preview.price_note')}
+      </p>
+
+      <div class="mt-8">
+        <Button href={localizePath('/menu', locale)} variant="secondary">
+          {t('home.menu_preview.see_full')}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>

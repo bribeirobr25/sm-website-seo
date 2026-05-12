@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# Demo phase — full crawl blocked.
+# Remove this file (or replace with `User-agent: *\nAllow: /`) before going to production.

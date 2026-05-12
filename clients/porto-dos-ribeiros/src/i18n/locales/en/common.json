@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "visit": "Visit",
+    "skip": "Skip to content"
+  },
+  "cta": {
+    "whatsapp": "Order on WhatsApp",
+    "whatsapp_short": "WhatsApp",
+    "call": "Call",
+    "directions": "Directions",
+    "directions_short": "Directions",
+    "menu": "See the menu",
+    "more_reviews": "See more reviews on Google"
+  },
+  "days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "sun_thu": "Sunday to Thursday",
+    "fri_sat": "Friday and Saturday"
+  },
+  "labels": {
+    "hours": "Hours",
+    "address": "Address",
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "rating": "Rating",
+    "reviews": "reviews on Google",
+    "rating_aria": "{value} out of 5 stars",
+    "languages": "Languages",
+    "open_now": "Open now"
+  },
+  "sticky": {
+    "whatsapp_aria": "Order on WhatsApp"
+  },
+  "footer": {
+    "legal_name": "Porto dos Ribeiros — Brazilian Restaurant",
+    "legal_note": "NIF and CAE to confirm with the restaurant",
+    "complaints_link": "Electronic complaints book (PT)",
+    "privacy": "Privacy policy",
+    "made_with": "Site by sm-website-seo"
+  },
+  "stub": {
+    "title": "Coming soon",
+    "subtitle": "This page is still being prepared.",
+    "back_home": "Back to home"
+  }
+}
