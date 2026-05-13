@@ -315,6 +315,20 @@ These are AI-template tells *specific to the gastronomy vertical* — beyond the
 - The 11000px scroll is for an established brand with content to fill it. Small clients should resist the temptation to fake editorial depth.
 - The welcome modal is an extra page-load gesture; only use when the narrative is strong enough to justify it.
 
+### 9.4 Reference implementations — Porto dos Ribeiros variants
+
+Our own client work doubles as worked examples of each archetype, stripped down to a single-location restaurant. Use these as the **starting scaffold** for new gastronomy clients — same business data, three different visual directions — rather than starting any new build from scratch.
+
+| Archetype | Directory | What to copy when starting a new gastronomy client |
+|-----------|-----------|-----------------------------------------------------|
+| **A — stripped editorial** | `clients/porto-dos-ribeiros/` | The safe-default starting point. Two-column hero, single review quote, footer brand motto in italic, azulejo place-identity SVG, conservative palette. Single nav item (logo doubles as home link). |
+| **B — modern conversion-first** | `clients/porto-dos-ribeiros-v2/` | When the client takes orders / does delivery / has volume. Full-bleed photo hero with dark gradient + single accent CTA, three-column menu card grid, delivery-first Visit section, "Salve nosso WhatsApp" subscribe footer block. |
+| **C — heritage editorial** | `clients/porto-dos-ribeiros-v3-heritage/` | When the client has a real story (year of founding, founder presence, distinctive cultural roots). Dark theatrical palette + parchment text, native `<dialog>` welcome modal with vintage-postcard styling + sessionStorage dismissal, alternating editorial menu spreads, circular "Since [year]" stamp in Reviews, multi-paragraph Visit narrative. |
+
+**Each variant is a complete independent Astro project.** Same content layer (`lib/site.ts`, schema, image assets, business data) — different visual layer (tokens, hero, header, footer, section components, copy voice).
+
+**The cold-call pattern** for these three variants is documented in `SALES.md` §3 (The pitch call).
+
 ---
 
 ## 10. Decision matrix — picking the archetype per client

@@ -1,0 +1,96 @@
+---
+import { type Locale, SITE, useTranslations } from '../../lib/site.ts';
+
+type Props = {
+  locale: Locale;
+};
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section
+  aria-labelledby="visit-heading"
+  class="border-t border-[var(--color-border)] bg-[var(--color-bg-deep)]"
+>
+  <div class="mx-auto max-w-3xl px-4 py-20 sm:px-6 sm:py-28">
+    <p
+      class="text-center text-[11px] font-medium uppercase tracking-[0.32em] text-[var(--color-accent)]"
+    >
+      {t('home.visit.kicker')}
+    </p>
+    <h2
+      id="visit-heading"
+      class="mt-4 text-center font-display text-3xl italic leading-tight sm:text-4xl"
+      style="font-family: var(--font-display); font-style: italic; font-weight: 500"
+    >
+      {t('home.visit.title')}
+    </h2>
+
+    <div class="mt-12 space-y-6 text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">
+      <p>{t('home.visit.body_1')}</p>
+      <p>{t('home.visit.body_2')}</p>
+    </div>
+
+    <div class="mt-14 grid gap-8 border-y border-[var(--color-border)] py-10 sm:grid-cols-3 sm:gap-10">
+      <div>
+        <p class="text-[10px] font-medium uppercase tracking-[0.28em] text-[var(--color-accent)]">
+          {t('home.visit.address_label')}
+        </p>
+        <address class="mt-3 not-italic text-sm leading-relaxed text-[var(--color-text)]">
+          {SITE.address.street}<br />
+          {SITE.address.postal} {SITE.address.city}<br />
+          {t('home.visit.district')}
+        </address>
+      </div>
+      <div>
+        <p class="text-[10px] font-medium uppercase tracking-[0.28em] text-[var(--color-accent)]">
+          {t('home.visit.transit_label')}
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-[var(--color-text)]">
+          {t('home.visit.transit')}
+        </p>
+      </div>
+      <div>
+        <p class="text-[10px] font-medium uppercase tracking-[0.28em] text-[var(--color-accent)]">
+          {t('labels.phone')}
+        </p>
+        <p class="mt-3 text-sm">
+          <a
+            href={`tel:${SITE.phone}`}
+            class="tabular text-[var(--color-text)] underline decoration-[var(--color-accent)]/40 underline-offset-4 hover:decoration-[var(--color-accent)]"
+          >
+            {SITE.phoneDisplay}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-10 text-center">
+      <a
+        href={SITE.mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 text-sm italic text-[var(--color-text-muted)] underline decoration-[var(--color-accent)]/50 underline-offset-4 hover:text-[var(--color-text)] hover:decoration-[var(--color-accent)]"
+        style="font-style: italic"
+      >
+        {t('home.visit.open_in_maps')}
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M7 17 17 7" />
+          <path d="M7 7h10v10" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

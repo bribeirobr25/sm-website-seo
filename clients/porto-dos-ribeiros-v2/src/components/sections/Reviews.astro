@@ -1,0 +1,109 @@
+---
+import { type Locale, SITE, useTranslations } from '../../lib/site.ts';
+import StarRating from '../ui/StarRating.astro';
+
+type Props = {
+  locale: Locale;
+};
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const ratingAria = t('labels.rating_aria').replace('{value}', SITE.rating.value.toFixed(1));
+const countText = t('home.reviews.trust_count').replace('{count}', SITE.rating.count.toString());
+const gbpHref = 'https://www.google.com/search?q=Porto+dos+Ribeiros+Comida+Brasileira+Porto#lrd';
+---
+
+<section
+  aria-labelledby="reviews-heading"
+  class="bg-[var(--color-bg)]"
+>
+  <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
+    <div class="grid gap-12 md:grid-cols-[1fr_1.2fr] md:items-center md:gap-16">
+      <div>
+        <p
+          class="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]"
+        >
+          {t('home.reviews.kicker')}
+        </p>
+        <h2
+          id="reviews-heading"
+          class="mt-2 font-display text-3xl leading-[1.1] sm:text-4xl"
+          style="font-family: var(--font-display); font-weight: 600"
+        >
+          {t('home.reviews.title')}
+        </h2>
+
+        <div class="mt-6 flex flex-col gap-2">
+          <div class="flex items-center gap-3">
+            <StarRating value={SITE.rating.value} ariaLabel={ratingAria} size={22} />
+            <span class="font-display text-3xl font-semibold tabular">
+              {SITE.rating.value.toFixed(1).replace('.', locale === 'pt' ? ',' : '.')}
+            </span>
+          </div>
+          <p class="text-sm text-[var(--color-text-muted)]">{countText}</p>
+        </div>
+
+        <a
+          href={gbpHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t('home.reviews.see_more_aria')}
+          class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[var(--color-accent-deep)] underline decoration-[var(--color-accent-deep)]/40 underline-offset-4 hover:decoration-[var(--color-accent-deep)]"
+        >
+          <svg
+            aria-hidden="true"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09Z"
+              fill="#4285F4"
+            />
+            <path
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z"
+              fill="#34A853"
+            />
+            <path
+              d="M5.84 14.09A6.6 6.6 0 0 1 5.48 12c0-.73.13-1.43.36-2.09V7.07H2.18A11 11 0 0 0 1 12c0 1.78.43 3.46 1.18 4.93l3.66-2.84Z"
+              fill="#FBBC05"
+            />
+            <path
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.46 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38Z"
+              fill="#EA4335"
+            />
+          </svg>
+          {t('cta.more_reviews')}
+        </a>
+      </div>
+
+      <figure class="rounded-2xl bg-[var(--color-surface)] p-8 shadow-[var(--shadow-card)] sm:p-10">
+        <span
+          aria-hidden="true"
+          class="font-display text-5xl leading-none text-[var(--color-accent-deep)]"
+          style="font-family: var(--font-display); font-weight: 700"
+        >
+          “
+        </span>
+        <blockquote class="mt-2">
+          <p class="text-lg leading-relaxed sm:text-xl">
+            {t('home.reviews.feature_quote')}
+          </p>
+          <figcaption class="mt-5 text-sm text-[var(--color-text-muted)]">
+            <span class="font-medium text-[var(--color-text)]">
+              {t('home.reviews.feature_author')}
+            </span>
+            <span aria-hidden="true" class="mx-2">·</span>
+            <span>{t('home.reviews.feature_when')}</span>
+          </figcaption>
+        </blockquote>
+      </figure>
+    </div>
+
+    <p class="mt-10 text-xs italic text-[var(--color-text-muted)]">
+      {t('home.reviews.disclaimer')}
+    </p>
+  </div>
+</section>

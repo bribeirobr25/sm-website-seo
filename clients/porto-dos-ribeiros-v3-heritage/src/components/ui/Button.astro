@@ -1,0 +1,35 @@
+---
+type Variant = 'primary' | 'secondary' | 'ghost';
+
+type Props = {
+  href: string;
+  variant?: Variant;
+  external?: boolean;
+  ariaLabel?: string;
+  class?: string;
+};
+
+const { href, variant = 'primary', external = false, ariaLabel, class: extraClass } = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)]';
+
+const variantClass: Record<Variant, string> = {
+  primary:
+    'bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-deep)] focus-visible:ring-[var(--color-accent)]',
+  secondary:
+    'border border-[var(--color-text)] text-[var(--color-text)] hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] focus-visible:ring-[var(--color-text)]',
+  ghost:
+    'text-[var(--color-text)] hover:text-[var(--color-accent-deep)] focus-visible:ring-[var(--color-accent)]',
+};
+---
+
+<a
+  href={href}
+  class:list={[base, variantClass[variant], extraClass]}
+  aria-label={ariaLabel}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+>
+  <slot />
+</a>

@@ -148,6 +148,35 @@ schnell ladend, auf dem Handy gut, und die Leute finden Sie bei Google."
 
 Same approach in English for expat-oriented businesses. In Portuguese for Brazilian community businesses — the language switch alone doubles conversion rate.
 
+### The three-variant cold-call pattern (agency differentiation)
+
+For verticals where a per-vertical template exists (`docs/design/templates/`), the cold call can show **three deployable variants instead of one**. The client picks the direction; that's what we build out.
+
+**Why this works:**
+
+- One demo asks the client to evaluate ABSTRACTLY ("does this look good for my restaurant?"). Three variants ask the client to evaluate COMPARATIVELY ("which of these three is closest to what I'd want?"). Comparative questions are easier to answer and easier to commit to.
+- Three variants signal the agency takes design seriously. Most competitors offer one template wearing a different logo per client.
+- The two NOT-chosen variants become internal portfolio pieces — useful for the *next* prospect in the same vertical, no extra work required.
+
+**The workflow:**
+
+1. **Before the call:** build three variants from the vertical template (e.g., for gastronomy: stripped editorial + conversion-first + heritage). Each is a deployable Vercel preview. See `docs/design/templates/gastronomy.md` §9.4 for the Porto dos Ribeiros worked example.
+2. **On the call (after the basic pitch):** "I also built two other directions for you to compare. Take 30 seconds to flip through each — which one feels most like you?"
+3. **Listen for direction language:**
+   - "Conversion / orders / WhatsApp / delivery" → conversion-first
+   - "Story / tradition / authentic / since [year]" → heritage editorial
+   - Non-committal / "the first one" / "I don't really know" → the safe-default stripped editorial
+4. **Confirm the pick during the call.** "OK — Variant B. Let me confirm pricing on that and send you a one-page proposal by tomorrow."
+5. **After the call:** delete the two non-chosen directories in one commit. Production work begins on the chosen variant.
+
+**Cost of doing this for the first client in a vertical:** ~6 hours upfront (gastronomy template + two extra variant builds beyond the first). **Cost per subsequent client in the same vertical:** ~2-4 hours of re-skinning (same content layer, just three variant directories with different tokens/components/copy).
+
+**When NOT to use three variants:**
+
+- The prospect is clearly a one-meeting decision-maker who'd prefer a single recommendation
+- The vertical template doesn't have well-defined archetypes (any vertical not yet documented in `docs/design/templates/`)
+- The prospect has explicit brand guidelines that constrain the direction — show one variant aligned to their brand instead
+
 ### Common objections and responses
 
 | Objection | Response |

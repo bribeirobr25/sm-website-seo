@@ -1,0 +1,49 @@
+{
+  "nav": {
+    "home": "Início",
+    "skip": "Pular para o conteúdo"
+  },
+  "cta": {
+    "whatsapp": "WhatsApp",
+    "directions": "Como chegar",
+    "more_reviews": "Ver mais avaliações no Google"
+  },
+  "days": {
+    "monday": "Segunda",
+    "tuesday": "Terça",
+    "wednesday": "Quarta",
+    "thursday": "Quinta",
+    "friday": "Sexta",
+    "saturday": "Sábado",
+    "sunday": "Domingo",
+    "sun_thu": "Domingo a quinta",
+    "fri_sat": "Sexta e sábado"
+  },
+  "labels": {
+    "phone": "Telefone",
+    "whatsapp": "WhatsApp",
+    "rating_aria": "{value} de 5 estrelas"
+  },
+  "welcome": {
+    "close_aria": "Fechar mensagem de boas-vindas",
+    "kicker": "Desde 2023",
+    "greeting": "Bem-vindos ao",
+    "body": "Comida brasileira de casa, na Rua da Constituição. Strogonoff, jardineira, picanha — feitos sem pressa, todos os dias.",
+    "signature": "Com saudade do Brasil",
+    "enter": "Entrar"
+  },
+  "footer": {
+    "legal_name": "Porto dos Ribeiros — Comida Brasileira",
+    "brand_motto": "Comida da casa, sem pressa",
+    "social_label": "Redes sociais",
+    "complaints_link": "Livro de reclamações eletrónico",
+    "privacy": "Política de privacidade",
+    "legal_note": "NIF e CAE a confirmar com o restaurante",
+    "made_with": "Site por sm-website-seo"
+  },
+  "stub": {
+    "title": "Em breve",
+    "subtitle": "Esta página ainda está a ser preparada.",
+    "back_home": "Voltar ao início"
+  }
+}

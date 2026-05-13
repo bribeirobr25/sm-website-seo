@@ -1,0 +1,78 @@
+{
+  "home": {
+    "meta_title": "Porto dos Ribeiros — Brazilian food in Porto, since 2023",
+    "meta_description": "Brazilian cooking on Rua da Constituição, in Cedofeita, since 2023. Stroganoff, jardineira, picanha — made slowly, every day.",
+    "hero": {
+      "kicker": "Since 2023 · Rua da Constituição",
+      "headline": "Brazilian cooking, with saudade of home",
+      "body": "Stroganoff, jardineira, picanha. Brazilian dishes made on the counter and on the stove — no rush, no afternoon close. Cedofeita is our neighbourhood.",
+      "brand_signature": "Com saudade do Brasil",
+      "image_alt": "Brazilian picanha at Porto dos Ribeiros",
+      "image_caption": "Picanha · sliced to order"
+    },
+    "hours": {
+      "kicker": "Hours",
+      "title": "No pause between lunch and dinner",
+      "footnote": "Hours to confirm with the restaurant."
+    },
+    "menu_preview": {
+      "kicker": "From the kitchen",
+      "title": "Dishes that return every day",
+      "intro": "Brazilian home cooking — not a botequim, not fine dining. Food made the way it's made at home, with time and care, every day of the year.",
+      "more_note": "And more — empadas, brigadeiros, picanha — always on the counter.",
+      "price_note": "Prices to confirm with the restaurant.",
+      "items": {
+        "strogonoff": {
+          "label": "Creamy dish",
+          "name": "Beef stroganoff",
+          "story": "Creamy, with white rice and crispy potato sticks. A family recipe, made on the counter to serve hot all day."
+        },
+        "jardineira": {
+          "label": "Slow stew",
+          "name": "Jardineira",
+          "story": "Beef and vegetable stew, slow-cooked. Comes off the counter daily — when it's gone, it's gone."
+        },
+        "coxinha": {
+          "label": "Boteco classic",
+          "name": "Chicken coxinha",
+          "story": "Thin dough, creamy filling. Hand-formed in the morning, fried throughout the day."
+        }
+      }
+    },
+    "reviews": {
+      "kicker": "Reviews",
+      "title": "What people say on Google",
+      "trust_count": "{count} reviews on Google",
+      "feature_quote": "From the very first visit, this Brazilian restaurant completely stole our hearts. It's not just a place to eat — it feels like family.",
+      "feature_author": "Max D.",
+      "feature_when": "2 months ago",
+      "disclaimer": "Review pulled from the public Google profile.",
+      "see_more_aria": "See more reviews on the Google profile",
+      "stamp_kicker": "Since 2023",
+      "stamp_text": "On Rua da Constituição, with saudade of Brazil."
+    },
+    "visit": {
+      "kicker": "Visit",
+      "title": "In the heart of Cedofeita",
+      "body_1": "Porto dos Ribeiros sits on a quiet corner of Rua da Constituição, a few minutes' walk from Carolina Michaëlis station. Cedofeita is our neighbourhood — authentic, no tourist traps, full of neighbours.",
+      "body_2": "No reservations needed. Walk in, sit down, order breakfast or lunch — anything at any time of day. For home delivery, call or send a WhatsApp message.",
+      "address_label": "Address",
+      "transit_label": "Metro",
+      "district": "Cedofeita",
+      "transit": "5 min walk from Carolina Michaëlis station (Line E)",
+      "open_in_maps": "Open in Google Maps"
+    }
+  },
+  "menu": {
+    "meta_title": "Menu — Porto dos Ribeiros",
+    "meta_description": "Porto dos Ribeiros menu, coming soon."
+  },
+  "visit": {
+    "meta_title": "Visit — Porto dos Ribeiros",
+    "meta_description": "How to find Porto dos Ribeiros, coming soon."
+  },
+  "privacy": {
+    "meta_title": "Privacy policy — Porto dos Ribeiros",
+    "meta_description": "Privacy policy for Porto dos Ribeiros."
+  }
+}

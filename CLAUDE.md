@@ -185,9 +185,21 @@ vercel --prod   # Gets a vercel.app URL
 
 ## Current client roster
 
-| Client | Slug | Status | Stack | Locales | Live URL |
-|--------|------|--------|-------|---------|----------|
-| Porto dos Ribeiros — Comida Brasileira (Porto, PT) | `porto-dos-ribeiros` | Demo live, awaiting cold call | Astro 6 + Tailwind v4 | PT (BR voice) + EN | https://gastronomy-demo.vercel.app/ (noindex) |
+| Client | Status | Variants on disk | Stack |
+|--------|--------|------------------|-------|
+| **Porto dos Ribeiros — Comida Brasileira** (Porto, PT) | Three variants built · awaiting cold call · client picks one · PT (BR voice) + EN | A · B · C (see below) | Astro 6 + Tailwind v4 |
+
+### Porto dos Ribeiros — variant directories
+
+The Porto prospect is being approached with **three deployable variants** so the client picks the direction. See `docs/clients/porto-dos-ribeiros/CLAUDE.md` for the full variant-strategy section.
+
+| # | Slug | Archetype (per `gastronomy.md`) | What it is | Live URL when deployed |
+|---|------|--------------------------------|-----------|----------------------|
+| **A** | `porto-dos-ribeiros` | Archetype A (stripped editorial) | Cream + terracotta · two-column hero · single review quote · azulejo place-identity | https://gastronomy-demo.vercel.app/ (noindex) |
+| **B** | `porto-dos-ribeiros-v2` | Archetype B (Sweetgreen-style conversion) | Cream + sage + bright lime CTA · full-bleed food-photo hero · 3-col menu card grid · WhatsApp subscribe footer | not deployed yet |
+| **C** | `porto-dos-ribeiros-v3-heritage` | Archetype C (Dishoom-style heritage) | Dark cocoa + parchment + saffron · welcome modal · editorial menu spreads · "Desde 2023" stamp · narrative voice | not deployed yet |
+
+When the client commits to one variant, the other two directories are deleted, and the roster collapses back to a single row.
 
 ---
 

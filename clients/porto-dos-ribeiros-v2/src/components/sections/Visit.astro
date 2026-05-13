@@ -1,0 +1,118 @@
+---
+import { type Locale, SITE, useTranslations } from '../../lib/site.ts';
+
+type Props = {
+  locale: Locale;
+};
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section
+  aria-labelledby="visit-heading"
+  class="border-t border-[var(--color-border)] bg-[var(--color-sage)]/25"
+>
+  <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
+    <div class="grid gap-10 md:grid-cols-2 md:gap-12">
+      <article
+        class="relative overflow-hidden rounded-2xl bg-[var(--color-surface)] p-8 shadow-[var(--shadow-card)] sm:p-10"
+      >
+        <p
+          class="inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)]/30 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-text)]"
+        >
+          {t('home.visit.delivery_kicker')}
+        </p>
+        <h2
+          id="visit-heading"
+          class="mt-4 font-display text-3xl leading-[1.1] sm:text-4xl"
+          style="font-family: var(--font-display); font-weight: 600"
+        >
+          {t('home.visit.delivery_title')}
+        </h2>
+        <p class="mt-4 text-base text-[var(--color-text-muted)]">
+          {t('home.visit.delivery_text')}
+        </p>
+        <a
+          href={SITE.whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-7 inline-flex items-center gap-2 rounded-[var(--radius-pill)] bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition-transform duration-150 hover:scale-[1.03] active:scale-95"
+        >
+          {t('cta.order_primary')} →
+        </a>
+      </article>
+
+      <article
+        class="rounded-2xl border border-[var(--color-border)] p-8 sm:p-10"
+      >
+        <p
+          class="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]"
+        >
+          {t('home.visit.kicker')}
+        </p>
+        <h3
+          class="mt-3 font-display text-2xl leading-snug sm:text-3xl"
+          style="font-family: var(--font-display); font-weight: 600"
+        >
+          {t('home.visit.address_line_1')}
+        </h3>
+        <p class="mt-1 text-sm text-[var(--color-text-muted)]">
+          {t('home.visit.address_line_2')}
+        </p>
+
+        <dl class="mt-6 space-y-3 text-sm">
+          <div class="flex items-baseline gap-3">
+            <dt class="w-20 shrink-0 text-xs font-medium uppercase tracking-[0.12em] text-[var(--color-text-muted)]">
+              {t('home.visit.kicker')}
+            </dt>
+            <dd>{t('home.visit.district')}</dd>
+          </div>
+          <div class="flex items-baseline gap-3">
+            <dt class="w-20 shrink-0 text-xs font-medium uppercase tracking-[0.12em] text-[var(--color-text-muted)]">
+              Metro
+            </dt>
+            <dd>{t('home.visit.transit')}</dd>
+          </div>
+          <div class="flex items-baseline gap-3">
+            <dt class="w-20 shrink-0 text-xs font-medium uppercase tracking-[0.12em] text-[var(--color-text-muted)]">
+              {t('labels.phone')}
+            </dt>
+            <dd>
+              <a
+                href={`tel:${SITE.phone}`}
+                class="tabular hover:text-[var(--color-accent-deep)]"
+              >
+                {SITE.phoneDisplay}
+              </a>
+            </dd>
+          </div>
+        </dl>
+
+        <a
+          href={SITE.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text)] underline decoration-[var(--color-accent-deep)]/50 underline-offset-4 hover:decoration-[var(--color-accent-deep)]"
+        >
+          {t('home.visit.open_in_maps')}
+          <svg
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M7 17 17 7" />
+            <path d="M7 7h10v10" />
+          </svg>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+import StubBody from '../components/sections/StubBody.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { resolveMetadata } from '../lib/metadata.ts';
+import { useTranslations } from '../lib/site.ts';
+
+const locale = 'pt' as const;
+const t = useTranslations(locale);
+const metadata = resolveMetadata({
+  title: t('privacy.meta_title'),
+  description: t('privacy.meta_description'),
+  locale,
+  path: '/politica-de-privacidade',
+});
+---
+
+<BaseLayout metadata={metadata}>
+  <StubBody locale={locale} />
+</BaseLayout>

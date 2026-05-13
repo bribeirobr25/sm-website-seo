@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import brigadeiros from '../../assets/images/brigadeiros.jpg';
+import coxinha from '../../assets/images/coxinha.jpg';
+import empadas from '../../assets/images/empadas.png';
+import jardineira from '../../assets/images/Jardineira.png';
+import picanha from '../../assets/images/picanha2.png';
+import strogonoff from '../../assets/images/strogonoff.png';
+import { type Locale, SITE, useTranslations } from '../../lib/site.ts';
+
+type Props = {
+  locale: Locale;
+};
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const items = [
+  { key: 'jardineira', image: jardineira },
+  { key: 'strogonoff', image: strogonoff },
+  { key: 'picanha', image: picanha },
+  { key: 'coxinha', image: coxinha },
+  { key: 'empadas', image: empadas },
+  { key: 'brigadeiros', image: brigadeiros },
+] as const;
+---
+
+<section
+  aria-labelledby="menu-heading"
+  class="bg-[var(--color-bg)]"
+>
+  <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div class="max-w-xl">
+        <p
+          class="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]"
+        >
+          {t('home.menu_preview.kicker')}
+        </p>
+        <h2
+          id="menu-heading"
+          class="mt-2 font-display text-3xl leading-[1.1] sm:text-4xl lg:text-5xl"
+          style="font-family: var(--font-display); font-weight: 600"
+        >
+          {t('home.menu_preview.title')}
+        </h2>
+        <p class="mt-4 max-w-md text-base text-[var(--color-text-muted)]">
+          {t('home.menu_preview.sub')}
+        </p>
+      </div>
+      <a
+        href={SITE.whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden sm:inline-flex items-center gap-2 rounded-[var(--radius-pill)] bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] transition-transform duration-150 hover:scale-[1.03] active:scale-95"
+      >
+        {t('cta.order_short')} →
+      </a>
+    </div>
+
+    <ul class="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        items.map((item) => (
+          <li class="group">
+            <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[var(--color-sage)]/30 shadow-[var(--shadow-card)]">
+              <Image
+                src={item.image}
+                alt={t(`home.menu_preview.items.${item.key}.name`)}
+                widths={[320, 480, 640]}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                format="webp"
+                quality={75}
+                loading="lazy"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+              />
+            </div>
+            <h3
+              class="mt-4 font-display text-xl"
+              style="font-family: var(--font-display); font-weight: 600"
+            >
+              {t(`home.menu_preview.items.${item.key}.name`)}
+            </h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-[var(--color-text-muted)]">
+              {t(`home.menu_preview.items.${item.key}.desc`)}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mt-10 text-xs italic text-[var(--color-text-muted)]">
+      {t('home.menu_preview.price_note')}
+    </p>
+  </div>
+</section>

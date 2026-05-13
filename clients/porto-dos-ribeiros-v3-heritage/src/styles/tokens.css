@@ -1,0 +1,36 @@
+@theme {
+  /* Variant C — Heritage Storytelling (Dishoom archetype)
+   * Dark theatrical bg · parchment cream text · saffron/spice accents.
+   * Heritage cues drive the brand; CTAs are quiet, prose carries the voice.
+   * Per docs/design/templates/gastronomy.md Archetype C.
+   */
+  --color-bg: #1a1410;            /* deep cocoa-near-black */
+  --color-bg-deep: #120c0a;       /* even deeper for layering */
+  --color-surface: #261c16;       /* lifted dark surface for cards */
+  --color-text: #f0e3c8;          /* warm parchment cream */
+  --color-text-muted: #b5a380;    /* aged sepia */
+  --color-text-subtle: #a08e6e;   /* deeper sepia for footnotes/disclaimers — passes WCAG AA on --color-bg */
+  --color-accent: #d4a017;        /* saffron / curry gold */
+  --color-accent-deep: #a05010;   /* deeper spice for hover / depth */
+  --color-spice: #c44515;         /* warm tile-red, used sparingly */
+  --color-stamp: #c89034;         /* warm gold for stamp graphic */
+  --color-border: #3a2820;        /* warm dark border */
+  --color-border-light: #4a3525;  /* lighter border for emphasis */
+
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-body:
+    'Manrope Variable', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.35), 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 8px 20px rgba(0, 0, 0, 0.55), 0 3px 6px rgba(0, 0, 0, 0.4);
+
+  /* Animation duration tokens — per DESIGN-BEST-PRACTICES.md §8 */
+  --duration-fast: 150ms;
+  --duration-medium: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+}

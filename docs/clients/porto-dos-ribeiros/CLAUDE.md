@@ -8,11 +8,44 @@
 
 The product type determines which standards docs apply at full strength vs N/A. For Type 1: `FORMS.md`, `ANALYTICS.md` events, `RELIABILITY.md` retry/degraded-mode are N/A. All universal-core docs apply. See `docs/design/TECH.md` §1.3 for the full activation matrix.
 
+## Variant strategy — three directions for the cold call
+
+This project is being approached with **three deployable variants** so the owner can pick a direction during the first conversation. Each variant is a complete independent Astro project; they share content and assets but diverge entirely in palette, typography, hero pattern, and copy voice.
+
+| # | Directory | Archetype | Visual identity | What it optimizes for |
+|---|-----------|-----------|-----------------|----------------------|
+| **A** | `clients/porto-dos-ribeiros/` (this directory's code) | A — stripped editorial | Cream + terracotta · two-column hero · single review quote · italic "Com saudade do Brasil" signature · azulejo place-identity | Balanced first impression; works as the safe default |
+| **B** | `clients/porto-dos-ribeiros-v2/` | B — modern conversion-first (Sweetgreen) | Cream + sage + **bright lime CTA** · full-bleed food-photo hero with dark gradient · 3-col menu card grid · "Salve nosso WhatsApp" subscribe footer | Maximizing WhatsApp conversion; product-launch framing for daily dishes |
+| **C** | `clients/porto-dos-ribeiros-v3-heritage/` | C — heritage editorial (Dishoom) | Dark cocoa + parchment + saffron · vintage **welcome modal** ("Bem-vindos ao Porto dos Ribeiros · Desde 2023") · editorial menu spreads · italic narrative voice · circular "2023" stamp in Reviews | Storytelling and brand depth; signals an established place with character |
+
+Per archetype rationale + when to recommend each, see `docs/design/templates/gastronomy.md`.
+
+### Cold-call workflow
+
+1. **Show variant A first** (the safe default — the demo URL the owner already might have heard about)
+2. **Then walk through B and C** — "and we also built two other directions for you to compare"
+3. **Listen to which language the owner uses** — "conversion / orders / WhatsApp" → B; "story / tradition / authentic" → C; non-committal → A
+4. **Client picks one.** Charge for the pick; the other two are agency-internal portfolio pieces, not client deliverables.
+
+### What happens after the pick
+
+1. Two of the three directories get `rm -rf`'d in a single commit
+2. The chosen variant either:
+   - Stays where it is (rename or merge into `clients/porto-dos-ribeiros/`), or
+   - Becomes the production codebase under whatever directory naming the team prefers
+3. This file (`docs/clients/porto-dos-ribeiros/CLAUDE.md`) collapses the variant section into a single line: "Built on Variant [A/B/C]; the other two are deleted history"
+4. The root `CLAUDE.md` roster table collapses back to a single row
+5. Phase 2 (production cutover blockers) starts on the chosen build
+
+### Why three and not one
+
+The original Phase 1 audit identified hero photo content as the only Phase 1 blocker we couldn't unblock without the owner. By the time we resolve that, we'd have to decide the visual direction anyway. Building three is ~6 hours of work that turns the conversion question ("does this client want a website?") into a different question ("which of these do you prefer?") — qualitatively easier to answer and qualitatively easier to commit to.
+
 ## What this project is
 
-Porto dos Ribeiros — Brazilian restaurant, café and delivery on Rua da Constituição 982, Porto, Portugal.
+Porto dos Ribeiros — Brazilian restaurant, café and delivery on Rua da Constituição 982, Porto, Portugal. Founded 2023. Cedofeita neighbourhood.
 Stack: Astro 6 + Tailwind v4 (Tier 2). Hosting: Vercel.
-Live at: https://gastronomy-demo.vercel.app/ — demo phase (`noindex` on every page). Custom domain pending owner commit.
+Current demo live at: https://gastronomy-demo.vercel.app/ — Variant A, `noindex` on every page. Custom domain pending owner commit.
 
 ## Standards inheritance
 
