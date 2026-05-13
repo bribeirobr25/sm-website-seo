@@ -1,5 +1,13 @@
 # CLAUDE.md — Porto dos Ribeiros
 
+## Product type and stack
+
+- **Product type:** **1 — Static info (multi-page)**. Landing + dedicated menu/visit/privacy pages. No forms, no DB, no system. CTAs are phone, WhatsApp, and Google Maps.
+- **Stack tier:** **Tier 2 — Astro 6 + Tailwind v4**.
+- **Phase:** Demo (`noindex` on every page; awaiting cold call).
+
+The product type determines which standards docs apply at full strength vs N/A. For Type 1: `FORMS.md`, `ANALYTICS.md` events, `RELIABILITY.md` retry/degraded-mode are N/A. All universal-core docs apply. See `docs/design/TECH.md` §1.3 for the full activation matrix.
+
 ## What this project is
 
 Porto dos Ribeiros — Brazilian restaurant, café and delivery on Rua da Constituição 982, Porto, Portugal.
@@ -9,11 +17,18 @@ Live at: https://gastronomy-demo.vercel.app/ — demo phase (`noindex` on every 
 ## Standards inheritance
 
 This project inherits all standards from:
-- `docs/design/DESIGN-BEST-PRACTICES.md` — UI/UX, typography, color, accessibility
-- `docs/design/TECH.md` — stack, code organization, naming, SEO, performance, security
+- `docs/design/DESIGN-BEST-PRACTICES.md` — UI/UX, typography, color, motion, anti-slop
+- `docs/design/TECH.md` — stack, code organization, Configuration-as-Code, naming, deployment
+- `docs/design/PERFORMANCE.md` — perf budgets, image rules, font self-hosting, LCP diagnostic
+- `docs/design/ACCESSIBILITY.md` — WCAG 2.2 AA, contrast, keyboard, focus trap, reduced motion
+- `docs/design/SECURITY.md` — TLS, headers, contact-form hardening, secret rotation, German legal
+- `docs/design/RELIABILITY.md` — error handling, recovery, third-party degraded mode, monitoring, backup
+- `docs/design/QUALITY.md` — `pnpm validate` pipeline, CI/CD, coverage targets, parity validators
+- `docs/design/FORMS.md` — form validation, sanitization, honeypot, rate limit, idempotency
+- `docs/design/ANALYTICS.md` — event tracking, consent gating, retainer reporting
 - `docs/design/SEO.md` — local SEO, schema, GBP integration
 - `docs/design/I18N.md` — multilingual setup (PT default + EN)
-- `docs/design/CHECKLIST.md` — master pre-delivery gate (run before launch)
+- `docs/design/CHECKLIST.md` — master pre-delivery gate + free-tool launch combo (run before launch)
 
 Per-client overrides and additions are listed below and in `design.md` / `BRIEF.md`.
 
@@ -62,8 +77,8 @@ pnpm dev:host     # binds 0.0.0.0 so Docker MCP browser can reach it
 
 Cross-check every screenshot against:
 
-- `docs/design/DESIGN-BEST-PRACTICES.md` §15 **AI-template tells**
-- `docs/design/CHECKLIST.md` §2 **Visual review at three viewports**
+- `docs/design/DESIGN-BEST-PRACTICES.md` **AI-template tells** subsection
+- `docs/design/CHECKLIST.md` **Visual review at three viewports** subsection
 
 If a tell is present, fix the source and re-run both halves. A change is not "done" until both halves are clean.
 

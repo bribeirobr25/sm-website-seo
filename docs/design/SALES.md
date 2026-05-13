@@ -1,6 +1,8 @@
 # SALES.md — Client Acquisition and Relationship Guide
 ## Outreach Workflow · Pricing · Contracts · Handoff
 
+**Applies to:** All product types (1–5). Pricing tiers in Section 4 are organized by product type (see `TECH.md` §1 for the product-type matrix). Outreach + handoff workflows are universal.
+
 **Covers:** How to find clients, how to pitch, how to close, what to charge, how to manage the relationship, and how to hand off cleanly.
 
 ---
@@ -171,17 +173,46 @@ If after 2 follow-ups (call + email) there's no response, move on. Don't chase.
 - Always separate one-time from recurring (plant the retainer seed from day one)
 - Charge for the value (more leads, more credibility, better Google ranking), not the hours
 
-### Standard pricing
+### Standard pricing — by product type
+
+Pricing is organized by the product types defined in `TECH.md` §1. Always quote a range, not a fixed price, and always pair one-time work with a retainer recommendation.
+
+| Product type | What it is | One-time | Monthly retainer |
+|--------------|------------|----------|------------------|
+| **Type 1 — Static info (single page)** | Landing only. Phone / WhatsApp / maps CTAs. No forms, no DB. | **€500–800** | €150–300 |
+| **Type 1 — Static info (multi-page, 3–5 pages)** | Multi-page info. Astro static. Blog/news if needed. | **€800–1.500** | €150–300 |
+| **Type 2 — Info + contact** | Static info + contact / newsletter / inquiry form (emails the owner, no DB). | **€1.200–2.000** | €200–400 |
+| **Type 3 — Info + booking** | DB-backed booking / appointment / reservation system. Real-time availability, confirmations. | **€2.500–5.000** | €300–600 |
+| **Type 4 — Info + transactional** | Online ordering, payments, fulfillment tracking. PCI-relevant. | **€4.000–8.000** | €400–800 |
+| **Type 5 — Custom application** | Auth, user accounts, multi-role dashboards. Marketing is a sub-component. | **Quote per project** | **Quote per project** |
+
+### Standalone services and add-ons
 
 | Deliverable | Range | Notes |
 |------------|-------|-------|
-| **Single landing page** | €500–800 | HTML or Astro. Includes deployment, domain setup, GSC setup |
-| **Multi-page site (3–5 pages)** | €800–1.500 | Astro. Includes blog/news if needed |
-| **GBP setup + optimization** | €150–300 | Standalone. Includes photo guidance, categories, description, first posts |
-| **GBP + Website bundle** | €700–1.200 | Combined setup, discounted vs separate |
+| **GBP setup + optimization** | €150–300 | Standalone — independent of website project |
+| **GBP + Type 1 website bundle** | €700–1.200 | Combined setup, discounted vs separate |
 | **Multilingual add-on** (+ 1 language) | +€200–400 | Per additional language on top of primary |
-| **Contact form / booking integration** | +€200–400 | Per form or third-party booking embed |
-| **Monthly retainer** | €150–400/month | Content updates, GBP posts, monitoring, minor changes, monthly report |
+| **Existing-site audit** (any type) | €300–600 | Full audit against agency standards using `CHECKLIST.md` §8 template — deliverable is `docs/audit/[client]-[date].md` |
+| **Migration to retainer** (third-party site → ours) | €500–1.000 | Includes audit + recommendation report; rebuild quoted separately by product type |
+| **Performance / accessibility / SEO emergency fix** | €200–500 | Targeted PageSpeed or Lighthouse score recovery, scoped to one site |
+
+### Retainer scope by product type
+
+| Type | What the retainer covers |
+|------|-------------------------|
+| Type 1 | GBP posts (2–4/mo), review responses, hours/photo updates, minor copy edits, monthly GSC + Clarity report |
+| Type 2 | Type 1 + ESP delivery monitoring (Resend dashboard check, bounce review), form-submission triage |
+| Type 3 | Type 2 + booking-system monitoring, schedule edits, capacity adjustments, no-show analysis |
+| Type 4 | Type 3 + payment reconciliation, refund handling escalations, inventory updates |
+| Type 5 | Quote per project — usually includes feature work, bug fixes, and on-call response in addition to the lighter-tier items |
+
+### Pricing rules
+
+- Always quote the product type explicitly in the proposal — clients should know what they're getting (and not getting)
+- **Don't quote Type 3 prices for what is actually Type 2.** A "booking form that emails me" is Type 2, not Type 3. A real booking system with availability state is Type 3
+- **A "simple booking" that requires the owner to manually deconflict by email is Type 2 wrapped in optimistic framing.** Be honest with the client about which they're getting
+- For new clients, **default to recommending Type 1 first.** Most local businesses do not need a system — phone + WhatsApp covers 90 % of inbound. Upsell to Type 2+ only when the client has a real volume problem the lower type can't solve
 
 ### How to present the proposal
 
@@ -361,6 +392,7 @@ Most project delays are caused by clients not sending content. After 2 weeks of 
 - Respond to new Google reviews (draft + client approves)
 - Update hours for holidays/special events
 - Monthly GSC check: ranking changes, indexing errors, new opportunities
+- Monthly **Microsoft Clarity** review (heatmaps, rage clicks, session recordings — see SECURITY.md/PERFORMANCE.md tools sections for the broader tool kit). Free, no traffic cap, installed once at go-live. Surfaces what users actually do on the site so retainer recommendations are data-driven.
 - Minor website updates (text changes, new photo, price update) — max 2 hours included
 - Short monthly report (5 bullet points, not a 10-page PDF)
 
@@ -386,6 +418,12 @@ Website (Google Search Console):
 - Organic clicks: [X]
 - Impressions: [X]
 - Top 3 search queries: [query 1], [query 2], [query 3]
+
+User behavior (Microsoft Clarity):
+- Sessions: [X]
+- Rage clicks / dead clicks: [X]
+- Top page by attention: [page]
+- One actionable insight: [e.g. "users scroll past the menu section without clicking — try moving the WhatsApp CTA above the fold"]
 
 What I did this month:
 - [GBP post 1]

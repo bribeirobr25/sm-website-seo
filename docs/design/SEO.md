@@ -1,7 +1,7 @@
 # SEO.md — SEO Best Practices
 ## Small Business Website + Google Business Profile Agency
 
-**Applies to:** All client projects. This is the agency's complete SEO execution guide — strategy, technical implementation, Google Business Profile, and measurement.
+**Applies to:** All product types (1–5) — universal core. Every product type needs to be findable on Google. The depth of schema markup scales with the product (Type 1 ships `LocalBusiness`/`Restaurant`; Type 3+ may add `Reservation` or `Service`; Type 4 adds `Product`/`Offer`), but the core SEO discipline is identical at every type. See `TECH.md` §1 for the product-type matrix.
 
 **Companion documents:**
 - `DESIGN-BEST-PRACTICES.md` — visual and UX standards
@@ -30,6 +30,7 @@
 13. [Measurement and reporting](#13-measurement-and-reporting)
 14. [Delivery SEO checklist](#14-delivery-seo-checklist)
 15. [Anti-patterns — never do these](#15-anti-patterns--never-do-these)
+16. [Tools](#16-tools)
 
 ---
 
@@ -402,11 +403,19 @@ If the two results agree within ~50 m, that centroid is good enough for the demo
 | Real estate | `RealEstateAgent` |
 | Generic local business | `LocalBusiness` |
 
-### Aggregate rating — only use with real data
+### Aggregate rating — only use with real data + written consent
 
-Only include `aggregateRating` if you have real, verifiable review data. Pull from Google Maps reviews with the client's consent. Never invent or estimate.
+Only include `aggregateRating` in schema if **all three** are true:
 
-Update rating data every time you update the site (monthly at minimum).
+1. **The data is real and verifiable** — pulled from Google Maps or another public source, not estimated or aspirational
+2. **The values are current** — refresh at least monthly, ideally on every site update
+3. **The client has given written consent** — even though the reviews themselves are public, displaying them as a schema attribute the client is officially attesting to is a different commitment. Email confirmation with the value + count is enough. Save the email to `docs/clients/[slug]/`.
+
+The third condition is the one most often skipped — and the riskiest. A client who later disputes the count or rating ("we never approved that") has a defensible complaint. Get the consent in writing before shipping the markup.
+
+**During demo phase:** `aggregateRating` can be present with public data (Google's reviews are public), but flag it for client review *before* the noindex flip. If the client doesn't confirm, drop the markup before going live — the schema is enhancement, not a requirement.
+
+Update rating data every time you update the site (monthly at minimum). Cross-reference with the client's actual GBP profile, not a one-time scrape — review counts move.
 
 ### FAQ schema — add when the page has a FAQ section
 
@@ -1206,6 +1215,33 @@ Run this before every client delivery. No exceptions.
 - **Panicking at traffic drops after algorithm updates.** Wait 60–90 days before pivoting. Google updates take time to fully roll out.
 - **Confusing impressions with traffic.** Impressions = how often the page appeared in search. Clicks = how often someone actually visited. Both matter, for different reasons.
 - **Setting up GA4 without testing it.** Confirm events are firing correctly before delivering. A broken analytics setup is worse than no analytics.
+
+---
+
+## 16. Tools
+
+All entries are free or have a usable free tier (as of 2026-05-13). Listed in the order they enter a typical client workflow.
+
+| Tool | Free label | Link | Best for |
+|------|------------|------|----------|
+| Google Search Console | Free | [search.google.com/search-console](https://search.google.com/search-console/about) | Indexing status, queries, impressions, clicks, sitemap submission, Core Web Vitals. Always set up on every site before handoff. |
+| Bing Webmaster Tools | Free | [bing.com/webmasters](https://www.bing.com/webmasters/home) | Bing index status + small but real share of local search traffic. Free, takes 10 minutes — no excuse to skip. |
+| Google Trends | Free | [trends.google.com](https://trends.google.com/trends/) | Keyword/topic popularity over time and by region. First stop in the keyword phase. |
+| Google Keyword Planner | Free | [business.google.com/ad-tools/keyword-planner](https://business.google.com/uk/ad-tools/keyword-planner/) | Local keyword volumes and ideas. Free with a Google Ads account (no spend required). |
+| Semrush Keyword Magic Tool | Freemium | [semrush.com/analytics/keywordmagic](https://www.semrush.com/analytics/keywordmagic/) | Keyword difficulty + competitor terms. Free tier is limited but enough for one-off local research per client. |
+| Ahrefs Webmaster Tools | Freemium | [ahrefs.com/webmaster-tools](https://ahrefs.com/webmaster-tools) | Technical SEO audit, backlinks, organic keywords for *verified* sites. Free for sites you own. |
+| Google Rich Results Test | Free | [search.google.com/test/rich-results](https://search.google.com/test/rich-results) | Validates structured data against Google's actual rich-result eligibility. Run before flipping `noindex` off. |
+| Schema Markup Validator | Free | [validator.schema.org](https://validator.schema.org/) | Schema.org spec validation (more permissive than Google's). Use alongside Rich Results Test. |
+| Sitebulb | Free trial | [sitebulb.com](https://sitebulb.com/) | Technical SEO crawl with prioritized findings. Reach for it when a site grows past ~10 pages. |
+
+**Order of use on a fresh client:**
+1. Trends + Keyword Planner → keyword phase
+2. Semrush (if a one-off deeper look is needed)
+3. Build the site
+4. Rich Results Test + Schema Validator → validate schema before going live
+5. Search Console + Bing Webmaster Tools → submit sitemap, set up monitoring
+6. Ahrefs Webmaster Tools → ongoing technical SEO monitoring on retainer
+7. Sitebulb only if site grows complex enough to need it
 
 ---
 

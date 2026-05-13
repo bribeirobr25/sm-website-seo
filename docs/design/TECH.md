@@ -1,7 +1,12 @@
 # TECH.md — Tech Best Practices
 ## Small Business Website + SEO + Google Business Agency
 
-**Applies to:** All client projects built under this agency. Each client project inherits these standards. Project-specific overrides go in the client's own `CLAUDE.md`.
+**Applies to:** All product types (1–5).
+
+- **Universal at every type:** Configuration as Code, naming conventions, file-size discipline, the 3× rule, DDD-flavored organization, TypeScript strict mode, the `engines` pin, deployment workflow.
+- **Activates at Type 3+:** Service-agnostic abstraction patterns (Section 5), where the project actually has an external service to abstract (Resend, Stripe, etc.). For Type 1-2, the abstraction overhead isn't worth the cost.
+
+Section 1 below is the **product-type-then-stack decision matrix** — read it before scoping any new project. Each client project inherits these standards; project-specific overrides go in the client's own `CLAUDE.md`.
 
 **Source projects:** bible-tt (Next.js 16, DDD, static-first), MyPlanny/retail-store (React 19, Vite 6, Zustand, Zod), diBoaS (Next.js 16, Turborepo, full-stack).
 
@@ -11,7 +16,7 @@
 
 ## Table of contents
 
-1. [Stack decision matrix](#1-stack-decision-matrix)
+1. [Product type and stack decision](#1-product-type-and-stack-decision)
 2. [Tech stack reference](#2-tech-stack-reference)
 3. [Project structure](#3-project-structure)
 4. [TypeScript standards](#4-typescript-standards)
@@ -34,36 +39,82 @@
 
 ---
 
-## 1. Stack decision matrix
+## 1. Product type and stack decision
 
-Not every client needs the same stack. Decide before writing a single line of code.
+Two decisions, in order. **Product type first** (what the project does), then **stack tier** (the technology that delivers it). The standards activation map (Section 1.3) follows from the product type, not the stack — a Type 1 info site and a Type 3 booking system have very different applicable rules even if both run on Astro.
 
-### Decision tree
+### 1.1 Product types — the agency's service catalog
 
-```
-Is this a single landing page with static content only?
-  YES → Pure HTML + CSS + minimal vanilla JS (no framework)
-  NO  ↓
+| Type | Name | What it is | Typical examples |
+|------|------|------------|------------------|
+| **1** | **Static info** | Landing or multi-page site with information only. CTAs are phone, WhatsApp, maps. **No forms, no DB, no server logic.** | Restaurant info + phone CTA · Barber info-only · Clinic info + call to book · Trade business presence |
+| **2** | **Info + contact** | Type 1 + a contact / newsletter / waitlist form that emails the owner via an ESP. **No DB.** | Restaurant + reservation request form · Studio + class inquiry form · Clinic + appointment request (email-handed-off, not real-time) |
+| **3** | **Info + booking** | Type 1 + a booking / appointment / table-reservation system with **DB-backed state**. Real-time availability, multiple sessions, confirmations. | Restaurant + live table booking · Barber + slot reservation · Studio + class schedule with capacity · Clinic + appointment system |
+| **4** | **Info + transactional** | Type 1 + online ordering, payment, fulfillment tracking. **PCI-relevant.** | Restaurant + delivery / takeaway ordering · Retail + online catalog · Studio + class purchases |
+| **5** | **Application** | Custom application with auth, user accounts, multi-role, dashboards. Marketing landing is a sub-component, not the whole product. | Todo / task system · Member portal · Loyalty program backend · Admin tooling |
 
-Does it have multiple pages (About, Services, Blog, etc)?
-  YES → Astro (static output, markdown-first, excellent SEO)
-  NO  ↓
+### 1.2 Stack tier follows from product type
 
-Does it need dynamic server-side features (booking system, contact form backend, auth)?
-  YES → Next.js 16 App Router (React Server Components)
-  NO  → Astro still preferred for multi-page static
-```
+| Product type | Stack tier (default) | Stack tier (acceptable alternative) |
+|--------------|----------------------|--------------------------------------|
+| Type 1 (Static info, single page) | Tier 1 — Pure HTML | Tier 2 — Astro |
+| Type 1 (Static info, multi-page) | Tier 2 — Astro | — |
+| Type 2 (Info + contact) | Tier 2 — Astro + serverless endpoint | Tier 3 — Next.js (only if other Type-3 features arrive soon) |
+| Type 3 (Info + booking) | Tier 3 — Next.js | Tier 2 — Astro + many endpoints (acceptable only for small scope) |
+| Type 4 (Info + transactional) | Tier 3 — Next.js + payment stack | — |
+| Type 5 (Application) | Tier 3 — Next.js + auth + DB | — |
 
-### Stack by client type
+**Rule:** Default to the simplest stack that fulfills the product type. A Type 1 restaurant does not need Next.js. A Type 3 booking system does not need Astro stretched past its sweet spot. Over-engineering wastes time and hurts performance.
 
-| Client type | Stack | Rationale |
-|-------------|-------|-----------|
-| Single-page landing (restaurant, salon, barber) | HTML + Tailwind + vanilla JS | Zero framework overhead, fastest delivery, best Lighthouse score |
-| Multi-page static site (clinic, studio, boutique) | Astro + Tailwind | Static HTML output, markdown for content, near-perfect SEO |
-| Site with booking or contact form (hotel, clinic) | Astro + serverless form endpoint | Static pages + one API route for the form |
-| Full dynamic site (e-commerce, membership, dashboard) | Next.js 16 App Router + Tailwind + TypeScript | Full RSC pipeline, caching, auth |
+### 1.3 Standards activation map — what applies at which type
 
-**Rule:** Default to the simplest stack that fulfills the requirements. A restaurant landing page does not need Next.js. A static Astro site does not need Zustand. Over-engineering wastes time and hurts performance.
+Some standards are universal (apply to every project). Others activate from a specific product type onward. The table below is the canonical activation matrix.
+
+#### Universal core — applies to all types (1–5)
+
+| Standard | Why it's universal |
+|----------|-------------------|
+| `DESIGN-BEST-PRACTICES.md` | Every project has a UI |
+| `PERFORMANCE.md` (budgets, image rules, font rules, animation perf) | Every page has Core Web Vitals |
+| `ACCESSIBILITY.md` | WCAG 2.2 AA is a contract, not a feature |
+| `SEO.md` | Every project is findable on Google |
+| `I18N.md` `lang` attribute + locale config | Even single-language sites need `lang` |
+| `SECURITY.md` baseline (TLS, 6 headers, no-secrets-in-code, Impressum) | Every site must ship these |
+| `RELIABILITY.md` core (404, JS-disabled fallback, defensive data, backup/DR) | Every site can fail; every site needs to recover |
+| `TECH.md` (Configuration as Code, naming, 3× rule, file-size discipline, engines pin) | Engineering hygiene applies everywhere |
+| `QUALITY.md` `pnpm validate` exists (pipeline depth scales) | Every project has a "ready to ship" gate |
+| `CHECKLIST.md` | Every project goes through pre-delivery review |
+
+#### Scoped activation — applies from a specific type onward
+
+| Capability | Activates at | Lives in |
+|------------|-------------|----------|
+| Form validation / sanitization / honeypot / rate limit | **Type 2+** | `FORMS.md` §2-4 |
+| `fetchWithRetry` + exponential backoff | **Type 2+** | `RELIABILITY.md` §4 |
+| ESP fallback / form recovery / phone-number redundancy | **Type 2+** | `RELIABILITY.md` §5, §11 |
+| Idempotency keys | **Type 2+** | `FORMS.md` §5 |
+| Secret rotation cadence (90-day) | **Type 2+** | `SECURITY.md` §8 |
+| Application logging | **Type 2+ at production**, mandatory at Type 3+ | `RELIABILITY.md` §8 |
+| Uptime monitoring | All types at production cutover | `RELIABILITY.md` §9 |
+| Analytics events beyond GSC | All types at production cutover | `ANALYTICS.md` |
+| Email enumeration prevention | **Type 3+** | `FORMS.md` §6 |
+| DOMPurify / rich-text handling | **Type 3+** | `FORMS.md` §7 |
+| Error boundaries (3 layers) | **Type 3+** (Tier 3 stack) | `RELIABILITY.md` §6 |
+| Per-route JS bundle budget (300KB) | **Type 3+** (Tier 3 stack) | `PERFORMANCE.md` §1 |
+| CSP nonce pattern | **Type 3+** | `SECURITY.md` §3 upgrade |
+| Encryption at rest (AES-256-GCM) + HMAC blind index | **Type 3+** with stored PII | `SECURITY.md` (referenced; not yet detailed) |
+| Service-agnostic abstraction layer (provider patterns) | **Type 3+** | `TECH.md` Section 5 |
+| Vitest tests + coverage targets | **Type 3+** mandatory | `QUALITY.md` §6 |
+| Payment idempotency, refund handling, PCI considerations | **Type 4 only** | Not yet documented (expand when first Type 4 client appears) |
+| Auth, session security, GDPR data subject rights, multi-role access | **Type 5 only** | Not yet documented (expand when first Type 5 client appears) |
+
+**How to read this table:** when scoping a project, look up the product type, then check which scoped capabilities activate. Anything not listed for that type is *not in scope* — don't build form retry logic for a Type 1 info site.
+
+### 1.4 The audit angle
+
+The activation matrix doubles as the audit baseline. A Type 1 site that "fails" the FORMS.md gates isn't failing — those gates don't apply. A Type 3 site that "passes" Type 1 gates is barely halfway. The auditor declares the product type first, then scores only the applicable standards.
+
+See `CHECKLIST.md` §8 for the audit template.
 
 ---
 
@@ -313,6 +364,25 @@ components/inputs/Form.astro
 | `lib/` | Utilities, metadata helpers, schemas | Components, UI |
 | `app/` or `pages/` | Routing, page composition | Business logic |
 
+### Configuration as Code — the no-hardcoded-values rule
+
+**Every value that could plausibly change is configuration, not a literal.** This is the unifying principle behind the more specific "no hardcoded X" rules scattered across the docs:
+
+| Value type | Lives in | Read in components via |
+|------------|----------|------------------------|
+| Colors / fonts / spacing | `src/styles/tokens.css` | `var(--color-accent)` (see `DESIGN-BEST-PRACTICES.md`) |
+| User-facing copy | Translation JSON files | `t('key')` (see `I18N.md`) — required on multilingual sites |
+| Business data (name, phone, address, hours, social, NIF) | `src/lib/site.ts` (`SITE` export) | `SITE.phone`, `SITE.hours[day]` |
+| Prices, rates, computed numbers | `src/lib/<domain>/constants.ts` | Named export, never a literal in JSX |
+| External URLs (maps, complaints book, registrar) | `SITE.urls.<name>` | `SITE.urls.complaints` |
+| API endpoints, env-dependent URLs | `import.meta.env.PUBLIC_*` / `process.env.*` | Via a config wrapper, never raw `process.env` in components |
+| Image paths | `src/lib/assets.ts` `ASSET_PATHS` export (multi-page sites) | `ASSET_PATHS.heroes.home` |
+| Feature flags | `import.meta.env.PUBLIC_FEATURE_*` | Boolean coerced in a `lib/flags.ts` helper |
+
+**The rule of thumb:** if a value would need to change for a different client, locale, environment, or business decision — and you'd have to edit *more than one file* — it's hardcoded. Centralize it.
+
+**The exception:** structural literals that *are* the semantic content (HTML tag names, ARIA role values, route slugs that match user expectations) are not configuration. Don't make `<h1>` configurable.
+
 ### The 3× rule
 
 > First occurrence: write inline. Second: tolerate duplication. Third: extract to a shared component.
@@ -321,6 +391,18 @@ Applied to the agency:
 - First client needs a "review card" → write it inline in that client's project.
 - Second client needs a similar review card → copy it.
 - Third client needs one → extract to `shared/components/ReviewCard.astro` and import across all three.
+
+### File-size discipline — consistency over forced splits
+
+Recommended file sizes are guidelines, not hard limits:
+
+| Layer | Recommended | Hard limit |
+|-------|-------------|-----------|
+| Components | ~150 lines | 300 |
+| Services / utilities | ~200 lines | 400 |
+| Configs / data files | unlimited | unlimited |
+
+**Consistency is the priority** — a 280-line component that stays coherent and respects DRY is better than two 140-line components that duplicate logic or break cohesion. Split when it genuinely improves clarity or reuse. Don't split just to hit a line count. The 3× rule above is the real trigger for extraction, not file length.
 
 ### Component scope (never inside another component)
 
@@ -648,134 +730,9 @@ Never disallow crawlers on client sites. Demo pages (Vercel preview URLs) should
 
 ## 10. Performance standards
 
-### Targets (non-negotiable before delivery)
+Performance standards live in **`PERFORMANCE.md`** — targets, demo-vs-production scores, LCP breakdown diagnostic, image rules, font self-hosting recipe, animation rules, and the tools list.
 
-| Metric | Target | Tool |
-|--------|--------|------|
-| PageSpeed Insights mobile | ≥ 90 | pagespeed.web.dev |
-| LCP (Largest Contentful Paint) | < 2.5s | Lighthouse |
-| CLS (Cumulative Layout Shift) | < 0.1 | Lighthouse |
-| Total page weight (mobile) | < 500KB | Browser DevTools |
-| First meaningful content | < 1.5s | Lighthouse |
-
-### Demo-phase scores: what's normal vs what's a regression
-
-When the site is still in demo phase (noindex on every page), Lighthouse scores look like this:
-
-| Score | Expected during demo | Why |
-|---|---|---|
-| Performance | ≥ 90 — same as production | Demo and production share the same code path; no excuse for low perf |
-| Accessibility | 100 — same as production | Same |
-| Best Practices | 100 — same as production | Same |
-| **SEO** | **~69** | Lighthouse flags the `noindex` meta tag as a critical SEO failure. **Expected.** Will jump to 95+ when noindex is removed for production. Do not chase this score during the demo. |
-
-Two unscored Best-Practices findings also appear during demo and are real items for production but not blockers now: **CSP / COOP / X-Frame-Options / Trusted Types headers**. These belong in `vercel.json` before the production cutover; see Section 12 Security baseline.
-
-### Diagnosing slow LCP — read the breakdown, not the score
-
-When PageSpeed reports LCP > 2.5 s, open the **LCP-Aufschlüsselung** (LCP breakdown) panel and look at the four sub-sections. The fix you reach for depends on which one is elevated:
-
-| Sub-section | Healthy | Almost always means… |
-|---|---|---|
-| TTFB | < 200 ms | Hosting/CDN; on Vercel edge usually 0 ms |
-| Resource load delay | < 100 ms | Missing `fetchpriority="high"` on LCP image; consider `<link rel="preload" as="image">` |
-| Resource load duration | < 500 ms | Image variant is too large for the displayed size; tighten `widths` array, drop quality to 75 |
-| **Element render delay** | < 500 ms | **The render-blocker tax.** Almost always third-party fonts or large CSS blocking paint above the LCP element. Self-host fonts (see §10 Font rules), inline critical CSS, defer non-critical JS. |
-
-On a 3.5 s LCP composed of 0 / 190 / 360 / 1780 ms, the image is innocent. Don't optimize the picture — fix what's between the image arriving and the browser being allowed to paint it.
-
-### The "identical links" warning is usually a false positive
-
-Lighthouse flags it when multiple `<a>` tags share the same `href` but have visibly different surrounding context (e.g. the same `tel:` link appearing in the header, hero, and footer with different hover styles). For local-business sites this is a deliberate design choice — same phone number, multiple touchpoints. Add an `aria-label` only if a screen reader would genuinely confuse them (e.g. two links to different sections of the same external page). Otherwise ignore.
-
-### Image rules
-
-Images are almost always the biggest performance culprit on local business sites.
-
-- **Use the framework's image pipeline.** Astro: `import { Image } from 'astro:assets'` + put files in `src/assets/`. See §8 for the canonical pattern. Raw `<img>` against `public/` files ships originals unchanged and is the #1 cause of PageSpeed <90 on our builds.
-- **Format:** WebP (or AVIF) for all photos — let the pipeline emit them. SVG for logos, icons.
-- **Sizing:** Hero images: max 1920px wide. Section images: max 800px. Thumbnails: max 400px. The pipeline's `widths={[…]}` prop generates the responsive set automatically.
-- **Lazy loading:** `loading="lazy"` on all images below the fold. Never on the hero/LCP image.
-- **Dimensions:** Always set `width` and `height` on `<img>` tags to prevent CLS. The pipeline does this for you.
-- **No 2+ MB originals committed to the repo.** Run images through Squoosh, ImageOptim, or `sharp` CLI before commit even if the pipeline will re-encode them — bloated source files slow `pnpm build` and balloon the git history.
-- **Alt text:** Every image has a descriptive `alt`. Decorative images: `alt=""`. **The alt must match the photo's actual content** — never label an image as "Feijoada" if the photo shows a different dish.
-
-#### `<Image>` defaults are NOT LCP-optimal — fix these explicitly
-
-The Astro `<Image>` component does not preset every optimization. Two opt-ins that pay back immediately on every client site we've measured:
-
-- **`fetchpriority="high"` on the LCP image** — usually the hero. Without it, the browser deprioritizes the image behind CSS/JS even when `loading="eager"`. Mandatory on the LCP element, costs 0 bytes, saves 100–300 ms LCP.
-- **A `widths` array with a step within ~25 % of the actual displayed width × DPR.** If the hero box is 480 px wide at 2× DPR, the browser needs a 960w variant. Default `widths={[480, 768, 1024]}` leaves the browser picking 1024w (oversized). Better: `widths={[400, 640, 800, 1024]}` so the browser has a 800w option near the real need.
-- **`quality={75}` on photographs, never the default 80.** Indistinguishable to the eye, ~10 % smaller files. Drop to 70 for non-hero decorative images.
-
-Sanity check after deploy: open PageSpeed Insights, expand **Image delivery improvable** — if any image flags "größer als nötig / larger than necessary," the `widths` array is too coarse for that image's display size.
-
-```html
-<!-- Hero image (no lazy, has explicit dimensions) -->
-<img
-  src="/images/restaurant-interior.webp"
-  width="1920" height="1080"
-  alt="Interior of Bella Vita Berlin restaurant — warm lighting and exposed brick"
-/>
-
-<!-- Section image (lazy) -->
-<img
-  src="/images/pasta-dish.webp"
-  width="800" height="600"
-  loading="lazy"
-  alt="Handmade tagliatelle with truffle cream sauce"
-/>
-```
-
-### Font rules
-
-**Self-host from day one. Never `fonts.googleapis.com` in production.** The Google Fonts CSS is render-blocking, adds a DNS lookup, and was the single biggest perf regression we measured on the first Porto dos Ribeiros build: 1.5 s of LCP came from the hero image waiting for the third-party stylesheet to resolve. Self-hosting is not "for production" — it's the default.
-
-The canonical pattern (Astro):
-
-```bash
-pnpm add @fontsource-variable/<display-font> @fontsource-variable/<body-font>
-```
-
-```astro
----
-// BaseLayout.astro frontmatter
-import '@fontsource-variable/fraunces/wght.css';
-import '@fontsource-variable/fraunces/wght-italic.css';  // only if you use italic
-import '@fontsource-variable/manrope';                    // default = wght.css
-import '../styles/global.css';
----
-```
-
-**Operating rules:**
-
-- **Maximum 2 font families per project** — display + body. Same number as the old Google-Fonts era, different mechanism.
-- **Variable fonts only** when available. One woff2 file covers every weight you'll use via the `wght` axis. Massive bytes savings vs static cuts.
-- **The family name has " Variable" suffix.** `@fontsource-variable/fraunces` registers `font-family: 'Fraunces Variable'`, not `'Fraunces'`. Your `tokens.css` must reference the registered name:
-  ```css
-  --font-display: 'Fraunces Variable', Georgia, serif;
-  --font-body: 'Manrope Variable', system-ui, sans-serif;
-  ```
-  Easy gotcha — the build will not warn you; the browser silently falls back to the next stack entry.
-- **Pick the smallest CSS variant you actually need.** `/wght.css` (weight axis only) is ~4 KB. `/opsz.css` (weight + optical-size) adds optical-size data — only import if you're driving `font-variation-settings: "opsz" …` from CSS. For a typical headline + body site, `wght` is enough.
-- **`font-display: swap`** is set by fontsource by default. Don't override.
-- **Subsetting is automatic.** Fontsource ships per-script woff2 files (latin, latin-ext, vietnamese, cyrillic, etc.) with `unicode-range`. The browser fetches only what it needs — for a DE/PT/EN site, that's `latin` and `latin-ext`, ~30–80 KB each. The other scripts sit on disk in `dist/_astro/` unfetched.
-- **Optional preload for the LCP font subset:** add a `<link rel="preload" as="font" type="font/woff2" href="/_astro/<display-font>-latin-wght-normal.<hash>.woff2" crossorigin>` if your display font appears in the LCP element. The hash changes per build, so this needs maintenance — only worth it on production builds where you've committed to a layout.
-- **No Google Fonts CDN.** If you find yourself adding a `<link href="https://fonts.googleapis.com/...">`, stop and migrate to fontsource. The CDN is for prototypes, not for sites we hand to a client.
-
-### Animation performance
-
-Only animate `transform` and `opacity` (GPU-composited properties). Never animate `width`, `height`, `top`, `left`, or `margin` — these trigger layout recalculation on every frame.
-
-```css
-/* CORRECT — GPU-composited */
-.fade-in { animation: fadeIn 300ms ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } }
-
-/* WRONG — triggers layout */
-.slide-in { animation: slideIn 300ms ease-out; }
-@keyframes slideIn { from { margin-top: -20px; } }
-```
+This doc cross-references it by name only; section structure inside `PERFORMANCE.md` is free to evolve without breaking references here.
 
 ---
 
@@ -822,55 +779,9 @@ Missing `hreflang` = Google indexes duplicate content. Every page that exists in
 
 ## 12. Security baseline
 
-### What every client site must have
+Security standards live in **`SECURITY.md`** — TLS configuration, the six required security headers, the `vercel.json` recipe, contact-form hardening, German legal requirements, malware/blacklist monitoring, and the pre-launch security gates.
 
-| Requirement | Why |
-|-------------|-----|
-| HTTPS enforced | Vercel provides this automatically |
-| No secrets in client code | Never put API keys in frontend code |
-| HTTP security headers | Protect against common attacks |
-| Content Security Policy | Mitigate XSS |
-| Impressum (German sites) | **Legal requirement** in Germany |
-| Privacy Policy + Cookie Policy | **Legal requirement** under DSGVO/GDPR |
-
-### Security headers (add to `vercel.json` or `next.config.ts`)
-
-```json
-// vercel.json
-{
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
-      ]
-    }
-  ]
-}
-```
-
-### Contact forms
-
-When a client needs a contact form:
-- Use Resend for transactional email delivery.
-- Validate all input server-side with Zod, regardless of client-side validation.
-- Rate-limit form submissions (Vercel's `waitUntil` or Upstash Redis for Tier 3).
-- Never expose API keys in client code — form submission must go through an API route.
-- Add honeypot field to deter bots (`<input name="_gotcha" style="display:none">`).
-- Sanitize all user input before using it in email body — use DOMPurify or strip HTML tags.
-
-### German legal requirements (mandatory for every DE-market site)
-
-| Page | Required content |
-|------|-----------------|
-| Impressum | Business owner full name, address, email, phone, Handelsregister if applicable |
-| Datenschutzerklärung | DSGVO-compliant privacy policy listing all data processors (Google Analytics, contact forms, etc.) |
-| Cookie Banner | Only if using tracking cookies or non-essential cookies. Not required for purely functional first-party cookies. |
-
-**Rule:** Deliver Impressum and Datenschutzerklärung before going live. This is not optional. Use a generator (e.g., eRecht24) and have the client confirm the content is accurate.
+This doc cross-references it by name only; section structure inside `SECURITY.md` is free to evolve without breaking references here.
 
 ---
 
@@ -961,6 +872,22 @@ Ask three questions:
 ### Lockfile
 
 Always commit `pnpm-lock.yaml`. It ensures reproducible builds across machines. Never gitignore it.
+
+### Pin Node and pnpm versions in `package.json`
+
+Every client's `package.json` must declare an `engines` field so Vercel, CI, and local dev all agree on which Node and pnpm to use. A version mismatch between local and CI is one of the most common ways "works on my machine" appears.
+
+```json
+{
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@10.33.2"
+}
+```
+
+Astro 6 requires Node ≥ 22.12 — Node 20 will fail the build. The `packageManager` field (Corepack standard) pins the exact pnpm version; the `engines` block is the floor.
 
 ---
 
@@ -1204,6 +1131,14 @@ Create this file at `clients/[client-slug]/CLAUDE.md` at the start of every new 
 ```markdown
 # CLAUDE.md — [Client Business Name]
 
+## Product type and stack
+
+- **Product type:** [1 — Static info / 2 — Info + contact / 3 — Info + booking / 4 — Info + transactional / 5 — Application]
+- **Stack tier:** [Tier 1 — HTML / Tier 2 — Astro / Tier 3 — Next.js]
+- **Phase:** [Demo / Production / Retainer]
+
+See root `CLAUDE.md` product-type matrix and `docs/design/TECH.md` §1 for the activation map (which standards docs apply at this type).
+
 ## What this project is
 
 [Business name] — [one sentence description]. [City + neighborhood].
@@ -1213,28 +1148,55 @@ Live at: [client domain or Vercel preview URL].
 ## Standards inheritance
 
 This project inherits all standards from:
-- `docs/design/DESIGN-BEST-PRACTICES.md` — UI/UX, typography, color, accessibility
-- `docs/design/TECH.md` — stack, code organization, naming, SEO, performance, security
+- `docs/design/DESIGN-BEST-PRACTICES.md` — UI/UX, typography, color, motion, anti-slop
+- `docs/design/TECH.md` — stack, code organization, Configuration-as-Code, naming, deployment
+- `docs/design/PERFORMANCE.md` — perf budgets, image rules, font self-hosting, LCP diagnostic
+- `docs/design/ACCESSIBILITY.md` — WCAG 2.2 AA, contrast, keyboard, focus trap, reduced motion
+- `docs/design/SECURITY.md` — TLS, headers, contact-form hardening, secret rotation, German legal
+- `docs/design/RELIABILITY.md` — error handling, recovery, third-party degraded mode, monitoring, backup
+- `docs/design/QUALITY.md` — `pnpm validate` pipeline (pick the tier), CI/CD, coverage targets
+- `docs/design/FORMS.md` — form validation, sanitization, honeypot, rate limit, idempotency (if forms present)
+- `docs/design/ANALYTICS.md` — event tracking, consent gating, retainer reporting
+- `docs/design/SEO.md` — local SEO, schema, GBP integration
+- `docs/design/I18N.md` — multilingual setup, translation parity validator
+- `docs/design/CHECKLIST.md` — master pre-delivery gate + leanest free launch combo
 
 Per-client overrides and additions are listed below.
 
 ## Tech stack
 
-- Framework: [HTML / Astro X / Next.js 16]
-- Styling: Tailwind CSS v4
-- Language: [TypeScript / HTML only]
-- Icons: Lucide
+- Framework: [HTML / Astro 6 / Next.js 16]
+- Styling: Tailwind CSS v4 (with `@theme {}` token block in `src/styles/tokens.css`)
+- Language: [TypeScript strict + `noUncheckedIndexedAccess` / HTML only]
+- Fonts: self-hosted via `@fontsource-variable/*` (see `PERFORMANCE.md`)
+- Icons: Lucide / inline SVG
 - Hosting: Vercel
-- Package manager: pnpm
+- Package manager: pnpm (pinned via `packageManager` field)
 - Linting: Biome
+
+### `package.json` minimum scaffold
+
+```json
+{
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@10.33.2"
+}
+```
+
+The full scripts block depends on tier — see `QUALITY.md` §2 for the Tier 1 / Tier 2 / Tier 3 `pnpm validate` pipelines.
 
 ## Quick commands
 
 ```bash
-pnpm dev        # Dev server (http://localhost:4321 for Astro, :3000 for Next.js)
-pnpm build      # Production build
-pnpm lint       # Biome linting
-pnpm preview    # Preview production build locally
+pnpm dev          # Dev server (http://localhost:4321 for Astro, :3000 for Next.js)
+pnpm dev:host     # Same, bound to 0.0.0.0 (for Docker MCP browser via host.docker.internal)
+pnpm build        # Production build
+pnpm lint         # Biome linting
+pnpm preview      # Preview production build locally
+pnpm validate     # Full validation pipeline (tier-appropriate; see QUALITY.md)
 ```
 
 ## Project structure
@@ -1245,7 +1207,7 @@ pnpm preview    # Preview production build locally
 
 - Business name:
 - Type (restaurant / clinic / salon / ...):
-- City / neighborhood (Berlin — [Kiez]):
+- City / neighborhood:
 - Primary language: [DE / EN / PT-BR]
 - Additional languages: [if any]
 - Primary CTA: [Call / WhatsApp / Book / Directions]
@@ -1254,33 +1216,44 @@ pnpm preview    # Preview production build locally
 
 ## Design decisions
 
-See `docs/clients/[client-slug]/design.md` for aesthetic direction, color tokens, font choices, and approved copy. Structure defined in `DESIGN-BEST-PRACTICES.md` Section 17.
+See `docs/clients/[client-slug]/design.md` for aesthetic direction, color tokens, font choices, and approved copy. Structure defined in `DESIGN-BEST-PRACTICES.md` per-client design file section.
 
 ## Environment variables
 
 | Variable | Purpose | Where to set |
 |----------|---------|--------------|
-| `RESEND_API_KEY` | Email delivery for contact form | Vercel project settings |
+| `RESEND_API_KEY` | Email delivery for contact form (if applicable) | Vercel project settings |
 | `CONTACT_EMAIL` | Recipient for form submissions | Vercel project settings |
+| `UPSTASH_REDIS_REST_URL` | Rate limiting (if applicable) | Vercel project settings |
+| `UPSTASH_REDIS_REST_TOKEN` | Same | Vercel project settings |
+
+Secret rotation cadence: 90 days for API keys and encryption secrets (see `SECURITY.md`).
+
+## Reliability — restore procedure
+
+5-minute restore from Vercel rollback:
+1. Vercel dashboard → project → Deployments
+2. Find the last known-good deployment
+3. Click `⋯` → Promote to Production
+4. Verify the production URL serves the rolled-back version
+
+Documented per `RELIABILITY.md` §10. Update with any per-client variants (e.g., DB restore steps if Neon/Supabase is in the stack).
+
+## Uptime monitoring
+
+[UptimeRobot / Better Stack] monitor pinging the homepage every 5 min. Alerts to [agency email + WhatsApp].
+Set up before flipping `noindex` off — see `RELIABILITY.md` §9.
 
 ## Delivery checklist
 
-Before going live:
-- [ ] All pages pass PageSpeed Insights ≥ 90 (mobile)
-- [ ] Phone number is clickable (`tel:`)
-- [ ] Address links to Google Maps
-- [ ] Hours confirmed with client
-- [ ] Impressum + Datenschutzerklärung in place (DE sites)
-- [ ] `noindex` removed from meta tags
-- [ ] Custom domain configured + HTTPS active
-- [ ] sitemap.xml submitted to Google Search Console
-- [ ] Google Business Profile updated with website URL
+Run `docs/design/CHECKLIST.md` top to bottom — that's the master gate. Per-client items:
+- [ ] [Anything client-specific, e.g. NIF/CAE confirmed, reviewed legal pages]
 
 ## How to work on this project
 
 - Don't auto-commit or auto-push. Manage commits manually.
 - Atomic commits with English messages.
-- Run `pnpm lint && pnpm build` before declaring any change done.
+- Run `pnpm validate` before declaring any change done — that's the engineering gate; `CHECKLIST.md` is the product gate. Both must pass.
 - Write the plan first for any multi-step change. Get approval. Then execute.
 ```
 

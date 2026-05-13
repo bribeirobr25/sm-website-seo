@@ -1,7 +1,7 @@
 # UI/UX Design Best Practices
 ## Web Agency — Local Business Landing Pages
 
-**Applies to:** All client websites built under the agency. Each client gets a dedicated design file that inherits these rules and extends them with project-specific tokens, palette, and copy decisions.
+**Applies to:** All product types (1–5) — this is the universal UI/UX core. Every client gets a dedicated design file that inherits these rules and extends them with project-specific tokens, palette, and copy decisions. See `TECH.md` §1 for the product-type matrix.
 
 **Read this before building any page for any client.**
 
@@ -459,23 +459,52 @@ Local business landing pages are not apps. Motion should be minimal and purposef
 - `active:scale-95` on buttons and CTA links
 - `transition-all duration-150` or `transition-colors duration-150`
 
+### Duration scale (canonical)
+
+Pick from this scale. Don't invent new durations.
+
+| Token | Duration | Use for |
+|-------|----------|---------|
+| Fast | 150 ms | Hover, focus, button press feedback |
+| Medium | 200 ms | Standard color/shadow transitions, small reveals |
+| Slow | 300 ms | Section reveal on scroll, image zoom-on-hover |
+| Slower | 500 ms | Modal open/close, page transitions |
+
 ### Allowed motion
 
 | Element | Animation |
 |---------|-----------|
-| Hero section on load | Subtle fade-in, 300–400ms, ease-out |
-| Section reveal on scroll | Fade up (opacity + translateY), staggered, 300ms |
+| Hero section on load | Subtle fade-in, 300 ms, ease-out |
+| Section reveal on scroll | Fade up (opacity + translateY), staggered, 300 ms |
 | Button press | `active:scale-95`, instant |
-| Hover on cards | Subtle shadow lift, 150ms |
-| Image on hover (gallery) | Scale 1.02, 200ms |
+| Hover on cards | Subtle shadow lift, 150 ms |
+| Image on hover (gallery) | Scale 1.02, 200 ms |
+| Modal open/close | Fade + scale 0.95→1, 500 ms ease-out |
+
+### `prefers-reduced-motion` is mandatory, not optional
+
+Every animation must be wrapped in a `prefers-reduced-motion: no-preference` query, OR use a tool (Framer Motion, Astro `<ViewTransitions>`) that handles it for you. A site that doesn't honor this preference is broken for users with vestibular disorders, migraine triggers, or simply a preference for stillness.
+
+```css
+/* CORRECT — animation only runs when user has not requested reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in { animation: fadeIn 300ms ease-out; }
+}
+
+/* WRONG — animation runs for everyone, ignoring system preference */
+.fade-in { animation: fadeIn 300ms ease-out; }
+```
+
+For Tailwind v4 the equivalent utility is `motion-safe:animate-fade-in`. Use `motion-safe:` on every animation-related utility. Use `motion-reduce:` to express any fallback instant state.
+
+**The audit gate:** in macOS System Settings → Accessibility → Display → "Reduce motion" ON, then visit every page. Nothing should move on scroll, hover, or load — the page should still be fully functional and visually coherent.
 
 ### Motion bans
 
-- Never linear easing (feels robotic)
-- Never exceed 400ms on any single transition
-- Never animate every scroll event (parallax, etc.) — mobile users will hate it
+- Never linear easing (feels robotic) — use `ease-out` as the default
+- Never exceed 500 ms on any single transition
+- Never animate every scroll event (parallax, etc.) — mobile users will hate it and `prefers-reduced-motion` users will see a broken page
 - Never autoplay video or audio
-- Respect `prefers-reduced-motion` — wrap all animation in a media query or use Framer Motion which handles this automatically
 - Never decorative animation (sparkles, confetti, bouncing)
 
 ### Performance implication
@@ -524,60 +553,9 @@ Use inline SVG icons (Lucide `Star` / `StarHalf`) or a single SVG of five stars 
 
 ## 10. Accessibility
 
-### Common contrast violations — where they hide
+Accessibility standards live in **`ACCESSIBILITY.md`** — WCAG 2.2 AA contract, contrast rules and the opacity-on-muted gotcha, the six common contrast-violation hotspots, keyboard navigation, semantic HTML, touch targets, language attribute, and the tools list.
 
-Ranked by how often Lighthouse catches them on our builds:
-
-1. **Footer secondary text with opacity multipliers** — `text-[var(--color-text-muted)]/70` or `/80`. This is the single most common offender we ship. Stop using opacity to dim muted colors (see §5).
-2. **Tinted ribbon / pill backgrounds where the text uses the same hue as the background tint.** E.g. `bg-[var(--color-X)]/12` with `text-[var(--color-X)]`. The text must contrast against the *blended* result (background + tint over base bg), not against the raw token. Always check with a contrast tool, never eyeball.
-3. **Eyebrow / kicker text in `--color-text-muted`** on cream backgrounds when the muted token is calibrated just above the 4.5:1 floor. Border-line passes are fragile — they fail on slightly different background contexts. Either keep the muted token at 5.5:1+ or use a darker shade for kickers.
-4. **CTA hover/active states that fade the accent color.** The base color passes; the faded hover doesn't. Test all four states (base, hover, active, focus).
-5. **Tab-bar or filter-pill inactive items** in muted colors over a tinted background — the inactive state often falls below 3:1 even for "large text" purposes.
-6. **Disabled buttons** that drop opacity below the contrast floor.
-
-The fast diagnostic: in PageSpeed Insights / Lighthouse, the "Kontrastverhältnis nicht ausreichend" finding lists the exact selectors. Fix the source, redeploy, verify the finding disappears.
-
-### Required, not optional
-
-Accessibility is part of the deliverable, not an audit item at the end.
-
-### Contrast
-
-Run every text/background color combination through a contrast checker.
-- Body text: minimum 4.5:1 ratio
-- Large text (≥ 24px bold, ≥ 18px regular): minimum 3:1 ratio
-- CTA buttons: text-to-background minimum 4.5:1
-
-### Keyboard
-
-Every interactive element must be reachable by keyboard. Test by tabbing through the page. Focus ring must be visible — never `outline: none` without a styled replacement.
-
-### Semantic HTML
-
-```html
-<!-- Required structure -->
-<header><!-- Business name + nav --></header>
-<main>
-  <section aria-labelledby="services-heading">
-    <h2 id="services-heading">Our Services</h2>
-  </section>
-</main>
-<footer><!-- Contact + legal --></footer>
-```
-
-- One `<h1>` per page (the business name or hero headline)
-- Heading hierarchy: `h1` → `h2` → `h3`, never skip levels
-- Use `<address>` for contact info
-- Use `<time>` for hours
-- Images: always `alt` attribute. Decorative images: `alt=""`
-
-### Touch targets
-
-Every tap target on mobile minimum 44×44px. Use `min-h-11 min-w-11` (44px in Tailwind) on all interactive elements.
-
-### Language
-
-Set `lang="de"` (or `lang="pt"`, `lang="en"`) on the `<html>` element. This matters for screen readers and browser spell-check.
+This doc cross-references it by name only; section structure inside `ACCESSIBILITY.md` is free to evolve without breaking references here.
 
 ---
 
@@ -743,7 +721,8 @@ These are the pattern-level tells that make a page read as assembled-by-machine 
 - [ ] Address not linked to Google Maps
 - [ ] "Welcome to [Business Name]!" as the hero headline
 - [ ] **Image labeled as dish/service X when the photo is actually of something else** — e.g., a Jardineira photo placed in a card labeled "Feijoada" because we have no Feijoada photo. This is fabrication of evidence even when the words are true. If we don't own a photo of X, either drop the X card or label it correctly (whatever the photo actually shows).
-- [ ] **Any header or footer link that goes to a 404** — every link in the chrome must resolve. If the route is not built yet, stub it with a one-line "Em breve / Coming soon" page or remove the link entirely.
+- [ ] **Any header or footer link that goes to a 404** — every link in the chrome must resolve. During demo, a one-line "Em breve / Coming soon" stub is acceptable. **In production, stubs are forbidden.**
+- [ ] **Production navigation must not link to stub pages.** A `Menu` / `Cardápio` / `Services` nav item that resolves to a "Coming soon" page is a trust-killer the moment the client (or a real customer) sees it live. Two acceptable resolutions before production cutover: (a) build out the real page content, or (b) remove the nav link entirely and let the home-page section carry that information. There is no third option.
 - [ ] **Map iframe renders blank** — see §7. The `?output=embed` URL is unreliable and routinely produces a blank box on production origins. Switch to a static map image or a no-map location card.
 
 ### Quality issues
@@ -756,6 +735,22 @@ These are the pattern-level tells that make a page read as assembled-by-machine 
 - [ ] No `lang` attribute on `<html>`
 - [ ] No Impressum link on German-market sites (legal requirement)
 - [ ] Page load above 3 seconds on mobile (check with PageSpeed Insights)
+
+### Anti-slop reference set — calibrate taste
+
+The §15 anti-slop checklist is the *negative* set — patterns to avoid. The references below are the *positive* set — where to look for taste, real product UI, and design heuristics so the page reads as human-made.
+
+| Reference | Free label | Link | Best for |
+|-----------|-----------|------|----------|
+| Mobbin | Freemium | [mobbin.com](https://mobbin.com/) | Real product UI patterns, onboarding, pricing, checkout, dashboards. Free tier shows thumbnails; full access is paid. |
+| Awwwards | Free browsing / paid membership | [awwwards.com](https://www.awwwards.com/) | Visual inspiration, experimental layouts, interaction ideas. Useful sparingly — over-indexing on Awwwards leads to "designer site" feel that's wrong for local business |
+| Laws of UX | Free | [lawsofux.com](https://lawsofux.com/) | UX psychology principles and design heuristics — Hick's law, Fitts's law, Jakob's law, etc. Calibrates *why* something feels right |
+| Baymard Institute | Freemium | [baymard.com](https://baymard.com/) | Research-backed UX patterns, especially ecommerce. Free plan exposes a slice; full database is paid |
+| Page Flows | Free trial | [pageflows.com](https://pageflows.com/) | User-flow recordings of real apps. Useful for booking/contact flow design |
+| Design System Gallery | Free | [designsystem.gallery](https://designsystem.gallery/) | Real design systems from real brands — color, typography, component decisions in context |
+| The Component Gallery | Free | [component.gallery](https://component.gallery/) | Component patterns lifted from real design systems — buttons, forms, tables, dialogs |
+
+**How to use these without copying:** browse 3–5 references in the same vertical (e.g. three restaurant sites + two studio sites) before designing each section. Look at what feels native to the business type. Then close the references and design from the gestalt — never copy a specific layout.
 
 ---
 
@@ -788,12 +783,7 @@ Before writing new CSS or a new component, check if an existing pattern covers i
 
 ### Performance rules
 
-- No JavaScript framework for pure landing pages. Vanilla HTML + CSS + minimal JS only.
-- Use Next.js or Astro only when the client needs multi-page sites or dynamic content (booking, blog).
-- All images: WebP format, properly sized (hero max 1920px wide, thumbnails max 600px)
-- Fonts: use `font-display: swap` and limit to 2 Google Font families max
-- Defer non-critical scripts
-- Run PageSpeed Insights before delivery. Target: 90+ on mobile
+Performance standards live in **`PERFORMANCE.md`** — budgets, image rules, font self-hosting, LCP diagnostic, and the tools list. Stack-tier decisions stay in `TECH.md` §1.
 
 ### Visual review — mandatory before declaring done
 
@@ -821,7 +811,7 @@ pnpm dev --host 0.0.0.0          # bind to all interfaces so MCP browser can rea
 # Repeat for /en/ etc.
 ```
 
-If Vite rejects the host, add it to `vite.server.allowedHosts` in `astro.config.mjs` (dev-only, see TECH.md §17).
+If Vite rejects the host, add it to `vite.server.allowedHosts` in `astro.config.mjs` (dev-only, see `TECH.md`).
 
 Run all six (or twelve, for bilingual) screenshots against the **AI-template tells** in §15 before signing off the build.
 

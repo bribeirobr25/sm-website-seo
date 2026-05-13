@@ -37,4 +37,4 @@ The structure is production-ready (image pipeline wired, schema valid, mobile pa
 - No auto-commits, no auto-pushes, no auto-deploys. Git and Vercel are handled manually.
 - `pnpm` only — never `npm`, never `yarn`.
 - Never invent client content. Anything unconfirmed gets a DRAFT tag.
-- See the inherited `docs/design/DESIGN-BEST-PRACTICES.md` §15 (AI-template tells) and `docs/design/CHECKLIST.md` before signing off any change.
+- See the inherited `docs/design/DESIGN-BEST-PRACTICES.md` (anti-slop checklist / AI-template tells) and `docs/design/CHECKLIST.md` before signing off any change.
