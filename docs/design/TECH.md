@@ -66,6 +66,38 @@ Two decisions, in order. **Product type first** (what the project does), then **
 
 **Rule:** Default to the simplest stack that fulfills the product type. A Type 1 restaurant does not need Next.js. A Type 3 booking system does not need Astro stretched past its sweet spot. Over-engineering wastes time and hurts performance.
 
+### Outsource the transactional layer when you can
+
+A key architectural decision before scoping up to Type 3: **can the transactional layer be outsourced to a vetted SaaS instead of built in-house?** For most local-business verticals, the answer is yes — and the result is a Type 2 site with embedded third-party widgets instead of a Type 3 build.
+
+| Vertical | Outsource the transaction to | Built-in instead means |
+|----------|------------------------------|------------------------|
+| Restaurants — table booking | SevenRooms, OpenTable, TheFork, Resy | DB, availability engine, no-show handling, confirmation emails |
+| Restaurants — ordering | Toast, Square, Olo, ChowNow | Cart, payment, kitchen integration, delivery routing |
+| Beauty / health — appointments | Calendly, Cal.com, Fresha, Treatwell, Doctolib | Slot management, calendar sync, reminder emails |
+| Studios / classes | Mindbody, ClassPass, Glofox | Schedule, capacity, member accounts, recurring billing |
+| Trades — quote requests | Calendly + manual workflow, or a Type 2 form-to-email | Service catalog, pricing engine, dispatch |
+
+**The trade-off:**
+
+- **Outsource (recommended default):** lower build cost, faster delivery, less maintenance, no PCI scope. **Brand inconsistency at the handoff** is the cost — clicking "Book a table" jumps to SevenRooms-branded UI. Top-tier brands (Big Mamma, most Michelin) accept this trade-off and design around it.
+- **Build in-house (Type 3):** consistent brand throughout, full data ownership, custom flows possible. **Significantly higher build + maintenance cost,** and the agency takes on the reliability scope (`RELIABILITY.md` activates fully).
+
+**When outsourcing is wrong:**
+
+- Client has volume requirements the third-party can't meet (rare at local-business scale)
+- Client has unique workflow the third-party doesn't support (e.g., split-bill table booking)
+- Client's existing system needs integration, not replacement
+- Type 4+ transactional sites where the cart IS the brand
+
+**When outsourcing is right (default):**
+
+- Client is a single-location or small-chain in a vertical with a dominant SaaS player
+- Client doesn't need analytics on every step of the booking funnel
+- Client wants the site live faster than a custom build allows
+
+Document the outsourcing decision in the per-client `CLAUDE.md` — which third-parties are integrated, what data flows, and the rollback procedure if a third-party goes down (see `RELIABILITY.md`).
+
 ### 1.3 Standards activation map — what applies at which type
 
 Some standards are universal (apply to every project). Others activate from a specific product type onward. The table below is the canonical activation matrix.

@@ -110,12 +110,21 @@ Use these as starting points, not templates:
 
 | Sector | Strong aesthetic directions |
 |--------|-----------------------------|
-| Restaurant / café | Warm editorial, photography-led, tactile (paper/wood textures) |
+| Restaurant / café | Warm editorial, photography-led, tactile (paper/wood textures). Three sub-archetypes: Immersive Brand Editorial · Modern Conversion-First · Heritage Storytelling — see `docs/design/templates/gastronomy.md` |
 | Clinic / physio / dentist | Clean, clinical white, confidence, trust signals prominent |
 | Fitness / yoga / wellness | Energetic or calm (pick one), bold typography, motion |
 | Salon / beauty / tattoo | Personality-forward, dark or saturated, portfolio-led |
 | Retail / boutique | Soft, lifestyle, product photography forward |
 | Tradesperson / services | Direct, minimal, trust-first (reviews, certifications) |
+
+### Per-vertical templates
+
+For deeper per-vertical guidance with reference-site analysis, see `docs/design/templates/<vertical>.md`:
+
+- `templates/gastronomy.md` — three gastronomy archetypes with reference-site teardowns of Big Mamma, Sweetgreen, Dishoom
+- *(More verticals added as we audit them)*
+
+**Templates are moodboards, not layouts.** The vertical template captures the *principles* across multiple top-tier reference sites — photography rules, typography pairings, color archetypes, IA patterns, vertical-specific anti-patterns. The per-client `design.md` then makes the specific choices on top of those principles. **Never copy a reference layout** — if two clients in the same vertical end up with the same hero, the template has failed its job. The pattern is correct; the visual execution must differ.
 
 ### Forbidden visual directions for local businesses
 
@@ -129,6 +138,28 @@ Use these as starting points, not templates:
 ### The real-photo rule
 
 Every site must use at least one real photo of the actual business (exterior, interior, product, or team). Stock photos are visible from orbit and destroy trust for local businesses. If the client has no photos, the first deliverable is a photo shoot or at minimum using their Google Maps / Instagram photos.
+
+### Vertical-specific photography rules
+
+Different verticals have different photo grammars. Get them wrong and the page reads as a template from the wrong industry.
+
+| Vertical | Always | Never |
+|----------|--------|-------|
+| **Gastronomy** | Food in context — on the table, with hands, in the room, with real lighting | Food on pure-white background, studio-isolated, hard shadows (that's ecommerce convention) |
+| **Clinic / health** | Clean spaces, real staff in real uniforms, calm lighting | Stock-photo doctors pointing at clipboards |
+| **Fitness / studio** | Real members mid-class, varied body types, real instructors | Stock-photo gym influencers in identical poses |
+| **Beauty / salon** | Real before-after, real chairs, real interior | Generic blonde models with pristine highlights |
+| **Trades / services** | Real workmanship close-up, real vans, real team in working clothes | Stock-photo handymen with crossed arms |
+
+The gastronomy "food in context" rule deserves emphasis because it's the most-violated: a food photo on white isolation belongs to a marketplace listing, not a restaurant brand. Always show food where the diner will encounter it.
+
+### Heritage and trust-signal patterns
+
+Beyond Impressum (the legal floor — see `SECURITY.md`), three signal categories build trust further. Use what's true for the client; never invent.
+
+- **Quantified impact stamps:** "25 million meals served" / "Since 1987" / "47 seats" / "B Corp Certified" / "Living Wage Employer." A circular stamp graphic with the number is high-leverage. The number must be real and verifiable.
+- **Sustainability / supply-chain transparency:** Modern Slavery Statement (UK legal requirement for businesses > £36M turnover; voluntary trust signal for smaller), supplier list, organic / fair-trade certifications. Surface them in the footer, not the hero.
+- **Editorial moments wrapping legal touchpoints:** the cookie consent / welcome modal can be a designed brand moment instead of a generic banner. Dishoom turns the cookie consent into a vintage-poster welcome. Only do this if the brand has narrative strength — half-effort makes it worse than a plain banner.
 
 ---
 
@@ -692,6 +723,7 @@ These are the pattern-level tells that make a page read as assembled-by-machine 
 - [ ] Three different sans-serif fonts imported for no reason
 - [ ] Excessive border-radius making everything look like a toddler app
 - [ ] Hero section that doesn't answer: what, where, and how to contact
+- [ ] **All-photo carousel as the hero** — the "hospitality template default." Adds load weight without communicating anything specific; the user sees motion but doesn't know what the place actually is. Use a single hero image OR headline-only hero. Carousels go below the fold if at all.
 
 ### Typography slop
 

@@ -6,6 +6,10 @@
   --color-accent: #c2410c;
   --color-accent-deep: #7a2b0a;
   --color-open: #3f6b3a;
+  /* Darker variant of --color-open for text-on-tinted-bg contexts. */
+  /* On the 12% tint over --color-bg, this passes WCAG AA (~6.4:1). */
+  /* See ACCESSIBILITY.md §3 worked example. */
+  --color-open-deep: #2e5028;
   --color-azulejo: #1e40af;
   --color-azulejo-light: #f2f5fa;
   --color-border: #e5d9c5;
