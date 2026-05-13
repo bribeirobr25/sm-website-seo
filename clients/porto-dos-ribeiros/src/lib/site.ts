@@ -62,7 +62,7 @@ export function localizePath(path: string, locale: Locale): string {
 export const SITE = {
   name: 'Porto dos Ribeiros',
   legalName: 'Porto dos Ribeiros — Comida Brasileira',
-  url: 'https://porto-dos-ribeiros.vercel.app',
+  url: 'https://gastronomy-demo.vercel.app',
   phone: '+351963349411',
   phoneDisplay: '+351 963 349 411',
   whatsappUrl: 'https://wa.me/351963349411',
