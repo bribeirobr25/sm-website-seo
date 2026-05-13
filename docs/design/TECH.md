@@ -658,6 +658,36 @@ Never disallow crawlers on client sites. Demo pages (Vercel preview URLs) should
 | Total page weight (mobile) | < 500KB | Browser DevTools |
 | First meaningful content | < 1.5s | Lighthouse |
 
+### Demo-phase scores: what's normal vs what's a regression
+
+When the site is still in demo phase (noindex on every page), Lighthouse scores look like this:
+
+| Score | Expected during demo | Why |
+|---|---|---|
+| Performance | ≥ 90 — same as production | Demo and production share the same code path; no excuse for low perf |
+| Accessibility | 100 — same as production | Same |
+| Best Practices | 100 — same as production | Same |
+| **SEO** | **~69** | Lighthouse flags the `noindex` meta tag as a critical SEO failure. **Expected.** Will jump to 95+ when noindex is removed for production. Do not chase this score during the demo. |
+
+Two unscored Best-Practices findings also appear during demo and are real items for production but not blockers now: **CSP / COOP / X-Frame-Options / Trusted Types headers**. These belong in `vercel.json` before the production cutover; see Section 12 Security baseline.
+
+### Diagnosing slow LCP — read the breakdown, not the score
+
+When PageSpeed reports LCP > 2.5 s, open the **LCP-Aufschlüsselung** (LCP breakdown) panel and look at the four sub-sections. The fix you reach for depends on which one is elevated:
+
+| Sub-section | Healthy | Almost always means… |
+|---|---|---|
+| TTFB | < 200 ms | Hosting/CDN; on Vercel edge usually 0 ms |
+| Resource load delay | < 100 ms | Missing `fetchpriority="high"` on LCP image; consider `<link rel="preload" as="image">` |
+| Resource load duration | < 500 ms | Image variant is too large for the displayed size; tighten `widths` array, drop quality to 75 |
+| **Element render delay** | < 500 ms | **The render-blocker tax.** Almost always third-party fonts or large CSS blocking paint above the LCP element. Self-host fonts (see §10 Font rules), inline critical CSS, defer non-critical JS. |
+
+On a 3.5 s LCP composed of 0 / 190 / 360 / 1780 ms, the image is innocent. Don't optimize the picture — fix what's between the image arriving and the browser being allowed to paint it.
+
+### The "identical links" warning is usually a false positive
+
+Lighthouse flags it when multiple `<a>` tags share the same `href` but have visibly different surrounding context (e.g. the same `tel:` link appearing in the header, hero, and footer with different hover styles). For local-business sites this is a deliberate design choice — same phone number, multiple touchpoints. Add an `aria-label` only if a screen reader would genuinely confuse them (e.g. two links to different sections of the same external page). Otherwise ignore.
+
 ### Image rules
 
 Images are almost always the biggest performance culprit on local business sites.
@@ -669,6 +699,16 @@ Images are almost always the biggest performance culprit on local business sites
 - **Dimensions:** Always set `width` and `height` on `<img>` tags to prevent CLS. The pipeline does this for you.
 - **No 2+ MB originals committed to the repo.** Run images through Squoosh, ImageOptim, or `sharp` CLI before commit even if the pipeline will re-encode them — bloated source files slow `pnpm build` and balloon the git history.
 - **Alt text:** Every image has a descriptive `alt`. Decorative images: `alt=""`. **The alt must match the photo's actual content** — never label an image as "Feijoada" if the photo shows a different dish.
+
+#### `<Image>` defaults are NOT LCP-optimal — fix these explicitly
+
+The Astro `<Image>` component does not preset every optimization. Two opt-ins that pay back immediately on every client site we've measured:
+
+- **`fetchpriority="high"` on the LCP image** — usually the hero. Without it, the browser deprioritizes the image behind CSS/JS even when `loading="eager"`. Mandatory on the LCP element, costs 0 bytes, saves 100–300 ms LCP.
+- **A `widths` array with a step within ~25 % of the actual displayed width × DPR.** If the hero box is 480 px wide at 2× DPR, the browser needs a 960w variant. Default `widths={[480, 768, 1024]}` leaves the browser picking 1024w (oversized). Better: `widths={[400, 640, 800, 1024]}` so the browser has a 800w option near the real need.
+- **`quality={75}` on photographs, never the default 80.** Indistinguishable to the eye, ~10 % smaller files. Drop to 70 for non-hero decorative images.
+
+Sanity check after deploy: open PageSpeed Insights, expand **Image delivery improvable** — if any image flags "größer als nötig / larger than necessary," the `widths` array is too coarse for that image's display size.
 
 ```html
 <!-- Hero image (no lazy, has explicit dimensions) -->
@@ -689,11 +729,39 @@ Images are almost always the biggest performance culprit on local business sites
 
 ### Font rules
 
-- Maximum 2 Google Font families per project.
-- Always use `display=swap` in the Google Fonts URL.
-- Self-host fonts for production to avoid third-party DNS lookups (use `@fontsource/*` packages or download + host in `/public/fonts/`).
-- Subset fonts to Latin + Latin Extended only for German sites (saves ~40KB per font).
-- Preload the display font: `<link rel="preload" href="/fonts/playfair-display.woff2" as="font" crossorigin>`.
+**Self-host from day one. Never `fonts.googleapis.com` in production.** The Google Fonts CSS is render-blocking, adds a DNS lookup, and was the single biggest perf regression we measured on the first Porto dos Ribeiros build: 1.5 s of LCP came from the hero image waiting for the third-party stylesheet to resolve. Self-hosting is not "for production" — it's the default.
+
+The canonical pattern (Astro):
+
+```bash
+pnpm add @fontsource-variable/<display-font> @fontsource-variable/<body-font>
+```
+
+```astro
+---
+// BaseLayout.astro frontmatter
+import '@fontsource-variable/fraunces/wght.css';
+import '@fontsource-variable/fraunces/wght-italic.css';  // only if you use italic
+import '@fontsource-variable/manrope';                    // default = wght.css
+import '../styles/global.css';
+---
+```
+
+**Operating rules:**
+
+- **Maximum 2 font families per project** — display + body. Same number as the old Google-Fonts era, different mechanism.
+- **Variable fonts only** when available. One woff2 file covers every weight you'll use via the `wght` axis. Massive bytes savings vs static cuts.
+- **The family name has " Variable" suffix.** `@fontsource-variable/fraunces` registers `font-family: 'Fraunces Variable'`, not `'Fraunces'`. Your `tokens.css` must reference the registered name:
+  ```css
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-body: 'Manrope Variable', system-ui, sans-serif;
+  ```
+  Easy gotcha — the build will not warn you; the browser silently falls back to the next stack entry.
+- **Pick the smallest CSS variant you actually need.** `/wght.css` (weight axis only) is ~4 KB. `/opsz.css` (weight + optical-size) adds optical-size data — only import if you're driving `font-variation-settings: "opsz" …` from CSS. For a typical headline + body site, `wght` is enough.
+- **`font-display: swap`** is set by fontsource by default. Don't override.
+- **Subsetting is automatic.** Fontsource ships per-script woff2 files (latin, latin-ext, vietnamese, cyrillic, etc.) with `unicode-range`. The browser fetches only what it needs — for a DE/PT/EN site, that's `latin` and `latin-ext`, ~30–80 KB each. The other scripts sit on disk in `dist/_astro/` unfetched.
+- **Optional preload for the LCP font subset:** add a `<link rel="preload" as="font" type="font/woff2" href="/_astro/<display-font>-latin-wght-normal.<hash>.woff2" crossorigin>` if your display font appears in the LCP element. The hash changes per build, so this needs maintenance — only worth it on production builds where you've committed to a layout.
+- **No Google Fonts CDN.** If you find yourself adding a `<link href="https://fonts.googleapis.com/...">`, stop and migrate to fontsource. The CDN is for prototypes, not for sites we hand to a client.
 
 ### Animation performance
 

@@ -197,6 +197,7 @@ Minimum tokens per client:
 - **Never pure black (#000) or pure white (#FFF)** as a page background or body text. Use near-black and warm or cool off-white derived from the client's brand palette.
 - **One dominant accent color** per site. Used on: primary CTA button, active states, links. Not sprinkled on every element.
 - **Accent reserved for the call to action.** Eyebrow text, kickers, tracked-uppercase labels, and section dividers must NOT use the same hue as the primary CTA. If your eyebrow and your button are the same color, the eyebrow steals attention from the action. Use `--color-text-muted` for eyebrows and labels.
+- **Never apply opacity multipliers to text colors that are already muted.** `text-[var(--color-text-muted)]/80` reads as "subtly subtler" in design intent but mathematically drops contrast below the WCAG AA 4.5:1 floor every time, because `--color-text-muted` is itself already calibrated to sit just above that floor. If you genuinely need lower-emphasis text than the muted token provides, define a new dedicated `--color-text-subtle` token with a contrast-checked value — don't compose it from opacity. Lighthouse's accessibility audit catches this on every site that does it.
 - **Decorative tokens must do real work.** Every token in the palette must appear on at least two distinct, non-decorative surfaces (CTA + focus ring, label + badge, etc.). A token that exists only to tint a single ornamental shape is dead weight — either find it a real job or delete the token.
 - **Color-only status indicators are forbidden.** A button being red means nothing to a colorblind user without also having a label or icon.
 - **Gradient rule:** One subtle gradient allowed (background or hero). Never more than two gradient stops. No "AI glow" radial gradients. No rainbow gradients.
@@ -522,6 +523,19 @@ Use inline SVG icons (Lucide `Star` / `StarHalf`) or a single SVG of five stars 
 ---
 
 ## 10. Accessibility
+
+### Common contrast violations — where they hide
+
+Ranked by how often Lighthouse catches them on our builds:
+
+1. **Footer secondary text with opacity multipliers** — `text-[var(--color-text-muted)]/70` or `/80`. This is the single most common offender we ship. Stop using opacity to dim muted colors (see §5).
+2. **Tinted ribbon / pill backgrounds where the text uses the same hue as the background tint.** E.g. `bg-[var(--color-X)]/12` with `text-[var(--color-X)]`. The text must contrast against the *blended* result (background + tint over base bg), not against the raw token. Always check with a contrast tool, never eyeball.
+3. **Eyebrow / kicker text in `--color-text-muted`** on cream backgrounds when the muted token is calibrated just above the 4.5:1 floor. Border-line passes are fragile — they fail on slightly different background contexts. Either keep the muted token at 5.5:1+ or use a darker shade for kickers.
+4. **CTA hover/active states that fade the accent color.** The base color passes; the faded hover doesn't. Test all four states (base, hover, active, focus).
+5. **Tab-bar or filter-pill inactive items** in muted colors over a tinted background — the inactive state often falls below 3:1 even for "large text" purposes.
+6. **Disabled buttons** that drop opacity below the contrast floor.
+
+The fast diagnostic: in PageSpeed Insights / Lighthouse, the "Kontrastverhältnis nicht ausreichend" finding lists the exact selectors. Fix the source, redeploy, verify the finding disappears.
 
 ### Required, not optional
 

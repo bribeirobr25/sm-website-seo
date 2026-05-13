@@ -80,11 +80,12 @@ const t = useTranslations(locale);
           <Image
             src={heroPicanha}
             alt="Picanha brasileira no Porto dos Ribeiros"
-            widths={[480, 768, 1024]}
+            widths={[400, 640, 800, 1024]}
             sizes="(max-width: 1024px) 100vw, 480px"
             format="webp"
-            quality={80}
+            quality={75}
             loading="eager"
+            fetchpriority="high"
             class="h-full w-full object-cover"
           />
         </div>

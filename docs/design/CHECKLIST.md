@@ -40,14 +40,19 @@
 - [ ] LCP < 2.5s
 - [ ] CLS < 0.1
 - [ ] Hero/LCP image does **not** have `loading="lazy"`
+- [ ] Hero/LCP image **has `fetchpriority="high"`** (not set by Astro `<Image>` by default — see TECH.md §10)
 - [ ] All below-fold images have `loading="lazy"`
 - [ ] All images have explicit `width` and `height` attributes (prevents CLS)
 - [ ] All images converted to **WebP** format
 - [ ] Hero image max 1920px wide; section images max 800px
 - [ ] No unoptimized images above 200KB
-- [ ] Google Fonts use `display=swap`
-- [ ] Display font preloaded with `<link rel="preload">`
+- [ ] Image `widths` array has at least one variant within ~25 % of the actual displayed width × DPR (avoids browser over-picking)
+- [ ] Image `quality` set to 75 for photos (default 80 wastes ~10 % bytes for no visible gain)
+- [ ] **Zero `fonts.googleapis.com` or `fonts.gstatic.com` references** in the rendered HTML — all fonts self-hosted via `@fontsource-variable/*` or equivalent
+- [ ] `font-display: swap` on every `@font-face` (fontsource sets this by default — verify)
+- [ ] Display font's LCP-element subset preloaded (optional but worth ~100–200 ms LCP)
 - [ ] No render-blocking scripts
+- [ ] If LCP > 2.5 s, **read the LCP breakdown** in PageSpeed — `Element render delay` is the dominant lever in our builds; almost always means render-blocking fonts or CSS above the LCP element
 
 ### Security
 - [ ] Security headers configured in `vercel.json` (`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`)

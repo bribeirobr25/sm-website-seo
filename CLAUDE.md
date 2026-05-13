@@ -160,7 +160,7 @@ vercel --prod   # Gets a vercel.app URL
 
 | Client | Slug | Status | Stack | Locales | Live URL |
 |--------|------|--------|-------|---------|----------|
-| Porto dos Ribeiros — Comida Brasileira (Porto, PT) | `porto-dos-ribeiros` | Demo built, awaiting cold call | Astro 6 + Tailwind v4 | PT (BR voice) + EN | Not yet deployed |
+| Porto dos Ribeiros — Comida Brasileira (Porto, PT) | `porto-dos-ribeiros` | Demo live, awaiting cold call | Astro 6 + Tailwind v4 | PT (BR voice) + EN | https://gastronomy-demo.vercel.app/ (noindex) |
 
 ---
 

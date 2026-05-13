@@ -3,8 +3,8 @@
 ## What this project is
 
 Porto dos Ribeiros — Brazilian restaurant, café and delivery on Rua da Constituição 982, Porto, Portugal.
-Stack: Astro 5 + Tailwind v4 (Tier 2). Hosting: Vercel.
-Live at: not yet deployed — demo will land at a `*.vercel.app` URL when ready.
+Stack: Astro 6 + Tailwind v4 (Tier 2). Hosting: Vercel.
+Live at: https://gastronomy-demo.vercel.app/ — demo phase (`noindex` on every page). Custom domain pending owner commit.
 
 ## Standards inheritance
 
