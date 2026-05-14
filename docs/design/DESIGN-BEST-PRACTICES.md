@@ -121,10 +121,32 @@ Use these as starting points, not templates:
 
 For deeper per-vertical guidance with reference-site analysis, see `docs/design/templates/<vertical>.md`:
 
-- `templates/gastronomy.md` — three gastronomy archetypes with reference-site teardowns of Big Mamma, Sweetgreen, Dishoom
-- *(More verticals added as we audit them)*
+- `templates/gastronomy.md` — three archetypes (Big Mamma · Sweetgreen · Dishoom) + Porto dos Ribeiros reference implementations
+- `templates/beauty.md` — three archetypes (TONI&GUY · Drybar Shops · AIRE Ancient Baths)
+- `templates/trades.md` — four archetypes (Pimlico · Roto-Rooter · Banham + solo-operator default)
+- `templates/health.md` — three archetypes (Mayo Clinic · Einstein · Cleveland Clinic + inferred conversion-chain)
+- `templates/studio.md` — four archetypes (Equinox · Smart Fit · Hotpod Yoga + solo-instructor default)
 
 **Templates are moodboards, not layouts.** The vertical template captures the *principles* across multiple top-tier reference sites — photography rules, typography pairings, color archetypes, IA patterns, vertical-specific anti-patterns. The per-client `design.md` then makes the specific choices on top of those principles. **Never copy a reference layout** — if two clients in the same vertical end up with the same hero, the template has failed its job. The pattern is correct; the visual execution must differ.
+
+### The Solo-Operator meta-archetype (cross-vertical)
+
+Across trades, health, and studio templates, the same archetype recurs as the agency's most common client profile: a **single-person or two-person business with no chain identity**. It deserves recognition as a meta-archetype because the same patterns apply regardless of vertical:
+
+- Headline names the operator + the discipline + the area ("João — Eletricista em Cedofeita" / "Dr. Ana Silva — Médica de Família em Cedofeita" / "Sara Pilates · Mitte Berlin")
+- Portrait of the operator in their actual workspace (not in front of a generic background)
+- ONE primary CTA — call / WhatsApp / book first visit
+- Credentials signature line — license number + years + key certifications + spoken languages
+- Service list (5–10 bullets), not a card grid
+- Service area named explicitly (one line of text, no map iframe needed)
+- Pricing reassurance — single statement ("Orçamento gratuito" / "Free first consultation")
+- Footer with legal info (license/registration number) and minimal links
+
+The cross-vertical implementation is the same; only the photography style, typography weight, and color archetype change per vertical. ~70-95 % of agency clients fall into this pattern, regardless of industry.
+
+### Location-finder hero (cross-vertical conversion pattern)
+
+For any place-based multi-location client (trades chain, health network, gym chain), the hero almost always includes a **postcode / zip / city search** as the primary or secondary CTA. The pattern appears in Pimlico (UK postcode), Roto-Rooter (US zip), Smart Fit (BR city dropdown), Cleveland Clinic (region selector), and Mayo Clinic (locations grid). Surface area before service catalog — "do you cover me" is the user's first question.
 
 ### Forbidden visual directions for local businesses
 
@@ -159,6 +181,8 @@ Beyond Impressum (the legal floor — see `SECURITY.md`), three signal categorie
 
 - **Quantified impact stamps:** "25 million meals served" / "Since 1987" / "47 seats" / "B Corp Certified" / "Living Wage Employer." A circular stamp graphic with the number is high-leverage. The number must be real and verifiable.
 - **Sustainability / supply-chain transparency:** Modern Slavery Statement (UK legal requirement for businesses > £36M turnover; voluntary trust signal for smaller), supplier list, organic / fair-trade certifications. Surface them in the footer, not the hero.
+- **License / certification numbers** (highest leverage in beauty, health, trades): Cosmetology License #, Massage Therapy License #, Esthetician #, Medical License #, Master Electrician License #, GasSafe / TÜV / equivalent national-body certifications. Show the number, not just the claim. Footer is the standard location; legal sites may require it on every page.
+- **Press validation:** pull-quote from a real publication ("As seen in TimeOut Berlin 2023") + logo strip of media that has covered the client. Only works with real press; faking it is detectable and damaging.
 - **Editorial moments wrapping legal touchpoints:** the cookie consent / welcome modal can be a designed brand moment instead of a generic banner. Dishoom turns the cookie consent into a vintage-poster welcome. Only do this if the brand has narrative strength — half-effort makes it worse than a plain banner.
 
 ---
@@ -724,6 +748,7 @@ These are the pattern-level tells that make a page read as assembled-by-machine 
 - [ ] Excessive border-radius making everything look like a toddler app
 - [ ] Hero section that doesn't answer: what, where, and how to contact
 - [ ] **All-photo carousel as the hero** — the "hospitality template default." Adds load weight without communicating anything specific; the user sees motion but doesn't know what the place actually is. Use a single hero image OR headline-only hero. Carousels go below the fold if at all.
+- [ ] **More than one promotional overlay on first page load** — a cookie banner + a newsletter modal + a discount popup all stacking on landing reads as desperate marketing. **One overlay max on first load**: either the cookie consent (DSGVO-required) OR a newsletter modal (after dismiss) OR a promotional banner (inline in the page chrome, not as overlay). Drybar Shops exemplifies the *opposite* — landing produces three layers of marketing simultaneously, which is acceptable only for brands strong enough to survive it. New clients are not.
 
 ### Typography slop
 
