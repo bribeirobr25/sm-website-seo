@@ -171,6 +171,8 @@ Drop this in the client's `vercel.json` and tune the CSP per site.
 
 After deploy, verify with SecurityHeaders.com and MDN Observatory (Section 9).
 
+> **See also:** `INFRASTRUCTURE.md` §2 packages this `vercel.json` alongside the custom 404/500 + CI workflow + uptime monitoring as a single agency-template scaffold drop-in. Drop the whole scaffold in at project scaffold time rather than wiring each piece independently.
+
 ---
 
 ## 5. Contact forms
@@ -198,7 +200,98 @@ Mandatory for every DE-market site. These pages must exist and be reachable from
 
 **Rule:** Deliver Impressum and Datenschutzerklärung before going live. This is not optional. Use a generator (e.g., eRecht24) and have the client confirm the content is accurate — agencies have been fined for incorrect Impressum on client sites.
 
-Portugal and Brazil have lighter requirements but still require a Política de Privacidade if any cookies or analytics are used.
+---
+
+## 6.5. Brazilian legal requirements (LGPD)
+
+Brazilian-market sites operate under the **LGPD — Lei Geral de Proteção de Dados** (Lei nº 13.709/2018). Penalties for non-compliance reach 2 % of revenue capped at R$ 50M per infraction, plus daily fines. Treat with the same seriousness as DSGVO.
+
+**Required for any site that collects any data** — and "any data" includes IP addresses logged by Vercel, GA4 events, contact-form submissions, and even WhatsApp click-tracking via analytics. The threshold is essentially "is a public-facing site" → yes → LGPD applies.
+
+### Required components
+
+| Component | What it covers | Where it lives |
+|---|---|---|
+| **Política de Privacidade** | All seven LGPD-mandated topics (see structure below) | Dedicated page at `/politica-de-privacidade` |
+| **Razão Social + MEI/CNPJ disclosure** | Legal business name + tax registration number | Site footer, every page |
+| **Data Controller contact** | Email for data subject requests under Art. 18 LGPD | Política de Privacidade + footer |
+| **Cookie banner** | Only if non-essential cookies are used | Conditional — see threshold below |
+| **Brazilian commercial registration** | Razão Social = legal name on Receita Federal records | Owner-supplied; required for footer |
+
+### Política de Privacidade — required structure (7 sections)
+
+The Brazilian-market equivalent of the German Datenschutzerklärung. Use this structure verbatim — these seven sections are the minimum that satisfies LGPD inspection:
+
+1. **Quem somos** — Controller identity: legal name (Razão Social) + CNPJ/MEI + address
+2. **Quais dados coletamos** — categorized list (navigation data, direct contact data, payment data if applicable)
+3. **Base legal** — which LGPD Article 7 basis applies (typically legitimate interest for site maintenance + consent for analytics)
+4. **Compartilhamento** — who data is shared with (analytics providers, payment processors, booking platforms)
+5. **Seus direitos (Art. 18 da LGPD)** — confirmation of processing, access, correction, deletion, portability, revocation
+6. **Cookies** — categorization (strictly technical vs functional vs analytics); the analytics tier requires explicit banner consent
+7. **Contato do Controlador** — email + phone for data subject requests
+
+A reference implementation lives in `clients/jean-souza-barber/src/pages/politica-de-privacidade.astro`. Reuse the structure; adapt the per-client values from `src/lib/site.ts` (Razão Social, CNPJ, contact email).
+
+### Footer disclosure requirements
+
+Every page footer must show:
+- **Razão Social** (legal business name as registered)
+- **CNPJ** (regular company, format `XX.XXX.XXX/XXXX-XX`) **or MEI** (single-operator, format `XX.XXX.XXX/0001-XX`)
+- **Operating address** (matches Razão Social registration)
+- **Link to** `/politica-de-privacidade`
+
+Solo operators are almost always MEI (Microempreendedor Individual). Multi-employee businesses are usually LTDA or SA (CNPJ).
+
+### Cookie banner threshold under LGPD
+
+LGPD requires banner consent only for **non-essential** cookies. Categories:
+
+| Cookie type | Banner required? | Examples |
+|---|---|---|
+| Strictly technical / functional | ❌ No banner needed | Session cookies, CSRF tokens |
+| Analytics with IP anonymization + no profile linking | 🟡 Strongly recommended, technically debatable | GA4 with `anonymize_ip: true`, Microsoft Clarity in privacy-first mode |
+| Analytics with user profiling | ✅ Banner required, opt-in before fire | Standard GA4, Meta Pixel, TikTok Pixel |
+| Advertising / remarketing | ✅ Banner required, opt-in before fire | Google Ads conversion, Facebook Pixel |
+
+**Agency default:** Microsoft Clarity configured in privacy-first mode (no session recording of forms, IP anonymization). This avoids the cookie banner for most Type 1–2 client sites. Verify Clarity settings per project before launch.
+
+### Pix payment trust signal
+
+Pix (Brazil's instant payment system per Banco Central do Brasil) is a **trust signal** worth surfacing for any Brazilian-market site that takes payments — even indirectly via booking platforms. Visible "Aceita Pix" badge in checkout, contact, or pricing sections reads as "real Brazilian business, modern payment." Note: this is brand/conversion, not legal — but it's a market-specific pattern worth documenting alongside LGPD.
+
+### Comparison with German market
+
+| Concern | Germany (DSGVO) | Brazil (LGPD) |
+|---|---|---|
+| Privacy policy doc | Datenschutzerklärung | Política de Privacidade |
+| Business registration footer | Impressum (Handelsregister, USt-IdNr) | Razão Social + CNPJ/MEI |
+| Legal basis | Art. 6 DSGVO (legitimate interest, consent, contract) | Art. 7 LGPD (mirrors DSGVO closely — Brazilian law was modeled on it) |
+| Cookie banner threshold | Same as below — non-essential only | Non-essential only |
+| Data subject rights | Right to access / rectify / delete / port / restrict | Art. 18 — confirmation / access / correction / deletion / portability |
+| Penalty ceiling | Up to 4 % global revenue | Up to 2 % BR revenue, capped at R$ 50M/infraction |
+| Most aggressive enforcer | EU/national DPAs | ANPD (Autoridade Nacional de Proteção de Dados) |
+
+**Rule:** Treat Brazilian client sites with the same seriousness as German ones. The penalty structures and complaint pathways are similar enough that "lighter touch" thinking is a trap.
+
+### Generator / template resources
+
+| Resource | Use for | Cost |
+|---|---|---|
+| Jean Souza Barber's `politica-de-privacidade.astro` | Reference implementation — 7 sections in Brazilian PT-BR voice | Free, internal |
+| **iubenda** | LGPD-compliant policy generator + cookie banner | Freemium |
+| **CookieYes** | Cookie banner with LGPD pre-set | Freemium |
+| **ANPD official guidance** | https://www.gov.br/anpd/pt-br | Free |
+| **Banco Central — Pix** | https://www.bcb.gov.br/en/financialstability/pix_en | Free (for trust-signal context) |
+
+### Pre-launch checklist for Brazilian-market sites
+
+- [ ] `/politica-de-privacidade` exists with all 7 sections
+- [ ] Footer shows Razão Social + CNPJ/MEI + operating address on every page
+- [ ] Data Controller email is real and monitored
+- [ ] Cookie banner shipped *only if* non-essential cookies are used (per threshold table)
+- [ ] All third-party integrations (analytics, booking, payments) named in §4 Compartilhamento
+- [ ] Política updated whenever a new third-party tool is added
+- [ ] Owner-confirmed Razão Social and CNPJ/MEI before launch — never invented
 
 ---
 

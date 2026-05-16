@@ -57,6 +57,13 @@ Not every gate applies at every phase. Use the legend to triage what's blocking 
 - [ ] No `console.log` statements in production code
 - [ ] No `any` TypeScript types, no `// @ts-ignore`
 
+### Static files in `public/`
+- [ ] **`public/favicon.svg`** exists (primary favicon — see `DESIGN-BEST-PRACTICES.md` §3 favicon priority hierarchy)
+- [ ] **`public/favicon.ico`** exists (32×32 PNG fallback — `rsvg-convert -w 32 -h 32 favicon.svg -o favicon.ico`)
+- [ ] **`public/apple-touch-icon.png`** exists (180×180 — same generation command at 180×180)
+- [ ] **`public/robots.txt`** exists. Production state: `User-agent: *\nAllow: /` + `Sitemap: https://[domain]/sitemap-index.xml`. (Demo state was `Disallow: /` — flip happens at production cutover, paired with `noindex` removal.)
+- [ ] All four files reachable: `curl -I https://[domain]/favicon.svg | grep "200"` and equivalent for the other three
+
 ### HTML structure
 - [ ] One `<h1>` per page
 - [ ] Heading hierarchy is logical: `h1` → `h2` → `h3`, no levels skipped
@@ -243,6 +250,29 @@ Not every gate applies at every phase. Use the legend to triage what's blocking 
 - [ ] Cookie banner only if using tracking/non-functional cookies (not required for GA4 with IP anonymization if properly configured)
 - [ ] Legal pages are **not** set to `noindex`
 
+## 5.5. Legal (Brazilian market — mandatory)
+
+For PT-BR / Brazilian-market sites. See `SECURITY.md` §6.5 for the full LGPD reference (Lei nº 13.709/2018).
+
+- [ ] **Política de Privacidade page** present at `/politica-de-privacidade`, reachable from every footer
+- [ ] Política contains all **7 LGPD-mandated sections** in order: Quem somos · Quais dados coletamos · Base legal · Compartilhamento · Seus direitos (Art. 18) · Cookies · Contato do Controlador
+- [ ] **Footer disclosure on every page:** Razão Social + CNPJ (or MEI) + operating address + link to Política de Privacidade
+- [ ] Razão Social and CNPJ/MEI confirmed by owner (NOT invented)
+- [ ] **Data Controller email** is real and monitored (owner-confirmed; not a generic `contato@`)
+- [ ] All third-party tools (analytics, booking platforms, payment processors) named in Política §4 Compartilhamento
+- [ ] **Cookie banner** only if non-essential cookies are used (per `SECURITY.md` §6.5 threshold table — strictly technical cookies do not require banner; analytics with user profiling does)
+- [ ] Pix trust badge surfaced where relevant (checkout / pricing / contact for any payment-adjacent flow)
+- [ ] Política de Privacidade is **not** set to `noindex`
+
+## 5.6. Legal (Portuguese market — mandatory)
+
+For PT-PT / Portuguese-market sites.
+
+- [ ] **Footer block** with legal name, NIF, CAE, address (equivalent to Impressum, less strict)
+- [ ] **Livro de Reclamações Eletrónico** link present (`https://www.livroreclamacoes.pt/inicio`)
+- [ ] **Política de Privacidade** present if any data is collected
+- [ ] Cookie banner only if non-functional cookies are used
+
 ---
 
 ## 6. Sign-off
@@ -287,7 +317,7 @@ A site that fails any gate is not ready for handoff. Re-run the failed gate afte
 
 When auditing a site (one of ours coming up for retainer review, or a client's previous site we've been asked to take over), use this template. Save the result to `docs/audit/[client-slug]-[YYYY-MM-DD].md`.
 
-The structure below mirrors the Porto dos Ribeiros audit (`docs/audit/porto-dos-ribeiros-2026-05-13.md`) — replicate it section-for-section. Consistency across audits lets you compare clients, track agency-wide compliance trends, and reuse fix recipes.
+The structure below mirrors the canonical Porto dos Ribeiros audit (`docs/audit/porto-dos-ribeiros-2026-05-14.md`, which covers all 3 variants + the new §3/§5/§9 rules — supersedes the original 05-13 audit now archived at `docs/audit/archived/porto-dos-ribeiros-2026-05-13.md`) — replicate it section-for-section. Consistency across audits lets you compare clients, track agency-wide compliance trends, and reuse fix recipes.
 
 ### Template structure
 
@@ -390,6 +420,129 @@ Anything the audit exposed about gaps in the standards docs themselves. These fl
 - **Quarterly** on every retainer client — catches drift
 - **Before any handoff** to another developer — same artifact, different audience
 - **Whenever a major rule changes** — like the doc updates that triggered the Porto audit
+
+### Supersession convention — when post-audit work changes the findings
+
+Audits are point-in-time snapshots. When work after the audit changes its findings (palette correction, infrastructure scaffold added, DRAFT items resolved), **do NOT create a new dated audit md file** for every change. Instead:
+
+1. **Amend the existing audit md in place** with date-marked supersession notes inside the relevant table cells or row entries. Use phrasing like *"Originally tier 5 (audit date); superseded by tier 3 on YYYY-MM-DD when Jean's logo was retrieved from Trinks. See `clients/.../design.md` §Palette source provenance."*
+2. **Keep the original audit date in the filename** (`docs/audit/[client-slug]-[YYYY-MM-DD].md`). The file name pins when the audit was conducted; the in-file supersession notes pin when each finding became stale.
+3. **Create a new dated audit md only when triggered by §"When to audit" above** — quarterly review, major rule change, retainer kickoff, handoff. Routine post-audit fixes do NOT trigger a new file; they amend the existing one.
+
+**Why amend rather than re-date:** auditing is a discipline tied to specific gates (kickoff, quarterly, handoff). Renaming the file every time a finding changes loses the audit gate semantics and creates churn in git history. The pattern that survived the Jean Souza Barber 05-15 brand correction was inline amendment + clear "Superseded YYYY-MM-DD" notes — preserving the audit's identity while keeping it current.
+
+**Worked example:** `docs/audit/jean-souza-barber-2026-05-14.md` was amended 2026-05-15 with 4 in-line supersession notes (palette tier 5 → tier 3, favicon priority-4 fallback → tier-1 real brand, sub-archetype changed, etc.) — file name unchanged. The next dated audit md (`-2026-08-XX.md`) will be the next quarterly review, not the post-correction snapshot.
+
+---
+
+## 9. Prospect intake template — for cold-outreach research
+
+**Distinct from §8.** Section 8 audits an *existing site* against agency standards. Section 9 captures *prospect research* — public information about a business the agency is considering as a client, before any code is written, before the cold call is made.
+
+Save the result to `docs/audit/[business-slug].md` (no date suffix — the file evolves as the conversation progresses). Reference implementations: `docs/audit/jean.md`, `docs/audit/cafedelcorso.md`, `docs/audit/laudam.md`.
+
+**The intake exists for one reason:** to give the scaffold step (and the cold-call step) a single source of truth for *every reachable URL and asset of the prospect*. Per `DESIGN-BEST-PRACTICES.md` §3 "Sourcing photos and favicon from the prospect intake," the scaffold reads this file and pulls assets from the listed URLs.
+
+### Template structure
+
+```markdown
+# [Business Name]
+
+## Identity
+
+- **Display name:**
+- **Legal / Razão Social:** (if known — usually unknown until owner conversation)
+- **Vertical:** [Gastronomy / Beauty / Trades / Health / Studio / Pro Services / Home & Garden / Artisan / Pets / Automotive / Education / Events]
+- **Sub-category:** (e.g. "barber shop, single chair" / "Italian gelato café, multi-location")
+- **Address(es):**
+- **Phone:**
+- **Owner name(s) (if public):**
+- **Country / market:** [DE / PT / BR / other]
+- **Primary language(s):** [DE / EN / PT-BR / PT-PT / other]
+
+## Online presence — every reachable URL
+
+> This section is the **canonical source for the scaffold**. List every URL in priority order. Each URL must be reachable from a browser — if blocked (geo, Cloudflare, auth-only), note it explicitly.
+
+| Channel | URL | Reachable? | Notes |
+|---|---|---|---|
+| Existing website | | ✅ / ❌ blocked / ⊘ none | Stack guess if reachable; gallery/photo count |
+| Instagram | | ✅ / ❌ | Follower count; visual consistency assessment |
+| Facebook | | ✅ / ❌ | Follower count |
+| Google Business Profile | | ✅ / ❌ | Rating, review count, photo count |
+| Booking platform | | ✅ / ❌ | Which (Trinks / Treatwell / Booksy / Fresha / Doctolib / Resy / OpenTable) |
+| TripAdvisor / Yelp / equivalent | | ✅ / ❌ | Rating, review count |
+| LinkedIn (for pro services / B2B) | | ✅ / ❌ | |
+| Other | | | |
+
+## Image source inventory
+
+> Per `DESIGN-BEST-PRACTICES.md` §3, the scaffold pulls from these in declared priority. Mark each item as ✅ Fetched / 📥 Manual download needed / ❌ Blocked.
+
+- [ ] **Logo file** — source: (owner / IG bio image / cropped storefront / typeset monogram fallback)
+- [ ] **Hero photo** — source URL, what it depicts
+- [ ] **Operator portrait(s)** — source URL, who
+- [ ] **Storefront / exterior** — source URL
+- [ ] **Interior** — source URL
+- [ ] **Work portfolio (cuts / dishes / treatments / projects)** — source URLs, count
+- [ ] **Team / staff** — source URLs, names if known
+
+## Brand & color source inventory
+
+> Per `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette." Identify the highest-priority source tier that's available for this prospect.
+
+- **Brand guide exists?** [Yes / No / Unknown]
+- **Existing site palette?** (extract on first audit pass)
+- **Storefront / signage colors?** (which photo to sample from)
+- **Instagram feed color grade?** (consistent / inconsistent / not assessed)
+- **Fallback:** vertical-default per `templates/[vertical].md` "Default palette when client has no brand"
+- **Final tier used:** [1 / 2 / 3 / 4 / 5 / 6] — to be filled during `design.md` drafting
+
+## Reviews and trust signals
+
+| Source | Rating | Count | Notable quote(s) |
+|---|---|---|---|
+
+> Capture 3–5 verbatim review quotes if possible — they become candidate testimonials for the site (subject to owner clearance — see `SEO.md` rule on unverified `aggregateRating`).
+
+## Hours, services, pricing — initial public data
+
+> Mark each as PUBLIC (from GBP / IG bio / website) vs DRAFT (best-guess until owner confirms). Cross-conflicts (e.g. GBP shows 19:00, IG bio says 18:00) flagged explicitly.
+
+## Differentiators
+
+> 3–5 bullet points: what makes this business worth approaching? What's the cold-call hook?
+
+## Owner relationship status
+
+- [ ] Cold prospect — no contact yet
+- [ ] Indirect connection (friend of friend)
+- [ ] Personal connection (friend / family)
+- [ ] Verbally agreed to portfolio build (domain-cost-only per root `CLAUDE.md`)
+- [ ] Verbally agreed to paid engagement
+- [ ] Contract signed
+
+## Time sensitivity
+
+> Is there a known deadline? (Launch event, competitor about to undercut, etc.) If none, mark "no time pressure" — informs whether to skip portfolio work and call now, or build portfolio first.
+
+## Next steps
+
+1. [Specific actions before any code is written]
+2. [Owner-conversation questions to gather]
+3. [Stack / product type decision — references `TECH.md` §1]
+```
+
+### How the intake flows into the scaffold
+
+1. `docs/audit/[slug].md` is created (this template) — usually by the user, from public-data research.
+2. Claude reads it as the **first action** when starting any new client project, before scaffolding.
+3. Asset URLs feed the photo + favicon sourcing workflow (§Sourcing photos and favicon from the prospect intake).
+4. Brand inventory feeds the palette sourcing workflow (§Sourcing the palette).
+5. Identity, hours, services, reviews feed `BRIEF.md` (per the template in `TECH.md` §20).
+6. Differentiators + owner status feed the cold-call talking points / scope conversation.
+
+The intake is **research, not commitment**. Creating one doesn't mean the agency is taking on the prospect — it means the prospect is worth thinking about. The decision to scaffold comes after.
 
 ---
 

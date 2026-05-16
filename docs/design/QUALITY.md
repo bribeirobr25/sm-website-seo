@@ -196,6 +196,8 @@ Run both validators in CI and in `pnpm validate`. They're fast (single-pass file
 
 Every client repo has two workflows in `.github/workflows/`.
 
+> **See also:** `INFRASTRUCTURE.md` §4 has a copy-paste-ready `ci.yml` as part of the agency-template scaffold drop-in. For Type 1–2 builds, that single workflow is all that's required; Type 3 adds `security.yml` per below.
+
 ### `ci.yml` — quality gate on every PR
 
 ```yaml

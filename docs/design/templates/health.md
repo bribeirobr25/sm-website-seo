@@ -20,6 +20,12 @@
 - **Accessibility is a contract, not a feature.** Health users include people in pain, with vision impairment, with cognitive load. WCAG 2.2 AA is the floor; aim higher where possible (`ACCESSIBILITY.md`).
 - **DSGVO / HIPAA / LGPD constraints apply.** Health is one of the highest-regulation verticals for consent + data handling. See `SECURITY.md` for headers, `FORMS.md` for patient-data form handling.
 
+### Sourcing rules (apply before any visual decision)
+
+- **Photo + favicon sourcing:** `DESIGN-BEST-PRACTICES.md` §3 — 8-tier photo + 5-tier favicon priority. **Health-specific: try Doctolib / Zocdoc / clinic-platform profile pages FIRST** (tier 3) — these booking platforms are WebFetch-accessible and host the canonical logo + verified credentials + practice information. **Owner-supplied originals are mandatory in production** (tier 1) — DSGVO/HIPAA/LGPD make scraped photos of staff legally riskier than other verticals; the booking-platform path is for the *brand asset* (logo) and *structured business data*, not for portraits.
+- **Color palette sourcing:** `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette" — 6-tier color source hierarchy. Health practitioners often have *no brand* and no consistent IG; vertical-default (priority 5) is the most common landing tier.
+- **Prospect intake template:** `CHECKLIST.md` §9 — the canonical structure for `docs/audit/[prospect].md`.
+
 ---
 
 ## Table of contents
@@ -83,6 +89,8 @@
 12. **Footer** — 4-column with patient resources + careers + corporate
 
 ### Archetype C — Solo Practitioner Trust-Led (the agency's default health client)
+
+> **Cross-vertical pattern:** This archetype is the health-specific implementation of the **Solo-Operator meta-archetype** documented in `DESIGN-BEST-PRACTICES.md` §3 — the same IA pattern recurs across `templates/trades.md` Archetype D and `templates/studio.md` Archetype D. ~85 % of health clients fall into this pattern.
 
 The vast majority of local health clients we'll get (dentist, GP, physio, dermatologist) look like this. The IA is intentionally clean.
 
@@ -203,6 +211,25 @@ Health rejects fashion-magazine drama and conversion-shoutiness equally. The typ
 - **Bright neon accents are forbidden.** Health requires gravitas; bright neon reads as crypto-startup or fitness, not medicine.
 - **One brand accent maximum.** Health sites that use three or four accent colors look amateur.
 - **Background brightness must accommodate readers in low-vision conditions.** Pure white is acceptable; cream / pale gray is acceptable; dark themes need extra contrast budget.
+
+### Default palette when the client has no brand
+
+Per `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette," when the prospect has no brand guide, no clinic signage to sample, no IG presence — the palette falls to the vertical-default tier. Health splits by **sub-archetype** because a solo GP, an aesthetic dental clinic, and a major hospital network demand visibly different visual codes. **For ~85 % of agency health clients (Solo Practitioner, Archetype C), pick the sub-archetype by specialty:**
+
+| Sub-archetype | Default palette source | Sample tokens (starting point) | Why this works |
+|---|---|---|---|
+| **Solo GP / family doctor** (Archetype C — the agency default) | Off-white + clinical navy + sage | `--color-bg: #fbfbf9` (warm off-white)<br>`--color-text: #1a2436` (clinical navy)<br>`--color-accent: #6b8071` (sage)<br>`--color-border: #e3e5e0` | Reads "calm, competent, no-surprises." Sage accent is the gentlest professional accent that still reads "health" without veering into crypto-mint. Survives reception-area photos under fluorescent light. |
+| **Solo physio / chiro / osteopath** (Archetype C — movement specialty) | Cream + warm taupe + muted terracotta | `--color-bg: #f9f5ef` (cream)<br>`--color-text: #2e2823`<br>`--color-accent: #b76c4a` (muted terracotta)<br>`--color-border: #e4ddd0` | Movement-therapy register: warm, body-aware, less clinical. Terracotta is grounded (literally — earth color) and reads "active wellbeing" without going gym/fitness. |
+| **Dental / aesthetic clinic** (Archetype C, often crossing into B for chains) | Soft white + cool mint + brushed brass | `--color-bg: #f7faf9` (soft white)<br>`--color-text: #1f2a26`<br>`--color-accent: #8aaaa0` (cool mint)<br>`--color-secondary: #b8946a` (brass)<br>`--color-border: #dde4e1` | Clinical-but-friendly. Mint is the aesthetic-dentistry standard; the brass secondary lifts it out of "generic clinic" and into "premium aesthetic." Pure white acceptable here — dentistry is one of the few health sub-verticals where pure white reads "clean" not "cold." |
+| **Specialty pediatrics / women's health / mental health** (Archetype C — softer) | Off-white + dusty lavender + warm gold | `--color-bg: #faf8f5`<br>`--color-text: #2a2530`<br>`--color-accent: #9a8aae` (dusty lavender)<br>`--color-border: #e6e0d8` | Calm, non-clinical, reduces anxiety. Lavender reads "wellness, holistic, gentle" — important for specialties where the buyer is anxious before the first visit (pediatrics for first-time parents, mental health for new patients). |
+| **Multi-specialty clinic / mid-size network** (Archetype B — Conversion Chain) | White + medical blue + cool gray | `--color-bg: #ffffff`<br>`--color-text: #0f1419`<br>`--color-accent: #1d6dcc` (medical blue)<br>`--color-border: #e8eaed` | The standard conversion-chain palette. Aspen Dental / OneMedical / Bupa-style. High legibility, scales to many specialties under one brand. Use when there are 5+ locations or 3+ specialties; overkill for a single clinic. |
+| **Major hospital / academic medical center** (Archetype A — Content Authority) | White + deep heritage blue + heritage red accent | `--color-bg: #ffffff`<br>`--color-text: #1a1a1a`<br>`--color-accent: #1f3a6e` (deep heritage blue)<br>`--color-secondary: #9c2f2f` (heritage red — reserved for "Emergency" CTA only)<br>`--color-border: #e0e3e9` | Mayo / Cleveland / Einstein register. Heritage blue signals institution, history, weight. Red is reserved exclusively for the emergency-care CTA. **Almost never an agency client** — listed for archetype completeness. |
+
+**How to pick the sub-archetype:** Use the archetype matrix in `templates/health.md` §1 (A / B / C) first. Then the specialty itself. A solo GP and a solo therapist are both Archetype C but get nothing wrong by sharing zero accent colors — *the patient's anxiety level when arriving determines the right palette*. Pediatrics buyer needs softer; emergency dental needs more clinical confidence.
+
+**Accessibility note:** all default palettes above are pre-validated against WCAG 2.2 AA for body text. **Re-verify with a contrast checker before committing** — health is the vertical where accessibility failures carry the highest legal and reputational risk (`ACCESSIBILITY.md`).
+
+**These are starting points, not deliverables.** Once tokens are in `tokens.css`, run them against the client's storefront photo or the clinic interior. Document the source tier in `design.md` §"Color tokens."
 
 ---
 

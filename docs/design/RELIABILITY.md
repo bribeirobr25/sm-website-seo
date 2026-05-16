@@ -68,6 +68,8 @@ The opposite philosophy — let the framework throw, show a stack trace, hope th
 
 Every production site ships a custom 404 and 500 page. Generic framework defaults are forbidden — they leak framework identity, look unprofessional, and offer no path back.
 
+> **See also:** `INFRASTRUCTURE.md` §3 has copy-paste-ready `404.astro` and `500.astro` Astro Tier 2 templates as part of the agency-template scaffold drop-in.
+
 ### When each page actually fires
 
 | Page | Static (Tier 1/2) | SSR / API routes (Tier 3) |
@@ -363,6 +365,8 @@ Every log line has a request ID (`x-request-id` header generated in middleware).
 ## 9. Health monitoring
 
 Every production client gets an external uptime check. **Set this up before flipping `noindex` off.**
+
+> **See also:** `INFRASTRUCTURE.md` §5 covers UptimeRobot + Better Stack setup steps as part of the agency-template scaffold drop-in. Drop-in includes the rollback drill per `RELIABILITY.md` §10 too.
 
 | Tool | Free tier | What it does |
 |------|-----------|--------------|

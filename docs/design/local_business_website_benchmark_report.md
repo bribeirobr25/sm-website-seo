@@ -43,7 +43,7 @@ Use this report as follows:
 
 If a prospect points at Mayo or Equinox and asks "build me that," the answer is: "we build the *Solo-Operator archetype* (per `templates/health.md` Archetype C or `templates/studio.md` Archetype D) using the same trust and IA logic. Here's the price for that version."
 
-Templates currently exist for **5 of the 12 categories** in this report: Gastronomy, Trades, Beauty, Health, Fitness & Studios. The other 7 (Professional Services, Home & Garden, Artisan, Pets, Automotive, Education, Events & Hospitality) are benchmark-only — build a template **only when a prospect in that vertical signs**, never speculatively.
+Templates currently exist for **all 12 categories** in this report. The original prospect-triggered-only policy was overridden 2026-05-16 by an explicit user decision to build all 7 remaining templates speculatively — see `docs/audit/PENDING.md` "Agency-template work" for the rationale. The original policy ("build a template only when a prospect in that vertical signs") remains the steady-state rule for *future* untemplated cases (no new categories planned beyond the 12). Each template lives at `docs/design/templates/[vertical].md` with the canonical 10-section structure.
 
 ---
 
@@ -418,7 +418,7 @@ Each table uses the format:
 
 **Subcategories:** lawyers, accountants, tax advisors, consultants, insurance brokers, financial advisors.
 
-> **No template yet** — benchmark-only category. Build a vertical template (using the 10-section format from `templates/gastronomy.md`) only when a Professional Services prospect signs. Until then, use the references below + the Solo-Operator meta-archetype in `DESIGN-BEST-PRACTICES.md` for scoping.
+> **Template available:** [`templates/professional-services.md`](templates/professional-services.md) — 4 archetypes (Global Big-Law · Productized Mid-Tier · Insurance/Quote-Led · **Solo Practitioner Trust-Led** as agency default for ~85% of clients). Credential-display patterns, OAB/Bar/Kammer number requirements, and the "no stock suit-on-stairs" anti-pattern codified there. Reference implementation candidate: Laudam (`docs/audit/laudam.md`).
 
 ### Category UX checklist
 
@@ -465,7 +465,7 @@ Each table uses the format:
 
 **Subcategories:** florists, garden centers, plant shops, bonsai, landscaping, lawn care, garden/home retail.
 
-> **No template yet** — benchmark-only category. Florists/plant shops are Type 1–2 builds (info + WhatsApp); landscaping is Type 2 (info + quote form). Build a vertical template only when a Home & Garden prospect signs.
+> **Template available:** [`templates/home-garden.md`](templates/home-garden.md) — 4 archetypes (Flower/Gift Ecommerce · Plant Ecommerce + Care Education · Garden Center/Lawn Care Service · **Solo Florist/Plant Shop/Landscaper** as agency default). Critical vertical-specific note: product-vs-service split determines product type (florist with cart = Type 4 Tier 3; florist with WhatsApp = Type 1 Tier 2). Delivery-zone clarity + seasonal campaign patterns codified there.
 
 ### Category UX checklist
 
@@ -511,7 +511,7 @@ Each table uses the format:
 
 **Subcategories:** jewelry, ceramics, pottery, clay studios, handmade goods, galleries, craft shops.
 
-> **No template yet** — benchmark-only category. Often crosses into Type 4 (transactional ecommerce) if the artisan sells online — different stack tier, different pricing. Build a template only when an Artisan prospect signs.
+> **Template available:** [`templates/artisan.md`](templates/artisan.md) — 4 archetypes (Luxury Jewelry · Premium Craft/Pottery · Modern Artisan Ecommerce · **Solo Maker/Single-Studio** as agency default). The vertical splits sharply: ecommerce-led variants are Type 4 (Tier 3), commission-led solo makers can stay Type 1–2. Materials/provenance disclosure + commission flow + "no handmade-with-love" anti-pattern codified there.
 
 ### Category UX checklist
 
@@ -557,7 +557,7 @@ Each table uses the format:
 
 **Subcategories:** veterinary clinics, grooming, daycare, boarding, training, pet retail.
 
-> **No template yet** — benchmark-only category. Vet/grooming/daycare are close architectural relatives of `templates/health.md` (Solo Practitioner) and `templates/beauty.md` (Service Chain) — adapt those archetypes when a Pets prospect signs.
+> **Template available:** [`templates/pets.md`](templates/pets.md) — 4 archetypes (Premium Vet Network · Pet Retail/Services Chain · **Solo Vet/Single-Location Groomer** as agency default · Daycare/Boarding/Training). Pet-photography consent rules, vaccination-requirement displays for daycare/grooming, and emergency-line patterns for vets codified there.
 
 ### Category UX checklist
 
@@ -602,7 +602,7 @@ Each table uses the format:
 
 **Subcategories:** repair, detailing, tires, car wash, auto glass, rental, driving school.
 
-> **No template yet** — benchmark-only category. Auto repair/glass is a close architectural relative of `templates/trades.md` (Conversion Chain or Solo-Operator) — phone-first CTA, service area, warranty messaging. Adapt that template when an Automotive prospect signs.
+> **Template available:** [`templates/automotive.md`](templates/automotive.md) — 4 archetypes (Conversion-Chain Network · Tire/Service Specialty Chain · Detailing/Collision Gallery-Led · **Solo Mechanic/Single-Bay Shop** as agency default). Brand-specialty disclosure (BMW/Toyota/etc.), before/after photography for detailing/collision, insurance-partner-logo patterns, and warranty messaging codified there.
 
 ### Category UX checklist
 
@@ -648,7 +648,7 @@ Each table uses the format:
 
 **Subcategories:** daycare, tutoring, language schools, coding schools, music lessons, after-school programs.
 
-> **No template yet** — benchmark-only category. Single-instructor music/language lessons map to `templates/studio.md` (Solo Instructor archetype); daycare/tutoring centers are closer to `templates/health.md` (Solo Practitioner trust patterns + parent-trust messaging). Adapt when an Education prospect signs.
+> **Template available:** [`templates/education.md`](templates/education.md) — 4 archetypes (Premium Daycare/Preschool Network · Tutoring Franchise · Language School · **Solo Tutor/Music Teacher/Independent Instructor** as agency default). Age/level program-organization patterns, parent-trust safety/accreditation displays, trial-class CTA conventions, and minor-consent photo rules codified there.
 
 ### Category UX checklist
 
@@ -695,7 +695,7 @@ Each table uses the format:
 
 **Subcategories:** hotels, event venues, wedding venues, caterers, photographers, event planners.
 
-> **No template yet** — benchmark-only category. Photographers/event planners map to a solo-operator archetype; venues need gallery-first IA closer to `templates/gastronomy.md` (Heritage Editorial). Often crosses into Type 3 (booking-DB) if availability calendars are required. Adapt when an Events prospect signs.
+> **Template available:** [`templates/events-hospitality.md`](templates/events-hospitality.md) — 4 archetypes (Luxury Hospitality · Boutique Hotel/Brand-Led · Event/Wedding Venue · **Solo Photographer/Event Planner/Caterer** as agency default). Atmosphere-led photography rules, capacity+package+inquiry-form patterns for venues, and seasonal cliché-avoidance (rose-gold, script "Mr. & Mrs.") codified there.
 
 ### Category UX checklist
 

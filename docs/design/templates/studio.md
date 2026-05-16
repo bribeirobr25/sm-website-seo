@@ -19,6 +19,12 @@
 - **Multi-pricing-tier transparency** for chains/gyms (Plano Smart, Plano Fit, Plano Black). For boutique studios, drop-in vs class-pack vs unlimited pricing matters.
 - **First-class-free / intro offer** is industry-standard. Surface it above the fold for any archetype below premium.
 
+### Sourcing rules (apply before any visual decision)
+
+- **Photo + favicon sourcing:** `DESIGN-BEST-PRACTICES.md` §3 — 8-tier photo + 5-tier favicon priority. **Studio-specific: try Mindbody / ClassPass / Glofox / MoveGB profile pages FIRST** (tier 3) — these booking platforms are WebFetch-accessible and host the canonical logo + class schedule + studio data. **Mid-class photography is the conversion** — Instagram (tier 4) is usually the richest portfolio source for that, accepted via manual download.
+- **Color palette sourcing:** `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette" — 6-tier color source hierarchy. Boutique studios often have a strong existing brand (priority 1 or 2); solo instructors usually fall to vertical-default (priority 5).
+- **Prospect intake template:** `CHECKLIST.md` §9 — the canonical structure for `docs/audit/[prospect].md`.
+
 ---
 
 ## Table of contents
@@ -97,6 +103,8 @@ Studio has **four** archetypes rather than three because the design vocabulary s
 11. **Footer** — minimal with social + legal links
 
 ### Archetype D — Solo Instructor / Single Studio (the agency's default studio client)
+
+> **Cross-vertical pattern:** This archetype is the studio-specific implementation of the **Solo-Operator meta-archetype** documented in `DESIGN-BEST-PRACTICES.md` §3 — the same IA pattern recurs across `templates/trades.md` Archetype D and `templates/health.md` Archetype C. ~70 % of studio clients fall into this pattern.
 
 1. **Top bar** — phone + book online link
 2. **Hero** — headline naming the instructor + the discipline + the area ("Sara Pilates · Mitte Berlin") + portrait of instructor in the studio + ONE CTA ("Book your first class — 50% off")
@@ -235,6 +243,25 @@ Studio is the vertical with the **widest typography vocabulary** — premium clu
 - **No pure red as the dominant brand color** for studio (red signals urgency / fitness-magazine energy that's wrong for most studio archetypes outside Archetype B)
 - **Boutique studios should pick a SINGLE atmospheric color and commit** — purple, sage, blush, or charcoal. Two-color boutique palettes look indecisive.
 - **Solo instructor (D) should NOT use bright accent colors.** "Your trusted yoga teacher" doesn't shout in lime.
+
+### Default palette when the client has no brand
+
+Per `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette," when the prospect has no brand guide, no studio signage, no consistent IG color grade — the palette falls to the vertical-default tier. Studio splits by **sub-archetype** because a solo yoga instructor, a HIIT boutique, and a mass-market gym demand completely different visual codes. **For ~70 % of agency studio clients (Solo Instructor / Single Studio, Archetype D), pick the sub-archetype by discipline:**
+
+| Sub-archetype | Default palette source | Sample tokens (starting point) | Why this works |
+|---|---|---|---|
+| **Solo yoga / pilates instructor** (Archetype D — the agency default) | Cream + sage + warm terracotta | `--color-bg: #faf6ef` (cream)<br>`--color-text: #2a2620`<br>`--color-accent: #6b8071` (sage)<br>`--color-secondary: #b15c2e` (warm terracotta, sparingly)<br>`--color-border: #e5dfd0` | Reads "grounded, mindful, breathwork." Sage is the yoga-studio standard without going full mint-cliché. Terracotta secondary signals "warm body movement" — drop into thumbnail icons or breathwork-section heading. |
+| **Solo personal trainer / strength coach** (Archetype D — more energetic) | Off-white + charcoal + signal yellow | `--color-bg: #fafaf8`<br>`--color-text: #1a1a1a` (charcoal)<br>`--color-accent: #f59e0b` (signal yellow — energy)<br>`--color-border: #e3e3df` | More energetic than yoga, less aggressive than mass-market gym. Yellow accent reads "let's go" without shouting. Works for a 1:1 trainer brand where the body of the client is the proof. |
+| **Solo dance / movement instructor** (Archetype D — performance specialty) | Soft black + bone + dusty rose | `--color-bg: #f5f1ec` (bone)<br>`--color-text: #1a1418` (soft black)<br>`--color-accent: #c6927e` (dusty rose)<br>`--color-border: #ddd6cd` | Performance-art register. Bone-on-soft-black reads "stage, intentional, expressive." Dusty rose lifts it from austere to inviting. Works for ballet, contemporary, ballroom, jazz. |
+| **Boutique sensory studio** (Archetype C — Hotpod / barre / sound bath / specialty) | Single deep saturated brand color + cream + brass | `--color-bg: #faf5ed` (cream)<br>`--color-text: #2a1f17`<br>`--color-accent: #6b1f3a` (deep wine — or whatever brand color the studio commits to: emerald, deep purple, oxblood)<br>`--color-secondary: #b8946a` (brass, sparingly) | Boutique studios live on a single deep brand color (Hotpod's pink, a hot-yoga's saturated coral, a sound-bath's deep purple). Pick the deep color first, build cream + brass around it. The deep color is non-negotiable; pick it before any other tokens. |
+| **Mass-market gym chain** (Archetype B — Smart Fit / Planet Fitness / PureGym) | High-saturation primary + white + black | `--color-bg: #ffffff`<br>`--color-text: #0a0a0a`<br>`--color-accent: #facc15` (Smart Fit yellow — or whatever the chain commits to)<br>`--color-secondary: #1a1a1a` (deep black for energetic contrast)<br>`--color-border: #e5e5e5` | High-contrast value-conversion register. The single high-saturation primary is the brand — yellow (Smart Fit), purple (Planet Fitness), red (Basic-Fit). Pure white acceptable; mass-market gyms optimize for visual loudness over warmth. |
+| **Premium luxury studio** (Archetype A — Equinox / Barry's) | Near-black + bone + brushed brass | `--color-bg: #1a1a1a` (near-black)<br>`--color-text: #ebe2d3` (bone)<br>`--color-accent: #c89a4f` (brushed brass)<br>`--color-border: #2a2a2a` | Premium-fitness register. Dark-mode by design. Brass-not-gold avoids the cheap-luxury trap. Works only when the venue itself has the aesthetic (Equinox-grade lighting, real photography). Wrong choice for a strip-mall pilates studio claiming premium. |
+
+**How to pick the sub-archetype:** Use the archetype matrix in `templates/studio.md` §1 (A / B / C / D) first. Then the discipline itself. A solo yoga instructor and a solo strength coach are both Archetype D but get nothing wrong by sharing zero accent colors — *the energy level of the discipline determines the right palette*. Yoga is calm (sage); strength is direct (yellow); dance is expressive (rose).
+
+**Mass-market and boutique chains:** if the prospect is a franchisee of an existing chain (Anytime Fitness, F45, Pure Barre, etc.), the chain brand colors are non-negotiable. Sample from the franchise brand guide (priority 1) — these defaults don't apply.
+
+**These are starting points, not deliverables.** Once tokens are in `tokens.css`, sample the client's actual class photography against the bg color — a yoga photo against a saturated purple bg creates optical clashes that sage avoids. Document the source tier in `design.md` §"Color tokens."
 
 ---
 

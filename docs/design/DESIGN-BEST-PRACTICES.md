@@ -121,11 +121,21 @@ Use these as starting points, not templates:
 
 For deeper per-vertical guidance with reference-site analysis, see `docs/design/templates/<vertical>.md`:
 
+**Core 5 (built first — most common agency verticals):**
 - `templates/gastronomy.md` — three archetypes (Big Mamma · Sweetgreen · Dishoom) + Porto dos Ribeiros reference implementations
-- `templates/beauty.md` — three archetypes (TONI&GUY · Drybar Shops · AIRE Ancient Baths)
+- `templates/beauty.md` — three archetypes (TONI&GUY · Drybar Shops · AIRE Ancient Baths) + Jean Souza Barber reference implementation (Modern urban barber dark sub-archetype)
 - `templates/trades.md` — four archetypes (Pimlico · Roto-Rooter · Banham + solo-operator default)
-- `templates/health.md` — three archetypes (Mayo Clinic · Einstein · Cleveland Clinic + inferred conversion-chain)
-- `templates/studio.md` — four archetypes (Equinox · Smart Fit · Hotpod Yoga + solo-instructor default)
+- `templates/health.md` — three archetypes (Mayo Clinic · Einstein · Cleveland Clinic + Solo Practitioner default)
+- `templates/studio.md` — four archetypes (Equinox · Smart Fit · Hotpod Yoga + Solo Instructor default)
+
+**Extended 7 (added 2026-05-16 — full coverage across the benchmark's 12 categories):**
+- `templates/professional-services.md` — four archetypes (Big Law · Productized · Quote-Led · Solo Practitioner Trust-Led)
+- `templates/pets.md` — four archetypes (Premium Vet Network · Pet Retail Chain · Solo Vet/Groomer · Daycare/Boarding)
+- `templates/automotive.md` — four archetypes (Conversion-Chain · Tire/Service Specialty · Detailing/Collision · Solo Mechanic)
+- `templates/education.md` — four archetypes (Premium Daycare · Tutoring Franchise · Language School · Solo Instructor)
+- `templates/events-hospitality.md` — four archetypes (Luxury Hospitality · Boutique Hotel · Event/Wedding Venue · Solo Photographer/Planner)
+- `templates/home-garden.md` — four archetypes (Flower Ecommerce · Plant Ecommerce · Garden/Lawn Service · Solo Florist/Plant Shop/Landscaper)
+- `templates/artisan.md` — four archetypes (Luxury Jewelry · Premium Craft · Modern Artisan · Solo Maker)
 
 **Templates are moodboards, not layouts.** The vertical template captures the *principles* across multiple top-tier reference sites — photography rules, typography pairings, color archetypes, IA patterns, vertical-specific anti-patterns. The per-client `design.md` then makes the specific choices on top of those principles. **Never copy a reference layout** — if two clients in the same vertical end up with the same hero, the template has failed its job. The pattern is correct; the visual execution must differ.
 
@@ -160,6 +170,53 @@ For any place-based multi-location client (trades chain, health network, gym cha
 ### The real-photo rule
 
 Every site must use at least one real photo of the actual business (exterior, interior, product, or team). Stock photos are visible from orbit and destroy trust for local businesses. If the client has no photos, the first deliverable is a photo shoot or at minimum using their Google Maps / Instagram photos.
+
+### Sourcing photos and favicon from the prospect intake
+
+Every prospect lands with a `docs/audit/[name].md` intake file (see `CHECKLIST.md` §9 for the template). That file lists every reachable image source — Instagram, Google Business Profile, Facebook, existing website, Trinks/Treatwell/Booksy profile pages, TripAdvisor, Yelp. **During scaffold, photos must be pulled from those sources in declared priority order. `<Placeholder>` components are a last-resort fallback, not a default.**
+
+#### Source priority for body photography
+
+| Priority | Source | When to use |
+|---|---|---|
+| 1 | **Owner-supplied originals** (file transfer, USB drop, Drive folder) | Production launch — always preferred. Photo quality and licensing are unambiguous. |
+| 2 | **Existing client website gallery** (if any) | Demo phase. Already-public photos the client controls. Migrate to Astro `<Image>` pipeline; never link to raw `public/` originals in production. |
+| 3 | **Industry-specific booking-platform profile pages** (Trinks · Booksy · Treatwell · Fresha · Mindbody · ClassPass · Glofox · Doctolib · Zocdoc · Resy · OpenTable · TheFork) | **Try this FIRST when the vertical uses a booking platform** (beauty, health, studio, and some gastronomy clients). These pages are typically WebFetch-accessible (server-rendered HTML, no SPA blocker) and frequently expose: master logo at a predictable CDN URL, structured business data (corrected hours, address with landmarks, services), payment methods. Worked example: Jean Souza Barber's Trinks page yielded a 1214×1214 master logo via `cloudfront.net/Estabelecimentos/[ID]/original/logo_[ID].jpg` + 4 data corrections in one WebFetch call (2026-05-15). |
+| 4 | **Instagram public posts** (`https://instagram.com/[handle]`) | Demo phase, with manual download by the human operator. **Do not attempt automated scraping** — Instagram blocks unauthenticated requests and aggressive scraping triggers account-level rate limits that affect the prospect. |
+| 5 | **Google Business Profile photo set** | Demo phase, manual download via Google Maps. Use the highest-resolution variant available. Not API-accessible without OAuth. |
+| 6 | **Facebook page** (`facebook.com/[handle]/photos`) | Demo phase, manual download. SPA-rendered — automated extraction reliably blocked. Lower quality than IG in most cases. |
+| 7 | **TripAdvisor / Yelp / HappyCow / vertical review platforms** | Last-resort scraped sources. Verify image licensing before reuse. |
+| 8 | **`<Placeholder>` component** (dashed border + italic label) | Only when no source above is reachable. Must be paired with an explicit "Photos to fetch from sources" instruction block in `BRIEF.md` so the human knows exactly what to download next. |
+
+**Why booking-platform pages outrank Instagram + GBP for accessibility:**
+
+- Trinks / Booksy / Treatwell / Mindbody / Doctolib host the *business's own brand assets* (logo, hero photo, service-list photos) on **predictable CDN URLs with stable HTML scaffolding** — WebFetch returns the raw data.
+- Instagram, Facebook, and Google Maps render content client-side via SPA frameworks — WebFetch retrieves either an empty shell or base64 placeholders. The "tier 3 Instagram" entry that existed in earlier versions of this hierarchy was a *theoretical* tier-3 source; in practice it's tier 4+ because of automated-access blocking.
+- For verticals that use booking platforms (beauty, health, fitness/studio, some gastronomy), the booking platform IS the brand's most-curated public profile — by definition it has the canonical logo + accurate operating data.
+
+**Cold-call demo vs. production:** scraped/manually-downloaded photos are acceptable for the `noindex` demo phase per `TECH.md` §3. Production launch requires owner-supplied originals OR owner's explicit written permission to use the demo photos. Document the decision in `BRIEF.md` §Open questions.
+
+#### Source priority for favicon
+
+The favicon is mandatory — never ship a build with `<link rel="icon">` pointing to a missing file. Source it in this order:
+
+| Priority | Source | Format |
+|---|---|---|
+| 1 | **Client-supplied logo file** (SVG preferred, PNG ≥ 256 px fallback) | `/public/favicon.svg` + `apple-touch-icon.png` (180 × 180) |
+| 2 | **Booking-platform master logo** (Trinks / Booksy / Treatwell / Mindbody / Doctolib profile pages) | WebFetch the profile page → extract the CDN URL → download the `/original/` size variant (most platforms use `[size]/logo_[ID].(jpg|png)` URL pattern; the `original` size is often available even when the platform displays a 120×120 thumbnail). Crop to JS-shield-style if the logo has a wordmark too long to render at 16×16. Worked example: Jean Souza Barber's Trinks logo retrieved at 1214×1214 (2026-05-15). |
+| 3 | **Instagram profile avatar** (sometimes a vector logo, sometimes a portrait crop) | Manual download → optimize → `/public/favicon.png` (multi-size or 32 × 32). IG blocks automated extraction. |
+| 4 | **Distinctive crop of a real photo** (storefront sign, signature dish, hero portrait) | Crop to a 1:1 detail that reads at 16 × 16 — usually a single letter or icon-like element |
+| 5 | **Typeset monogram** in the brand's display font and accent color | Generate an inline SVG: business initials in the brand's display typeface, on `--color-bg`, in `--color-accent`. Hand-tuned letter-spacing. Commit as `/public/favicon.svg`. |
+
+Priority 4 (typeset monogram) is the always-available fallback. It works for any business with a name, in any vertical, and stays consistent with the brand palette. **It is never acceptable to ship a build referencing `/favicon.png` if that file doesn't exist** — the missing-icon flash hurts trust on the first paint.
+
+#### Workflow during scaffold
+
+1. **Read `docs/audit/[name].md`** before any code. Enumerate every URL it contains under "online presence."
+2. **Attempt each source in priority order.** For automated sources, use `WebFetch` first. For sources known to block (Instagram, Cloudflare-protected pages), skip automation and add a manual-download instruction to `BRIEF.md` §"Photos to fetch from sources."
+3. **Generate the favicon from the highest-priority available source.** If no source above priority 4 is reachable, generate the typeset monogram inline-SVG variant before any other component code is written.
+4. **Document every gap.** Each unreachable source goes into `BRIEF.md` with the exact URL, the reason it was blocked, and the manual instruction for the human operator.
+5. **Only then** place `<Placeholder>` components where no real photo is yet on disk. Each placeholder must name the specific photo it expects ("Foto do Jean na cadeira" — not "Foto") so the human knows what to capture.
 
 ### Vertical-specific photography rules
 
@@ -249,23 +306,72 @@ Minimum tokens per client:
 
 ### Color rules
 
-- **Never pure black (#000) or pure white (#FFF)** as a page background or body text. Use near-black and warm or cool off-white derived from the client's brand palette.
+- **Never pure black (#000) or pure white (#FFF)** as a page background or body text. Use near-black and warm or cool off-white derived from the client's brand palette. **Two documented exceptions** apply:
+  1. **Tier-1/2/3 brand-source override** — when the client's actual brand uses pure white or pure black (sampled per §5 priority hierarchy), the brand source supersedes this rule. Example: Jean Souza Barber's tier-3 brand source is `#ffffff` text on `#131418` bg — pure white text is the actual brand identity, documented in `clients/jean-souza-barber/design.md`.
+  2. **Conversion-driven mass-market sub-archetype exception** — pure white bg is acceptable for high-volume conversion-led chains where catalog clarity outranks warmth (Safelite, Firestone, Mathnasium, OneMedical, Petz retail, TruGreen). Each per-vertical template's §6 "Default palette" subsection documents which sub-archetypes legitimately use pure white with rationale. Outside these documented sub-archetypes, default to near-white (`#fafafa`, `#fbfaf7`, etc.).
 - **One dominant accent color** per site. Used on: primary CTA button, active states, links. Not sprinkled on every element.
 - **Accent reserved for the call to action.** Eyebrow text, kickers, tracked-uppercase labels, and section dividers must NOT use the same hue as the primary CTA. If your eyebrow and your button are the same color, the eyebrow steals attention from the action. Use `--color-text-muted` for eyebrows and labels.
 - **Never apply opacity multipliers to text colors that are already muted.** `text-[var(--color-text-muted)]/80` reads as "subtly subtler" in design intent but mathematically drops contrast below the WCAG AA 4.5:1 floor every time, because `--color-text-muted` is itself already calibrated to sit just above that floor. If you genuinely need lower-emphasis text than the muted token provides, define a new dedicated `--color-text-subtle` token with a contrast-checked value — don't compose it from opacity. Lighthouse's accessibility audit catches this on every site that does it.
 - **Decorative tokens must do real work.** Every token in the palette must appear on at least two distinct, non-decorative surfaces (CTA + focus ring, label + badge, etc.). A token that exists only to tint a single ornamental shape is dead weight — either find it a real job or delete the token.
 - **Color-only status indicators are forbidden.** A button being red means nothing to a colorblind user without also having a label or icon.
 - **Gradient rule:** One subtle gradient allowed (background or hero). Never more than two gradient stops. No "AI glow" radial gradients. No rainbow gradients.
-- **No dark mode.** Local business sites are not productivity tools. Light mode only, unless the client's brand is explicitly dark (tattoo studio, nightclub).
+- **No dark mode.** Local business sites are not productivity tools. Light mode only, unless the client's brand is explicitly dark (tattoo studio, nightclub, modern urban barber — see `templates/beauty.md` §6 for the "Modern urban barber (dark)" sub-archetype as a worked example).
+
+  **Per-vertical dark-mode coverage** (audited 2026-05-15):
+
+  | Vertical | Dark variant exists? | Where |
+  |---|---|---|
+  | Beauty | ✅ Yes | `templates/beauty.md` §6 → "Modern urban barber (dark)" — black + white + saturated red |
+  | Gastronomy | ✅ Yes | `templates/gastronomy.md` §6 → "Premium editorial / heritage storytelling" — deep cocoa + parchment + saffron (Dishoom-derived) |
+  | Studio | ✅ Yes | `templates/studio.md` §6 → "Premium luxury studio" — near-black + bone + brushed brass (Equinox-derived) |
+  | Trades | ❌ Intentionally none | Trades is utility-color-driven (red/yellow emergency, navy professional). Dark mode in trades reads "underground / shady" — wrong trust register for plumbers, electricians, locksmiths. |
+  | Health | ❌ Intentionally none | Health requires anxiety-reducing register. Dark mode reads "clinical horror / underground clinic" — wrong trust register. Mental-health niche *might* benefit from soft dark in the future but is not a current need. |
+
+  When a future prospect's brand demands dark mode in a vertical that currently has "none," add a new sub-archetype to that template's §6 rather than retrofitting the existing palette. Follow the pattern beauty.md used 2026-05-15 (cite the client as reference implementation).
 - **Contrast:** Every text/background combination must pass WCAG 2.2 AA (4.5:1 for body text, 3:1 for large text and UI components). Check with a contrast checker before delivering.
+- **Lighter-on-hover is a WCAG anti-pattern when text is white on a tinted button.** If your accent button uses white-on-`#dc2626` (4.83:1 — passes AA), and the hover state lightens to `#ef4444`, the contrast drops to 3.76:1 — *fails AA for body-size text*. **Darken-on-hover always preserves or improves contrast.** Canonical convention: `--color-accent` (rest) + `--color-accent-deep` (hover/active, darker). Reserve `--color-accent-hi`-style "lighter" variants only for *text* accents on a dark background, never for button fills. Worked example: Jean Souza Barber's tokens were corrected mid-build from `#ef4444` hover (3.76:1 AA-large only) to `#b91c1c` hover (6.50:1 — comfortably AA).
 
-### Palette construction per client
+### Sourcing the palette
 
-1. Extract the client's primary brand color (logo, signage, social media)
-2. Build one light and one dark variation of it
-3. Choose a neutral family (warm, cool, or pure — match the brand tone)
-4. Choose one accent — either a complementary color or a saturated version of the primary
-5. Never use more than 4–5 distinct colors on a local business landing page
+The agency's typical client is a solo operator with no brand guide, no design system, and a logo that may or may not exist. The palette must be **sourced**, not invented. Use this priority order, top-down — only fall to the next tier when the higher one has no signal.
+
+| Priority | Source | What to extract |
+|---|---|---|
+| 1 | **Client brand guide** (formal style guide if one exists — rare for small local businesses) | Primary, secondary, neutrals — already specified. Treat as authoritative. |
+| 2 | **Existing client website** | Sample the dominant background, primary text, primary CTA, secondary surfaces. Use a color picker against live screenshots — never eyeball from memory. |
+| 3 | **Client signage and storefront photo** (from `docs/audit/[name].md` GBP photo set or Instagram exterior shots) | Real-world colors that customers already associate with the business — the awning paint, the menu board, the chair upholstery. These are the brand whether the owner thinks of them that way or not. |
+| 4 | **Instagram feed** (`@[handle]`) | If the IG feed has a consistent color grade (most curated accounts do), extract from a 9-grid average. The IG feed IS the brand for most small businesses with no other materials. |
+| 5 | **Vertical-default palette** per `templates/[vertical].md` "Default palette when client has no brand" subsection | Vertical-archetype defaults backed by reference-site analysis. Apply only when sources 1–4 yield no consistent signal. |
+| 6 | **First-principles from the aesthetic sentence** in `design.md` (the "this site feels like ___" line) | Last-resort construction. If the aesthetic sentence describes "warm wood, leather, brass," derive the palette from that material vocabulary. |
+
+**The construction rule** (after source is identified):
+
+1. Pick the **dominant brand color** from the highest-priority available source.
+2. Build one **lighter** and one **darker** variant of it (for hover states, surface tints, deep accents). **Note:** if the dominant brand color is the *button fill* with white text on it, use the *darker* variant for hover (per "Color rules" — lighter-on-hover is a WCAG anti-pattern).
+3. Choose a **neutral family** (warm cream / cool gray / true off-white) that matches the brand temperature. Never mix warm and cool neutrals in the same site.
+4. Choose **one accent** — either a complementary color or a saturated version of the primary. Reserve it for CTAs and active states only (§Color rules above).
+5. Cap the palette at **4–5 distinct colors** total. Every token in `tokens.css` must do real work (§Color rules — "Decorative tokens must do real work").
+
+### Re-sourcing the palette mid-build
+
+**The §5 priority hierarchy is enforced throughout the build, not just at scaffold time.** A higher-priority signal can arrive after tokens.css and components are already in place — and when it does, the palette must be re-sourced and updated. This is not optional; the hierarchy is what makes the palette defensible in a client conversation.
+
+Common mid-build re-sourcing triggers:
+
+| Trigger | Effect |
+|---|---|
+| Logo retrieved from a booking-platform profile (Trinks / Booksy / Treatwell / Mindbody / Doctolib) via WebFetch | Tier 3 source arrives. Sample the logo's dominant colors. If they differ from the current tokens, re-source. |
+| Owner sends brand guide / color palette via email or attachment | Tier 1 source arrives. Replace whatever tier the build was using. |
+| Owner-supplied photo set arrives (production photo shoot or USB drop) | Re-sample tier 3 from the actual storefront/interior colors, not just the logo. |
+| Manual download of Instagram feed reveals a consistent color grade | Tier 4 source arrives. May upgrade or refine the palette. |
+
+**Worked example:** Jean Souza Barber was scaffolded with the tier-5 vertical-default (cream + caramel "Old-school barber") because no higher-priority source was reachable at scaffold time. Mid-build (2026-05-15), a WebFetch on the Trinks profile retrieved Jean's master logo — revealing that the actual brand is dark + white + red. Tier 3 (brand-sourced) supersedes tier 5 (vertical-default), so the palette was re-sampled with Python PIL `Counter()` against the logo, tokens.css was rewritten, design.md provenance updated to declare tier 3, and a new "Modern urban barber (dark)" sub-archetype was added to `templates/beauty.md` §6 codifying the pattern for future clients.
+
+**The cost of NOT re-sourcing:** the site visually contradicts the client's actual brand. The client opens the demo URL on the cold call and the *first thing* they see is wrong colors. The mid-build re-source costs ~30-45 min and is always worth it.
+
+**Document the re-sourcing in `design.md` §"Palette source provenance"** with: the trigger, the new tier, the date, and what was superseded. This is what makes the palette defensible 6 months later when a new agency member reads the file.
+
+**Document the source in `design.md`.** The "Color tokens" section must name which priority tier the palette came from. A reviewer (or future-you) reading `design.md` should be able to tell whether the tokens were extracted from the client's storefront photo, derived from a vertical default, or invented from the aesthetic sentence. Without that provenance, the palette can't be defended in a client conversation.
 
 ---
 

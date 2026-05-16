@@ -79,6 +79,8 @@ The owner sees a finished product, not a promise. The mental leap from "I need t
 
 **Time target:** 2–4 hours per demo for a standard landing page.
 
+**Step 0 — Capture the intake first.** Before any scaffolding, write the prospect intake at `docs/audit/[prospect-slug].md` following the canonical template in `CHECKLIST.md` §9. The intake is the single source of truth for every image URL, brand-source signal, and DRAFT business detail the scaffold will pull from. Per `DESIGN-BEST-PRACTICES.md` §3 (photo + favicon sourcing) and §5 (palette sourcing), the scaffold step reads this file. Skipping the intake produces drift — the demo builds from memory instead of from a verifiable checklist.
+
 **What to use:**
 - Business name, address, phone, hours from Google Maps / GBP
 - Service descriptions from their GBP listing or Instagram

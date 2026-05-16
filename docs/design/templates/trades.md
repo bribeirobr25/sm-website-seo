@@ -21,6 +21,12 @@
 - **Real photos of the team in branded vehicles** is the single highest-leverage trust photography for trades. Stock-photo trades photography is the loudest tell in the vertical.
 - **Pricing transparency or pricing reassurance** — either publish call-out rates ("£89 + parts for diagnostic visit") or state "Free quote, no obligation." Hiding pricing in trades costs leads.
 
+### Sourcing rules (apply before any visual decision)
+
+- **Photo + favicon sourcing:** `DESIGN-BEST-PRACTICES.md` §3 "Sourcing photos and favicon from the prospect intake" — 7-tier photo priority + 4-tier favicon fallback. For trades, GBP photos of the work van and the team in branded uniform are the highest-leverage real-photo sources (priority 4).
+- **Color palette sourcing:** `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette" — 6-tier color source hierarchy. Trades often have an *existing van wrap or signage* that's already the brand (priority 3); sample it before defaulting to vertical archetypes.
+- **Prospect intake template:** `CHECKLIST.md` §9 — the canonical structure for `docs/audit/[prospect].md`.
+
 ---
 
 ## Table of contents
@@ -87,6 +93,8 @@ Trades has **four** rather than three archetypes because the agency's bread-and-
 This archetype is for national platforms (Angi, Thumbtack, GetNinjas, MyBuilder, Checkatrade). They're aggregators, not operators. Reference UX only — never build this for a small business.
 
 ### Archetype D — Local Single-Operator Trust-Led (the agency's default trades client)
+
+> **Cross-vertical pattern:** This archetype is the trades-specific implementation of the **Solo-Operator meta-archetype** documented in `DESIGN-BEST-PRACTICES.md` §3 — the same IA pattern (operator-named headline · portrait in real workspace · ONE primary CTA · credentials signature line · 5–10 service bullets · explicit service area · pricing reassurance · footer with legal info) recurs across `templates/health.md` Archetype C and `templates/studio.md` Archetype D. ~95 % of trades clients fall into this pattern.
 
 The vast majority of trades clients we'll get in Berlin / Lisbon / Brazil look like this. The IA is intentionally simple.
 
@@ -210,6 +218,25 @@ Trades has **two competing typography traditions**:
 - **Conversion-chain colors must include RED or YELLOW for the phone CTA.** Trades buyers expect emergency-color signaling on the call button.
 - **Heritage colors avoid bright accents entirely.** Banham uses brass — saturated but warm. No bright red, no neon yellow.
 - **Single-operator should choose ONE brand color** and use it sparingly. Trades sites that try three accent colors look amateur.
+
+### Default palette when the client has no brand
+
+Per `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette," when the prospect has no brand guide, no van wrap to sample, no consistent IG presence — the palette falls to the vertical-default tier. Trades splits by **sub-archetype** because emergency plumbers, heritage locksmiths, and single-operator electricians have radically different visual codes. **For ~95 % of agency trades clients (Solo-Operator, Archetype D), pick the sub-archetype based on the trade itself:**
+
+| Sub-archetype | Default palette source | Sample tokens (starting point) | Why this works |
+|---|---|---|---|
+| **Solo plumber / heating / general handyman** (Archetype D — the agency default) | Off-white + dark navy + safety orange | `--color-bg: #fbfaf7` (off-white)<br>`--color-text: #0f1a2e` (deep navy)<br>`--color-accent: #ea580c` (safety orange)<br>`--color-border: #e2e1dc` | Reads "professional, trustworthy, ready to help." Safety orange on the phone CTA without going full-emergency-red. Survives a real van-photo hero. |
+| **Solo electrician** (Archetype D) | Off-white + charcoal + amber/yellow | `--color-bg: #fbfaf7`<br>`--color-text: #1a1a1a` (charcoal)<br>`--color-accent: #ca8a04` (amber yellow — electricity reference)<br>`--color-border: #e2e1dc` | Amber accent reads "electrical" without being childish; pairs with the trade's natural visual associations (live-wire warning yellow, tool handles). |
+| **Locksmith / security specialist** (Archetype A heritage when the business is multi-year — Banham reference) | Deep navy + bone + warm brass | `--color-bg: #f5f2eb` (bone)<br>`--color-text: #1a2233` (deep navy)<br>`--color-accent: #b8946a` (warm brass — keys, hardware)<br>`--color-border: #d9d3c4` | Heritage signal for established locksmiths. Brass references the literal product (keys, locks). Avoid black-on-black "tactical" aesthetic — reads as edgy gun shop, not trusted locksmith. |
+| **Conversion-chain emergency service** (Archetype B — rarely the agency client but documented for completeness) | White + black + emergency red | `--color-bg: #ffffff`<br>`--color-text: #0a0a0a`<br>`--color-accent: #dc2626` (emergency red — Roto-Rooter / Pimlico reference)<br>`--color-border: #e5e5e5` | High-contrast urgency. Red phone-CTA is the conversion. This is the only trades sub-archetype where pure white bg is acceptable — chain conversions optimize for legibility over warmth. |
+| **Specialty repair / phone & device** (uBreakiFix / Timpson reference) | Cool gray + tech blue + white | `--color-bg: #f4f6f9` (cool gray)<br>`--color-text: #1a2433`<br>`--color-accent: #2563eb` (tech blue)<br>`--color-border: #d8dee9` | Signals "technical precision" without being cold. Different from solo-trades palettes — the buyer is comparing against an Apple Store experience, not a local plumber. |
+| **Cleaning / pest control / domestic services** (Archetype D variant) | Soft sage + cream + warm rust | `--color-bg: #f5f2ea` (cream)<br>`--color-text: #2a2a1f`<br>`--color-accent: #b15c2e` (warm rust)<br>`--color-border: #ddd7c8` | Reads "domestic, gentle, eco-aware" — important for cleaning where buyers care about chemicals and pet/child safety. |
+
+**How to pick the sub-archetype:** First, the archetype matrix in `templates/trades.md` §1 (A / B / C / D — most agency clients are D). Then the trade itself. A solo plumber and a solo locksmith are both Archetype D but get nothing wrong by sharing zero accent colors. **The accent color is half the conversion** — emergency-yellow on a plumbing call button reads "I can be there in an hour"; same yellow on a locksmith reads "amateur." Match the accent to the trade's visual conventions.
+
+**Pre-existing van wrap or signage rules:** If the client already has a vehicle wrap or shop signage with a brand color, that color is the brand. Sample it (priority 3 in §5) — don't override with these defaults. The van the customer sees in the driveway is the canonical brand identity in trades, regardless of what's in this template.
+
+**These are starting points, not deliverables.** Once tokens are in `tokens.css`, run them against the client's GBP van/team photo. Document the source tier in `design.md` §"Color tokens."
 
 ---
 

@@ -146,7 +146,8 @@ Some standards are universal (apply to every project). Others activate from a sp
 
 The activation matrix doubles as the audit baseline. A Type 1 site that "fails" the FORMS.md gates isn't failing — those gates don't apply. A Type 3 site that "passes" Type 1 gates is barely halfway. The auditor declares the product type first, then scores only the applicable standards.
 
-See `CHECKLIST.md` §8 for the audit template.
+- `CHECKLIST.md` **§8** — audit template for existing sites (retainer review, take-over of a client's previous site)
+- `CHECKLIST.md` **§9** — prospect intake template for cold-outreach research (`docs/audit/[prospect].md`). Read this *before* scaffolding any new client project — the intake is the source of truth for image sources (§3 of `DESIGN-BEST-PRACTICES.md`) and brand sources (§5).
 
 ---
 
@@ -247,16 +248,19 @@ sm-website-seo/
 clients/[client-slug]/
 ├── CLAUDE.md                          ← Claude Code session entry point
 ├── package.json
-├── astro.config.ts
-├── tailwind.config.ts
+├── astro.config.ts                    ← Wires @tailwindcss/vite plugin (no tailwind.config.ts — Tailwind v4 config lives in CSS via @theme {} in src/styles/tokens.css)
 ├── tsconfig.json
 ├── biome.json
 ├── public/
-│   ├── favicon.svg
-│   ├── images/                        ← Real business photos (WebP, optimized)
+│   ├── favicon.svg                    ← Primary favicon (per DESIGN-BEST-PRACTICES.md §3 priority 1–4)
+│   ├── favicon.ico                    ← Legacy fallback (32×32 PNG with .ico extension)
+│   ├── apple-touch-icon.png           ← iOS home-screen icon (180×180)
+│   ├── robots.txt                     ← Required on every site. Demo phase: `Disallow: /`. Production: `Allow: /` + Sitemap URL
+│   ├── images/                        ← Real business photos (WebP, optimized) — owner logo if available
 │   └── fonts/                         ← Self-hosted fonts (if not using Google Fonts CDN)
 └── src/
     ├── assets/
+    │   ├── images/                    ← All non-static photos (Astro Image pipeline)
     │   └── logo.svg
     ├── components/
     │   ├── layout/
@@ -273,7 +277,8 @@ clients/[client-slug]/
     │       ├── Button.astro
     │       ├── HoursTable.astro
     │       ├── ReviewCard.astro
-    │       └── MapEmbed.astro
+    │       ├── MapEmbed.astro
+    │       └── Placeholder.astro       ← Visible missing-asset slot (see §8)
     ├── layouts/
     │   └── BaseLayout.astro            ← <html>, <head>, SEO meta, fonts
     ├── pages/
@@ -282,10 +287,31 @@ clients/[client-slug]/
     │   └── contact.astro              ← (if multi-page)
     ├── content/
     │   └── config.ts                   ← Astro Content Collections schema
+    ├── lib/
+    │   ├── site.ts                     ← SITE constants + business data (Configuration-as-Code, §5)
+    │   ├── metadata.ts                 ← Page-metadata helper — REQUIRED for Tier 2+ multi-page or multilingual; OPTIONAL for Tier 1 single-page (inline in BaseLayout is fine)
+    │   └── seo/schema.ts               ← Schema.org generators
     └── styles/
         ├── tokens.css                  ← CSS custom properties (colors, fonts, spacing)
         └── global.css                  ← Reset, base styles, typography
 ```
+
+**Required `public/` files on every client site (no exceptions):**
+
+| File | Why mandatory |
+|---|---|
+| `favicon.svg` | Primary icon; modern browsers prefer SVG (per `DESIGN-BEST-PRACTICES.md` §3 favicon priority hierarchy) |
+| `favicon.ico` (32×32 PNG named .ico is fine) | Legacy browser fallback. Generate from `favicon.svg` via `rsvg-convert -w 32 -h 32 favicon.svg -o favicon.ico` |
+| `apple-touch-icon.png` (180×180) | iOS home-screen icon. Same generation command at 180×180. |
+| `robots.txt` | Crawler control. **Demo phase:** `User-agent: *\nDisallow: /` blocks all indexing. **Production:** `User-agent: *\nAllow: /` + `Sitemap: https://[domain]/sitemap-index.xml`. The flip is part of the `noindex` removal at production cutover. |
+
+**Conditional files:**
+
+| File | When required |
+|---|---|
+| `src/lib/metadata.ts` | Tier 2+ multi-page OR multilingual builds. Helper that resolves canonical URLs, locale-aware paths, and `hreflang` alternates from `SITE` constants. **Not required for Tier 1 single-page** — inline metadata in BaseLayout is fine. |
+| `src/i18n/` | Multilingual sites only (per `I18N.md`). |
+| `src/components/layout/LangSwitcher.astro` | Multilingual sites only. |
 
 ### Per-client project structure (Tier 3 — Next.js)
 
@@ -293,8 +319,7 @@ clients/[client-slug]/
 clients/[client-slug]/
 ├── CLAUDE.md
 ├── package.json
-├── next.config.ts
-├── tailwind.config.ts
+├── next.config.ts                     ← Wires @tailwindcss/postcss plugin (no tailwind.config.ts — Tailwind v4 config lives in CSS via @theme {} in src/app/globals.css)
 ├── tsconfig.json
 ├── biome.json
 ├── public/
@@ -414,6 +439,43 @@ components/inputs/Form.astro
 **The rule of thumb:** if a value would need to change for a different client, locale, environment, or business decision — and you'd have to edit *more than one file* — it's hardcoded. Centralize it.
 
 **The exception:** structural literals that *are* the semantic content (HTML tag names, ARIA role values, route slugs that match user expectations) are not configuration. Don't make `<h1>` configurable.
+
+### DRAFT-marker discipline for unconfirmed values
+
+Many client projects start scaffolding *before* the owner conversation resolves every business detail (hours discrepancy, exact prices, MEI/CNPJ, signature dish, exact Trinks slug). Per the working principle in root `CLAUDE.md` — *"Never invent client content. Anything unconfirmed gets a DRAFT tag in the brief and a visible placeholder on the page"* — the `src/lib/site.ts` (or equivalent config file) **must mark unconfirmed values explicitly** so they propagate to both the page and the audit trail:
+
+```typescript
+// src/lib/site.ts — DRAFT-marked example pattern
+export const SITE = {
+  name: 'Jean Souza Barbearia',
+  legalName: 'Jean Souza Barbearia', // DRAFT — confirm Razão Social with owner
+  // ...
+} as const;
+
+export const HOURS = [
+  { day: 'Tuesday', open: '09:00', close: '18:00' }, // DRAFT — IG bio vs GBP discrepancy
+  // ...
+] as const;
+
+export const SERVICES = [
+  { name: 'Corte masculino', priceRange: 'Consulte' }, // DRAFT — price pending owner
+  // ...
+] as const;
+
+export const RATING = {
+  value: 5.0,
+  count: 52,
+  approvedForDisplay: false, // owner-approval gate — flip to true when cleared
+} as const;
+```
+
+**Three rules:**
+
+1. **Every DRAFT in `site.ts` must mirror an open question in `BRIEF.md`.** The two documents track the same unresolved items in different formats; out-of-sync DRAFTs are a sign one was updated and the other wasn't.
+2. **Approval gates use a boolean flag, not a comment.** `RATING.approvedForDisplay = false` is enforceable in code (schema generators check the flag before rendering `aggregateRating`); a comment is not.
+3. **Pre-launch `noindex` removal is gated on zero DRAFT comments in `site.ts`.** Add a grep to the pre-launch checklist: `grep -i "DRAFT" src/lib/` should return empty before flipping the meta tag.
+
+A reference implementation lives in `clients/jean-souza-barber/src/lib/site.ts` — 8 DRAFT-marked fields, every one cross-referenced to `BRIEF.md` §"Open questions for the owner conversation."
 
 ### The 3× rule
 
@@ -535,29 +597,45 @@ Every client project has one file that defines all CSS custom properties. No har
 - **Never pure #000 or #FFF** for text or background — derive from palette.
 - **Per-client customization:** Each client overrides tokens in their own `tokens.css`. Templates use neutral variable names.
 
-### Tailwind and CSS custom properties together
+### Accent token naming — canonical convention
 
-Tailwind v4 uses CSS custom properties natively. Configure the palette in `tailwind.config.ts` to reference client tokens:
+Standardize on **`--color-accent`** (rest state) + **`--color-accent-deep`** (darker variant for hover and active/pressed states) across every client project. Porto dos Ribeiros + Jean Souza Barber both use this naming after a 2026-05-15 cleanup.
 
-```typescript
-// tailwind.config.ts
-export default {
-  theme: {
-    extend: {
-      colors: {
-        accent:     'var(--color-accent)',
-        bg:         'var(--color-bg)',
-        surface:    'var(--color-surface)',
-        textPrimary:'var(--color-text)',
-        textMuted:  'var(--color-text-muted)',
-        border:     'var(--color-border)',
-      },
-    },
-  },
-};
+**Avoid `--color-accent-hi`.** The `-hi` suffix is ambiguous — it can read as "higher emphasis" (lighter) or "high state" (active). Worse, when interpreted as "lighter" and used for hover on a tinted button with white text, it usually fails WCAG AA contrast (see `DESIGN-BEST-PRACTICES.md` §5 — "Lighter-on-hover is a WCAG anti-pattern"). Use `accent-deep` for the hover/active darker variant; if a *lighter* variant is needed for non-button contexts (e.g., text accent on a dark background), use a more specific name like `--color-accent-text` or `--color-accent-bright` and document its non-hover purpose in the token comment.
+
+```css
+:root {
+  --color-accent:      #dc2626;   /* rest state — used on button fills, link colors, focus rings */
+  --color-accent-deep: #b91c1c;   /* hover + active — darker variant, contrast preserved or improved */
+
+  /* If a lighter variant is genuinely needed (rare), name it for its purpose: */
+  --color-accent-text: #ef4444;   /* lighter accent for text-on-dark-bg only — NEVER for button fills */
+}
 ```
 
-Then in templates: `bg-accent`, `text-textPrimary`, `border-border`. Never `bg-[#c04a1e]`.
+**Worked example:** Jean Souza Barber initially used `--color-accent-hi: #ef4444` (lighter) for button hover with white text. White on `#ef4444` is 3.76:1 — fails WCAG AA for body-size text. Renamed and re-valued to `--color-accent-deep: #b91c1c` (darker) → 6.50:1 — comfortably AA. The fix was a single tokens.css line; the design pattern is what matters.
+
+### Tailwind v4 — tokens live in CSS, not in a config file
+
+Tailwind v4 is configured **in CSS** via the `@theme {}` block. There is no `tailwind.config.ts` (the old v3 pattern). Tokens declared inside `@theme {}` are accessible both as CSS custom properties (`var(--color-accent)`) and as auto-generated Tailwind utilities (`bg-accent`, `text-text`, `border-border`).
+
+```css
+/* src/styles/tokens.css — single source of truth for the client palette */
+@import "tailwindcss";
+
+@theme {
+  --color-accent:      #c04a1e;
+  --color-bg:          #fafaf5;
+  --color-surface:     #ffffff;
+  --color-text:        #1a1a1a;
+  --color-text-muted:  #6b6b6b;
+  --color-border:      #e5e5e5;
+}
+```
+
+Then in templates: `bg-accent`, `text-text`, `border-border`. Never `bg-[#c04a1e]` — utility classes only, so the palette stays swappable.
+
+**Migration note:** any `tailwind.config.ts` you find in older scaffolds or copy-paste tutorials is v3-era and should be deleted; move its `theme.extend.colors` block into `@theme {}` in `tokens.css`.
 
 ---
 
@@ -586,6 +664,42 @@ Missing any of these states is a bug, not a stylistic choice.
 ### CTA buttons — one primary per section
 
 Never have two competing primary CTA buttons in the same visual area. Pick one. The other becomes secondary (outline or ghost style).
+
+### Reusable cross-client UI patterns
+
+A small number of UI components recur across nearly every agency build. Document them once; lift them into any new project without re-deriving.
+
+#### `<Placeholder>` — visible missing-asset slot
+
+Per `DESIGN-BEST-PRACTICES.md` §3 "Sourcing photos and favicon from the prospect intake," real photos must come from one of seven priority tiers — and when none of them are reachable at scaffold time, the slot gets a **visible placeholder**, *not* a stock photo and *not* a silent empty `<div>`. The Placeholder component is the canonical rendering of "this is where a real photo goes; we know it; the human knows it."
+
+**Visual contract:**
+- Dashed border in `--color-border` — reads instantly as "unfinished" without breaking the layout
+- Diagonal-stripe SVG pattern at low opacity — reinforces "placeholder" without being noisy
+- Italic label in `--color-text-muted` using `--font-display` — describes the specific photo expected ("Foto do Jean na cadeira", not just "Foto")
+- Respects an `aspect` prop (`video` · `square` · `portrait` · `wide`) so the layout shows the final image's footprint, preventing CLS when the photo lands
+- `role="img"` with `aria-label` — screen readers announce the missing slot meaningfully
+
+**Reference implementation:** `clients/jean-souza-barber/src/components/ui/Placeholder.astro` (~40 lines, zero dependencies).
+
+**Anti-pattern:** stock photos as "interim" content. The moment a stock photo lands on the page, the slot stops being visibly unfinished — and *interim* becomes *production* through neglect. A dashed-border placeholder forces resolution; a stock photo enables drift.
+
+**Migration to real photo:** swap `<Placeholder label="Foto do Jean" aspect="portrait" />` for `<Image src={heroPortrait} alt="..." widths={[...]} />` (Astro `<Image>`). The `aspect` prop maps directly to the image's intrinsic ratio — no layout shift.
+
+#### Sticky mobile CTA + desktop floating CTA pair
+
+For any Type 1–2 build where the conversion is a single non-form action (call / WhatsApp / book external), the mobile and desktop conversion patterns diverge:
+
+- **Mobile (< 768 px):** a sticky bottom-bar with the primary CTA pill + secondary CTA icon. Always visible while scrolling, never blocks content.
+- **Desktop (≥ 768 px):** a floating bubble in the bottom-right with the secondary CTA (WhatsApp / Call). The primary CTA lives in the header.
+
+**Reference implementation:** `clients/jean-souza-barber/src/components/ui/StickyMobileCta.astro` — handles both viewports in a single component using Tailwind `md:` breakpoints. ~50 lines including inline SVG icons.
+
+**When to use:** every solo-operator build per `DESIGN-BEST-PRACTICES.md` "Solo-Operator meta-archetype" (cross-vertical pattern, ~70–95 % of agency clients). When NOT to use: multi-CTA hero patterns (e.g., Equinox-style premium with `BOOK` + `MEMBER LOGIN` + `LOCATIONS` — the sticky pattern dilutes their hierarchy).
+
+#### Reusing across clients
+
+Don't copy these components file-by-file from a prior client. Each project should *type out* its own Placeholder / StickyMobileCta with the local tokens. The component bodies are short (~40–50 lines each) and the discipline forces token-name reconciliation per project. **Copy-paste between clients is how stale tokens propagate** (the same way the `--color-secondary` vs `--color-open` inconsistency happened in Porto — see `docs/audit/porto-dos-ribeiros-2026-05-14.md` §3.4 for the cautionary tale).
 
 ### Semantic HTML elements
 
@@ -680,6 +794,106 @@ const mapsHref = `https://www.google.com/maps/search/?api=1&query=${
          widths={[400, 800]} format="webp" quality={75} />
 </a>
 ```
+
+### Image-extraction operational toolkit
+
+These commands recur across every client scaffold (favicon generation, color sampling for brand-sourced palettes per `DESIGN-BEST-PRACTICES.md` §5, logo cropping). All native macOS or homebrew, zero npm dependencies.
+
+#### SVG → PNG (favicons, fallback icons)
+
+```bash
+# 32×32 favicon.ico fallback
+rsvg-convert -w 32 -h 32 favicon.svg -o favicon.ico
+
+# 180×180 Apple touch icon
+rsvg-convert -w 180 -h 180 favicon.svg -o apple-touch-icon.png
+
+# Install: brew install librsvg
+```
+
+#### Dominant color sampling (for tier-2 / tier-3 / tier-4 palette sourcing per `DESIGN-BEST-PRACTICES.md` §5)
+
+```bash
+# Save this as scripts/sample-colors.py per client when needed
+python3 <<'EOF'
+from PIL import Image
+from collections import Counter
+img = Image.open('public/images/logo.png').convert('RGB')
+pixels = list(img.getdata())
+c = Counter(pixels)
+print("Top 10 most common pixel colors:")
+for color, count in c.most_common(10):
+    r, g, b = color
+    print(f"  #{r:02x}{g:02x}{b:02x}  RGB({r:3},{g:3},{b:3})  {100*count/len(pixels):.2f}%")
+EOF
+
+# Install PIL: pip3 install Pillow (macOS python3 has pip3 by default)
+```
+
+For finding **accent colors** that don't dominate by pixel count (e.g., the small red "BARBEARIA" wordmark on Jean's logo accounted for only 0.43% of pixels):
+
+```bash
+python3 <<'EOF'
+from PIL import Image
+from collections import Counter
+img = Image.open('public/images/logo.png').convert('RGB')
+pixels = list(img.getdata())
+# Find any reddish pixels (red dominant over green and blue by 30+)
+reds = [(r,g,b) for r,g,b in pixels if r > 150 and r > g + 30 and r > b + 30]
+print(f"Reddish pixels: {len(reds):,} ({100*len(reds)/len(pixels):.2f}%)")
+c = Counter(reds)
+for color, count in c.most_common(5):
+    r, g, b = color
+    print(f"  #{r:02x}{g:02x}{b:02x}  count={count:,}")
+EOF
+```
+
+Adapt the filter (`r > g + 30`) to find any color family (green, blue, yellow). The pattern: filter pixels by hue dominance, then count occurrences of remaining pixels.
+
+#### Logo cropping (full logo → shield-only for small favicon use)
+
+```bash
+python3 <<'EOF'
+from PIL import Image
+img = Image.open('public/images/logo.png')
+# Crop region in pixels: (left, top, right, bottom)
+# Adjust per logo — Jean's shield was at (300, 100, 914, 700) in a 1214×1214 master
+crop = img.crop((300, 100, 914, 700))
+crop.save('public/images/logo-shield.png')
+# Then resize to favicon dimensions
+crop.resize((32, 32), Image.Resampling.LANCZOS).save('favicon.png')
+crop.resize((180, 180), Image.Resampling.LANCZOS).save('apple-touch-icon.png')
+EOF
+```
+
+#### WCAG 2.2 AA contrast verification
+
+```bash
+python3 <<'EOF'
+def lum(hex_color):
+    h = hex_color.lstrip('#')
+    r, g, b = [int(h[i:i+2], 16) / 255.0 for i in (0, 2, 4)]
+    def c(x): return x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4
+    return 0.2126 * c(r) + 0.7152 * c(g) + 0.0722 * c(b)
+
+def ratio(c1, c2):
+    l1, l2 = lum(c1), lum(c2)
+    return (max(l1, l2) + 0.05) / (min(l1, l2) + 0.05)
+
+# Edit per client palette:
+pairs = [
+    ('#ffffff', '#131418', 'Body text on bg'),
+    ('#ffffff', '#dc2626', 'White on accent (CTA button)'),
+    ('#ffffff', '#b91c1c', 'White on accent-deep (hover)'),
+]
+for fg, bg, desc in pairs:
+    r = ratio(fg, bg)
+    status = "✅ AA" if r >= 4.5 else ("🟡 AA-large" if r >= 3.0 else "❌ FAIL")
+    print(f"  {desc}: {r:.2f}:1  {status}")
+EOF
+```
+
+Run this **before every palette commit** when re-sourcing per `DESIGN-BEST-PRACTICES.md` §5. Per-client design.md should embed the resulting contrast table in the §"Color tokens" section (Jean's design.md shows the canonical format).
 
 ---
 
@@ -976,6 +1190,8 @@ dist/
 
 ## 17. Deployment
 
+> **Before first deploy:** drop in the agency-template infrastructure scaffold per `INFRASTRUCTURE.md` — `vercel.json` with security headers, `404.astro` + `500.astro`, `.github/workflows/ci.yml`, uptime monitor wired. The scaffold takes 30–45 min at project setup and saves ~2 hours of rediscovery during the production cutover gate.
+
 ### Vercel workflow
 
 **Demo phase (pre-client approval):**
@@ -1184,9 +1400,10 @@ This project inherits all standards from:
 - `docs/design/TECH.md` — stack, code organization, Configuration-as-Code, naming, deployment
 - `docs/design/PERFORMANCE.md` — perf budgets, image rules, font self-hosting, LCP diagnostic
 - `docs/design/ACCESSIBILITY.md` — WCAG 2.2 AA, contrast, keyboard, focus trap, reduced motion
-- `docs/design/SECURITY.md` — TLS, headers, contact-form hardening, secret rotation, German legal
+- `docs/design/SECURITY.md` — TLS, headers, contact-form hardening, secret rotation, German legal (DSGVO/Impressum), Brazilian legal (LGPD/Razão Social)
 - `docs/design/RELIABILITY.md` — error handling, recovery, third-party degraded mode, monitoring, backup
 - `docs/design/QUALITY.md` — `pnpm validate` pipeline (pick the tier), CI/CD, coverage targets
+- `docs/design/INFRASTRUCTURE.md` — agency-template scaffold drop-in (`vercel.json` + 404/500 + CI workflow + uptime monitoring + rollback drill)
 - `docs/design/FORMS.md` — form validation, sanitization, honeypot, rate limit, idempotency (if forms present)
 - `docs/design/ANALYTICS.md` — event tracking, consent gating, retainer reporting
 - `docs/design/SEO.md` — local SEO, schema, GBP integration

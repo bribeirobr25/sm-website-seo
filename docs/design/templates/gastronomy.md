@@ -19,6 +19,12 @@
 - **Outsource the transactional layer.** Booking → SevenRooms, OpenTable, TheFork. Ordering → Toast, Square, Olo. The site owns the brand; the platforms own the cart. (Exception: Type 3+ clients building their own booking — see `FORMS.md`.)
 - **Place identity is not optional.** A gastronomy site without one place-identity detail (district name, transit line, neighborhood landmark, regional motif tied to cuisine) reads as generic. One detail is enough — see `DESIGN-BEST-PRACTICES.md` human-touch checklist.
 
+### Sourcing rules (apply before any visual decision)
+
+- **Photo + favicon sourcing:** `DESIGN-BEST-PRACTICES.md` §3 — 8-tier photo + 5-tier favicon priority. **Gastronomy note:** restaurants usually have their own existing site (tier 2) which outranks booking platforms — try the existing website first, *then* Resy / OpenTable / TheFork / iFood / Lieferando profile pages (tier 3) if no website exists or its photo gallery is empty. Reservation-platform pages often have a curated hero food photo + verified menu structure.
+- **Color palette sourcing:** `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette" — 6-tier color source hierarchy. Document the chosen tier in the per-client `design.md`.
+- **Prospect intake template:** `CHECKLIST.md` §9 — the canonical structure for `docs/audit/[prospect].md`. The intake is the source of truth for every image URL the scaffold pulls from.
+
 ---
 
 ## Table of contents
@@ -191,6 +197,23 @@ Each archetype has 2–3 known-good color directions. Per-client `design.md` pic
 - **Never pure black text** on cream. Slightly warm near-black (`#1a1814` etc.) is softer for body copy.
 - **The accent color is the conversion path.** Reserve it for the primary CTA. Spreading it on eyebrows, dividers, or decorative elements dilutes the call to action — see `DESIGN-BEST-PRACTICES.md` color rules.
 
+### Default palette when the client has no brand
+
+Per `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette," when the prospect has no brand guide, no consistent IG color grade, and no existing website palette to sample — the palette falls to the vertical-default tier. Gastronomy splits by **sub-archetype** because a sit-down trattoria, a fast-casual chain, and a craft cocktail bar demand visibly different color worlds even though all three sit in this vertical:
+
+| Sub-archetype | Default palette source | Sample tokens (starting point) | Why this works |
+|---|---|---|---|
+| **Heritage / family restaurant** (owner-operated, multi-decade reputation, comfort cuisine) | Warm earth + terracotta + cream paper | `--color-bg: #f7f0e5` (warm cream)<br>`--color-text: #1f1a14` (warm near-black)<br>`--color-accent: #c2410c` (terracotta)<br>`--color-border: #e5d9c5` | Anchored to the Porto dos Ribeiros reference implementation. Reads "home cooking" without falling into Tuscan-cliché. Survives food photography that includes red sauces and dark meats. |
+| **Modern conversion-first** (fast-casual, app-driven, ordering-led) | Cream + sage + bright lime CTA | `--color-bg: #faf6ef`<br>`--color-text: #1a1814`<br>`--color-accent: #84cc16` (bright lime — Sweetgreen-derived)<br>`--color-border: #d6cfc2` | Conversion-led without being aggressive. The lime accent reads "fresh" and is visually loud enough to drive ordering. Avoid the brand color matching the food (don't pair a coral accent with a chicken-sandwich brand). |
+| **Premium editorial / heritage storytelling** (Dishoom-style, signature dish, narrative-driven) | Deep cocoa + parchment + saffron | `--color-bg: #1f1611` (deep cocoa)<br>`--color-text: #efe3cf` (parchment)<br>`--color-accent: #d4a635` (saffron)<br>`--color-border: #3a2c1f` | Dark-mode-by-design, signals "serious, established, atmospheric." Only use when the venue has the actual atmospheric lighting and the food photography is shot in low light to match. Wrong choice for a fluorescent-lit deli. |
+| **Bakery / café / patisserie** (morning trade, product-led, photogenic display case) | Cream + cocoa brown + soft pink | `--color-bg: #fbf6f0`<br>`--color-text: #2c1f17` (cocoa)<br>`--color-accent: #d4a59a` (dusty rose / soft pink)<br>`--color-border: #e8ddd2` | Female-leaning warm, holds up against pastry and viennoiserie photography (golden + cream-on-cream). Avoid the saturated berry-pink trap — that reads bachelorette-party, not bakery. |
+| **Bar / craft cocktail / wine bar** (evening trade, low light, brand-led) | Deep navy / midnight + bone + brass | `--color-bg: #15151c` (midnight)<br>`--color-text: #ebe2d3` (bone)<br>`--color-accent: #c89a4f` (warm brass)<br>`--color-border: #2a2a36` | Reads "evening, intentional, adult." Brass-not-gold avoids the wedding-venue trap. Holds cocktail glassware and low-light interior shots cleanly. |
+| **Coffee shop / specialty roaster** (Blue Bottle / Coffee Lab adjacent — product education, subscription-friendly) | Warm white + espresso brown + single saturated accent | `--color-bg: #f9f4ec`<br>`--color-text: #2a1c14` (espresso)<br>`--color-accent: #1e40af` (deep blue — Blue Bottle reference) OR `#c2410c` (burnt orange)<br>`--color-border: #d8cfc0` | The accent choice signals positioning — blue reads "modernist, third-wave precision"; orange reads "warm, craft, neighborhood." Pick one based on the client's actual stance, not aesthetic preference. |
+
+**How to pick the sub-archetype:** Use the archetype matrix in `templates/gastronomy.md` §1 first (Immersive / Conversion / Heritage). Then ask: what does the *physical space* look like in the GBP photos? A Heritage Storytelling brand in a fluorescent-lit suburban deli is the wrong choice — the venue contradicts the palette. Always match palette to the venue, not the aspiration.
+
+**These are starting points, not deliverables.** Once tokens are in `tokens.css`, sample the client's actual food photography against the bg color — red sauces against a sage bg create unfortunate optical clashes; saffron rice against deep cocoa reads warmer than the swatch suggests. Adjust by 5–15 % to harmonize. Document the source tier in `design.md` §"Color tokens" (priority 3 = sampled from venue/signage; priority 5 = vertical-default starting point).
+
 ---
 
 ## 7. Copy voice cues
@@ -315,19 +338,17 @@ These are AI-template tells *specific to the gastronomy vertical* — beyond the
 - The 11000px scroll is for an established brand with content to fill it. Small clients should resist the temptation to fake editorial depth.
 - The welcome modal is an extra page-load gesture; only use when the narrative is strong enough to justify it.
 
-### 9.4 Reference implementations — Porto dos Ribeiros variants
+### 9.4 Archetype patterns — what each looks like in practice
 
-Our own client work doubles as worked examples of each archetype, stripped down to a single-location restaurant. Use these as the **starting scaffold** for new gastronomy clients — same business data, three different visual directions — rather than starting any new build from scratch.
+When you scaffold a new gastronomy client, pick the archetype that matches the business (use §10 decision matrix below) and apply the patterns below. A live reference implementation for the gastronomy vertical lands in Batch 3 of the agency-standards expansion (see `docs/audit/AGENCY-STANDARDS-EXPANSION-PLAN-2026-05-16.md`); until then, the patterns alone are the source of truth.
 
-| Archetype | Directory | What to copy when starting a new gastronomy client |
-|-----------|-----------|-----------------------------------------------------|
-| **A — stripped editorial** | `clients/porto-dos-ribeiros/` | The safe-default starting point. Two-column hero, single review quote, footer brand motto in italic, azulejo place-identity SVG, conservative palette. Single nav item (logo doubles as home link). |
-| **B — modern conversion-first** | `clients/porto-dos-ribeiros-v2/` | When the client takes orders / does delivery / has volume. Full-bleed photo hero with dark gradient + single accent CTA, three-column menu card grid, delivery-first Visit section, "Salve nosso WhatsApp" subscribe footer block. |
-| **C — heritage editorial** | `clients/porto-dos-ribeiros-v3-heritage/` | When the client has a real story (year of founding, founder presence, distinctive cultural roots). Dark theatrical palette + parchment text, native `<dialog>` welcome modal with vintage-postcard styling + sessionStorage dismissal, alternating editorial menu spreads, circular "Since [year]" stamp in Reviews, multi-paragraph Visit narrative. |
+| Archetype | Pattern signature |
+|-----------|-------------------|
+| **A — stripped editorial** | Safe default for single-location restaurants. Two-column hero, single review quote, footer brand motto in italic, place-identity SVG (e.g. azulejo for PT, watercolor for FR bistro), conservative cream/terracotta-or-similar palette. Single nav item (logo doubles as home link). |
+| **B — modern conversion-first** | When the client takes orders, does delivery, or has volume. Full-bleed photo hero with dark gradient + single accent CTA, three-column menu card grid, delivery-first Visit section, "Save our WhatsApp" subscribe footer block. Bright accent (lime/coral/etc.) on neutral base — verify WCAG 2.2 AA on the CTA before shipping (white-on-lime fails AA; use darker text or deeper accent — see `DESIGN-BEST-PRACTICES.md` §Lighter-on-hover is a WCAG anti-pattern). |
+| **C — heritage editorial** | When the client has a real story (≥ 10 years, founder presence, distinctive cultural roots, charitable mission). Dark theatrical palette + parchment text, native `<dialog>` welcome modal with vintage-postcard styling + `sessionStorage` dismissal, alternating editorial menu spreads, circular "Since [year]" stamp in Reviews, multi-paragraph Visit narrative. |
 
-**Each variant is a complete independent Astro project.** Same content layer (`lib/site.ts`, schema, image assets, business data) — different visual layer (tokens, hero, header, footer, section components, copy voice).
-
-**The cold-call pattern** for these three variants is documented in `SALES.md` §3 (The pitch call).
+**The cold-call pattern** — proposing two or three variants to the same prospect so they pick the visual direction — is documented in `SALES.md` §The pitch call. The previous worked example (Porto dos Ribeiros, three Astro variants A/B/C) is archived at `docs/clients/archived/porto-dos-ribeiros/` for design.md/BRIEF.md reference; the code was deleted because it pre-dated the legal/KPI/monitoring rule expansion and is no longer template-quality.
 
 ---
 

@@ -19,6 +19,12 @@
 - **Stock beauty photography is visible from orbit.** Generic blonde-with-perfect-highlights, rocks-and-candles spa stock, "stylist holding scissors" pose — these are the loudest AI-template tells in this vertical.
 - **Before / after photos** are powerful but require real client consent in writing AND must be the same person. Cross-faded "before from one client, after from another" is fraud-adjacent and looks fake.
 
+### Sourcing rules (apply before any visual decision)
+
+- **Photo + favicon sourcing:** `DESIGN-BEST-PRACTICES.md` §3 — 8-tier photo + 5-tier favicon priority. **Beauty-specific: try Trinks / Booksy / Treatwell / Fresha profile pages FIRST** (tier 3) — these booking platforms are WebFetch-accessible and host the canonical master logo + structured business data. Instagram (tier 4) is the richest portfolio source once you accept manual download (IG blocks unauthenticated WebFetch). **Before-after photos require explicit written consent regardless of source.** Worked example: Jean Souza Barber's Trinks page yielded a 1214×1214 logo + corrected hours + address landmark in one WebFetch call.
+- **Color palette sourcing:** `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette" — 6-tier color source hierarchy. Beauty studios often have *strong existing identity in IG feed grade* (priority 4); sample before falling to vertical default (priority 5).
+- **Prospect intake template:** `CHECKLIST.md` §9 — the canonical structure for `docs/audit/[prospect].md`.
+
 ---
 
 ## Table of contents
@@ -45,6 +51,8 @@
 | **C. Atmospheric Sensory Premium** | Sensory mood, spa/wellness positioning, premium feel | Reserve experience | Highest — atmospheric photography is hard, requires real venue with real lighting design |
 
 **Default for small local salons / barbers:** Archetype A (stripped down) or B (if the client takes online bookings via Fresha / Treatwell / Booksy). Archetype C only fits real spa/wellness clients with a venue worth photographing in low light.
+
+> **Cross-vertical pattern:** Single-chair barber / one-stylist salon builds are the beauty-specific implementation of the **Solo-Operator meta-archetype** documented in `DESIGN-BEST-PRACTICES.md` §3 (the same IA pattern recurs in `templates/trades.md` Archetype D, `templates/health.md` Archetype C, `templates/studio.md` Archetype D). Reference implementation: `clients/jean-souza-barber/` (single-chair barber, 10-year retention, scaled-down Archetype A).
 
 ---
 
@@ -192,6 +200,24 @@ Archetype B sits between, often using both — cursive script for brand voice + 
 - **Never pure white background** for atmospheric or editorial beauty (Archetype C, A). Pure white kills the moodiness Archetype C needs and the photo richness Archetype A needs.
 - **The accent color is the booking CTA.** Reserve it. Don't spread it on dividers or eyebrows.
 - **Skin tones in photography must read true** — over-warming or over-cooling the photo color grade distorts the work. Color-grade photos against the brand bg, not in isolation.
+
+### Default palette when the client has no brand
+
+Per `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette," when the prospect has no brand guide, no existing website, and no consistent Instagram color grade — the palette falls to the vertical-default tier. Beauty splits by **sub-archetype** because a barber, a salon, and a spa demand visibly different color worlds even though all three sit in this vertical:
+
+| Sub-archetype | Default palette source | Sample tokens (starting point) | Why this works |
+|---|---|---|---|
+| **Old-school barber** (solo or two-chair, multi-year retention) | Warm wood + leather + brass + cream paper | `--color-bg: #fdfbf7` (warm cream)<br>`--color-text: #2a1f17` (deep coffee)<br>`--color-accent: #8b5e34` (warm caramel)<br>`--color-border: #e1d4c0` (warm beige) | Mirrors the actual materials inside a traditional barbershop. Avoids the hipster-fade trap (Edison bulbs, neon, tactical-skull). |
+| **Modern barber / unisex studio** | Concrete + bone + oxblood | `--color-bg: #f5f3f0` (bone)<br>`--color-text: #1a1a1a`<br>`--color-accent: #6b1f1f` (oxblood)<br>`--color-border: #d8d4ce` | Architectural Archetype A sub-variant. Reads contemporary without being trendy. |
+| **Modern urban barber (dark)** — sport-influenced, masculine, multi-year retention with modern brand | Black + white + red (saturated sport-red) | `--color-bg: #131418` (near-black, slightly blue-tinted)<br>`--color-text: #ffffff`<br>`--color-accent: #dc2626` (vibrant red)<br>`--color-text-muted: #a8acb3`<br>`--color-text-subtle: #7a7f88` (for footnotes — passes WCAG AA on bg) | Dark-mode-by-design. Reads "modern, urban, established neighborhood pillar without veering hipster-fade." Use when the client's actual brand (logo, signage, IG grade) is dark + white + saturated red. Reference: `clients/jean-souza-barber/` — palette sampled directly from Jean's existing logo (§5 tier 3). The accent red is the same energy signal as a fire-engine truck or sport jersey; pair with warm family-friendly copy to avoid edgy-bro register. |
+| **Salon (women's hair, color specialist)** | Cream + blush + warm gold | `--color-bg: #fbf6f0`<br>`--color-text: #2c1f1f`<br>`--color-accent: #b8946a` (warm gold)<br>`--color-text-muted: #8a6e5f` | Female-leaning premium, soft, photographically forgiving for hair work. |
+| **Day spa / aesthetic clinic** | Sage + stone + soft water | `--color-bg: #f4f1ec` (warm stone)<br>`--color-text: #2d3530`<br>`--color-accent: #6b8071` (sage)<br>`--color-border: #d8d2c8` | Clinical-but-warm, signals wellness without going full minty-cliché. Mint-modern (Archetype B) is the alternative if the client is more clinical than spa. |
+| **Premium / atmospheric spa** | Deep cocoa + parchment + warm gold | `--color-bg: #1f1611` (deep cocoa)<br>`--color-text: #efe3cf` (parchment)<br>`--color-accent: #c89a4f` (warm gold) | Direct adaptation of AIRE Ancient Baths' palette. Only use when the venue itself has the atmospheric lighting to back it up — wrong choice for a fluorescent-lit suburban salon. |
+| **Nail / lash / aesthetic studio** | Cream + dusty rose + soft black | `--color-bg: #faf5f1`<br>`--color-text: #2a1f25`<br>`--color-accent: #c6927e` (dusty rose) | Friendly female-leaning without going hot-pink trendy. Holds up against close-up nail photography (which is high-saturation by default). |
+
+**How to pick the sub-archetype:** Use the same trigger as `templates/beauty.md` §1 archetype matrix — what is the client's actual offering, who is the actual customer, what does their physical space look like in the GBP photos? A 60-year-old single-chair barber and a Marylebone blowdry bar are both "Beauty" but get nothing wrong by sharing zero color tokens.
+
+**These are starting points, not deliverables.** Once tokens are in `tokens.css`, run them against the client's storefront photo (sample with a color picker) and adjust by 5–15 % to harmonize. Document the adjustment in `design.md` §"Color tokens" with the source tier you used (priority 3 = sampled from storefront; priority 5 = vertical-default starting point + adjustment).
 
 ---
 
