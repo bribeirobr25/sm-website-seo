@@ -356,3 +356,121 @@ No canonical worked example in the benchmark (no solo-practitioner sites in §7.
 ---
 
 *Trust is the product. Show real credentials, real operator, real specialty, real city. Skip the stock photos. Lead with the Erstberatung CTA.*
+
+---
+
+## 11. Measurement — KPIs that matter for Professional Services
+
+**Applies to:** every retainer-tier pro-services client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for lawyers, accountants, advisors, and brokers and how they wire.
+
+**Legal callout:** Pro-services confidentiality is the brand. Any client-identifying form payload (case description, matter type, finances) is server-side only — never serialize into analytics events. See `LEGAL.md` §Disclaimer + when to escalate to a real lawyer.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Consultation-request rate (Erstberatung / discovery-call form completion) | Conversion | GA4 `contact_form_completed` (consultation form) | ≥ 2% of sessions (low — premium qualifying gate) |
+| 2 | Inquiry-to-matter conversion (qualified inquiry → engaged client) | Conversion (business) | CRM / manual | ≥ 35% inquiry-to-engage |
+| 3 | Practice-area page split (which expertise drives inquiries) | Acquisition | GA4 `page_viewed` filtered to `/leistungen/[area]` or `/practice-areas/[area]` | Identifies the 1-2 specialties to feature |
+| 4 | Credentials-page engagement (% sessions reading credentials deeply) | Conversion (trust signal) | Clarity scroll depth on `/team` or `/about` | ≥ 50% reach 75% scroll |
+| 5 | Direct-traffic share (referral / word-of-mouth attribution proxy) | Acquisition | GA4 source=direct | ≥ 40% — pro services is referral-driven |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (solo lawyer with discovery-call form) | GSC + Clarity + GA4 | KPIs #1, #3, #4, #5 |
+| Tier 2 (Astro — most common) | GSC + Clarity + GA4 | KPIs #1, #3, #4, #5 + CRM for #2 |
+| Tier 3 (firm with client-portal or productized service) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`consultation_request_completed`) · top landing pages by practice area · source/medium attribution (direct vs organic vs referral) · device split (skews desktop for pro-services).
+
+**Clarity:** heatmaps on consultation CTA + credentials page + practice-area pages · scroll depth on long-form credentials · recordings filtered to consultation-form abandonment.
+
+**PostHog (Tier 3):** consultation → engaged-client funnel · practice-area-popularity ranking · referral-source cohort table.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `consultation_request_started` | Erstberatung/consultation form first field focused | `practice_area_slug`, `source_page` |
+| `consultation_request_completed` | Form submitted (200 from endpoint) | `practice_area_slug`, `source_page` |
+| `practice_area_viewed` | Practice-area page LCP fires | `practice_area_slug` (`familienrecht` / `arbeitsrecht` / `steuerrecht` / etc.) |
+| `credentials_viewed` | Credentials / Team section enters viewport | `staff_slug` |
+| `case_study_viewed` | Anonymized case study section enters viewport (NO client names) | `case_study_slug` |
+
+**Confidentiality rule:** never capture matter description, case content, financial details, or any client-identifying free-text as event parameters. The form payload travels server-side only.
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Consultation form payload never serializes case description / financial info into analytics events
+- [ ] Sentry `sendDefaultPii: false` confirmed (pro-services is the highest-stakes vertical for PII leakage)
+- [ ] Case studies (if any) are anonymized — no client names, redacted identifying details
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring + per-jurisdiction legal pages
+
+### 11.6 Integrations applicable to Professional Services
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Resend** | Type 2+ (Erstberatung / consultation request) | Auto-reply confirming the request was received + expected response window |
+| **Calendly** | Optional — consultation scheduling | Most solo practitioners use it; deep-link with UTM-preserve. Replaces own booking system for Tier 2 builds. |
+| **Sentry** | Tier 2+ (full SDK) | Standard agency setup. `send_default_pii: false` non-negotiable — pro-services is the second-highest stakes vertical for PII (after health). |
+| **PostHog** | Tier 3+ (firm with client portal / productized service) only | Consultation → engaged-client funnel; never include case content / matter description in events |
+| **Neon** | Tier 3+ firm with client portal | Confidential matter data — encryption at rest mandatory. EU region for DE/PT/EU clients. |
+| **Upstash** | Tier 2+ consultation form | Rate-limit 5/60s |
+| **Stripe** | Type 4+ — productized service billing | Subscription for recurring services (tax filing, bookkeeping); SEPA + Pix per jurisdiction |
+
+**Confidentiality rule:** never store matter description, case content, or client-identifying free-text in any agency-side analytics or feature-flag system. Form payload travels to CRM + email (server-side only); never replicated to PostHog or Sentry events.
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Low leverage**.
+
+- **Default targets:** Copy-link + LinkedIn (B2B-adjacent)
+- **IG embed recommended:** ❌ No — confidentiality posture
+- **Placement:** subtle Copy-link in footer · LinkedIn share on About-the-firm / Methodology pages only (not on case studies or testimonials)
+- **OG image priority:** office exterior or operator portrait (with consent) at 1200×630. NOT generic stock "lawyer at desk." Real, identifiable, professional.
+- **Copy-link copy:** "[Firm name] — [specialty] in [city]" — neutral
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `LegalService` — lawyer / law firm
+- `AccountingService` — accountant / bookkeeper
+- `FinancialService` — financial advisor / broker
+- `InsuranceAgency` — insurance broker
+- `Notary` — notary public (DE / PT)
+- `ProfessionalService` — generic fallback
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  "name": "[Firm name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "areaServed": "[city]",
+  "openingHoursSpecification": [...],
+  "potentialAction": { "@type": "ContactAction", "target": "https://[calendly URL]" },
+  "knowsAbout": ["Familienrecht", "Arbeitsrecht", "Steuerrecht"]
+}
+```
+
+`knowsAbout` is critical — surfaces practice areas to Google for specialty-search ranking. Use the local-language terms (Familienrecht in DE, Direito de família in PT/BR).
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Lawyer` / `Tax preparation service` / `Accountant` / `Financial planner` / `Insurance agency` / `Notary public` (pick most specific)
+- **GBP secondary categories:** specialty (a lawyer might add `Family law attorney`, `Divorce lawyer`)
+- **Per-jurisdiction GBP attributes:** appointment-only, online consultations, languages spoken (very important for expat clients)
+- **Keyword pattern (DE):** `[specialty] anwalt [stadt]` · `[specialty] anwalt [stadtteil]` · `[specialty] berater [stadt]`
+- **Keyword pattern (BR):** `advogado [especialidade] [cidade]` · `[especialidade] advogado [bairro]`
+- **Keyword pattern (PT):** `advogado [especialidade] [cidade]` · `[especialidade] [cidade]`
+- **Example:** "Familienrecht Anwalt Berlin Mitte" · "Advogado tributário em São Paulo" · "Advogado de família em Lisboa"

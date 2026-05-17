@@ -109,6 +109,139 @@ Not every gate applies at every phase. Use the legend to triage what's blocking 
 
 ---
 
+## 1.5. Operational tests
+
+These tests verify that the **rules behave as documented** at runtime, not just that the rule's artifacts exist on disk. A page-existence check passes if `/datenschutz` returns 200 — an operational test passes only if loading the page does *not* fire a GA4 cookie before the user clicks Accept.
+
+Each item below is a runtime probe with a specific pass condition. Run them against the production URL after the `noindex` flip, before client handoff.
+
+### Cookie banner behavior (if banner is shipped)
+
+- [ ] **Banner appears on first visit** — open the site in a private window with cleared cookies; banner renders before any tracking script fires. Pass: visible within 1s of page load.
+- [ ] **No tracking cookies dropped before Accept** — open DevTools → Application → Cookies on first load. Pass: only essential cookies present (session, language, consent record itself). FAIL: `_ga`, `_clck`, `_fbp`, `ph_*` present.
+- [ ] **No third-party requests before Accept** — DevTools → Network → reload first-visit page. Pass: no requests to `googletagmanager.com`, `google-analytics.com`, `clarity.ms`, `posthog.com`, `facebook.com/tr`. FAIL: any of those fire on initial load.
+- [ ] **"Reject all" works and persists** — click Reject all → reload page → confirm no tracking cookies fire on second load.
+- [ ] **"Reject all" has parity with "Accept all"** — same prominence, same number of clicks to action, same visual weight. Pass: side-by-side screenshot review.
+- [ ] **GPC signal honored (US-market sites)** — set `Sec-GPC: 1` via browser extension; reload page. Pass: site treats the visit as opted-out without prompting (no banner, no sale/share cookies).
+- [ ] **Footer "Manage cookie preferences" link reopens banner** — present on every page; click reopens the consent modal.
+- [ ] **Consent record stored with ≤ 6 month expiry** — DevTools → Application → Local Storage / Cookies → consent record. Verify `Expires` ≤ 180 days from set date.
+
+### KPI / event wiring tests (every retainer-tier production cutover)
+
+Per `KPI.md` §Pre-launch verification — every site ships with at least 3 KPIs wired before `noindex` flip.
+
+- [ ] **KPI contract block exists in `BRIEF.md`** — 3–5 KPIs with target + data source named, owner-confirmed
+- [ ] **Each canonical event named in BRIEF.md fires correctly** — DevTools → Network → trigger the action → confirm payload sent to GA4 / Clarity / PostHog (Tier 3)
+- [ ] **No PII in any event payload** — inspect a representative event for each tool; confirm no email, name, phone, address, free-text input in `payload` / `properties` / `eventParameters`
+- [ ] **Event names match the canonical agency-wide list** — `KPI.md` §Event naming convention. Diff `src/lib/analytics.ts` (Tier 2/3) or inline handlers (Tier 1) against the table.
+- [ ] **Required parameters present** — every event includes `source_page` + `source_section` (and `locale` for multilingual sites)
+- [ ] **Funnel-style events have a `_failed` counterpart wired** — `booking_failed`, `contact_form_failed`, `payment_failed`
+- [ ] **`consent_given` / `consent_rejected` events fire** when the cookie banner is accepted / rejected
+- [ ] **Vertical-specific events fire per the matching template's §11** — open the per-vertical template `§11.4 Vertical-specific event names`; trigger each event; confirm
+- [ ] **Dashboards exist and are accessible to the client** — GA4 + Clarity + (Tier 3) PostHog dashboards built per `KPI.md` §Dashboard recipes; client account granted view access
+- [ ] **First monthly KPI report drafted before the 5th business day of the next month** — `KPI.md` §Retainer reporting cadence
+
+### Social + sharing tests (every production cutover)
+
+Per `SOCIAL-SHARING.md` §Pre-launch verification.
+
+- [ ] **OG tags present on every indexed page** — `<meta property="og:*">` (`og:title`, `og:description`, `og:image`, `og:url`, `og:type`, `og:site_name`)
+- [ ] **OG image is a real photo, not a logo-on-white** — visually inspect
+- [ ] **OG image dimensions 1200×630 (or close — 1.91:1)** — verify via `<meta property="og:image:width">`
+- [ ] **OG image < 300 KB** — `curl -I [og-image-url] | grep -i content-length` returns < 307200
+- [ ] **Twitter Card tags present** — `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
+- [ ] **Meta Sharing Debugger re-scraped** ([developers.facebook.com/tools/debug](https://developers.facebook.com/tools/debug)) for production URL — clears WhatsApp/FB cache that may hold the broken pre-launch preview
+- [ ] **X Card preview renders correctly** when URL pasted into a private X compose
+- [ ] **WhatsApp preview renders** when URL pasted into WhatsApp Web compose
+- [ ] **Share-button component renders the per-vertical default targets** (see matching template §11.7) — count + match
+- [ ] **Each share-button click opens the correct intent URL** — test each target (WhatsApp, Facebook, X, Instagram-copy-fallback, Copy-link)
+- [ ] **`share_click` event fires** with `share_target` + `source_page` + `source_section` params
+- [ ] **Copy-link button shows "Copied!" confirmation** for ~1.5s after click
+- [ ] **Locale-correct aria-labels in every locale shipped** (DE / EN / PT-BR / PT-PT — per `I18N.md`)
+- [ ] **IG embed pattern (if used)** is the consent-gated `type="text/plain"` script-blocking — verify via DevTools that no IG SDK loads before consent
+- [ ] **IG bio-link UTMs set per canonical convention** — `?utm_source=instagram&utm_medium=bio_link&utm_campaign=...`
+
+### Sentry / error tracking (any Tier 2+ build or Tier 1 with form endpoint)
+
+- [ ] **`sendDefaultPii: false` is set** — `grep "sendDefaultPii: false" src/ astro.config.ts sentry.*.config.*` returns at least one match in every Sentry init.
+- [ ] **No PII in captured events** — trigger a known error in production; inspect the event in the Sentry dashboard. Pass: no request body, no headers (cookies, auth), no raw IP, no form-field values.
+- [ ] **Sentry data region matches client jurisdiction** — Sentry → Settings → General → Data Region = EU for DE/PT clients; BR or US acceptable for BR/US clients.
+- [ ] **Sentry named as data processor in Privacy Policy** — search the policy page for "Sentry"; confirm it appears under the third-party-processor list.
+
+### Per-jurisdiction legal pages (matching the client's market)
+
+- [ ] **DE clients:** `/impressum` returns 200 and contains the 8 TMG § 5 fields (legal name, address, email+phone, HRB or USt-IdNr if applicable, Aufsichtsbehörde for regulated trades)
+- [ ] **DE clients:** `/datenschutz` returns 200 and lists every active third-party processor by name
+- [ ] **BR clients:** `/politica-de-privacidade` returns 200 with all 7 LGPD sections
+- [ ] **BR clients:** footer shows Razão Social + CNPJ/MEI + address on every page (`curl -s [url] | grep -i 'CNPJ\\|MEI'`)
+- [ ] **PT clients:** footer shows NIF (9 digits) + CAE + sede on every page
+- [ ] **PT clients:** Livro de Reclamações link present in footer (`href="https://www.livroreclamacoes.pt/inicio"`)
+- [ ] **US clients (when activated):** "Your Privacy Choices" link in footer; opt-out toggle reachable and persists
+- [ ] **All clients:** legal pages return `X-Robots-Tag` allowing indexing (NOT `noindex`). `curl -I [url]/datenschutz | grep -i x-robots-tag` must NOT return `noindex`.
+
+### Integration health checks (every production cutover with paid integrations)
+
+Per `INTEGRATIONS.md` pre-launch verification — one test per active integration.
+
+#### Resend (Type 2+)
+
+- [ ] **Custom domain verified** — Resend dashboard shows green check on the client's domain
+- [ ] **DKIM + SPF DNS records propagated** — `dig TXT [domain]._domainkey.resend._domainkey.[client-domain]` returns the expected record
+- [ ] **Test email delivered** — submit the production contact form; owner receives the email within 60s
+- [ ] **Honeypot rejects** — submit with honeypot populated; no email sent
+- [ ] **Resend named in Privacy Policy** under "Who we share with"
+
+#### Stripe (Type 4+)
+
+- [ ] **Stripe account owned by the client** (NOT the agency)
+- [ ] **KYC verification complete** on Stripe dashboard
+- [ ] **Per-jurisdiction payment methods enabled** — Pix for BR · SEPA for DE/PT · ACH for US
+- [ ] **Test checkout completed in production mode** — full flow from cart to paid
+- [ ] **Webhook endpoint signature-verifies every request** — invalid signature returns 400, valid signature processes the event
+- [ ] **Products + prices live in Stripe Dashboard** (NOT in code) — no client-supplied amounts in `checkout.sessions.create`
+- [ ] **`payment_failed` events fire to Sentry + PostHog** with no card data in payload
+- [ ] **Stripe named in Privacy Policy** with jurisdiction-specific entity (Stripe Payments Europe / Stripe Brasil / Stripe USA)
+
+#### Neon (Tier 3+)
+
+- [ ] **Region matches client jurisdiction** — EU-Central for DE/PT/BR/EU · US-East-1 for US
+- [ ] **`DATABASE_URL` set in Vercel env**, not in code, not in committed `.env`
+- [ ] **Migrations applied to production branch** — `pnpm drizzle-kit migrate` ran successfully
+- [ ] **Encryption at rest verified** for sensitive columns (`customer_name_enc`, `customer_address_enc`, etc.) — SELECT returns encrypted bytes, not plaintext
+- [ ] **Pre-deploy branch created** before first production deploy
+- [ ] **Restore drill executed once** and documented in per-client `CLAUDE.md`
+- [ ] **Neon named in Privacy Policy**
+
+#### Upstash (Tier 2+ with rate limit)
+
+- [ ] **Region matches client jurisdiction** — EU-West (Ireland) for DE/PT/BR/EU · US-East-1 for US
+- [ ] **`UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` set in Vercel env**
+- [ ] **Rate-limit fires on every public endpoint** — submit 6× in 60s; 6th returns 429 with `X-RateLimit-*` headers
+- [ ] **IP hashing in place** — no raw IPs in Redis keys (`redis-cli KEYS rl:*` returns hashed IDs only — would need Upstash REST API in production)
+- [ ] **`IP_HASH_SALT` env var set** and rotation cadence documented in per-client `CLAUDE.md`
+- [ ] **Upstash named in Privacy Policy** (hashed IPs technically qualify as PII processor)
+
+#### PostHog (Tier 3+)
+
+Already covered in §KPI / event wiring tests above — verify all PostHog-specific items there.
+
+#### Sentry
+
+Already covered in §Sentry / error tracking subsection.
+
+### Form endpoints (Type 2+ with contact / booking forms)
+
+- [ ] **Honeypot trap rejects bots** — submit form with the honeypot field populated; endpoint returns 200 (no error leak) but no email is sent and no DB row written.
+- [ ] **Rate limit fires** — submit the form 6× in 60s from the same IP; 6th request returns 429.
+- [ ] **Server-side validation rejects malformed input** — submit with missing required fields directly to the endpoint (bypass client); endpoint returns 400 with a Zod error.
+
+### Pre-launch verification
+
+- [ ] All applicable checks above pass on the production URL (not preview)
+- [ ] Re-run the checks 24 hours after the `noindex` flip — passes still pass
+
+---
+
 ## 2. Design and UX
 
 ### Visual review at three viewports (mandatory)
@@ -242,36 +375,57 @@ Not every gate applies at every phase. Use the legend to triage what's blocking 
 
 ## 5. Legal (German market — mandatory)
 
-- [ ] **Impressum page** present, reachable within 2 clicks from any page (usually in footer)
-- [ ] Impressum contains: full legal name, street address (not PO box), email, phone
+For DE-market sites. The full DSGVO / Impressum spec lives in `LEGAL.md` §DE — Germany (DSGVO + Impressum); this list is the runtime check.
+
+- [ ] **Impressum page** present at `/impressum`, reachable within 2 clicks from any page (footer link uses exact word "Impressum" — no creative rename)
+- [ ] Impressum contains all 8 TMG § 5 fields: legal name, street address, email + phone, HRB if applicable, USt-IdNr if applicable, Aufsichtsbehörde for regulated trades, Berufsbezeichnung for regulated professions, MStV § 18 content-responsibility statement
 - [ ] Impressum reviewed and confirmed by client
-- [ ] **Datenschutzerklärung** (privacy policy) present, DSGVO-compliant
-- [ ] Privacy policy lists all data processors (GA4, contact form email provider, etc.)
-- [ ] Cookie banner only if using tracking/non-functional cookies (not required for GA4 with IP anonymization if properly configured)
+- [ ] **Datenschutzerklärung** (privacy policy) present at `/datenschutz`, all 10 required sections present (`LEGAL.md` §Datenschutzerklärung — required structure)
+- [ ] Privacy policy lists every data processor by name (Vercel, GA4 if used, Resend, Sentry, Microsoft Clarity, etc.)
+- [ ] Cookie banner shipped if any non-essential cookie fires — consent-first, "Reject all" parity verified (`LEGAL.md` §Cookie consent banner — universal spec)
 - [ ] Legal pages are **not** set to `noindex`
 
 ## 5.5. Legal (Brazilian market — mandatory)
 
-For PT-BR / Brazilian-market sites. See `SECURITY.md` §6.5 for the full LGPD reference (Lei nº 13.709/2018).
+For BR-market sites. The full LGPD spec lives in `LEGAL.md` §BR — Brazil (LGPD); this list is the runtime check.
 
 - [ ] **Política de Privacidade page** present at `/politica-de-privacidade`, reachable from every footer
 - [ ] Política contains all **7 LGPD-mandated sections** in order: Quem somos · Quais dados coletamos · Base legal · Compartilhamento · Seus direitos (Art. 18) · Cookies · Contato do Controlador
 - [ ] **Footer disclosure on every page:** Razão Social + CNPJ (or MEI) + operating address + link to Política de Privacidade
 - [ ] Razão Social and CNPJ/MEI confirmed by owner (NOT invented)
 - [ ] **Data Controller email** is real and monitored (owner-confirmed; not a generic `contato@`)
-- [ ] All third-party tools (analytics, booking platforms, payment processors) named in Política §4 Compartilhamento
-- [ ] **Cookie banner** only if non-essential cookies are used (per `SECURITY.md` §6.5 threshold table — strictly technical cookies do not require banner; analytics with user profiling does)
+- [ ] All third-party tools (analytics, booking platforms, payment processors, Sentry) named in Política §4 Compartilhamento
+- [ ] **Cookie banner** only if non-essential cookies are used (per `LEGAL.md` §Cookie banner threshold under LGPD — strictly technical cookies do not require banner; analytics with user profiling does)
 - [ ] Pix trust badge surfaced where relevant (checkout / pricing / contact for any payment-adjacent flow)
 - [ ] Política de Privacidade is **not** set to `noindex`
 
 ## 5.6. Legal (Portuguese market — mandatory)
 
-For PT-PT / Portuguese-market sites.
+For PT-PT / Portuguese-market sites. The full RGPD + national-disclosure spec lives in `LEGAL.md` §PT — Portugal (RGPD + national); this list is the runtime check.
 
-- [ ] **Footer block** with legal name, NIF, CAE, address (equivalent to Impressum, less strict)
-- [ ] **Livro de Reclamações Eletrónico** link present (`https://www.livroreclamacoes.pt/inicio`)
-- [ ] **Política de Privacidade** present if any data is collected
-- [ ] Cookie banner only if non-functional cookies are used
+- [ ] **Footer block** contains: Razão social + NIF (9 digits) + CAE + sede/morada
+- [ ] If sociedade: footer also has capital social + Conservatória do Registo Comercial + número de matrícula (sole-trader / empresário em nome individual is exempt)
+- [ ] **Livro de Reclamações Eletrónico** link present in footer (`https://www.livroreclamacoes.pt/inicio`) — non-negotiable for any business serving consumers
+- [ ] **`/politica-de-privacidade`** exists with RGPD-aligned 10 sections in PT-PT (not PT-BR)
+- [ ] CNPD named as supervisory authority in the rights section (link to https://www.cnpd.pt)
+- [ ] All third-party processors named in the subcontratantes section
+- [ ] Cookie banner shipped if non-essential cookies fire — CNPD Deliberação 2022/622 "Reject all" parity respected
+- [ ] Owner-confirmed NIF and CAE — never invented
+- [ ] Privacy + Termos pages are **not** set to `noindex`
+
+## 5.7. Legal (US market — activate only when client has US-market exposure)
+
+For sites with explicit US-market exposure per the activation criteria in `LEGAL.md` §US — United States — registered US entity, US physical address shown on site, US-targeted ads, US-currency pricing, or US-resident audience. Passive accessibility from the US alone does not trigger this section.
+
+- [ ] Privacy Policy contains all 10 CCPA-required sections (`LEGAL.md` §CCPA / CPRA → Privacy Policy — required structure)
+- [ ] "Notice at Collection" surfaced at every form / point of PI collection
+- [ ] **"Your Privacy Choices"** link present in footer (with the privacyrights.us official icon)
+- [ ] Working opt-out mechanism — toggle / form actually disables sale/share cookies on submit
+- [ ] **GPC signal honored** — test by sending `Sec-GPC: 1` header → site treats visit as opted-out without prompt
+- [ ] Privacy Policy is **not** set to `noindex`
+- [ ] Effective date + amendment history maintained on the policy
+- [ ] If education vertical or under-13 audience: COPPA section added + verifiable parental consent flow shipped (`LEGAL.md` §COPPA — under-13 audience)
+- [ ] Owner-confirmed business identity (LLC name, EIN if relevant)
 
 ---
 

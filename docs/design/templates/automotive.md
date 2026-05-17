@@ -359,3 +359,118 @@ No canonical worked example in §7.10 — the benchmark skews to chains. Archety
 ---
 
 *Automotive is a trust-led vertical built on real shop floors + real cars + real warranties. Skip the stock luxury cars. Lead with the brand specialty. Show the warranty.*
+
+---
+
+## 11. Measurement — KPIs that matter for Automotive
+
+**Applies to:** every retainer-tier automotive client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for mechanics, body shops, and detailers and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Quote-request rate (form + WhatsApp combined) | Conversion | GA4 `contact_form_completed` + `whatsapp_click` | ≥ 4% of sessions |
+| 2 | Phone-click rate (emergency / breakdown sessions) | Conversion | GA4 `phone_click` | ≥ 6% of mobile sessions (high — breakdown urgency) |
+| 3 | Brand-specialty page split (BMW page vs Audi page vs Mercedes page) | Acquisition | GA4 `page_viewed` filtered to `/marken/[brand]` | Tracks which specialty drives traffic |
+| 4 | Service-area-based lead share (neighborhood/postcode driving leads) | Acquisition | GA4 + GSC location data | Identifies the 1-2 catchment areas to double down on |
+| 5 | Warranty-page engagement (% sessions that viewed warranty page) | Conversion (trust signal) | GA4 `page_viewed` /garantie or /warranty | ≥ 15% — high engagement = differentiator working |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (quote form only) | GSC + Clarity + GA4 | KPIs #1, #2, #3, #5 |
+| Tier 2 (Astro — most common for solo mechanics) | GSC + Clarity + GA4 | All 5 KPIs except cohort retention |
+| Tier 3 (multi-bay shop with appointment system) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs + repeat-customer cohort |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`phone_click`, `whatsapp_click`, `contact_form_completed`) · top landing pages (often brand-specialty pages) · device split (high mobile share for breakdowns) · source/medium for quote requests.
+
+**Clarity:** heatmaps on brand-specialty pages + warranty page · rage clicks on phone-number display · recordings filtered to quote-form abandonment.
+
+**PostHog (Tier 3):** quote → appointment funnel · returning-customer cohort (insurance jobs vs cash) · appointment-day-of-week heatmap.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `quote_form_started` | Quote-form first field focused | `source_page`, `service_category` (`bodywork`, `service`, `tires`, etc.) |
+| `quote_form_completed` | Quote submitted (200 from endpoint) | `service_category`, `source_page` |
+| `brand_page_viewed` | Brand-specialty page LCP fires | `brand_slug` (`bmw`, `audi`, `mercedes`, `vw`) |
+| `warranty_page_viewed` | Warranty page LCP fires | `source_page` (which entry route) |
+| `emergency_call_clicked` | Phone number in emergency banner clicked | `source_section` (`hero` / `emergency_banner` / `footer`) |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Brand-specialty page paths normalized (`/marken/[brand]`) so GA4 can group
+- [ ] Service-area page paths captured (`/standort/[city-or-postcode]`)
+- [ ] Phone link wraps in tap-target ≥ 44px (high mobile-emergency click volume)
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Automotive
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Resend** | Type 2+ (quote request form) | Auto-reply confirming quote-request received + expected response window (24-48h typical) |
+| **Sentry** | Tier 2+ (full SDK) · Tier 1 form endpoint | Standard agency setup |
+| **Upstash** | Tier 2+ quote form | Rate-limit 5/60s (lower than trades — automotive less emergency-driven) |
+| **PostHog** | Tier 3+ multi-bay shop with appointment system only | Quote → appointment funnel, response-time distribution |
+| **Neon** | Tier 3+ multi-bay shop appointment system | Quote requests, appointment schedule |
+| **Insurance API** (optional) | Type 3+ shops doing DRP work | Direct integration with insurance companies' booking systems (out of scope for typical agency build; document as future-state) |
+| **Calendly** (optional) | Tier 2+ appointment-based shops | Service-only operators (oil change, tire rotation) often use Calendly deep-link instead of own booking |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Low leverage**.
+
+- **Default targets:** WhatsApp + Copy-link
+- **IG embed recommended:** ❌ No — automotive work shares poorly on IG (audience self-selects)
+- **Placement:** subtle inline share row in footer · NOT in hero (hero space goes to phone CTA + brand-specialty disclosure)
+- **OG image priority:** clean shop-floor shot or branded service van (1200×630). Avoid stock-luxury-car photos; show the real shop.
+- **WhatsApp share copy:** "[Shop name] — [brand specialty] in [city]. [Phone]." — number in share text accelerates referrals
+- **Customer-car photos:** require signed consent + plate blur per `LEGAL.md`. Never share customer-car photos to social without consent.
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `AutoRepair` — general mechanic
+- `AutoBodyShop` — bodywork / collision
+- `TireShop` — tire-focused
+- `MotorcycleRepair` — motorcycle / scooter
+- `AutoPartsStore` — parts retail (rare in agency scope)
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  "name": "[Shop name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "openingHoursSpecification": [...],
+  "areaServed": ["[city]", "[neighborhood1]"],
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Inspektion" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bremsen-Service" } }
+  ],
+  "potentialAction": { "@type": "ContactAction", "target": "tel:+..." }
+}
+```
+
+`makesOffer` lists the specific services — improves long-tail ranking ("[brand] Bremsen-Service [city]").
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Auto repair shop` / `Auto body shop` / `Tire shop` / `Car dealer` (pick most specific)
+- **GBP secondary categories:** brand specialty (`BMW dealer`, `Audi dealer`), service category (`Brake shop`, `Oil change service`)
+- **Per-jurisdiction GBP attributes:** wheelchair-accessible parking, on-site services, online estimates, free estimates
+- **Keyword pattern (DE):** `[brand] werkstatt [stadt]` · `kfz werkstatt [stadtteil]` · `[brand] reparatur [stadt]`
+- **Keyword pattern (BR):** `oficina [marca] em [cidade]` · `[serviço] carro [bairro]`
+- **Keyword pattern (PT):** `oficina [marca] em [cidade]` · `[serviço] automóvel [bairro]`
+- **Example:** "BMW Werkstatt Mitte" · "Oficina Volkswagen em São Paulo" · "Mecânico em Lisboa"

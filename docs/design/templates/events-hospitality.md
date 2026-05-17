@@ -378,3 +378,119 @@ No canonical worked example in §7.12 — benchmark skews to scale. Archetype D 
 ---
 
 *Events & Hospitality is the atmosphere business. Skip the champagne-toast stock. Lead with the venue or the portfolio. Show capacity, packages, and the path to inquiry.*
+
+---
+
+## 11. Measurement — KPIs that matter for Events & Hospitality
+
+**Applies to:** every retainer-tier events/hospitality client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for photographers, planners, caterers, venues, and boutique hotels and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Inquiry submission rate | Conversion | GA4 `inquiry_form_completed` | ≥ 3% of sessions (premium qualifying gate) |
+| 2 | Inquiry-to-booking conversion (qualified inquiry → signed contract) | Conversion (business) | CRM / manual | ≥ 25% inquiry-to-book |
+| 3 | Portfolio-gallery engagement (% sessions viewing portfolio ≥ 50%) | Conversion (trust signal) | GA4 / Clarity `gallery_viewed` | ≥ 60% — portfolio is the conversion |
+| 4 | Average inquiry value (event size — guest count, budget band) | Conversion (business) | Form payload → CRM (NOT analytics payload) | Tracks segment shift over time |
+| 5 | IG-driven inquiry share (% of inquiries from IG source) | Acquisition | GA4 source=instagram + UTM | ≥ 40% for IG-heavy categories (weddings, photographers) |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (portfolio + inquiry form) | GSC + Clarity + GA4 | KPIs #1, #3, #5 |
+| Tier 2 (Astro — most common for solo vendors) | GSC + Clarity + GA4 | KPIs #1, #3, #5 + CRM for #2/#4 |
+| Tier 3 (venue with availability/booking DB) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs + cohort/funnel for repeat-vendor inquiries |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`inquiry_form_completed`, `availability_checked`, `gallery_viewed`) · top landing pages · IG-driven sessions · device split (largely mobile, planning-phase).
+
+**Clarity:** heatmaps on portfolio + inquiry form + packages page · scroll depth on long-form portfolio narrative · recordings filtered to inquiry-form abandonment.
+
+**PostHog (Tier 3):** inquiry → tour-booked → contract-signed funnel · seasonal-demand cohort (which months drive inquiries for which seasons) · package-popularity ranking.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `inquiry_form_started` | Inquiry form first field focused | `event_type` (`wedding` / `corporate` / `birthday` / `photoshoot`), `source_page` |
+| `inquiry_form_completed` | Form submitted (200 from endpoint) | `event_type`, `guest_count_band` (`<50`, `50_150`, `150_300`, `300+`), `event_month` (NO date — month only) |
+| `availability_checked` | Date-picker / availability widget interacted with | `event_month`, `event_year` |
+| `package_viewed` | Specific package detail expanded | `package_slug`, `source_page` |
+| `gallery_viewed` | Portfolio gallery scrolled ≥ 50% or lightbox opened | `gallery_section`, `image_count` |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Inquiry form payload never serializes guest name/email/exact date into analytics events
+- [ ] `guest_count_band` and `event_month` use the documented enumerated values exactly
+- [ ] IG bio-link UTMs configured (`?utm_source=instagram&utm_medium=bio_link&utm_campaign=portfolio`)
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Events & Hospitality
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Resend** | Type 2+ (inquiry form) | Confirmation email + auto-attach quote PDF for Type 3+. Personalized "Looking forward to discussing your [event-type]" framing |
+| **Sentry** | Tier 2+ (full SDK) | Standard agency setup |
+| **PostHog** | Tier 3+ (venue with availability DB) only | Inquiry → tour-booked → contract-signed funnel; seasonal-demand cohort |
+| **Neon** | Tier 3+ venue / multi-event business with availability | Bookings table, inquiry history, package configuration |
+| **Upstash** | Tier 2+ inquiry form | Rate-limit 5/60s; venue clients sometimes see scraper traffic on availability endpoints |
+| **CRM** (HubSpot / Pipedrive / Notion) | Type 2+ standard | Premium-inquiry flow benefits from CRM. Connect via Zapier / Make. Manual CRM-update for solo operators is acceptable. |
+| **Stripe** | Type 4+ — deposit / package payment | SEPA for DE/PT, Pix for BR. Required for deposit-driven venue businesses. |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Very high leverage**.
+
+- **Default targets:** WhatsApp + Instagram + Copy-link + Facebook + Pinterest
+- **IG embed recommended:** ✅ Yes — portfolio is the dominant trust+share driver
+- **Pinterest:** Pinterest is the under-utilized channel for venue + photographer + planner verticals — couples planning weddings build inspiration boards. Add Pinterest as a share target on portfolio detail pages.
+- **Placement:** inline share at every portfolio gallery section · package-detail pages · footer fallback
+- **OG image priority:** signature portfolio shot at 1200×630 (with venue / couple / event consent). Use dynamic OG image per project for portfolio detail pages.
+- **WhatsApp share copy:** "[Vendor/venue name] — [event-type] in [city]. See portfolio." — invite framing for the recipient to view the work
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `EventVenue` — venue / event space
+- `PerformingArtsTheater` — theater / event-specific venue
+- `Hotel` / `LodgingBusiness` — boutique hotel / B&B
+- `Photographer` — photography service (use `LocalBusiness` + `serviceType: "Photography"` if not in core schema)
+- `CateringService` — catering
+- `EventPlanner` — planner (use `Organization` + descriptive properties)
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "EventVenue",
+  "name": "[Venue name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "maximumAttendeeCapacity": 200,
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Parking" },
+    { "@type": "LocationFeatureSpecification", "name": "Catering on-site" },
+    { "@type": "LocationFeatureSpecification", "name": "Outdoor space" }
+  ],
+  "potentialAction": { "@type": "ContactAction", "target": "https://[inquiry form URL]" }
+}
+```
+
+For photographers / planners, the `EventVenue` schema doesn't fit — use `LocalBusiness` with descriptive `serviceType` and `areaServed`.
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Wedding venue` / `Event venue` / `Photographer` / `Caterer` / `Event planner` / `Wedding planner` / `Hotel` (pick most specific)
+- **GBP secondary categories:** event-specific (a wedding venue may add `Corporate event venue`, `Birthday party venue`)
+- **Per-jurisdiction GBP attributes:** wheelchair-accessible, on-site parking, free Wi-Fi, online appointments, LGBTQ+-friendly (especially weddings)
+- **Keyword pattern (DE):** `hochzeitslocation [stadt]` · `[event-type] location [stadtteil]` · `hochzeitsfotograf [stadt]`
+- **Keyword pattern (BR):** `local para casamento em [cidade]` · `fotógrafo de casamento [cidade]`
+- **Keyword pattern (PT):** `quinta para casamento em [cidade]` · `fotógrafo casamento [cidade]`
+- **Example:** "Hochzeitslocation Mitte" · "Local para casamento em São Paulo" · "Quinta para casamento perto de Lisboa"

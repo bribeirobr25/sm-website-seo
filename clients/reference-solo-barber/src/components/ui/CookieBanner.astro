@@ -1,0 +1,108 @@
+---
+/**
+ * CookieBanner — LGPD-aligned consent banner.
+ * Per LEGAL.md §Cookie consent banner — universal spec.
+ *
+ * Renders on first visit if no consent record exists. The banner offers:
+ *   - Accept all (functional + analytics + marketing)
+ *   - Reject all (essential only) — equal prominence per parity rule
+ *   - Cookie policy link (to /politica-de-privacidade)
+ *
+ * The footer "Gerenciar preferências de cookies" link re-opens the banner.
+ */
+---
+
+<div
+  id="cookie-banner"
+  class="hidden fixed inset-x-0 bottom-0 z-40 bg-surface border-t border-border shadow-elev"
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="cookie-banner-title"
+>
+  <div class="container-page py-5 md:py-6">
+    <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+      <div class="flex-1 min-w-0">
+        <h2
+          id="cookie-banner-title"
+          class="font-display text-lg text-text"
+        >
+          Sua privacidade
+        </h2>
+        <p class="text-sm text-text-muted mt-1 leading-relaxed">
+          Usamos cookies para entender como o site é usado e melhorar sua experiência.
+          Cookies essenciais funcionam sem consentimento; análise e marketing só após sua autorização.
+          Veja a{' '}
+          <a
+            href="/politica-de-privacidade"
+            class="underline hover:text-accent transition-colors"
+          >
+            Política de Privacidade
+          </a>.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2 shrink-0">
+        <button
+          type="button"
+          id="cookie-reject"
+          class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-sm font-medium rounded-md bg-surface-elev text-text border border-border hover:bg-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          Recusar todos
+        </button>
+        <button
+          type="button"
+          id="cookie-accept"
+          class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-sm font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          Aceitar todos
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import {
+    readConsent,
+    writeConsent,
+    applyConsent,
+    ACCEPT_ALL,
+    ESSENTIAL_ONLY,
+    type ConsentCategories,
+  } from '@/lib/consent';
+  import { trackEssential, EVENTS } from '@/lib/analytics';
+
+  const banner = document.getElementById('cookie-banner');
+  const acceptBtn = document.getElementById('cookie-accept');
+  const rejectBtn = document.getElementById('cookie-reject');
+
+  function showBanner() {
+    banner?.classList.remove('hidden');
+  }
+
+  function hideBanner() {
+    banner?.classList.add('hidden');
+  }
+
+  function decide(categories: ConsentCategories, accepted: boolean) {
+    writeConsent(categories);
+    applyConsent(categories);
+    hideBanner();
+    trackEssential(accepted ? EVENTS.CONSENT_GIVEN : EVENTS.CONSENT_REJECTED);
+  }
+
+  acceptBtn?.addEventListener('click', () => decide(ACCEPT_ALL, true));
+  rejectBtn?.addEventListener('click', () => decide(ESSENTIAL_ONLY, false));
+
+  // Footer "Manage preferences" link dispatches consent:reopen
+  window.addEventListener('consent:reopen', showBanner);
+
+  // On initial load: if no consent record (or expired), show banner.
+  // If consent was previously stored, re-apply it (upgrades any type="text/plain" scripts).
+  const stored = readConsent();
+  if (stored) {
+    applyConsent(stored.categories);
+  } else {
+    showBanner();
+  }
+</script>

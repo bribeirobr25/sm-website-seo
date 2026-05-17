@@ -362,3 +362,115 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 ---
 
 *The vertical template is a moodboard. The per-client `design.md` is the choice. Never copy the layout — copy the discipline.*
+
+---
+
+## 11. Measurement — KPIs that matter for Beauty
+
+**Applies to:** every retainer-tier beauty client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for salons, barbers, spas, and aesthetic clinics and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Booking-platform handoff rate (Trinks/Booksy/Treatwell deep-link clicks) | Conversion | GA4 `booking_started` (when click fires) | ≥ 8% of sessions |
+| 2 | Staff-utilization rate (booked slots ÷ available slots) | Conversion (business) | Booking platform integration | ≥ 65% peak hours, ≥ 40% off-peak |
+| 3 | No-show rate | Health (business) | Booking platform | < 10% — anything higher reduces effective utilization |
+| 4 | Repeat-client rate (2+ bookings within 90 days) | Retention | Booking platform / PostHog cohort (Tier 3) | ≥ 35% by month 3 |
+| 5 | Real-work gallery engagement (% sessions viewing before/after gallery) | Conversion (trust signal) | GA4 / Clarity `gallery_viewed` | ≥ 40% of sessions |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + booking deep-link only | GSC + Clarity + GA4 | KPIs #1, #5 (booking platform owns #2, #3, #4) |
+| Tier 2 (Astro — most common) | GSC + Clarity + GA4 | KPIs #1, #5 + booking-platform data for #2/#3/#4 |
+| Tier 3 (own booking system) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs with cohort-based repeat-client analysis |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`booking_started`, `gallery_viewed`, `phone_click`) · top landing pages (service pages vs home) · device split (overwhelmingly mobile) · source/medium for booking starts.
+
+**Clarity:** heatmaps on service pages + gallery + booking CTA · rage clicks on broken Trinks/Booksy embeds · scroll depth on long-form service descriptions.
+
+**PostHog (Tier 3):** booking funnel (`booking_started` → `slot_selected` → `booking_completed`) · repeat-client cohort table · staff-utilization by day-of-week · service-popularity ranking.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `booking_started` | Trinks/Booksy/Treatwell deep-link clicked OR own booking modal opens | `provider` (`trinks` / `booksy` / `treatwell` / `direct`), `service_slug`, `source_section` |
+| `service_viewed` | Service description section ≥ 50% in viewport | `service_slug` (`corte`, `manicure`, `coloracao`, etc.), `source_page` |
+| `gallery_viewed` | Before/after gallery scrolled ≥ 50% or lightbox opened | `image_count`, `source_page` |
+| `staff_profile_viewed` | Staff/team member profile section enters viewport | `staff_slug` |
+| `pricing_viewed` | Price list section enters viewport | `source_page` |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Booking-platform UTM parameters preserved (`?utm_source=site&utm_medium=cta&utm_campaign=booking`)
+- [ ] Trinks/Booksy/Treatwell handoff returns user to correct page on cancel
+- [ ] Service-slug values match booking-platform service IDs (allows joined analysis)
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Beauty
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Booking platform** (Trinks BR / Booksy / Treatwell / Mindbody) | Every tier — deep-link primary | Per `DESIGN-BEST-PRACTICES.md` booking-platform tier-3 elevation rule. UTM-preserve handoff. |
+| **Resend** | Type 2+ (own confirmation flow only) | Most beauty clients use the booking platform's own emails — skip Resend unless own booking. |
+| **Sentry** | Tier 2+ (full SDK) | Standard agency setup; useful for catching broken Trinks deep-links via `dead_link_clicked` Sentry events. |
+| **PostHog** | Tier 3+ (own booking) only | Booking funnel, staff utilization, repeat-client cohort. |
+| **Neon** | Tier 3+ own booking | Appointments table, customer table (encrypted PII). |
+| **Upstash** | Tier 2+ booking form | Rate-limit booking-form attempts (10/60s — higher than contact form, beauty clients book in bursts). |
+| **Stripe** | Type 4 only — rare (loyalty cards, gift cards) | Subscriptions for membership-based salons; Pix for BR. |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Very high leverage**.
+
+- **Default targets:** WhatsApp + Instagram + Copy-link + Facebook
+- **IG embed recommended:** ✅ Yes — before/after gallery is the dominant trust+share driver
+- **Placement:** inline share row in gallery section · sticky bottom-of-page share on mobile · footer fallback
+- **OG image priority:** real-work hero shot (1200×630, < 300 KB JPG). Not the salon logo on white.
+- **WhatsApp share copy:** "[Salon name] — [neighborhood]. [signature service]." — under 80 chars before URL
+- **IG bio-link UTM:** `?utm_source=instagram&utm_medium=bio_link&utm_campaign=salon_profile`
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `BeautySalon` — general beauty / aesthetic
+- `HairSalon` — hair-focused
+- `BarberShop` — barber-specific
+- `NailSalon` — nails-only
+- `DaySpa` — wellness, treatments, longer-duration
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BarberShop",
+  "name": "[Business name]",
+  "address": { "@type": "PostalAddress", "streetAddress": "...", "addressLocality": "[City]", "postalCode": "...", "addressCountry": "[DE/PT/BR]" },
+  "geo": { "@type": "GeoCoordinates", "latitude": ..., "longitude": ... },
+  "telephone": "+...",
+  "priceRange": "€€",
+  "openingHoursSpecification": [...],
+  "potentialAction": { "@type": "ReserveAction", "target": "https://[trinks/booksy URL]" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": 52 }
+}
+```
+
+`potentialAction` wraps the booking deep-link, signaling to Google that booking is available.
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Hair Salon` / `Beauty Salon` / `Barber shop` / `Nail Salon` / `Day Spa` (pick most specific)
+- **GBP secondary categories:** related services (e.g., barber may add `Men's Hair Salon`, `Shaving service`)
+- **Per-jurisdiction GBP attributes:** wheelchair-accessible, online appointments, walk-ins (varies), LGBTQ+-friendly
+- **Keyword pattern (DE):** `[service] [stadtteil]` · `bester barber in [bezirk]` · `[service] termin online`
+- **Keyword pattern (BR):** `[serviço] em [bairro]` · `melhor [profissão] em [cidade]`
+- **Keyword pattern (PT):** `[serviço] em [cidade]` · `melhor [profissão] [bairro]`
+- **Example:** "Männerfriseur Mitte" · "Barbearia em Icaraí" · "Cabeleireiro Bairro Alto"

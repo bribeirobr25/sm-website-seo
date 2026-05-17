@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+/*
+ * Brand tokens — Modern urban barber, dark sub-archetype (per beauty.md §6)
+ * Palette: warm dark + amber accent
+ * Per `DESIGN-BEST-PRACTICES.md` §5: accent reserved for primary CTA only;
+ * accent-deep for hover (darker, not lighter — WCAG-compliant).
+ *
+ * Tailwind v4: tokens live in @theme {} block — no tailwind.config.ts.
+ * Each token is auto-generated as a utility (bg-bg, text-text, etc.) AND
+ * accessible as a CSS custom property (var(--color-bg)).
+ */
+
+@theme {
+  /* Color palette */
+  --color-bg: #1a1612;
+  --color-surface: #252018;
+  --color-surface-elev: #2f291f;
+  --color-text: #f5f0e8;
+  --color-text-muted: #b8a896;
+  --color-accent: #d4894a;
+  --color-accent-deep: #a8632e;
+  --color-border: #3a3128;
+  --color-success: #5fa86b;
+  --color-warning: #c4844a;
+
+  /* Typography */
+  --font-display: 'Georgia', 'Cormorant Garamond', serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing scale (8pt grid) */
+  --spacing-section: 6rem;
+  --spacing-section-mobile: 3rem;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows — dark theme requires subtle warm shadows */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-elev: 0 8px 24px rgba(0, 0, 0, 0.5);
+}

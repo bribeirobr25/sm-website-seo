@@ -1,0 +1,97 @@
+---
+import { SITE } from '@/lib/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-surface mt-12">
+  <div class="container-page py-12 grid gap-8 md:grid-cols-3">
+    <!-- Brand + tagline -->
+    <div>
+      <p class="font-display text-lg text-text">{SITE.name}</p>
+      <p class="text-sm text-text-muted mt-2 italic">"{SITE.tagline}"</p>
+    </div>
+
+    <!-- Contact + hours -->
+    <address class="not-italic text-sm text-text-muted space-y-2">
+      <p>
+        {SITE.address.street}<br />
+        {SITE.address.neighborhood}, {SITE.address.city}/{SITE.address.state}<br />
+        {SITE.address.postalCode}<br />
+        <span class="text-xs">({SITE.address.landmark})</span>
+      </p>
+      <p>
+        <a
+          href={`tel:${SITE.phone}`}
+          class="hover:text-accent transition-colors tabular"
+          data-event="phone_click"
+          data-source-section="footer"
+        >
+          {SITE.phoneDisplay}
+        </a>
+      </p>
+      <p>
+        <a
+          href={`https://wa.me/${SITE.whatsapp}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-accent transition-colors tabular"
+          data-event="whatsapp_click"
+          data-source-section="footer"
+        >
+          WhatsApp: {SITE.phoneDisplay}
+        </a>
+      </p>
+    </address>
+
+    <!--
+      LGPD legal footer — required disclosure per LEGAL.md §BR.
+      Razão Social + CNPJ/MEI + operating address on every page.
+    -->
+    <div class="text-xs text-text-muted space-y-2">
+      <p class="font-medium text-text">Informações da empresa (LGPD)</p>
+      <p>
+        <span class="block">Razão Social: {SITE.legal.razaoSocial}</span>
+        <span class="block tabular">MEI: {SITE.legal.cnpjOrMei}</span>
+        <span class="block">Endereço: {SITE.address.street}, {SITE.address.city}/{SITE.address.state}</span>
+      </p>
+      <nav aria-label="Links legais" class="space-y-1 pt-2">
+        <a
+          href="/politica-de-privacidade"
+          class="block hover:text-accent transition-colors"
+        >
+          Política de Privacidade
+        </a>
+        <button
+          type="button"
+          id="manage-cookies"
+          class="block hover:text-accent transition-colors text-left"
+        >
+          Gerenciar preferências de cookies
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="border-t border-border">
+    <div class="container-page py-4 text-xs text-text-muted text-center">
+      © {year} {SITE.name}. Todos os direitos reservados.
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('[data-event]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const eventName = el.getAttribute('data-event');
+      const source = el.getAttribute('data-source-section');
+      if (eventName && window.track) {
+        window.track(eventName, { source_section: source ?? 'unknown' });
+      }
+    });
+  });
+
+  // Re-open consent banner — LEGAL.md §Cookie consent banner mandates this.
+  document.getElementById('manage-cookies')?.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('consent:reopen'));
+  });
+</script>

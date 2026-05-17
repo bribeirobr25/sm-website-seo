@@ -369,3 +369,111 @@ Use this matrix during the per-client scoping conversation, before any design wo
 ---
 
 *The vertical template is a moodboard. The per-client `design.md` is the choice. Never copy the layout — copy the discipline.*
+
+---
+
+## 11. Measurement — KPIs that matter for Gastronomy
+
+**Applies to:** every retainer-tier gastronomy client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for gastronomy and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Reservations per week (or delivery orders for fast-casual) | Conversion | PostHog `booking_completed` (Tier 3) OR Resy/TheFork/OpenTable webhook OR manual count | Vertical baseline — track trend, not absolute |
+| 2 | Combined phone + WhatsApp click rate (mobile sessions) | Conversion | GA4 `phone_click` + `whatsapp_click` | ≥ 5% of mobile sessions |
+| 3 | Menu-section engagement (% sessions that viewed the menu ≥ 50%) | Conversion (leading indicator) | GA4 / Clarity `menu_viewed` event | ≥ 40% of sessions |
+| 4 | GBP profile views + direction requests | Acquisition | GBP Insights | Month-over-month growth trend |
+| 5 | Returning-diner rate (clients booking ≥ 2× in 90 days) — Tier 3 only | Retention | PostHog cohort, joined on booking platform customer ID | ≥ 25% returning by month 3 |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (info site with reservation request) | GSC + Clarity + optional GA4 | KPIs #2, #3, #4 |
+| Tier 2 (Astro — most common) | GSC + Clarity + GA4 | KPIs #1 (via webhook to GA4 conversion), #2, #3, #4 |
+| Tier 3 (Next.js with booking system) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs incl. cohort-based returning-diner rate |
+
+### 11.3 Dashboard tiles
+
+**GA4 (every retainer):** conversions by event (`phone_click` / `whatsapp_click` / `booking_completed`) · top landing pages · `menu_viewed` rate by page · mobile vs desktop conversion split · device-category breakdown.
+
+**Clarity (every retainer):** heatmaps on home + menu + visit pages · rage clicks (typically on broken map embeds) · scroll depth on menu page · recordings filtered to dead-click sessions.
+
+**PostHog (Tier 3 only):** booking funnel (`booking_started` → `booking_slot_selected` → `booking_completed`) with drop-off % · returning-diner cohort table · day-of-week conversion heatmap · source-channel × booking-completion matrix.
+
+### 11.4 Vertical-specific event names
+
+In addition to the agency-canonical events in `KPI.md` §Event naming convention, gastronomy clients fire:
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `menu_viewed` | Menu section enters viewport ≥ 50% (IntersectionObserver) | `menu_section` (`mains`, `desserts`, `drinks`, `wines`), `source_page` |
+| `menu_pdf_downloaded` | Menu PDF link clicked | `source_page` |
+| `reservation_link_clicked` | External booking-platform link clicked | `provider` (`thefork`, `opentable`, `resy`, `direct`), `source_section` |
+| `gallery_viewed` | Photo gallery scrolled ≥ 50% or lightbox opened | `image_count`, `source_page` |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to a wired event or data source in BRIEF.md KPI contract
+- [ ] GBP linked to the website domain (Insights become visible)
+- [ ] `menu_viewed` fires once per section per session (not duplicates)
+- [ ] Booking-platform UTM parameters preserved across handoff (`?utm_source=site&utm_medium=cta&utm_campaign=reservation`)
+- [ ] Run `CHECKLIST.md` §Operational tests for the per-jurisdiction legal pages + cookie banner + KPI event wiring
+
+### 11.6 Integrations applicable to Gastronomy
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Resend** | Type 2+ (reservation request) · Type 3+ (booking confirmations) | Confirmation email per booking; include calendar `.ics` attachment for Type 3 |
+| **Sentry** | Tier 2+ (full SDK) · Tier 1 form endpoint (server-only) | Standard agency setup, `send_default_pii: false` |
+| **PostHog** | Tier 3+ only | Booking funnel, repeat-diner cohort, day-of-week heatmap |
+| **Neon** | Tier 3+ booking system | Bookings table, customer table (encrypted PII at rest) |
+| **Upstash** | Tier 2+ on reservation form | Rate-limit reservation submissions (5/60s per IP-hash) |
+| **Booking platform** | Type 3+ | Resy / TheFork / OpenTable / direct — see `KPI.md` §Stack selection. Deep-link with UTMs; webhook to capture `booking_completed` |
+| **Stripe** | Type 4 only (rare in gastronomy — usually for paid event reservations) | Pix enabled for BR clients |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Very high leverage**.
+
+- **Default targets:** WhatsApp + Instagram + Copy-link + Facebook
+- **IG embed recommended:** ✅ Yes — food photos are the dominant share driver
+- **Placement:** sticky bottom-of-page share row on mobile · inline in hero section · footer fallback
+- **OG image priority:** hero food photo at 1200×630, < 300 KB JPG. NOT the logo on white.
+- **WhatsApp share copy:** "[Restaurant name] — [one-line description]" — keep under 80 chars before the URL
+
+### 11.8 Schema.org variants
+
+Use `Restaurant` (most common), `CafeOrCoffeeShop`, or `FoodEstablishment` (generic):
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "[Business name]",
+  "address": { "@type": "PostalAddress", "streetAddress": "...", "addressLocality": "[City]", "postalCode": "...", "addressCountry": "[DE/PT/BR]" },
+  "geo": { "@type": "GeoCoordinates", "latitude": ..., "longitude": ... },
+  "telephone": "+...",
+  "servesCuisine": ["Italian", "Mediterranean"],
+  "priceRange": "€€",
+  "openingHoursSpecification": [...],
+  "menu": "https://[domain]/menu",
+  "acceptsReservations": true,
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.7", "reviewCount": 287 }
+}
+```
+
+Use `acceptsReservations: true` if the site has any reservation flow (form, deep-link, or full booking). `aggregateRating` only displayed when owner-approved.
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Restaurant` (or `Cafe` / `Bakery` / `Pizza restaurant` / cuisine-specific variant)
+- **GBP secondary categories:** up to 9 — cuisine, delivery, takeout, dine-in style
+- **Per-jurisdiction GBP attributes:** delivery (BR via Pix), reservations, takeout, outdoor seating, accessibility (wheelchair, gender-neutral restroom)
+- **Keyword pattern (DE):** `[cuisine] restaurant [stadtteil]` · `restaurant in [bezirk] berlin`
+- **Keyword pattern (BR):** `restaurante [cozinha] em [bairro]` · `[prato característico] [cidade]`
+- **Keyword pattern (PT):** `restaurante [cozinha] em [cidade]` · `onde comer [prato] [cidade]`
+- **Example:** "Restaurante brasileiro em Mitte" · "Onde comer pastel de Belém em Porto"

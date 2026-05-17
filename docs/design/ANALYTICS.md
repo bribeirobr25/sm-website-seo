@@ -3,12 +3,14 @@
 
 **Applies to:** All product types (1–5).
 
-- **Demo phase:** Skip entirely. `noindex` demo sites have no real users to track and adding cookies before consent is configured creates a DSGVO violation.
-- **Production cutover for all types:** Google Search Console (mandatory) + Microsoft Clarity (agency default for retainer clients). Cookie consent banner required if any tracking cookie is dropped.
+- **Demo phase:** Skip entirely. `noindex` demo sites have no real users to track and adding cookies before consent is configured creates a DSGVO/LGPD violation.
+- **Production cutover for all types:** Google Search Console (mandatory) + Microsoft Clarity (agency default for retainer clients). Cookie consent banner required if any tracking cookie is dropped (`LEGAL.md` §Cookie consent banner — universal spec).
+- **Tier 2 stack default:** GSC + Clarity + GA4 (when marketing attribution wanted). PostHog is not added on Tier 2 — the funnel/cohort layer pays off only when there's auth or repeat-engagement to analyze.
+- **Tier 3 stack default:** GSC + Clarity + GA4 + **PostHog** (product analytics — funnels, cohorts, retention). PostHog is the primary product-KPI surface on Tier 3+.
 - **Type 1 (Static info):** GSC + Clarity is enough. GA4 only if the client explicitly asks for it.
 - **Type 2+ (Forms):** Add form-event tracking — `contact_form_completed`, `contact_form_failed`. Events fire client-side and respect consent gate.
-- **Type 3+ (Booking / DB-backed):** Add funnel events — `booking_started`, `booking_completed`, etc. (per `FORMS.md` §1 lifecycle). Server-side logging via `RELIABILITY.md` §8 complements but doesn't replace user-side analytics.
-- **Type 4+ (Transactional):** Conversion funnel + revenue attribution. GA4 enhanced ecommerce becomes worth the setup cost at this type.
+- **Type 3+ (Booking / DB-backed):** Add funnel events — `booking_started`, `booking_completed`, etc. (per `FORMS.md` §1 lifecycle). Server-side logging via `RELIABILITY.md` §8 complements but doesn't replace user-side analytics. PostHog funnels visualize the conversion path.
+- **Type 4+ (Transactional):** Conversion funnel + revenue attribution. GA4 enhanced ecommerce becomes worth the setup cost at this type. PostHog cohorts track repeat-purchase / AOV / LTV.
 
 See `TECH.md` §1 for the product-type matrix.
 
@@ -20,13 +22,14 @@ Other standards docs reference this doc by name, never by section.
 
 ## Rules at a glance
 
-- **Three analytics streams, no more:** Google Search Console (organic search), Microsoft Clarity (behavior), GA4 *only if the client wants it* (sessions/conversions). Skip all three for true demo-phase sites.
-- **Consent gating is mandatory** for any tracking that drops a cookie or fingerprints. No script tag loads before consent.
-- **Event names are `{feature}_{action}` in snake_case**, past tense for completed actions (`contact_form_submission_success`, not `submitContactForm`).
-- **Every event includes `locale` and `timestamp`.** Always.
-- **No PII in any event.** No emails, no names, no phone numbers. Hash if you need correlation; omit if not.
+- **Three marketing streams + one product stream (Tier 3+):** Google Search Console (organic search), Microsoft Clarity (behavior), GA4 (sessions/conversions/marketing attribution) for every retainer build; **PostHog** added on Tier 3+ for product analytics (funnels, cohorts, retention). Skip all for true demo-phase sites.
+- **Stack is tier-driven, not preference-driven.** See §Stack selection per tier — Tier 2 stops at Clarity + GA4; Tier 3 adds PostHog.
+- **Consent gating is mandatory** for any tracking that drops a cookie or fingerprints. No script tag loads before consent — per `LEGAL.md` §Cookie consent banner — universal spec.
+- **Event names are `{feature}_{action}` in snake_case**, past tense for completed actions. **The canonical agency-wide event names live in `KPI.md` §Event naming convention** — match those names exactly, do not invent variants.
+- **Every event includes `locale`, `source_page`, `source_section`** (see `KPI.md` §Required event parameters).
+- **No PII in any event.** No emails, no names, no phone numbers, no free-text form input. Per `LEGAL.md` §Rules at a glance.
 - **Page views are automatic; everything else is explicit.** No "auto-track all clicks" — that produces noise, not signal.
-- **The monthly retainer report draws from these three streams.** If a metric isn't trackable from them, it doesn't go in the report.
+- **The monthly retainer report draws from this stack.** If a metric isn't trackable from GSC + Clarity + GA4 + (Tier 3 only) PostHog + GBP Insights, it doesn't go in the report. See `KPI.md` §Retainer reporting cadence.
 
 ---
 
@@ -36,11 +39,12 @@ Other standards docs reference this doc by name, never by section.
 2. [Event naming convention](#2-event-naming-convention)
 3. [Required parameters](#3-required-parameters)
 4. [What never goes in an event](#4-what-never-goes-in-an-event)
-5. [Consent gating (DSGVO/GDPR)](#5-consent-gating-dsgvogdpr)
+5. [Consent gating (DSGVO/GDPR/LGPD)](#5-consent-gating-dsgvogdprlgpd)
 6. [Analytics stack](#6-analytics-stack)
-7. [Retainer reporting hooks](#7-retainer-reporting-hooks)
-8. [Common events for local-business sites](#8-common-events-for-local-business-sites)
-9. [Tools](#9-tools)
+7. [Stack selection per tier](#7-stack-selection-per-tier)
+8. [Retainer reporting hooks](#8-retainer-reporting-hooks)
+9. [Common events for local-business sites](#9-common-events-for-local-business-sites)
+10. [Tools](#10-tools)
 
 ---
 
@@ -158,9 +162,9 @@ If you need to correlate events for the same anonymous user, use a **session-onl
 
 ---
 
-## 5. Consent gating (DSGVO/GDPR)
+## 5. Consent gating (DSGVO/GDPR/LGPD)
 
-The German market enforces this aggressively. Failure to consent-gate is a DSGVO violation with real fines.
+The German and Brazilian markets enforce this aggressively. Failure to consent-gate is a DSGVO/LGPD violation with real fines. The full banner spec lives in `LEGAL.md` §Cookie consent banner — universal spec; this section covers the analytics-stack-specific consent recipes.
 
 ### The contract
 
@@ -194,6 +198,77 @@ if (hasAnalyticsConsent()) loadAnalytics();
 **Storage:** consent stored in an `HttpOnly` cookie with `sameSite: 'strict'` and `secure: true` in production. Contains JSON: `{ analytics: boolean, version: number, timestamp: number }`.
 
 **`respect: { dnt: true }`** honors the browser's "Do Not Track" header — even with consent, DNT means no tracking. This is best-practice and DSGVO-aligned.
+
+### Per-tool consent recipes
+
+Each analytics tool needs a tool-specific consent-gating pattern. The common rule: **no script tag loads before consent**.
+
+#### Microsoft Clarity
+
+```typescript
+function loadClarity() {
+  if (!hasConsent('analytics')) return;
+  // Inject Clarity tag dynamically — not present in DOM until consent
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r); t.async=1; t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "CLARITY_PROJECT_ID");
+}
+```
+
+Privacy-first config in Clarity dashboard: enable IP anonymization + disable form-field recording.
+
+#### GA4
+
+```typescript
+function loadGA4() {
+  if (!hasConsent('analytics')) return;
+  // gtag.js loads only after consent
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXX';
+  document.head.appendChild(s);
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXX', {
+    anonymize_ip: true,
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+  });
+}
+```
+
+#### PostHog (Tier 3+ only)
+
+PostHog has a built-in consent-gate via its `opt_in_capturing` / `opt_out_capturing` API. **Initialize PostHog with `opt_out_capturing_by_default: true`** so it stays inert until the user opts in.
+
+```typescript
+import posthog from 'posthog-js';
+
+posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+  api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
+  opt_out_capturing_by_default: true,    // ← non-negotiable — inert until consent
+  disable_session_recording: true,        // ← default; enable only if explicitly justified
+  capture_pageview: false,                // ← we control page-view firing manually
+  persistence: 'memory',                  // ← no localStorage / no cookie until consent
+  property_blacklist: ['$ip', '$initial_referrer', '$referrer'],
+});
+
+function loadPostHog() {
+  if (!hasConsent('analytics')) return;
+  posthog.opt_in_capturing();             // ← upgrades to localStorage + cookies
+  posthog.set_config({ persistence: 'localStorage+cookie' });
+}
+```
+
+The `persistence: 'memory'` pre-consent state means PostHog tracks event names in-memory only — they fire on consent (no cookies, no `localStorage`). If consent is rejected, those in-memory events are discarded on tab close.
+
+#### Server-side / no-cookie analytics
+
+Pure server-side analytics (Vercel Analytics in privacy mode, Plausible, Fathom, server-logged conversions) don't drop cookies and don't require consent. They're a valid path for Tier 1 sites that want minimal complexity.
 
 ### When you don't need a cookie banner
 
@@ -229,22 +304,86 @@ Three streams. Pick the ones that match the client's actual needs — don't ship
 - **Cost:** free forever, no traffic limit.
 - **Set up:** install after consent is granted; `respect: { dnt: true }`.
 
-### Google Analytics 4 (only when the client asks for it)
+### Google Analytics 4 (when marketing attribution wanted)
 
 - **What it gives you:** sessions, conversions, attribution, audience demographics.
 - **Cookies:** `_ga`, `_ga_<container>` (first-party, expiry ~2 years).
 - **Consent:** required.
 - **Cost:** free up to 10M events/month.
-- **Set up:** only ship GA4 when the client has a specific question it answers. For a typical 5-page local-business site, GSC + Clarity already tell you everything actionable.
+- **Set up:** ship GA4 when the client cares about source/medium attribution (which ads, which referrers, which campaigns drove the conversion). Configure with `anonymize_ip: true` and disable advertising features.
+
+### PostHog (Tier 3+ — product analytics primary)
+
+- **What it gives you:** funnels (conversion path step-by-step), cohorts (user segments over time), retention tables (week-over-week return), feature flags, session replay (optional, off by default).
+- **Cookies:** `ph_*` cookies + `localStorage` (after opt-in only).
+- **Consent:** required. Initialize with `opt_out_capturing_by_default: true` — see §Per-tool consent recipes.
+- **Cost:** free up to 1M events/month + 5K session recordings. Agency client volume is well below this.
+- **Set up:** Tier 3 only — pays off when there's a real funnel (booking, sign-up, checkout) or repeat-engagement to analyze. Tier 2 sites typically don't need PostHog; Clarity heatmaps + GA4 conversions cover them.
+- **Data region:** EU instance for DE/PT/EU-resident clients; US instance for US-only clients (`api_host` URL differs per region).
 
 **The agency default:**
 - Demo phase: nothing (skip the cookie banner question entirely).
-- Production phase: GSC + Clarity, with a cookie banner.
-- GA4 only when justified.
+- Tier 2 production: GSC + Clarity + GA4 (when marketing attribution wanted), with a cookie banner.
+- Tier 3 production: GSC + Clarity + GA4 + PostHog, with a cookie banner.
 
 ---
 
-## 7. Retainer reporting hooks
+## 7. Stack selection per tier
+
+The decision tree below answers "what tools do I install for this client?" deterministically. The agency does not negotiate the stack per client — the tier determines it, and the client confirms.
+
+### Decision tree
+
+```
+START
+  │
+  ├─ Is this site in demo phase (noindex)?
+  │   └─ YES → install NOTHING (no analytics, no banner) → STOP
+  │
+  ├─ What tier is this site?
+  │   ├─ Tier 1 (pure static HTML, no framework, no forms)
+  │   │   → install GSC (server-side, no consent needed)
+  │   │   → optionally Clarity if retainer-tier (light footprint)
+  │   │   → skip GA4 unless client explicitly requests
+  │   │   → skip PostHog (no surface to analyze)
+  │   │
+  │   ├─ Tier 1 with form endpoint (HTML + serverless function)
+  │   │   → install GSC + Clarity (default for retainer)
+  │   │   → install GA4 if marketing attribution wanted
+  │   │   → skip PostHog (still no repeat-engagement to justify)
+  │   │
+  │   ├─ Tier 2 (Astro — most common)
+  │   │   → install GSC + Clarity (always for retainer)
+  │   │   → install GA4 if marketing attribution wanted
+  │   │   → skip PostHog (Clarity + GA4 covers Tier 2 needs)
+  │   │
+  │   └─ Tier 3 (Next.js — booking / DB / auth)
+  │       → install GSC + Clarity + GA4 + PostHog (all four)
+  │       → PostHog is the product-KPI primary
+  │       → Sentry also wired per `INFRASTRUCTURE.md` §Error tracking
+  │
+  └─ Cookie banner required?
+      ├─ Any of Clarity / GA4 / PostHog active → YES (consent-first)
+      ├─ Only GSC + server-side analytics → NO banner needed
+      └─ See `LEGAL.md` §Cookie consent banner for the spec
+```
+
+### Stack matrix
+
+| Tier / Type | GSC | Clarity | GA4 | PostHog | Sentry (server) | Banner required? |
+|---|---|---|---|---|---|---|
+| Tier 1 pure-static | ✅ | optional | optional | ❌ | ❌ (no surface) | only if Clarity/GA4 on |
+| Tier 1 + form endpoint | ✅ | ✅ default | optional | ❌ | ✅ on function | yes |
+| Tier 2 (Astro) | ✅ | ✅ default | optional | ❌ | ✅ full SDK | yes |
+| Tier 3 (Next.js) | ✅ | ✅ | ✅ | ✅ default | ✅ full SDK | yes |
+| Type 4 transactional | ✅ | ✅ | ✅ | ✅ | ✅ + payment events | yes |
+| Type 5 application | ✅ | ✅ | ✅ | ✅ primary | ✅ + auth events | yes |
+
+**Rule:** if the client wants a tool outside what the tier specifies, treat it as a custom scope item — additional setup time, additional retainer line item. The default stack is the default for a reason.
+
+---
+
+## 8. Retainer reporting hooks
 
 Each monthly retainer report draws from these three streams. See `SALES.md` for the report template; this section documents how each line maps to a data source.
 
@@ -268,7 +407,7 @@ The report should fit in ~10 sentences for the client. The dashboard exists for 
 
 ---
 
-## 8. Common events for local-business sites
+## 9. Common events for local-business sites
 
 Drop these into every retainer client as a starter set. Trim or extend per client.
 
@@ -316,7 +455,7 @@ Use IntersectionObserver with `threshold: 0.5` and `once: true` to fire each sec
 
 ---
 
-## 9. Tools
+## 10. Tools
 
 All entries are free or have a usable free tier (as of 2026-05-13).
 
@@ -324,17 +463,18 @@ All entries are free or have a usable free tier (as of 2026-05-13).
 |------|------------|------|----------|
 | Google Search Console | Free | [search.google.com/search-console](https://search.google.com/search-console/) | Organic search visibility, indexing health. Mandatory on every production site. |
 | Microsoft Clarity | Free (forever, no traffic limit) | [clarity.microsoft.com](https://clarity.microsoft.com/) | Heatmaps + session recordings + rage clicks. Best free behavior-analytics tool available. |
-| Google Analytics 4 | Free (up to 10M events/mo) | [analytics.google.com](https://analytics.google.com/) | Sessions, conversions, attribution. Use only when justified. |
+| Google Analytics 4 | Free (up to 10M events/mo) | [analytics.google.com](https://analytics.google.com/) | Sessions, conversions, marketing attribution. Use when client cares about source/medium. |
+| PostHog | Free (1M events/mo + 5K session recordings) | [posthog.com](https://posthog.com/) | Tier 3 product analytics — funnels, cohorts, retention. EU instance for DE/PT clients (`eu.i.posthog.com`); US instance for US clients. |
 | Vercel Analytics | Free (basic tier on Hobby plan) | [vercel.com/docs/analytics](https://vercel.com/docs/analytics) | Real-user Core Web Vitals + page views; privacy-friendly (no cookies on basic tier). |
 | Plausible | Freemium | [plausible.io](https://plausible.io/) | Privacy-first GA4 alternative — no cookies, no consent banner needed. Paid; mention to clients who explicitly want cookieless. |
 | Fathom Analytics | Freemium | [usefathom.com](https://usefathom.com/) | Same niche as Plausible. |
 | GBP Insights | Free (built into GBP) | [business.google.com](https://business.google.com/) | Profile views, direction requests, phone calls — **drives most of the retainer report** for local businesses. |
 
-**Recommended starter stack for a typical local-business client:**
+**Recommended starter stack per tier:**
 
-1. **GSC + GBP insights** — day one
-2. **Microsoft Clarity** — when the client commits to retainer
-3. **Vercel Analytics** — free with hosting; gives Core Web Vitals
-4. **GA4** — only when justified
+| Tier | Day one (free) | At retainer signup | At Tier 3 upgrade |
+|---|---|---|---|
+| **Tier 1 / 2** | GSC + GBP Insights + Vercel Analytics | + Microsoft Clarity + GA4 (if marketing attribution wanted) | n/a |
+| **Tier 3** | GSC + GBP Insights + Vercel Analytics | + Microsoft Clarity + GA4 | + PostHog (product analytics primary) + Sentry full SDK (`INFRASTRUCTURE.md` §Error tracking) |
 
-Skip Plausible/Fathom unless the client specifically asks for cookieless analytics. Clarity covers behavior, GSC covers search, GBP insights covers conversions — that's the local-business stack.
+Skip Plausible/Fathom unless the client specifically asks for cookieless analytics. Clarity covers behavior, GSC covers search, GBP insights covers conversions, GA4 covers marketing attribution, PostHog covers product funnels — that's the agency stack.

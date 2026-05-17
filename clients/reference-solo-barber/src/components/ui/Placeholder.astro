@@ -1,0 +1,27 @@
+---
+/**
+ * Placeholder — visible missing-asset slot.
+ *
+ * Per TECH.md §Image-extraction operational toolkit: every site that uses
+ * placeholder photos must render them as a clearly-labeled box, not as a
+ * blank/broken image. Production cutover requires zero <Placeholder> in the
+ * shipped pages.
+ */
+
+interface Props {
+  label: string;
+  aspectRatio?: string; // CSS aspect-ratio value, e.g. "4 / 3"
+  rounded?: boolean;
+}
+
+const { label, aspectRatio = '4 / 3', rounded = false } = Astro.props;
+---
+
+<div
+  class={`flex items-center justify-center bg-surface-elev border-2 border-dashed border-border text-text-muted text-xs uppercase tracking-wider p-4 ${rounded ? 'rounded-lg' : ''}`}
+  style={`aspect-ratio: ${aspectRatio};`}
+  role="img"
+  aria-label={`Placeholder: ${label}`}
+>
+  <span>{label}</span>
+</div>

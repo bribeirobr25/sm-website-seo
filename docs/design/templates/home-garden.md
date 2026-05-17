@@ -400,3 +400,120 @@ No canonical worked example in §7.7 — benchmark skews to chains/ecommerce. Ar
 ---
 
 *Home & Garden splits sharply by product-vs-service. Identify the type before the archetype. Skip the rose-on-white catalog photos. Show real product, real delivery area, real before/after.*
+
+---
+
+## 11. Measurement — KPIs that matter for Home & Garden
+
+**Applies to:** every retainer-tier H&G client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for florists, plant shops, garden centers, and landscapers and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Order/quote completion rate (cart → paid OR quote-request → confirmed) | Conversion | PostHog funnel + Stripe (Tier 3) OR GA4 `contact_form_completed` (Tier 2 quote-only) | ≥ 55% cart-to-paid · ≥ 5% session-to-quote |
+| 2 | Delivery-area-based order share (which postcodes drive orders) | Acquisition | GA4 + order-form postcode capture (postcode bands only, not full address) | Identifies the 2-3 service areas to double down on |
+| 3 | Same-day-order rate (florists only — orders placed before cutoff) | Conversion (business) | Stripe + manual delivery log | Track trend — high rate = right inventory level |
+| 4 | Repeat-order rate (within 90 days) | Retention | Stripe customer ID + PostHog cohort | ≥ 25% for florists (high repeat); ≥ 15% for plant shops |
+| 5 | IG-driven traffic share (florists especially) | Acquisition | GA4 source=instagram + UTM | ≥ 40% for IG-heavy florists |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (catalog + quote form, no cart) | GSC + Clarity + GA4 | KPIs #1 (quote variant), #2, #5 |
+| Tier 2 (Astro — solo florist with WhatsApp-led orders) | GSC + Clarity + GA4 | KPIs #1 (quote variant), #2, #3 (manual), #5 |
+| Tier 3 + Stripe (cart-enabled shop) | GSC + Clarity + GA4 + PostHog + Sentry + Stripe | All 5 KPIs |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`add_to_cart`, `purchase`, `quote_form_completed`) · top product/category pages · IG-driven sessions · source/medium attribution.
+
+**Clarity:** heatmaps on product pages + delivery-area page · scroll depth on long-form product descriptions · recordings filtered to abandoned cart.
+
+**PostHog (Tier 3):** cart-to-paid funnel · repeat-customer cohort (florist seasonality very visible) · delivery-postcode × order-volume heatmap · IG-attributed conversion path.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `product_viewed` | Product page LCP fires | `product_slug`, `product_category` (`bouquets` / `plants` / `seeds` / `services`) |
+| `add_to_cart` | Stripe checkout session created (or cart state updates) | `product_slug`, `quantity` |
+| `purchase` | Stripe webhook confirms paid order | `order_id` (Stripe ID, opaque), `delivery_postcode_band` (`10115-10119`, `10120-10129`) — bands, never exact |
+| `quote_form_completed` | Quote request submitted (landscaping/services) | `service_category`, `delivery_postcode_band` |
+| `delivery_area_checked` | Postcode-lookup widget used | `postcode_band` (no full postcode in event) |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Delivery postcodes captured in **bands** (`10115-10119`), never as full postcode in event payload
+- [ ] Stripe webhook → PostHog `purchase` event firing (Tier 3)
+- [ ] Same-day cutoff time (e.g. orders before 14:00 ship today) clearly displayed AND captured as `same_day_eligible` boolean on order events
+- [ ] IG bio-link UTMs configured for florists
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Home & Garden
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Resend** | Type 2+ (order or quote form) | Order confirmation (Type 4) · quote-acknowledgment (Type 2 services) · same-day-cutoff reminder for florists |
+| **Sentry** | Tier 2+ (full SDK) · Tier 1 form endpoint | Standard agency setup |
+| **PostHog** | Tier 3+ (full shop with cart) only | Cart-to-paid funnel; florist seasonality cohort (Mother's Day, Valentine's) |
+| **Neon** | Tier 3+ shop with orders DB | Orders, customers (encrypted PII), delivery routes |
+| **Upstash** | Tier 2+ order/quote form | Rate-limit 10/60s (florists see launch-day traffic spikes — Mother's Day campaign etc.) |
+| **Stripe** | Type 4+ florists with cart | SEPA + Pix per jurisdiction; supports same-day-delivery upcharge as a line item |
+| **Delivery API** (optional) | Type 4+ florists | Integration with local delivery platforms (Glovo / Uber Direct / iFood for BR); often manual handoff is fine |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **High leverage** (florists especially).
+
+- **Default targets:** WhatsApp + Instagram + Copy-link
+- **IG embed recommended:** ✅ Yes — florists / plant shops are IG-driven categories; the photo IS the conversion
+- **Placement:** inline share on product detail pages · gallery section · footer fallback
+- **OG image priority:** signature arrangement / plant shot at 1200×630. NOT rose-on-white catalog photos. Real, photographed in natural light.
+- **WhatsApp share copy:** "[Shop name] — [city]. Same-day delivery." — same-day callout in share text is a conversion driver
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `Florist` — flower-focused
+- `LandscapingBusiness` — landscaping / lawn-care services
+- `HomeGoodsStore` — general home + garden retail
+- `Store` + `Product` — when product catalog is the focus
+- `GardenStore` — garden-center specific
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Florist",
+  "name": "[Shop name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "openingHoursSpecification": [...],
+  "areaServed": ["[city]", "[neighborhood]"],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Bridal bouquet" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Sympathy arrangement" } }
+    ]
+  }
+}
+```
+
+For landscapers: `LandscapingBusiness` + `makesOffer` with `Service` items (Lawn care, Garden design, Tree pruning).
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Florist` / `Landscaper` / `Garden center` / `Plant nursery` / `Lawn care service` (pick most specific)
+- **GBP secondary categories:** specialty (a florist may add `Wedding florist`, `Funeral florist`)
+- **Per-jurisdiction GBP attributes:** same-day delivery, online orders, contactless delivery, wheelchair-accessible (for retail)
+- **Keyword pattern (DE):** `blumenladen [stadtteil]` · `blumen lieferung [stadt]` · `gärtner [stadt]`
+- **Keyword pattern (BR):** `floricultura em [bairro]` · `entrega de flores [cidade]` · `paisagista [cidade]`
+- **Keyword pattern (PT):** `florista em [cidade]` · `entrega de flores [cidade]` · `jardinagem [bairro]`
+- **Example:** "Blumenladen Mitte mit Lieferung" · "Floricultura entrega São Paulo" · "Florista Lisboa entrega ao domicílio"

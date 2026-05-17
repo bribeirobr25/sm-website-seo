@@ -385,3 +385,118 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 ---
 
 *The vertical template is a moodboard. The per-client `design.md` is the choice. Never copy the layout — copy the discipline.*
+
+---
+
+## 11. Measurement — KPIs that matter for Trades
+
+**Applies to:** every retainer-tier trades client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for plumbers, electricians, locksmiths, and HVAC operators and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Lead-form submissions + WhatsApp clicks combined | Conversion | GA4 `contact_form_completed` + `whatsapp_click` | ≥ 5% of sessions (trades convert hot) |
+| 2 | Phone-click rate (emergency / breakdown sessions) | Conversion | GA4 `phone_click` | ≥ 8% of mobile sessions (very high — emergency urgency) |
+| 3 | Phone-vs-form conversion split | Conversion | Ratio of `phone_click` ÷ `contact_form_completed` | Tracks where the audience converges — most trades = 70%+ phone |
+| 4 | Service-area-based leads (which neighborhood/postcode drives leads) | Acquisition | GA4 + GSC location data + form-payload postcode band | Identifies the 2-3 catchment areas |
+| 5 | Project-photo engagement (% sessions viewing before/after) | Conversion (trust signal) | GA4 / Clarity `gallery_viewed` | ≥ 30% — strong trust signal for hire decision |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (single-operator info + quote form) | GSC + Clarity + GA4 | KPIs #1, #2, #3, #4, #5 |
+| Tier 2 (Astro — most common for solo operators) | GSC + Clarity + GA4 | All 5 KPIs |
+| Tier 3 (multi-crew with appointment system) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs + appointment cohort + response-time tracking |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`phone_click`, `whatsapp_click`, `contact_form_completed`) · top landing pages (service pages vs emergency pages) · device split (extreme mobile-skew, ~85%+) · source/medium attribution.
+
+**Clarity:** heatmaps on phone-number display + emergency banner + service pages · rage clicks on broken WhatsApp links · recordings filtered to quote-form abandonment.
+
+**PostHog (Tier 3):** quote → appointment funnel · response-time-to-quote distribution · service-area × conversion-rate matrix · day-of-week emergency-call heatmap.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `phone_click` | Phone number clicked (already in canonical list) | `source_section` (`hero` / `emergency_banner` / `sticky_cta` / `footer`), `service_category` (if on service page) |
+| `whatsapp_click` | WhatsApp link clicked (already in canonical list) | `source_section`, `service_category` |
+| `quote_form_started` | Quote-request form first field focused | `service_category` (`plumbing` / `electrical` / `hvac` / `locksmith` / `emergency`), `source_page` |
+| `quote_form_completed` | Quote form submitted (200 from endpoint) | `service_category`, `postcode_band` (band, not full postcode), `urgency_band` (`emergency` / `same_week` / `flexible`) |
+| `service_viewed` | Service description page enters viewport | `service_category`, `source_page` |
+| `gallery_viewed` | Project before/after gallery scrolled ≥ 50% or lightbox opened | `image_count`, `service_category` |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Postcode captured in **bands** in quote form payload (`10115-10119`), never as full postcode in event parameter
+- [ ] Phone number tap-target ≥ 44px in every appearance (high emergency-mobile share)
+- [ ] WhatsApp link uses `wa.me/...` with pre-populated service-category message (`?text=Notdienst%20Klempner`)
+- [ ] Sticky-mobile CTA `source_section=sticky_cta` distinguishable in GA4 from hero/footer
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Trades
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Resend** | Type 2+ (quote form) | Auto-reply confirming "Your request reached us, we'll respond within [X] minutes/hours" — fast response IS the trust signal in trades |
+| **Sentry** | Tier 2+ (full SDK) · Tier 1 form endpoint | Standard agency setup |
+| **Upstash** | Tier 2+ — **high priority** | Trades sees emergency-driven traffic spikes (broken pipe at midnight = 50 form submissions from one IP). Rate-limit 5/60s per IP-hash; 429 with a polite "We received your earlier request" message |
+| **PostHog** | Tier 3+ (multi-crew with appointment system) only | Quote → appointment funnel, response-time distribution |
+| **Neon** | Tier 3+ multi-crew appointment system | Quote-requests table, scheduled-jobs table |
+| **Booking platform** | Optional — Calendly / TradeBox / similar | Used by appointment-based trades (heating maintenance, gardening); skip for emergency-only operators |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Low leverage**.
+
+- **Default targets:** WhatsApp + Copy-link only
+- **IG embed recommended:** ❌ No — B2C trade work doesn't share well on IG; the time the user shares your link is when they need *another* trade, not when they're showing friends
+- **Placement:** subtle inline share row at footer · not in hero (hero space goes to phone CTA)
+- **OG image priority:** clean shot of branded van OR before/after of a real project (1200×630). NOT a generic tool stock photo.
+- **WhatsApp share copy:** "[Business name] — [trade] in [city]. [Phone]." — number in the share text accelerates the next-person-needing-this hand-off
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `Plumber`
+- `Electrician`
+- `Locksmith`
+- `HVACBusiness`
+- `RoofingContractor`
+- `GeneralContractor` — when work spans multiple trades
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Plumber",
+  "name": "[Business name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "areaServed": ["[city]", "[neighborhood1]", "[neighborhood2]"],
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "18:00" }
+  ],
+  "potentialAction": { "@type": "ContactAction", "target": "tel:+..." },
+  "priceRange": "€€"
+}
+```
+
+`areaServed` is critical — Google Local uses this to surface the trade for searches in matching neighborhoods.
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Plumber` / `Electrician` / `HVAC contractor` / `Roofing contractor` / `Locksmith` (pick most specific)
+- **GBP secondary categories:** related trade services (a plumber may add `Drainage service`, `Gas installer`)
+- **Per-jurisdiction GBP attributes:** **24-hour service** (critical for emergency trades), online estimates, free estimates, identifies as women-owned / LGBTQ+-friendly (varies)
+- **Keyword pattern (DE):** `[trade] notdienst [stadt]` · `[trade] in [stadtteil]` · `[trade] berlin 24 stunden`
+- **Keyword pattern (BR):** `[ofício] urgente em [cidade]` · `[ofício] 24 horas [bairro]`
+- **Keyword pattern (PT):** `[ofício] urgência [cidade]` · `[ofício] [bairro] [cidade]`
+- **Example:** "Klempner Notdienst Berlin" · "Eletricista 24h em São Paulo" · "Canalizador em Lisboa"

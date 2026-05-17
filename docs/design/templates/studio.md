@@ -424,3 +424,117 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 ---
 
 *The vertical template is a moodboard. The per-client `design.md` is the choice. Never copy the layout — copy the discipline.*
+
+---
+
+## 11. Measurement — KPIs that matter for Studio
+
+**Applies to:** every retainer-tier studio client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for fitness studios, yoga/pilates/barre boutiques, and CrossFit boxes and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Trial → paid conversion (free/intro class → first paid class or membership) | Conversion | PostHog funnel (Tier 3) + Mindbody/ClassPass platform data | ≥ 40% trial-to-paid |
+| 2 | Class-fill rate (booked spots ÷ available spots) | Conversion (business) | Mindbody / Glofox / Booksy | ≥ 75% prime time, ≥ 50% off-peak |
+| 3 | MRR (Monthly Recurring Revenue) | Conversion (business) | Mindbody / Stripe subscriptions | Track trend — flat-to-down for 2mo = retainer escalation trigger |
+| 4 | Member retention (active month-over-month) | Retention | PostHog cohort + Mindbody data | ≥ 85% MoM for established cohorts |
+| 5 | Mindbody/ClassPass/Glofox handoff rate (booking platform click rate) | Conversion | GA4 `booking_started` | ≥ 6% of sessions |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + booking deep-link only | GSC + Clarity + GA4 | KPIs #5 (booking platform owns #1, #2, #3, #4) |
+| Tier 2 (Astro — most common for solo instructors) | GSC + Clarity + GA4 | KPI #5 + booking-platform data for #1-#4 |
+| Tier 3 (studio with own booking + member portal) | GSC + Clarity + GA4 + PostHog + Sentry + Stripe | All 5 KPIs with cohort retention via PostHog |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`booking_started`, `trial_signup_completed`) · top landing pages (schedule page vs home) · source/medium for trial signups · device split.
+
+**Clarity:** heatmaps on schedule + class detail + instructor profiles · scroll depth on long-form pricing/membership pages · recordings filtered to trial-form abandonment.
+
+**PostHog (Tier 3):** trial → paid funnel · monthly retention cohort table · class-fill heatmap (day × time) · member-LTV ranking by acquisition source.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `booking_started` | Mindbody/ClassPass/Glofox deep-link clicked OR own booking modal opens | `provider` (`mindbody` / `classpass` / `glofox` / `direct`), `class_slug`, `source_section` |
+| `trial_signup_started` | Trial-class form first field focused | `trial_type` (`intro_class` / `free_week` / `private_consult`), `source_page` |
+| `trial_signup_completed` | Trial form submitted (200 from endpoint) | `trial_type`, `class_slug` |
+| `class_viewed` | Class detail section enters viewport | `class_slug` (`hatha_yoga`, `crossfit_strength`, etc.), `instructor_slug` |
+| `instructor_profile_viewed` | Instructor profile section enters viewport | `instructor_slug` |
+| `pricing_viewed` | Pricing/membership table section enters viewport | `source_page` |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Booking-platform UTMs preserved across handoff
+- [ ] Class-slug and instructor-slug values match booking-platform IDs (allows joined analysis)
+- [ ] Trial form payload never serializes student name/email into analytics events
+- [ ] PostHog EU region selected for DE/PT clients
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Studio
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Booking platform** (Mindbody / ClassPass / Glofox / Booksy) | Every tier — deep-link primary | Per `DESIGN-BEST-PRACTICES.md` booking-platform tier-3 elevation. UTM-preserve handoff. |
+| **Resend** | Type 2+ (own trial-signup confirmation) | Confirmation + calendar `.ics` for trial class. Booking platform owns confirmations for paid bookings. |
+| **Sentry** | Tier 2+ (full SDK) | Standard agency setup |
+| **PostHog** | Tier 3+ (own booking + member portal) only | Trial-to-paid funnel, monthly retention cohort, class-fill heatmap |
+| **Neon** | Tier 3+ — studios with own booking DB | Members table, bookings table, attendance records (encrypted PII) |
+| **Upstash** | Tier 2+ trial-signup form | Rate-limit 10/60s (studios get class-launch traffic spikes) |
+| **Stripe** | Tier 3+ Type 4 — membership subscriptions | Subscription billing for studios with own membership system; SEPA + Pix per jurisdiction |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **High leverage**.
+
+- **Default targets:** WhatsApp + Instagram + Copy-link + (optional) Facebook
+- **IG embed recommended:** ✅ Yes — class atmosphere, transformations, instructor moments drive shares
+- **Placement:** inline in class-detail pages · sticky bottom-of-page share on mobile · footer fallback
+- **OG image priority:** real class-in-session photo at 1200×630 (with consent). NOT stock fitness models.
+- **WhatsApp share copy:** "[Studio name] — [discipline] in [neighborhood]. Try a class." — invite framing, under 80 chars
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `ExerciseGym` — generic gym
+- `YogaStudio` — yoga-focused
+- `SportsActivityLocation` — generic fallback
+- `HealthClub` — full-service club with multiple disciplines
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "YogaStudio",
+  "name": "[Studio name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "openingHoursSpecification": [...],
+  "potentialAction": { "@type": "ReserveAction", "target": "https://[mindbody URL]" },
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Changing rooms" },
+    { "@type": "LocationFeatureSpecification", "name": "Showers" },
+    { "@type": "LocationFeatureSpecification", "name": "Mat storage" }
+  ],
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": 120 }
+}
+```
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Yoga studio` / `Gym` / `Pilates studio` / `Barre studio` / `CrossFit gym` (pick most specific)
+- **GBP secondary categories:** related disciplines (a yoga studio may add `Meditation center`, `Pilates studio` if cross-discipline)
+- **Per-jurisdiction GBP attributes:** wheelchair-accessible, online appointments, LGBTQ+-friendly, free trial available
+- **Keyword pattern (DE):** `[discipline] [stadtteil]` · `[discipline] studio in [bezirk]` · `[discipline] probestunde [stadt]`
+- **Keyword pattern (BR):** `[modalidade] em [bairro]` · `aula experimental [modalidade] [cidade]`
+- **Keyword pattern (PT):** `[modalidade] em [cidade]` · `[modalidade] aula experimental [bairro]`
+- **Example:** "Yoga Mitte" · "Pilates Probestunde Charlottenburg" · "Yoga em Copacabana"

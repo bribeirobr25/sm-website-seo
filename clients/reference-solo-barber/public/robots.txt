@@ -1,0 +1,4 @@
+# Demo phase — block all indexing
+# Flip to "Allow: /" + add Sitemap line at production cutover
+User-agent: *
+Disallow: /

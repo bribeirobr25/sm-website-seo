@@ -1,0 +1,41 @@
+---
+import { SITE } from '@/lib/site';
+import Placeholder from '@/components/ui/Placeholder.astro';
+---
+
+<section id="sobre" class="section bg-bg">
+  <div class="container-page grid lg:grid-cols-5 gap-12 items-center">
+    <div class="lg:col-span-2">
+      <!--
+        Sobre photo — DRAFT: portrait of the founder ("Tio Edu") in the
+        barber chair, owner-confirmed consent + headshot release.
+      -->
+      <Placeholder
+        label="Foto do Eduardo (Tio Edu) na cadeira"
+        aspectRatio="4 / 5"
+        rounded={true}
+      />
+    </div>
+
+    <div class="lg:col-span-3 space-y-6">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Sobre</p>
+
+      <h2 class="text-3xl sm:text-4xl text-text">
+        {SITE.founder}.
+      </h2>
+
+      <div class="space-y-4 text-text-muted leading-relaxed text-lg">
+        <p>
+          Antes de abrir a {SITE.shortName}, o Eduardo passou {new Date().getFullYear() - SITE.foundedYear - 8} anos
+          atendendo em uma cadeira alugada no centro. Em {SITE.foundedYear} montou o próprio salão
+          em {SITE.address.neighborhood}, com a ideia simples de que cliente bom volta — e quem volta merece
+          uma cadeira certa, uma conversa de verdade, e um corte que dura três semanas.
+        </p>
+        <p>
+          A barbearia é pequena de propósito. Um barbeiro, uma cadeira, agendamento online sem complicação.
+          Sem espera, sem fila, sem sentir que é o próximo número.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

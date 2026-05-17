@@ -1,0 +1,151 @@
+---
+import { SITE } from '@/lib/site';
+import Button from '@/components/ui/Button.astro';
+import ShareButton from '@/components/ui/ShareButton.astro';
+
+const formatHour = (open: string | null, close: string | null) => {
+  if (!open || !close) return 'Fechado';
+  return `${open}–${close}`;
+};
+
+const dayLabels = {
+  Sun: 'Dom',
+  Mon: 'Seg',
+  Tue: 'Ter',
+  Wed: 'Qua',
+  Thu: 'Qui',
+  Fri: 'Sex',
+  Sat: 'Sáb',
+};
+
+const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(
+  `${SITE.address.street}, ${SITE.address.city}`,
+)}`;
+---
+
+<section id="visite" class="section bg-surface">
+  <div class="container-page">
+    <div class="grid lg:grid-cols-2 gap-12">
+      <div class="space-y-6">
+        <p class="text-sm uppercase tracking-wider text-text-muted">Visite</p>
+        <h2 class="text-3xl sm:text-4xl text-text">
+          {SITE.address.street}<br />
+          {SITE.address.neighborhood}, {SITE.address.city}
+        </h2>
+
+        <p class="text-text-muted leading-relaxed">
+          {SITE.address.landmark}.
+        </p>
+
+        <!-- Hours table — tabular nums for alignment per DESIGN-BEST-PRACTICES.md -->
+        <dl class="grid grid-cols-[auto,1fr] gap-x-6 gap-y-1 text-sm tabular max-w-xs">
+          {SITE.hours.map((h) => (
+            <>
+              <dt class="text-text-muted">{dayLabels[h.day as keyof typeof dayLabels]}</dt>
+              <dd class="text-text">{formatHour(h.open, h.close)}</dd>
+            </>
+          ))}
+        </dl>
+
+        <div class="flex flex-wrap gap-3 pt-2">
+          <Button
+            href={`tel:${SITE.phone}`}
+            variant="primary"
+            size="md"
+            dataEvent="phone_click"
+            dataSourceSection="visit"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-2"
+              aria-hidden="true"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            Ligar
+          </Button>
+
+          <Button
+            href={`https://wa.me/${SITE.whatsapp}`}
+            target="_blank"
+            variant="secondary"
+            size="md"
+            dataEvent="whatsapp_click"
+            dataSourceSection="visit"
+          >
+            WhatsApp
+          </Button>
+
+          <Button
+            href={mapsUrl}
+            target="_blank"
+            variant="ghost"
+            size="md"
+            dataEvent="map_click"
+            dataSourceSection="visit"
+          >
+            Como chegar
+          </Button>
+        </div>
+
+        <div class="pt-6 border-t border-border">
+          <ShareButton source="visit" />
+        </div>
+      </div>
+
+      <div>
+        <!--
+          Google Maps embed.
+          Real implementation: replace iframe src with the GBP-linked embed
+          URL — Google Maps > Share > Embed a map > copy URL.
+          The CSP `frame-src` in vercel.json already permits maps.google.com.
+        -->
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block aspect-square rounded-lg overflow-hidden bg-surface-elev border border-border hover:border-accent transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          data-event="map_click"
+          data-source-section="visit_map"
+          aria-label="Abrir localização no Google Maps"
+        >
+          <div class="w-full h-full flex flex-col items-center justify-center text-center p-8">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-accent mb-4"
+              aria-hidden="true"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <p class="text-text font-medium">
+              {SITE.address.street}
+            </p>
+            <p class="text-text-muted text-sm mt-1">
+              {SITE.address.neighborhood}, {SITE.address.city}
+            </p>
+            <p class="text-accent text-sm mt-4">
+              Abrir no Google Maps →
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

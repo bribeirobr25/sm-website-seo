@@ -1,0 +1,52 @@
+---
+import { SITE } from '@/lib/site';
+
+// DRAFT — pre-approved review drafts. approvedForDisplay flag in SITE controls
+// schema.org rendering. Owner-approve before production launch.
+const review = SITE.reviews.featured[0];
+---
+
+<section id="avaliacoes" class="section bg-bg">
+  <div class="container-page">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Avaliações</p>
+
+      <!-- Star rating — rendered as SVGs per DESIGN-BEST-PRACTICES.md icon rules.
+           aggregateRating displayed only when owner-approved. -->
+      {SITE.reviews.approvedForDisplay && (
+        <div class="mt-3 inline-flex items-center gap-2">
+          <div class="flex gap-0.5" aria-hidden="true">
+            {Array.from({ length: 5 }).map(() => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="#d4894a"
+                stroke="#d4894a"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            ))}
+          </div>
+          <p class="text-text tabular">
+            <span class="font-medium">{SITE.reviews.aggregateRating}</span>
+            <span class="text-text-muted"> · {SITE.reviews.reviewCount} avaliações no Google</span>
+          </p>
+        </div>
+      )}
+
+      <blockquote class="mt-8">
+        <p class="text-2xl font-display text-text leading-relaxed italic">
+          "{review.text}"
+        </p>
+        <footer class="mt-4 text-sm text-text-muted">
+          — {review.author}
+        </footer>
+      </blockquote>
+    </div>
+  </div>
+</section>

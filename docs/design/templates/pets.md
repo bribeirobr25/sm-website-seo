@@ -344,3 +344,116 @@ No canonical worked example in §7.9 — the benchmark skews to chains. The IA f
 ---
 
 *Pets is a trust-led vertical built on real animals + real owners + real operators. Skip the stock pets. Lead with the booking. Show the credentials.*
+
+---
+
+## 11. Measurement — KPIs that matter for Pets
+
+**Applies to:** every retainer-tier pets client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for vets, groomers, daycares, and trainers and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Appointment-booking rate (booking form or platform handoff) | Conversion | GA4 `booking_completed` OR `booking_started` (platform handoff) | ≥ 4% of sessions |
+| 2 | Emergency-line click rate (vet emergencies) | Conversion (urgency signal) | GA4 `phone_click` filtered to `source_section=emergency_banner` | High variance — track absolute count, not rate |
+| 3 | GBP-driven traffic share | Acquisition | GBP Insights + GA4 source=gbp | ≥ 35% — GBP is the dominant local-search surface for pets |
+| 4 | Real-pet gallery views (% sessions viewing customer-pet gallery) | Conversion (trust signal) | GA4 `gallery_viewed` | ≥ 35% |
+| 5 | Repeat-appointment rate (clients booking ≥ 2× in 90 days) | Retention | Booking platform / PostHog cohort (Tier 3) | ≥ 50% — pets need recurring care |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (info + appointment request) | GSC + Clarity + GA4 | KPIs #1 (form variant), #2, #3, #4 |
+| Tier 2 (Astro — solo vet or single-groomer) | GSC + Clarity + GA4 | KPIs #1, #2, #3, #4 + booking-platform for #5 |
+| Tier 3 (vet network with booking DB + vaccination records) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`booking_completed`, `emergency_call_clicked`, `gallery_viewed`) · top landing pages (service pages vs home) · source/medium attribution · device split (overwhelmingly mobile).
+
+**Clarity:** heatmaps on booking CTA + emergency banner + service pages · scroll depth on credentials page · recordings filtered to dead clicks on phone number.
+
+**PostHog (Tier 3):** booking funnel · returning-client cohort by species (dog vs cat) · service-popularity ranking · time-of-day appointment heatmap.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `booking_started` | Booking form first field focused OR platform deep-link clicked | `service_category` (`consultation` / `grooming` / `vaccination` / `surgery` / `daycare`), `source_section` |
+| `booking_completed` | Booking submitted (200 from endpoint) | `service_category`, `source_page` |
+| `emergency_call_clicked` | Emergency phone number clicked | `source_section` (`hero` / `emergency_banner` / `footer`) |
+| `service_viewed` | Service description section ≥ 50% in viewport | `service_category`, `source_page` |
+| `gallery_viewed` | Real-pet gallery scrolled ≥ 50% or lightbox opened | `image_count`, `source_page` |
+| `vaccination_info_viewed` | Vaccination-requirement section enters viewport | `source_page` |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Emergency phone number link has dedicated `source_section=emergency_banner` parameter to distinguish from regular phone clicks
+- [ ] Booking-platform UTMs configured for handoff attribution
+- [ ] Real-pet photos have signed consent (LGPD/DSGVO — owner-supplied with documented permission); never use stock or scraped pet photos
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Pets
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Resend** | Type 2+ (booking request form) | Confirmation + vaccination-requirement reminder for first-time clients |
+| **Sentry** | Tier 2+ (full SDK) | Standard agency setup |
+| **PostHog** | Tier 3+ (vet network with booking DB) only | Booking funnel, species-cohort retention (dog vs cat retention differs) |
+| **Neon** | Tier 3+ vet network / multi-location groomer | Bookings, customer records, vaccination history (special category — encrypted) |
+| **Upstash** | Tier 2+ booking form | Rate-limit 5/60s |
+| **Booking platform** (Petlove BR / Petbacker / VetLink) | Optional — solo vets/groomers | Deep-link with UTM-preserve. Platform owns scheduling. |
+| **Stripe** | Type 4+ — pet-product retail or paid services up-front | Rare in agency scope; mostly post-visit payment direct |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Medium leverage**.
+
+- **Default targets:** WhatsApp + Instagram + Copy-link
+- **IG embed recommended:** ✅ Yes — real customer pet photos drive shares (pet owners share happy-pet content with friends)
+- **Placement:** inline share row in gallery + customer-pet section · footer fallback
+- **OG image priority:** real customer pet with consent at 1200×630 OR groomer-at-work shot. NOT stock pet photos.
+- **WhatsApp share copy:** "[Practice name] — [service] in [city]. Trusted by [neighborhood] pet owners." — community framing
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `VeterinaryCare` — vet clinic
+- `PetStore` — retail
+- `AnimalShelter` — shelter / rescue
+- Generic services: `LocalBusiness` with `serviceType: "Pet grooming"` / `"Pet training"`
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "VeterinaryCare",
+  "name": "[Practice name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "openingHoursSpecification": [...],
+  "potentialAction": { "@type": "ReserveAction", "target": "https://[booking URL]" },
+  "medicalSpecialty": ["VeterinaryMedicine"],
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Emergency line 24/7" }
+  ]
+}
+```
+
+For groomers / daycares, use `LocalBusiness` with `priceRange` + service offerings.
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Veterinarian` / `Pet groomer` / `Pet store` / `Pet trainer` / `Animal hospital` (pick most specific)
+- **GBP secondary categories:** species-specific (a vet may add `Cat veterinarian`, `Exotic pet veterinarian`)
+- **Per-jurisdiction GBP attributes:** wheelchair-accessible, online appointments, 24-hour service (for emergency vets), accepts new patients
+- **Keyword pattern (DE):** `tierarzt [stadtteil]` · `hundefriseur [stadt]` · `tiernotdienst [stadt]`
+- **Keyword pattern (BR):** `veterinário em [bairro]` · `petshop [bairro]` · `banho e tosa em [cidade]`
+- **Keyword pattern (PT):** `veterinário em [cidade]` · `banho e tosquia [bairro] [cidade]`
+- **Example:** "Tierarzt Notdienst Berlin Mitte" · "Veterinário em Botafogo" · "Veterinário em Cascais"

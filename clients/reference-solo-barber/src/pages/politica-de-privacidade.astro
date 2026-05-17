@@ -1,0 +1,221 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import { SITE } from '@/lib/site';
+
+const lastUpdated = '16 de maio de 2026';
+---
+
+<BaseLayout
+  title="Política de Privacidade"
+  description={`Política de Privacidade da ${SITE.name} — conformidade com a LGPD.`}
+  noindex={false}
+>
+  <Header />
+
+  <main id="main" class="section bg-bg">
+    <article class="container-page max-w-3xl prose-content">
+      <p class="text-sm uppercase tracking-wider text-text-muted">LGPD</p>
+      <h1 class="text-4xl text-text mt-2 mb-2">Política de Privacidade</h1>
+      <p class="text-sm text-text-muted">
+        Última atualização: <time class="tabular">{lastUpdated}</time>
+      </p>
+
+      <p class="mt-8 text-text-muted leading-relaxed">
+        Esta Política descreve como a {SITE.name} ("nós") coleta, usa, compartilha e protege seus
+        dados pessoais quando você usa nosso site, em conformidade com a Lei Geral de Proteção
+        de Dados (Lei nº 13.709/2018 — LGPD).
+      </p>
+
+      <!-- §1 Quem somos -->
+      <h2 class="mt-12 text-2xl text-text font-display">1. Quem somos</h2>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Controlador dos dados:
+      </p>
+      <ul class="mt-3 text-text-muted leading-relaxed space-y-1 list-disc list-inside">
+        <li>Razão Social: <strong class="text-text">{SITE.legal.razaoSocial}</strong></li>
+        <li class="tabular">MEI / CNPJ: <strong class="text-text">{SITE.legal.cnpjOrMei}</strong></li>
+        <li>Endereço: {SITE.address.street}, {SITE.address.neighborhood}, {SITE.address.city}/{SITE.address.state}</li>
+        <li>
+          Contato do Controlador:{' '}
+          <a
+            href={`mailto:${SITE.legal.dataControllerEmail}`}
+            class="text-accent hover:text-accent-deep"
+            data-event="email_click"
+            data-source-section="privacy_policy"
+          >
+            {SITE.legal.dataControllerEmail}
+          </a>
+        </li>
+      </ul>
+
+      <!-- §2 Quais dados coletamos -->
+      <h2 class="mt-12 text-2xl text-text font-display">2. Quais dados coletamos</h2>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Coletamos apenas o mínimo necessário para operar este site:
+      </p>
+      <ul class="mt-3 text-text-muted leading-relaxed space-y-2 list-disc list-inside">
+        <li>
+          <strong class="text-text">Dados de navegação:</strong> endereço IP (anonimizado), tipo de
+          navegador, sistema operacional, páginas visitadas, data e horário. Coletados pelos
+          provedores de hospedagem e análise listados na seção 4.
+        </li>
+        <li>
+          <strong class="text-text">Dados de contato direto:</strong> apenas quando você nos envia
+          um e-mail ou mensagem por WhatsApp — preservamos esses dados pelo tempo necessário para
+          responder à sua solicitação.
+        </li>
+        <li>
+          <strong class="text-text">Cookies:</strong> ver seção 6 abaixo.
+        </li>
+      </ul>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        <strong class="text-text">Não coletamos:</strong> dados sensíveis (saúde, religião, opinião
+        política, orientação sexual, dados biométricos).
+      </p>
+
+      <!-- §3 Base legal -->
+      <h2 class="mt-12 text-2xl text-text font-display">3. Base legal</h2>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Tratamos seus dados sob as seguintes bases legais previstas no Art. 7 da LGPD:
+      </p>
+      <ul class="mt-3 text-text-muted leading-relaxed space-y-1 list-disc list-inside">
+        <li>
+          <strong class="text-text">Legítimo interesse (Art. 7, IX):</strong> manutenção do site
+          (logs de servidor, prevenção de fraudes).
+        </li>
+        <li>
+          <strong class="text-text">Consentimento (Art. 7, I):</strong> cookies de análise
+          (Microsoft Clarity, Google Analytics) — só atuam após você aceitar no banner de cookies.
+        </li>
+        <li>
+          <strong class="text-text">Execução de contrato (Art. 7, V):</strong> quando você marca um
+          horário ou contrata um serviço.
+        </li>
+      </ul>
+
+      <!-- §4 Compartilhamento -->
+      <h2 class="mt-12 text-2xl text-text font-display">4. Com quem compartilhamos</h2>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Compartilhamos dados estritamente necessários com os seguintes operadores (Art. 39 LGPD):
+      </p>
+      <ul class="mt-3 text-text-muted leading-relaxed space-y-2 list-disc list-inside">
+        {SITE.legal.processors.map((p) => (
+          <li>
+            <strong class="text-text">{p.name}</strong> — {p.purpose}. Localização: {p.location}.
+          </li>
+        ))}
+      </ul>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Cada operador trata seus dados sob nossa orientação contratual. Sempre que adicionarmos um
+        novo operador, atualizaremos esta política e a data acima.
+      </p>
+
+      <!-- §5 Seus direitos (Art. 18) -->
+      <h2 class="mt-12 text-2xl text-text font-display">5. Seus direitos (Art. 18 da LGPD)</h2>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Você pode, a qualquer momento, exercer os seguintes direitos:
+      </p>
+      <ul class="mt-3 text-text-muted leading-relaxed space-y-1 list-disc list-inside">
+        <li>Confirmar a existência de tratamento</li>
+        <li>Acessar seus dados</li>
+        <li>Corrigir dados incompletos, inexatos ou desatualizados</li>
+        <li>Anonimizar, bloquear ou eliminar dados desnecessários ou tratados em desconformidade</li>
+        <li>Solicitar portabilidade dos dados</li>
+        <li>Eliminar dados tratados com base no seu consentimento</li>
+        <li>Revogar o consentimento</li>
+      </ul>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Para exercer qualquer direito, envie um e-mail para{' '}
+        <a
+          href={`mailto:${SITE.legal.dataControllerEmail}`}
+          class="text-accent hover:text-accent-deep"
+          data-event="email_click"
+          data-source-section="privacy_policy"
+        >
+          {SITE.legal.dataControllerEmail}
+        </a>. Responderemos dentro do prazo legal (até 15 dias).
+      </p>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Você também tem o direito de apresentar reclamação à <strong class="text-text">
+        Autoridade Nacional de Proteção de Dados (ANPD)</strong>, no endereço{' '}
+        <a
+          href="https://www.gov.br/anpd/pt-br"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-accent hover:text-accent-deep"
+        >
+          www.gov.br/anpd/pt-br
+        </a>.
+      </p>
+
+      <!-- §6 Cookies -->
+      <h2 class="mt-12 text-2xl text-text font-display">6. Cookies</h2>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Usamos três categorias de cookies:
+      </p>
+      <ul class="mt-3 text-text-muted leading-relaxed space-y-2 list-disc list-inside">
+        <li>
+          <strong class="text-text">Estritamente necessários:</strong> sessão, preferência de idioma,
+          registro do seu consentimento. Não exigem consentimento prévio.
+        </li>
+        <li>
+          <strong class="text-text">Análise (com consentimento):</strong> Google Analytics 4
+          (sessões, conversões) e Microsoft Clarity (heatmaps, gravações sem captura de campos de
+          formulário). Só atuam após você aceitar no banner.
+        </li>
+        <li>
+          <strong class="text-text">Marketing:</strong> não utilizamos cookies de marketing neste site.
+        </li>
+      </ul>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Você pode rever suas preferências de cookies a qualquer momento clicando em
+        "Gerenciar preferências de cookies" no rodapé.
+      </p>
+
+      <!-- §7 Contato do Controlador -->
+      <h2 class="mt-12 text-2xl text-text font-display">7. Contato do Controlador</h2>
+      <p class="mt-3 text-text-muted leading-relaxed">
+        Para dúvidas sobre esta política ou exercício dos seus direitos:
+      </p>
+      <ul class="mt-3 text-text-muted leading-relaxed space-y-1 list-disc list-inside">
+        <li>
+          E-mail:{' '}
+          <a
+            href={`mailto:${SITE.legal.dataControllerEmail}`}
+            class="text-accent hover:text-accent-deep"
+          >
+            {SITE.legal.dataControllerEmail}
+          </a>
+        </li>
+        <li class="tabular">
+          Telefone:{' '}
+          <a href={`tel:${SITE.phone}`} class="text-accent hover:text-accent-deep">
+            {SITE.phoneDisplay}
+          </a>
+        </li>
+        <li>Endereço: {SITE.address.street}, {SITE.address.neighborhood}, {SITE.address.city}/{SITE.address.state}</li>
+      </ul>
+
+      <p class="mt-12 text-sm text-text-muted">
+        Esta política pode ser atualizada quando adicionarmos novos operadores ou mudarmos
+        práticas materiais. A data de última atualização aparece no topo desta página.
+      </p>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  document.querySelectorAll('[data-event]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const eventName = el.getAttribute('data-event');
+      const source = el.getAttribute('data-source-section');
+      if (eventName && window.track) {
+        window.track(eventName, { source_section: source ?? 'unknown' });
+      }
+    });
+  });
+</script>

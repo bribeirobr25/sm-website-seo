@@ -404,3 +404,123 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 ---
 
 *The vertical template is a moodboard. The per-client `design.md` is the choice. Never copy the layout — copy the discipline.*
+
+---
+
+## 11. Measurement — KPIs that matter for Health
+
+**Applies to:** every retainer-tier health client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for clinics, doctors, dentists, and physios and how they wire.
+
+**Legal callout:** Health data triggers DSGVO Art. 9 + LGPD Art. 11 (special category data) + CCPA sensitive-PI rules. KPI events MUST NOT capture symptoms, conditions, appointment reasons, or any patient-identifying data. Aggregate counts only. See `LEGAL.md` §DE / §BR / §US sections.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Doctolib/Zocdoc/Trinks handoff rate (booking platform click rate) | Conversion | GA4 `booking_started` | ≥ 5% of sessions |
+| 2 | No-show rate | Health (business) | Booking platform | < 10% — anything higher kills clinic economics |
+| 3 | Referral-source split (organic / direct / GBP / paid) | Acquisition | GA4 source/medium | Healthy = no single source > 60% (over-dependence risk) |
+| 4 | GBP-driven appointments (% of bookings attributed to GBP entry) | Acquisition | GBP Insights + GA4 source=gbp | ≥ 25% for local-search-led practices |
+| 5 | Mobile LCP p75 on slow connection | Health (UX) | Vercel Analytics + PageSpeed Insights | < 2.5s — older-patient audiences disproportionately on older devices |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + booking deep-link only (solo doctor info site) | GSC + Clarity + GA4 | KPIs #1, #3, #4, #5 |
+| Tier 2 (Astro — most common for solo / 2-doctor practices) | GSC + Clarity + GA4 | KPIs #1, #3, #4, #5 + booking-platform data for #2 |
+| Tier 3 (clinic chain with own booking system) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs + cohort-based patient-retention (anonymized) |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`booking_started`, `phone_click`) · top landing pages (typically condition-explainer or specialty pages) · source/medium attribution · device split.
+
+**Clarity:** heatmaps on booking CTA + practice-info page + practitioner credentials · scroll depth on condition pages · recordings filtered to dead clicks on booking link (broken Doctolib/Zocdoc deep-links).
+
+**PostHog (Tier 3):** booking funnel · referral-source × no-show rate matrix (anonymized) · specialty-page → booking-conversion ranking.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `booking_started` | Doctolib/Zocdoc/Trinks deep-link clicked OR own booking modal opens | `provider` (`doctolib` / `zocdoc` / `trinks` / `direct`), `specialty_slug`, `source_section` |
+| `specialty_viewed` | Specialty/condition page LCP fires | `specialty_slug` (`kardiologie`, `orthopädie`, etc.) — NO condition-specific terms beyond the specialty itself |
+| `practitioner_viewed` | Doctor/practitioner profile section enters viewport | `staff_slug` |
+| `credentials_viewed` | Credentials/qualifications section enters viewport | `staff_slug` |
+| `phone_click` | Practice phone number clicked | `source_section` |
+
+**Special-category data rule:** never capture appointment reason, symptom, condition, or any free-text input as event parameters. Specialty slug is allowed (it describes the practitioner's offering, not the patient's condition). Booking platform handles all patient PII server-side.
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Sentry `sendDefaultPii: false` confirmed via grep
+- [ ] Booking-platform deep-link returns user to specialty page (not home) on cancel
+- [ ] Doctolib/Zocdoc/Trinks consent integration — verify platform's own privacy notice + AVV signed
+- [ ] No condition-specific URL parameters preserved in analytics (`?specialty=cardio` allowed; `?reason=chest_pain` is a PII violation)
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring + per-jurisdiction legal pages
+
+### 11.6 Integrations applicable to Health
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Booking platform** (Doctolib / Zocdoc / Trinks BR) | Every tier — deep-link primary | Per `DESIGN-BEST-PRACTICES.md` booking-platform tier-3 elevation. Platform handles all patient PII server-side — agency never touches it. |
+| **Resend** | Type 2+ (own appointment-request flow) | Booking platform usually owns email; only ship Resend for non-platform clinics |
+| **Sentry** | Tier 2+ (full SDK) | Standard setup. `send_default_pii: false` is **critical** — health is the highest-stakes vertical for PII leakage |
+| **PostHog** | Tier 3+ (clinic with own booking) only | Anonymized analytics; never patient-identifying data. Specialty + practitioner slugs are allowed; condition / appointment-reason are NOT |
+| **Neon** | Tier 3+ only — clinics with own booking DB | Special-category data (DSGVO Art. 9 / LGPD Art. 11). Encryption at rest mandatory. EU region for DE/PT/EU clients. |
+| **Upstash** | Tier 2+ appointment-request form | Rate-limit (5/60s per IP-hash) |
+
+**Special-category data rule:** never store appointment reason, symptom, condition, or any free-text patient input in any agency-side system. Booking platform stores it server-side under their DPA; agency systems only see specialty slugs.
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Low leverage**.
+
+- **Default targets:** Copy-link only (no WhatsApp / FB / IG / X)
+- **IG embed recommended:** ❌ No — sharing health-practitioner links has a PII context that healthy people don't want; the rare share that does happen is a private one-on-one Copy-paste, not a broadcast
+- **Placement:** subtle Copy-link only at footer · NOT in hero · NOT on practitioner pages (privacy aware)
+- **OG image priority:** practice exterior / clean reception (1200×630). NOT a stock white-coat-stethoscope photo. NOT identifiable patient photos.
+- **Copy-link copy:** "[Practice name] — [specialty] in [city]" — neutral, no urgency framing
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `MedicalClinic` — multi-doctor or multi-specialty
+- `Dentist` — dental practice
+- `Physiotherapist` — physio / PT
+- `MedicalOrganization` — generic fallback
+- `Pharmacy` — pharmacies (rare in agency scope)
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  "name": "[Practice name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "medicalSpecialty": ["Cardiology", "Internal Medicine"],
+  "physician": [
+    { "@type": "Physician", "name": "Dr. [Name]", "medicalSpecialty": "Cardiology" }
+  ],
+  "openingHoursSpecification": [...],
+  "potentialAction": { "@type": "ReserveAction", "target": "https://[doctolib URL]" },
+  "isAcceptingNewPatients": true
+}
+```
+
+`isAcceptingNewPatients` is an under-used Schema.org property that improves local-pack ranking signals.
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Doctor` / `Dentist` / `Physical therapist` / `Cardiologist` / `Dermatologist` (pick most specific medical-specialty category)
+- **GBP secondary categories:** related specialties or services (e.g., a GP may add `Women's health clinic`, `Travel clinic`)
+- **Per-jurisdiction GBP attributes:** wheelchair-accessible, online appointments, accepted insurance plans (varies by market), accepts new patients
+- **Keyword pattern (DE):** `[fachrichtung] [stadtteil]` · `[fachrichtung] in [stadt]` · `kassenarzt [stadtteil]`
+- **Keyword pattern (BR):** `[especialidade] em [bairro]` · `[especialidade] [cidade] convênio`
+- **Keyword pattern (PT):** `[especialidade] em [cidade]` · `[especialidade] [bairro] consulta`
+- **Example:** "Kardiologe in Mitte" · "Cardiologista em Copacabana" · "Cardiologista em Lisboa"

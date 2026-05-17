@@ -385,3 +385,125 @@ No canonical worked example in §7.11 — the benchmark skews to chains/franchis
 ---
 
 *Education is a trust-led vertical built on the operator + the method + the trial. Skip the diverse-children-stock. Lead with the trial class. Show the credentials.*
+
+---
+
+## 11. Measurement — KPIs that matter for Education
+
+**Applies to:** every retainer-tier education client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for tutors, schools, language centers, and instructors and how they wire.
+
+**Legal callout:** Education clients with under-13 audiences trigger COPPA (US) and additional consent rules under DSGVO Art. 8 + LGPD Art. 14. See `LEGAL.md` §COPPA — under-13 audience. KPI events MUST NOT capture child identifiers; only aggregate counts.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Trial-class signup rate | Conversion | GA4 `contact_form_completed` (trial form) OR platform handoff | ≥ 6% of sessions |
+| 2 | Trial → enrollment conversion (signed-up trial → paid enrollment) | Conversion (business) | CRM / platform / manual | ≥ 40% trial-to-enroll |
+| 3 | Cohort retention (% students active month-over-month) | Retention | PostHog cohort (Tier 3) / platform data | ≥ 80% MoM for ongoing programs |
+| 4 | Parent-vs-student source split (when audience is mixed) | Acquisition | GA4 source + device (mobile/desktop heuristic) | Vertical-dependent |
+| 5 | Method-page engagement (% sessions reading the pedagogy page deeply) | Conversion (trust signal) | Clarity scroll depth on `/methode` or `/method` | ≥ 50% reach 75% scroll |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (solo tutor with trial form) | GSC + Clarity + GA4 | KPIs #1, #4, #5 |
+| Tier 2 (Astro — most common) | GSC + Clarity + GA4 | KPIs #1, #4, #5 + CRM for #2 |
+| Tier 3 (school with LMS / Superprof / Preply integration) | GSC + Clarity + GA4 + PostHog + Sentry | All 5 KPIs |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`trial_signup_completed`) · top landing pages by age/level (`/kinder`, `/erwachsene`, `/business`) · device split (parent-on-mobile vs student-on-desktop heuristic) · source/medium for trial signups.
+
+**Clarity:** heatmaps on trial-signup CTA + method page + credentials page · scroll depth on long-form pedagogy explainer · recordings filtered to trial-form abandonment.
+
+**PostHog (Tier 3):** trial → enrollment funnel · monthly retention cohorts · program-popularity ranking · drop-off-by-step analysis.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `trial_signup_started` | Trial-class form first field focused | `program_slug`, `source_page` |
+| `trial_signup_completed` | Trial form submitted (200 from endpoint) | `program_slug`, `student_age_band` (`under_13`, `13_18`, `adult`) — NO actual age, age band only |
+| `method_viewed` | Pedagogy/method page LCP fires | `source_page` |
+| `program_viewed` | Specific program/course page LCP fires | `program_slug`, `level` |
+| `credentials_viewed` | Credentials/teacher-profile section enters viewport | `staff_slug` |
+
+**COPPA / minors rule:** never capture child name, email, school, exact age, or any identifying parameter. Age bands only. Parent contact info stays in the form payload (server-side), never in the event payload.
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] If under-13 audience: COPPA section present in Privacy Policy + parental-consent flow shipped (`LEGAL.md` §COPPA)
+- [ ] Trial-form payload never serializes child name / email into analytics events
+- [ ] `student_age_band` parameter values match the documented set exactly
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Education
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Resend** | Type 2+ (trial signup form) | Auto-reply confirming trial-class signup + parent-CC if under-18 student |
+| **Sentry** | Tier 2+ (full SDK) | Standard setup; `send_default_pii: false` critical when under-13 audience triggers COPPA |
+| **PostHog** | Tier 3+ (school with LMS / Superprof / Preply integration) only | Trial → enrollment funnel; age-band-only parameters; no student-identifying data |
+| **Neon** | Tier 3+ schools with own LMS | Students table (encrypted PII); attendance records. COPPA-relevant if under-13. |
+| **Upstash** | Tier 2+ trial signup | Rate-limit 5/60s |
+| **Booking platform** (Superprof / Preply / Tutor.com) | Optional — solo tutors | Deep-link with UTM-preserve handoff. Platform owns booking/payment infrastructure. |
+| **Stripe** | Type 4+ — tuition subscriptions, lesson packs | SEPA + Pix per jurisdiction; SCA-compliant flow for EU |
+
+**Minors rule:** every event captures `student_age_band` (`under_13`, `13_18`, `adult`) — never exact age. Never student name. Parent contact info stays in form payload (server-side); never duplicated to analytics events.
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Medium leverage**.
+
+- **Default targets:** WhatsApp + Copy-link + Facebook (parent-driven audience)
+- **IG embed recommended:** ❌ No — under-13 audience caution; even consented student photos are a high-risk share target
+- **Placement:** inline share at trial-CTA section (parents share with other parents) · footer fallback
+- **OG image priority:** classroom-environment shot OR instructor portrait (with all-consent for any visible students). NOT diverse-children-stock. NOT identifiable students without explicit parental consent.
+- **WhatsApp share copy:** "[School/tutor name] — [subject/program] in [city]. Free trial available." — invite framing
+
+**Photo-consent rule:** any student photo on the site requires written parental consent on file. Document the consent process in the per-client `BRIEF.md`. Never use scraped or stock-with-faces children.
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `EducationalOrganization` — generic
+- `School` — primary / secondary school
+- `Preschool` — daycare / kindergarten
+- `MusicSchool` — music-focused
+- `LanguageSchool` — language learning
+- `CollegeOrUniversity` — higher ed (rare in agency scope)
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "MusicSchool",
+  "name": "[School name]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "openingHoursSpecification": [...],
+  "hasCourse": [
+    { "@type": "Course", "name": "Klavier", "courseCode": "PIANO-1", "audience": { "@type": "EducationalAudience", "audienceType": "Children" } },
+    { "@type": "Course", "name": "Gesang", "courseCode": "VOICE-1" }
+  ],
+  "potentialAction": { "@type": "ContactAction", "target": "https://[trial-form URL]" }
+}
+```
+
+`hasCourse` lists the offerings — long-tail ranking ("Klavierunterricht [stadtteil]"). Use `audience` to target search by age group.
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Tutoring service` / `Music school` / `Language school` / `Day care center` / `Preschool` (pick most specific)
+- **GBP secondary categories:** subject + level (e.g., music school adds `Piano lessons`, `Voice lessons`)
+- **Per-jurisdiction GBP attributes:** wheelchair-accessible, online appointments, online classes, free trial, accepts new students
+- **Keyword pattern (DE):** `[subject] nachhilfe [stadtteil]` · `[instrument] unterricht [stadt]` · `sprachschule [stadt]`
+- **Keyword pattern (BR):** `aula de [matéria] em [bairro]` · `professor de [matéria] [cidade]`
+- **Keyword pattern (PT):** `aulas de [matéria] em [cidade]` · `explicações [matéria] [cidade]`
+- **Example:** "Mathe Nachhilfe Mitte" · "Aula de violão em Copacabana" · "Explicações matemática Lisboa"

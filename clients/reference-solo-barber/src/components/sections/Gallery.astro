@@ -1,0 +1,62 @@
+---
+import Placeholder from '@/components/ui/Placeholder.astro';
+
+// DRAFT — replace with 6 owner-supplied real-work photos
+// (per templates/beauty.md §6 Photography: real client work, consent-cleared).
+const galleryItems = [
+  { label: 'Corte clássico — degradê', aspect: '1 / 1' },
+  { label: 'Barba completa — após', aspect: '1 / 1' },
+  { label: 'Corte máquina', aspect: '1 / 1' },
+  { label: 'Acabamento navalha', aspect: '1 / 1' },
+  { label: 'Toalha quente', aspect: '1 / 1' },
+  { label: 'Cliente satisfeito', aspect: '1 / 1' },
+];
+---
+
+<section id="galeria" class="section bg-surface">
+  <div class="container-page">
+    <div class="max-w-2xl">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Galeria</p>
+      <h2 class="text-3xl sm:text-4xl text-text mt-2">
+        Cada cabeça, um corte.
+      </h2>
+      <p class="text-text-muted mt-4">
+        Trabalho real, clientes reais. Nenhuma dessas fotos é stock.
+      </p>
+    </div>
+
+    <ul class="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4">
+      {galleryItems.map((item) => (
+        <li>
+          <Placeholder label={item.label} aspectRatio={item.aspect} rounded={true} />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  // gallery_viewed fires once per session when 50% of gallery enters viewport
+  if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+    const gallery = document.getElementById('galeria');
+    if (gallery) {
+      let fired = false;
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting && !fired) {
+              fired = true;
+              window.track?.('gallery_viewed', {
+                image_count: 6,
+                source_section: 'gallery',
+              });
+              io.disconnect();
+            }
+          }
+        },
+        { threshold: 0.5 },
+      );
+      io.observe(gallery);
+    }
+  }
+</script>

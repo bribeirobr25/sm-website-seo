@@ -1,0 +1,84 @@
+---
+import { SITE } from '@/lib/site';
+import Button from '@/components/ui/Button.astro';
+---
+
+<section id="servicos" class="section bg-surface">
+  <div class="container-page">
+    <div class="max-w-2xl">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Serviços</p>
+      <h2 class="text-3xl sm:text-4xl text-text mt-2">
+        Quatro serviços, feitos com calma.
+      </h2>
+      <p class="text-text-muted mt-4 leading-relaxed">
+        Sem upsell, sem combo obrigatório. Você escolhe o serviço, marca o horário pelo Trinks ou
+        WhatsApp, e a gente faz acontecer.
+      </p>
+    </div>
+
+    <ul class="mt-10 grid sm:grid-cols-2 gap-4">
+      {SITE.services.map((service) => (
+        <li
+          class="p-6 rounded-lg bg-surface-elev border border-border hover:border-accent transition-colors"
+          data-event="service_viewed"
+          data-service-slug={service.slug}
+        >
+          <div class="flex items-baseline justify-between gap-4">
+            <h3 class="text-xl text-text font-display">
+              {service.name}
+            </h3>
+            <p class="text-accent font-medium tabular shrink-0">
+              {service.price}
+            </p>
+          </div>
+          <p class="text-sm text-text-muted mt-2 leading-relaxed">
+            {service.description}
+          </p>
+          <p class="text-xs text-text-muted mt-3 tabular">
+            Duração: {service.durationMinutes} min
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-10">
+      <Button
+        href={SITE.booking.url}
+        target="_blank"
+        variant="primary"
+        size="md"
+        dataEvent="booking_started"
+        dataSourceSection="services"
+      >
+        Agendar pelo Trinks
+      </Button>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Service-viewed events — fire once per service per session (IntersectionObserver).
+  if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+    const seen = new Set<string>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const target = entry.target as HTMLElement;
+          const slug = target.getAttribute('data-service-slug');
+          if (slug && !seen.has(slug)) {
+            seen.add(slug);
+            window.track?.('service_viewed', {
+              service_slug: slug,
+              source_section: 'services',
+            });
+          }
+        }
+      },
+      { threshold: 0.5 },
+    );
+    document.querySelectorAll<HTMLElement>('[data-event="service_viewed"]').forEach((el) => {
+      io.observe(el);
+    });
+  }
+</script>

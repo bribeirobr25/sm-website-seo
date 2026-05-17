@@ -1,0 +1,41 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Button from '@/components/ui/Button.astro';
+import { SITE } from '@/lib/site';
+---
+
+<BaseLayout title="Página não encontrada" noindex={true}>
+  <Header />
+
+  <main id="main" class="section">
+    <div class="container-page text-center max-w-xl mx-auto">
+      <p class="text-sm uppercase tracking-wider text-text-muted">404</p>
+      <h1 class="mt-2 text-4xl sm:text-5xl text-text">
+        Página não encontrada
+      </h1>
+      <p class="mt-6 text-text-muted leading-relaxed">
+        A página que você procurou não existe ou foi movida. Se você acha que isso é um erro,
+        ligue ou mande mensagem — a gente responde rápido.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3 justify-center">
+        <Button href="/" variant="primary" size="md">
+          Voltar para o início
+        </Button>
+        <Button
+          href={`tel:${SITE.phone}`}
+          variant="secondary"
+          size="md"
+          dataEvent="phone_click"
+          dataSourceSection="404"
+        >
+          Ligar para {SITE.shortName}
+        </Button>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

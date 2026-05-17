@@ -17,8 +17,9 @@ This document captures the **infrastructure scaffold every agency-built site nee
 3. [Custom `404.astro` and `500.astro`](#3-custom-404astro-and-500astro)
 4. [`.github/workflows/ci.yml` — pnpm validate on every push](#4-githubworkflowsciyml--pnpm-validate-on-every-push)
 5. [Uptime monitoring — Better Stack or UptimeRobot](#5-uptime-monitoring--better-stack-or-uptimerobot)
-6. [Per-client rollback drill in `CLAUDE.md`](#6-per-client-rollback-drill-in-claudemd)
-7. [When to drop this scaffold in](#7-when-to-drop-this-scaffold-in)
+6. [Error tracking — Sentry on every server-side surface](#6-error-tracking--sentry-on-every-server-side-surface)
+7. [Per-client rollback drill in `CLAUDE.md`](#7-per-client-rollback-drill-in-claudemd)
+8. [When to drop this scaffold in](#8-when-to-drop-this-scaffold-in)
 
 ---
 
@@ -31,9 +32,10 @@ This document captures the **infrastructure scaffold every agency-built site nee
 | `src/pages/500.astro` | Branded 500 with apology copy + phone | `RELIABILITY.md` §2 | 🔴 Astro framework default ships |
 | `.github/workflows/ci.yml` | Runs `pnpm validate` on every push + PR | `QUALITY.md` §4 | 🔴 Zero automated quality gate |
 | Uptime monitor (Better Stack / UptimeRobot) | 5-min ping on `/`, alerts to agency email + WhatsApp | `RELIABILITY.md` §9 | 🔴 Required before `noindex` flip |
+| Sentry — server-side error tracking | DSN-wired error capture on every server-side surface (form endpoints, Astro middleware, Next.js routes). `send_default_pii: false` enforced. | `LEGAL.md` §Rules at a glance + `RELIABILITY.md` §9 | 🔴 Production blocker for Tier 2+ — silent server errors otherwise |
 | Per-client rollback drill | Documented in client `CLAUDE.md` | `RELIABILITY.md` §10 | 🟠 5-min restore unverified |
 
-**Net:** all five components together = one infrastructure scaffold. Build once per agency tooling decision; reuse across every project.
+**Net:** all six components together = one infrastructure scaffold. Build once per agency tooling decision; reuse across every project.
 
 ---
 
@@ -183,7 +185,172 @@ Pick one — both are free at the agency's scale.
 
 ---
 
-## 6. Per-client rollback drill in `CLAUDE.md`
+## 6. Error tracking — Sentry on every server-side surface
+
+### The rule
+
+**Sentry instruments every server-side execution surface. No client SDK on Tier 1 static pages.**
+
+This honors two existing rules simultaneously:
+
+- `TECH.md` §Stack decision matrix: Tier 1 = vanilla JS, no framework — so no Sentry client SDK
+- Agency monitoring posture: every server-side execution path must surface errors
+
+What that means per tier:
+
+| Tier | Stack | Sentry footprint |
+|---|---|---|
+| **Tier 1 — pure static HTML** | No JS framework · no forms · no server endpoints | **No Sentry** — there is no surface to instrument. Vercel's build logs + the uptime monitor (§5) cover the failure modes that exist. |
+| **Tier 1 + form endpoint** | HTML + serverless contact-form function | **Sentry on the serverless function only.** No client SDK on the static pages. The function captures form-submission failures, Resend API errors, rate-limit violations. |
+| **Tier 2 — Astro** | Astro SSG/SSR · form endpoints · middleware | **Full Sentry SDK** via `@sentry/astro` — captures both browser-side runtime errors (hydration, lazy-loaded scripts) and server-side errors (API routes, middleware, build hooks). |
+| **Tier 3 — Next.js** | Next.js App Router · API routes · middleware · server actions | **Full Sentry SDK** via `@sentry/nextjs` — covers the same surfaces plus server actions and edge runtime. |
+
+### The non-negotiable: `send_default_pii: false`
+
+Sentry's default is to attach request headers, cookies, IP addresses, and (in some integrations) form payloads to every captured event. **All of these can contain PII** — emails, names, phone numbers, session tokens, free-text form input.
+
+The agency rule: `send_default_pii: false` is set in every Sentry init call, on every project, in every environment. No exceptions. Documented in `LEGAL.md` §Rules at a glance as part of the consent-first / PII-minimization posture.
+
+Why this matters legally:
+
+- **DSGVO Art. 28 + Art. 32:** processing personal data without a data-processor agreement + appropriate technical measures is a violation. Sentry-with-default-PII fits the violation profile.
+- **LGPD Art. 6 II (necessidade) + Art. 46 (segurança):** collecting more PII than necessary is itself a violation, separately from the breach risk.
+- **CCPA §1798.100(b):** "Notice at Collection" must enumerate every category of PI collected — IP addresses, browser fingerprints, and form payloads in error logs all count.
+
+### Setup recipe — Tier 2 (Astro)
+
+```bash
+pnpm add @sentry/astro
+```
+
+Wire it in `astro.config.ts`:
+
+```typescript
+import { defineConfig } from 'astro/config';
+import sentry from '@sentry/astro';
+
+export default defineConfig({
+  integrations: [
+    sentry({
+      dsn: process.env.SENTRY_DSN,
+      sendDefaultPii: false,
+      tracesSampleRate: 0.1,
+      sourceMapsUploadOptions: {
+        project: process.env.SENTRY_PROJECT,
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+      },
+    }),
+  ],
+});
+```
+
+Then a sentry-init module (called from `BaseLayout.astro` for browser, automatically by the integration for server):
+
+```typescript
+// src/lib/sentry.ts
+import * as Sentry from '@sentry/astro';
+
+Sentry.init({
+  dsn: import.meta.env.PUBLIC_SENTRY_DSN,
+  sendDefaultPii: false,         // ← non-negotiable
+  tracesSampleRate: 0.1,
+  environment: import.meta.env.MODE,
+  beforeSend(event) {
+    // Defense-in-depth: scrub any request data Sentry-Astro didn't already
+    if (event.request) {
+      delete event.request.cookies;
+      delete event.request.headers;
+      if (event.request.data) event.request.data = '[Filtered]';
+    }
+    return event;
+  },
+});
+```
+
+### Setup recipe — Tier 1 with form endpoint only
+
+```bash
+pnpm add @sentry/node
+```
+
+In the serverless function (`api/contact.ts` or equivalent):
+
+```typescript
+import * as Sentry from '@sentry/node';
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  sendDefaultPii: false,         // ← non-negotiable
+  tracesSampleRate: 0.1,
+  environment: process.env.NODE_ENV,
+});
+
+export default async function handler(req, res) {
+  try {
+    // ... contact form logic
+  } catch (err) {
+    Sentry.captureException(err);
+    res.status(500).json({ error: 'Internal error' });
+  }
+}
+```
+
+Pure-static Tier 1 with **no** form endpoint and **no** serverless function: skip this entire section. There is nothing to instrument.
+
+### Setup recipe — Tier 3 (Next.js)
+
+```bash
+pnpm add @sentry/nextjs
+npx @sentry/wizard@latest -i nextjs
+```
+
+The wizard generates `sentry.client.config.ts`, `sentry.server.config.ts`, and `sentry.edge.config.ts`. Manually verify `sendDefaultPii: false` is set in **all three** before committing — the wizard sometimes omits it.
+
+### Environment variables (all tiers)
+
+| Variable | Where set | Required? |
+|---|---|---|
+| `SENTRY_DSN` | Vercel project settings | ✅ |
+| `PUBLIC_SENTRY_DSN` (Astro) / `NEXT_PUBLIC_SENTRY_DSN` (Next.js) | Vercel project settings | Required only for client-side capture (Tier 2+) |
+| `SENTRY_AUTH_TOKEN` | Vercel project settings (build-time only) | Required for source-map upload |
+| `SENTRY_PROJECT` | Vercel project settings | Required for source-map upload |
+| `SENTRY_ORG` | Vercel project settings | Required for source-map upload |
+
+`SENTRY_AUTH_TOKEN` and `SENTRY_PROJECT` should be marked as **build-time only** in Vercel — not exposed to client bundles.
+
+### Alert thresholds (defaults — tune per client)
+
+In the Sentry dashboard, configure:
+
+| Alert | Threshold | Notification channel |
+|---|---|---|
+| Issue first seen | Immediate | Agency email |
+| Issue spike (>10× normal rate) | 5-min window | Agency email + WhatsApp via webhook |
+| New issue in production | Immediate | Agency email |
+| Performance regression (p95 > 2× baseline) | 1-hour window | Agency email (Tier 3 only — Tier 1/2 use uptime monitor) |
+
+### Data-processor disclosure obligations
+
+Sentry processes personal data on behalf of the client and qualifies as a data processor under DSGVO Art. 28 / LGPD Art. 39 / CCPA service-provider exemption. Every site that uses Sentry must:
+
+1. **Name Sentry** as a third-party processor in the Privacy Policy (per `LEGAL.md` §Privacy Policy — common cross-jurisdiction structure §4 "Who we share with")
+2. **Have a DPA signed** with Sentry — sign-up flow includes the DPA acknowledgment; agency confirms once per client account
+3. **Configure the EU data residency region** for any DE/PT/EU-resident clients (Sentry → Settings → General → Data Region → EU)
+4. **Confirm 90-day default retention** (Sentry's free-tier default) or extend per client retention policy
+
+### Pre-launch verification (operational tests)
+
+Captured in `CHECKLIST.md` §Operational tests; mirrored here for completeness.
+
+- [ ] Trigger a known error in production (e.g., `?test_error=1` query handled by `/api/sentry-test` route) — confirm Sentry receives the event within 60 seconds
+- [ ] Inspect the captured event in Sentry dashboard — verify NO request body, NO cookies, NO headers, NO IP address (or hashed only)
+- [ ] Verify `sendDefaultPii: false` appears in `astro.config.ts` / `sentry.*.config.ts` via grep
+- [ ] Verify the Privacy Policy lists Sentry as a data processor
+- [ ] Verify Sentry data region matches client jurisdiction (EU for DE/PT, US for US-only clients)
+
+---
+
+## 7. Per-client rollback drill in `CLAUDE.md`
 
 Every per-client `CLAUDE.md` should already have a slim rollback section per `TECH.md` §20. Add a **drill record** the first time a deploy goes to production:
 
@@ -204,7 +371,7 @@ Drill once per client at the production cutover gate; re-drill quarterly per ret
 
 ---
 
-## 7. When to drop this scaffold in
+## 8. When to drop this scaffold in
 
 | Project state | Action |
 |---|---|
@@ -219,16 +386,17 @@ Drill once per client at the production cutover gate; re-drill quarterly per ret
 
 ## Cross-references
 
-- `SECURITY.md` §3, §4 — security headers detail + canonical `vercel.json`
-- `RELIABILITY.md` §2 — custom error pages spec
-- `RELIABILITY.md` §9 — uptime monitoring requirements
-- `RELIABILITY.md` §10 — rollback procedure detail
-- `RELIABILITY.md` §12 — the 12-question reliability rubric this scaffold is sized against
-- `QUALITY.md` §2 — what `pnpm validate` must do per stack tier
-- `QUALITY.md` §4 — CI/CD requirements
-- `TECH.md` §17 — deployment (Vercel-specific notes)
-- `TECH.md` §20 — per-client `CLAUDE.md` template (includes the rollback section)
-- `CHECKLIST.md` §1, §2 — pre-launch gates that depend on this scaffold
+- `SECURITY.md` §Security headers + §`vercel.json` recipe — canonical six-header config
+- `LEGAL.md` §Rules at a glance — `send_default_pii: false` rule + Sentry data-processor disclosure obligation
+- `RELIABILITY.md` §Custom error pages — branded 404/500 spec
+- `RELIABILITY.md` §Uptime monitoring — uptime monitor requirements
+- `RELIABILITY.md` §Rollback procedure — rollback procedure detail
+- `RELIABILITY.md` §12-question reliability rubric — what this scaffold is sized against
+- `QUALITY.md` §`pnpm validate` — what validate must do per stack tier
+- `QUALITY.md` §CI/CD — CI/CD requirements
+- `TECH.md` §Deployment — Vercel-specific notes
+- `TECH.md` §Per-client `CLAUDE.md` template — includes the rollback section
+- `CHECKLIST.md` §Technical + §Operational tests — pre-launch gates that depend on this scaffold
 
 ---
 

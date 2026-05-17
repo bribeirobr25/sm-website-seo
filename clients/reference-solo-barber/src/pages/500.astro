@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Button from '@/components/ui/Button.astro';
+import { SITE } from '@/lib/site';
+---
+
+<BaseLayout title="Erro no servidor" noindex={true}>
+  <Header />
+
+  <main id="main" class="section">
+    <div class="container-page text-center max-w-xl mx-auto">
+      <p class="text-sm uppercase tracking-wider text-text-muted">500</p>
+      <h1 class="mt-2 text-4xl sm:text-5xl text-text">
+        Algo deu errado por aqui
+      </h1>
+      <p class="mt-6 text-text-muted leading-relaxed">
+        Foi falha nossa, não sua. Nossa equipe já foi notificada (sem dados pessoais —
+        só o erro técnico). Enquanto isso, dá pra entrar em contato direto:
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3 justify-center">
+        <Button
+          href={`tel:${SITE.phone}`}
+          variant="primary"
+          size="md"
+          dataEvent="phone_click"
+          dataSourceSection="500"
+        >
+          Ligar para {SITE.shortName}
+        </Button>
+        <Button
+          href={`https://wa.me/${SITE.whatsapp}`}
+          target="_blank"
+          variant="secondary"
+          size="md"
+          dataEvent="whatsapp_click"
+          dataSourceSection="500"
+        >
+          WhatsApp
+        </Button>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

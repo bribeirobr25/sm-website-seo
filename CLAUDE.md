@@ -85,12 +85,16 @@ All standards documents live in `docs/design/`. Read the relevant ones before st
 | `docs/design/TECH.md` | Stack decisions, code organization, Configuration-as-Code, TypeScript, naming, deployment | Starting any client project |
 | `docs/design/PERFORMANCE.md` | Web performance — budgets, image rules, font self-hosting, LCP diagnostic | Building, debugging slow pages, pre-launch |
 | `docs/design/ACCESSIBILITY.md` | WCAG 2.2 AA — contrast, keyboard nav, focus trap, reduced motion, semantic HTML, touch targets | Any client UI work, pre-launch a11y pass |
-| `docs/design/SECURITY.md` | TLS, security headers, contact-form hardening, secret rotation, German legal (DSGVO/Impressum), Brazilian legal (LGPD/Razão Social), pre-launch security gates | Any client project, mandatory before production |
+| `docs/design/SECURITY.md` | TLS, security headers, contact-form hardening, secret rotation, malware/blacklist monitoring, pre-launch security gates. **Legal compliance is in `LEGAL.md` — SECURITY.md §6/§6.5 stub to it.** | Any client project, mandatory before production |
+| `docs/design/LEGAL.md` | Consolidated 4-jurisdiction legal compliance: DE (DSGVO + Impressum), BR (LGPD + Razão Social/CNPJ/MEI), PT (RGPD + NIF/CAE/Livro de Reclamações), US (CCPA/CPRA + COPPA + state baselines). Per-client market → jurisdiction mapping rule · Privacy Policy + Terms of Use spec · cookie consent banner spec (consent-first, "Reject all" parity, ≤6mo). | Any client project — before production launch |
 | `docs/design/RELIABILITY.md` | Error handling, recovery, third-party degraded mode, logging, monitoring, backup/DR, audit rubric | Production builds; auditing any inherited site |
 | `docs/design/QUALITY.md` | `pnpm validate` pipeline, CI/CD (GitHub Actions), coverage targets, parity validators, pre-commit hooks | Setting up any new client project |
 | `docs/design/INFRASTRUCTURE.md` | Scaffold drop-in: `vercel.json` + custom 404/500 + CI workflow + uptime monitoring + rollback drill | Every new client project — drop in at scaffold time |
 | `docs/design/FORMS.md` | Contact / booking / waitlist form patterns — validation, sanitization, honeypot, rate limit, idempotency, accessibility | Any form on a client site |
-| `docs/design/ANALYTICS.md` | Event tracking, consent gating (DSGVO), GSC + Clarity + GA4 stack, retainer reporting hooks | Production launch and retainer phase |
+| `docs/design/ANALYTICS.md` | Event tracking, consent gating (DSGVO/LGPD), GSC + Clarity + GA4 + PostHog (Tier 3) stack, per-tier stack-selection decision tree, retainer reporting hooks | Production launch and retainer phase |
+| `docs/design/KPI.md` | Product KPIs + measurement framework — KPI taxonomy (acquisition/conversion/retention/health) · per-product-type defaults · canonical event-naming convention · per-tool dashboard recipes · the per-client BRIEF.md "KPI contract" block · monthly retainer-report structure | Every production cutover; every retainer-tier client |
+| `docs/design/INTEGRATIONS.md` | Per-integration setup recipes — Resend (transactional email) · Sentry (error tracking) · PostHog (product analytics) · Neon (PostgreSQL) · Upstash (Redis rate limit) · Stripe (payments). Each with free-tier thresholds, env-var inventory, EU/US region selection, DPA + Privacy Policy disclosure text, key-rotation cadence. | Whenever a project needs one of the canonical agency integrations |
+| `docs/design/SOCIAL-SHARING.md` | Share-button component spec (WhatsApp/Facebook/X/Instagram/Copy-link) · per-channel intent URLs · Open Graph + Twitter Card requirements · OG image generation (static, page-specific, dynamic via `@vercel/og`) · Instagram embed (consent-gated) · per-vertical share strategy · IG bio-link UTM convention | Every production cutover (OG is mandatory); high-leverage verticals (gastronomy/beauty/events/artisan) get the full share row |
 | `docs/design/SEO.md` | Local SEO, keyword research, schema, GBP optimization, measurement | Any SEO or GBP work |
 | `docs/design/I18N.md` | Multilingual setup, locale config, translation files, parity validator, DE/EN/PT-BR rules | Any multilingual site |
 | `docs/design/CHECKLIST.md` | Master pre-delivery checklist + leanest free launch combo runbook | Before going live on any client |
@@ -218,10 +222,14 @@ vercel --prod   # Gets a vercel.app URL
 - **Never invent client content.** Hours, prices, reviews, certifications — all confirmed with client or labeled DRAFT.
 - **Re-source the palette mid-build when a higher-priority signal arrives** — logo retrieval, brand guide email, owner-supplied photos. Per `DESIGN-BEST-PRACTICES.md` §5 "Re-sourcing the palette mid-build." The hierarchy is enforced throughout the build, not just at scaffold time.
 - **Verify WCAG 2.2 AA contrast before committing tokens.** Recipe in `TECH.md` §8 "Image-extraction operational toolkit." Especially: white-on-tinted-button hover states (lighter-on-hover is a WCAG anti-pattern — see `DESIGN-BEST-PRACTICES.md` §5).
-- **Legal compliance per client market** — non-negotiable for production launch:
-  - 🇩🇪 German: Impressum + Datenschutzerklärung (DSGVO) — `SECURITY.md` §6
-  - 🇧🇷 Brazilian: Política de Privacidade + Razão Social/MEI/CNPJ footer (LGPD) — `SECURITY.md` §6.5
-  - 🇵🇹 Portuguese: NIF + CAE footer + Livro de Reclamações link — `CHECKLIST.md` §5.6
+- **Legal compliance enforced, not just documented** — all 4 jurisdictions encoded at the rule + template level; per-client enforcement determined by business location at scaffold time (see `LEGAL.md` §Per-client market → jurisdiction mapping):
+  - 🇩🇪 German: Impressum + Datenschutzerklärung (DSGVO) — `LEGAL.md` §DE
+  - 🇧🇷 Brazilian: Política de Privacidade + Razão Social/MEI/CNPJ footer (LGPD) — `LEGAL.md` §BR
+  - 🇵🇹 Portuguese: NIF + CAE footer + Livro de Reclamações link (RGPD + national) — `LEGAL.md` §PT
+  - 🇺🇸 US (activate only with explicit US-market exposure): "Your Privacy Choices" + GPC honored (CCPA/CPRA) — `LEGAL.md` §US
+  - **Runtime verification:** `CHECKLIST.md` §Operational tests — banner blocks scripts, no PII in Sentry, GPC honored, per-jurisdiction legal pages present and not noindexed.
+- **Sentry instruments every server-side execution surface** — Tier 1 pure-static has no surface; Tier 1 + form endpoint instruments only the function; Tier 2/3 use the full SDK. `send_default_pii: false` is non-negotiable in every Sentry init (`INFRASTRUCTURE.md` §Error tracking).
+- **KPI dashboards delivered with every retainer client** — every production cutover wires at least 3 KPIs from `KPI.md` §Per-product-type KPI defaults (Type 1: ≥ 3 acquisition/conversion KPIs · Type 2+: add form-conversion · Type 3+: add funnel + retention via PostHog). Per-vertical picks live in each template's §11 Measurement. The BRIEF.md "KPI contract" block (`KPI.md` §KPI contract) is owner-confirmed before scaffold starts. No KPIs wired = no production launch.
 - **Track unresolved items in `docs/audit/PENDING.md`** — agency-level backlog aggregator across all clients. Add to it when a DRAFT item surfaces; move to "Recently resolved" when it closes.
 
 ---

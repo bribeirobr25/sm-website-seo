@@ -405,3 +405,115 @@ No canonical worked example in §7.8 — benchmark skews to brands. Archetype D 
 ---
 
 *Artisan is a craft-led vertical built on the maker + materials + process. Skip the "handmade with love" + heart-icons. Lead with the maker + the studio + the materials. Real workshop, real hands, real story.*
+
+---
+
+## 11. Measurement — KPIs that matter for Artisan
+
+**Applies to:** every retainer-tier artisan client at production cutover. KPI framework, naming convention, and per-tier stack selection live in `KPI.md`; this section picks the 3–5 KPIs that matter most for artisan/maker businesses and how they wire.
+
+### 11.1 Product KPIs
+
+| # | KPI | Bucket | Source | Target / benchmark |
+|---|-----|--------|--------|---------------------|
+| 1 | Order-completion rate (cart → paid) | Conversion | PostHog funnel + Stripe (Tier 3 / Type 4) | ≥ 60% cart-to-paid |
+| 2 | Average Order Value (AOV) | Conversion | Stripe + GA4 ecommerce | Track 30-day rolling — adjust SKU mix as it shifts |
+| 3 | Repeat-order rate (within 90 days) | Retention | Stripe customer ID + PostHog cohort | ≥ 20% repeat within 90d |
+| 4 | Commission-inquiry rate (custom-work form completion) | Conversion | GA4 `contact_form_completed` filtered to commission form | Vertical-dependent |
+| 5 | IG-driven traffic share | Acquisition | GA4 source=instagram + UTM | ≥ 30% for IG-heavy makers |
+
+### 11.2 Per-tier stack
+
+| Tier | Tools active | What it measures |
+|---|---|---|
+| Tier 1 + form endpoint (catalog-only with commission inquiries) | GSC + Clarity + GA4 | KPIs #4, #5 |
+| Tier 2 (catalog + WhatsApp/Email orders) | GSC + Clarity + GA4 | KPIs #4, #5 + manual order tracking |
+| Tier 3 + Stripe (full shop) | GSC + Clarity + GA4 + PostHog + Sentry + Stripe | All 5 KPIs |
+
+### 11.3 Dashboard tiles
+
+**GA4:** conversions by event (`commission_inquiry_completed`, `purchase`) · top product pages · IG-driven sessions · device split.
+
+**Clarity:** heatmaps on product pages + commission form · scroll depth on long-form maker story · recordings filtered to abandoned cart.
+
+**PostHog (Tier 3):** cart-to-paid funnel · repeat-buyer cohort table · AOV by product category · IG-attributed conversion path.
+
+### 11.4 Vertical-specific event names
+
+| Event | Fires when | Required params |
+|---|---|---|
+| `commission_inquiry_started` | Custom-work form receives focus | `source_page`, `source_section` |
+| `commission_inquiry_completed` | Form submitted (200 from endpoint) | `source_page` |
+| `product_viewed` | Product page LCP fires | `product_slug`, `product_category`, `source_page` |
+| `gallery_viewed` | Product gallery scrolled ≥ 50% or lightbox opened | `product_slug`, `image_count` |
+| `add_to_cart` | Stripe checkout session created | `product_slug`, `quantity` (NO price — Stripe ledger is source of truth) |
+
+### 11.5 Pre-launch verification
+
+- [ ] All KPIs in §11.1 mapped to wired events in BRIEF.md KPI contract
+- [ ] Stripe webhook → PostHog `purchase` event firing (Tier 3)
+- [ ] IG profile-link UTMs configured (`?utm_source=instagram&utm_medium=bio_link`)
+- [ ] Commission form vs purchase events distinguishable in GA4
+- [ ] Run `CHECKLIST.md` §Operational tests for cookie banner + Sentry PII + KPI wiring
+
+### 11.6 Integrations applicable to Artisan
+
+Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
+
+| Integration | When (tier) | Vertical-specific notes |
+|---|---|---|
+| **Stripe** | Type 4+ (any catalog with cart) — primary integration | SEPA + Pix per jurisdiction; tax-inclusive prices for EU; product-image upload via Stripe Dashboard or API |
+| **Resend** | Type 2+ (commission inquiry) · Type 4+ (order confirmation) | Commission auto-reply · order confirmation with handmade-lead-time messaging · shipping update emails |
+| **Sentry** | Tier 2+ (full SDK) | Standard agency setup; capture Stripe webhook failures (rare but critical for revenue) |
+| **PostHog** | Tier 3+ (full shop) only | Cart-to-paid funnel, repeat-buyer cohort, AOV by product category |
+| **Neon** | Tier 3+ shop with custom-order tracking | Orders + commission requests + customer (encrypted) |
+| **Upstash** | Tier 2+ commission form / Tier 4+ checkout | Rate-limit 5/60s commission form, 10/60s checkout |
+| **Image hosting** | Type 4+ (catalog) | Cloudinary or Vercel Blob for product images (the lockfile-heavy `assets/images/` pattern doesn't scale beyond ~30 products) |
+
+### 11.7 Share strategy
+
+Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **High leverage**.
+
+- **Default targets:** WhatsApp + Instagram + Copy-link + Facebook
+- **IG embed recommended:** ✅ Yes — maker-at-work content drives shares; the IG feed IS the brand
+- **Placement:** inline share on product detail pages · gallery section · maker-story section · footer fallback
+- **OG image priority:** signature product OR maker-at-work shot at 1200×630. NOT heart-icons / "handmade with love" stock.
+- **WhatsApp share copy:** "[Maker name] — handmade [product category] from [city]." — origin framing
+- **IG bio-link UTM:** `?utm_source=instagram&utm_medium=bio_link&utm_campaign=shop`
+
+### 11.8 Schema.org variants
+
+Use the most specific subtype:
+
+- `Store` + `Product` — primary pattern for catalog-driven shops
+- `JewelryStore` — jewelry-specific
+- `ClothingStore` — apparel
+- `LocalBusiness` + descriptive properties — when no specific subtype fits (a ceramicist, woodworker, etc.)
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "name": "[Maker name / brand]",
+  "address": { ... },
+  "geo": { ... },
+  "telephone": "+...",
+  "founder": { "@type": "Person", "name": "[Maker name]" },
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Ceramic vase", "image": "https://[domain]/products/vase-1.jpg", "offers": { "@type": "Offer", "price": "85.00", "priceCurrency": "EUR" } } }
+  ],
+  "hasOfferCatalog": { "@type": "OfferCatalog", "itemListElement": [...] }
+}
+```
+
+`founder` ties the brand to the person (essential for maker-led brands). Per-product `Product` schema improves long-tail SEO ("ceramic vase Berlin").
+
+### 11.9 GBP category + keyword pattern
+
+- **GBP primary category:** `Custom tailor` / `Jewelry store` / `Pottery studio` / `Furniture maker` / `Art gallery` / `Leather goods store` (pick most specific)
+- **GBP secondary categories:** material + technique (`Hand-thrown pottery`, `Stained-glass studio`)
+- **Per-jurisdiction GBP attributes:** appointment-required, online orders, ships nationally, custom orders accepted
+- **Keyword pattern (DE):** `[product] handgemacht [stadt]` · `[maker-craft] [stadtteil]` · `[product] aus [stadt]`
+- **Keyword pattern (BR):** `[produto] artesanal em [cidade]` · `[ofício] em [bairro]`
+- **Keyword pattern (PT):** `[produto] artesanal [cidade]` · `[ofício] em [cidade]`
+- **Example:** "Keramik handgemacht Berlin" · "Cerâmica artesanal em São Paulo" · "Olaria artesanal Lisboa"
