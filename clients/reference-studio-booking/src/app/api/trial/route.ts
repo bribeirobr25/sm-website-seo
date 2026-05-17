@@ -16,10 +16,10 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import * as Sentry from '@sentry/nextjs';
-import { db } from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { trialSignups } from '@/lib/schema';
-import { resend, FROM_EMAIL } from '@/lib/resend';
-import { trialSignupLimit, hashIp } from '@/lib/ratelimit';
+import { getResend, FROM_EMAIL } from '@/lib/resend';
+import { getTrialSignupLimit, hashIp } from '@/lib/ratelimit';
 import { SITE } from '@/lib/site';
 
 export const runtime = 'nodejs';
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
   const ipKey = hashIp(ip);
 
   // 1. Rate limit
-  const limit = await trialSignupLimit.limit(ipKey);
+  const limit = await getTrialSignupLimit().limit(ipKey);
   if (!limit.success) {
     return NextResponse.json(
       { error: 'Zu viele Anfragen. Bitte versuche es in einer Minute erneut.' },
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
 
   // 4. Insert
   try {
-    await db.insert(trialSignups).values({
+    await getDb().insert(trialSignups).values({
       firstName,
       email,
       phone,
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
   // 5. Confirmation email (non-blocking failure)
   const className = SITE.classes.find((c) => c.slug === classSlug)?.name ?? classSlug;
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: `${SITE.name} — Wir haben deine Probestunden-Anfrage erhalten`,

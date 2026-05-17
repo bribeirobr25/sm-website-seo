@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Route } from 'next';
 import type { ComponentProps, ReactNode } from 'react';
 
 /**
@@ -61,9 +62,13 @@ export function Button(props: LinkProps | ButtonProps) {
         </a>
       );
     }
+    // typedRoutes (next.config.ts) requires Route-branded literals on <Link>.
+    // Button accepts dynamic strings (callers pass SITE constants, etc.), so
+    // we cast at the wrapper seam after the external/protocol filter above
+    // has narrowed `href` to an internal app route.
     return (
       // biome-ignore lint/correctness/useExhaustiveDependencies: rest spread
-      <Link href={href} className={cls} {...rest}>
+      <Link href={href as Route} className={cls} {...rest}>
         {children}
       </Link>
     );
