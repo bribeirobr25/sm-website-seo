@@ -8,18 +8,17 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [
     sitemap(),
-    // Sentry instruments every server-side execution surface (Astro middleware,
-    // SSR routes, build hooks). send_default_pii: false is non-negotiable.
+    // Runtime Sentry.init() lives in sentry.{client,server}.config.mjs at the
+    // project root (auto-discovered by @sentry/astro). The integration call
+    // here only handles build-time concerns (source-map upload, release tag).
+    // send_default_pii: false is enforced in both init files — non-negotiable
+    // per LEGAL.md §Rules at a glance.
     sentry({
-      dsn: process.env.SENTRY_DSN,
-      sendDefaultPii: false,
-      tracesSampleRate: 0.1,
       sourceMapsUploadOptions: {
         project: process.env.SENTRY_PROJECT,
         authToken: process.env.SENTRY_AUTH_TOKEN,
         org: process.env.SENTRY_ORG,
       },
-      release: process.env.VERCEL_GIT_COMMIT_SHA,
     }),
   ],
   vite: {

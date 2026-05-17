@@ -32,8 +32,86 @@ This is the agency-wide source of truth for **how to integrate the third-party s
 
 ---
 
+## Lazy initialization for env-dependent server modules
+
+**Rule (non-negotiable for every Tier 3+ build):** server modules that read environment variables — DB clients, Redis clients, transactional-email SDKs, payment SDKs, anything calling `*.fromEnv()` — **must lazy-initialize via a `getX()` getter function**. They must not throw at top-level module evaluation.
+
+**Why this matters.** Next.js (15+ with App Router, 16+ default) runs a *Collecting page data* phase during `next build` that imports every route module to extract metadata. Module-load side effects fire here. If your `src/lib/db.ts` calls `new NeonClient(process.env.DATABASE_URL!)` at top level and `DATABASE_URL` is unset, the build fails — even though the route would work fine at request time. The same trap fires in CI builds, Vercel preview deploys, and any pre-deploy validation pipeline that runs without production secrets.
+
+This was discovered during the agency reference-implementation validation (2026-05-17): Neon, Upstash, and Resend all throw at construction with missing env vars, and broke `pnpm build` three times in succession before the pattern landed.
+
+### The pattern
+
+```typescript
+// ❌ WRONG — throws at module-eval if env is missing.
+//             Breaks Next page-data collection, CI builds, preview deploys.
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is required');
+}
+const sql = neon(process.env.DATABASE_URL);
+export const db = drizzle(sql, { schema });
+```
+
+```typescript
+// ✅ RIGHT — lazy-init via getter; throw is deferred to first real use.
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import * as schema from './schema';
+
+let _db: ReturnType<typeof createDb> | undefined;
+
+function createDb() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is required');
+  }
+  const sql = neon(process.env.DATABASE_URL);
+  return drizzle(sql, { schema });
+}
+
+export function getDb() {
+  if (!_db) _db = createDb();
+  return _db;
+}
+```
+
+Call site:
+
+```typescript
+// src/app/api/trial/route.ts
+import { getDb } from '@/lib/db';
+
+export async function POST(req: Request) {
+  await getDb().insert(trialSignups).values({ /* ... */ });
+}
+```
+
+### When the rule applies
+
+| Integration | Throws on missing env? | Lazy-init required? |
+|---|---|---|
+| **Neon** (`@neondatabase/serverless` + Drizzle) | Yes — neon() rejects empty string | ✅ Yes |
+| **Upstash** (`Redis.fromEnv()`) | Yes — `Redis.fromEnv()` throws if either env var missing | ✅ Yes |
+| **Resend** (`new Resend(...)`) | Yes — v4+ throws if API key undefined | ✅ Yes |
+| **Stripe** (`new Stripe(...)`) | Yes — throws on undefined secret key | ✅ Yes |
+| **Sentry** (`Sentry.init({ dsn })`) | No — undefined DSN silently disables the SDK | ❌ Not required |
+| **PostHog** (`posthog.init(key, ...)`) | No — call site checks `if (!key) return null` (agency recipe in `ANALYTICS.md`) | ❌ Not required |
+
+### Pre-launch operational test
+
+`CHECKLIST.md` §1.5 includes a "build robustness" probe: `pnpm build` with no env vars set must succeed. This is the catch-net for the rule.
+
+### Cold-start cost (acceptable)
+
+The first request after a Lambda cold start pays the construction cost (~10–50 ms for Drizzle + Upstash; Resend is negligible). All subsequent requests reuse the cached instance. The cost is the same as eager init under normal load — only the *first request after deploy* differs.
+
+---
+
 ## Table of contents
 
+- Lazy initialization for env-dependent server modules ← read first
 - Resend — transactional email
 - Sentry — error tracking
 - PostHog — product analytics
@@ -57,21 +135,25 @@ pnpm add resend
 ```
 
 ```typescript
-// src/lib/resend.ts
+// src/lib/resend.ts — lazy-init per §Lazy initialization for env-dependent server modules.
+// `new Resend(undefined)` throws in v4+, which would break Next page-data collection.
 import { Resend } from 'resend';
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error('RESEND_API_KEY is required');
+let _resend: Resend | undefined;
+
+export function getResend(): Resend {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
 }
 
-export const resend = new Resend(process.env.RESEND_API_KEY);
+export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? 'hello@client-domain.com';
 ```
 
 Use it in the form endpoint:
 
 ```typescript
 // src/pages/api/contact.ts (Astro) or src/app/api/contact/route.ts (Next.js)
-import { resend } from '@/lib/resend';
+import { getResend, FROM_EMAIL } from '@/lib/resend';
 import { z } from 'zod';
 
 const ContactSchema = z.object({
@@ -153,11 +235,11 @@ For DE / EU clients: Resend operates under SCCs (no EU data residency option at 
 
 Sentry deobfuscates stack traces in production using source maps. Wire it via the integration:
 
+**Astro — split between build-time options (in `astro.config.ts`) and runtime init (in dedicated config files).** The `@sentry/astro` v8+ integration only accepts build-time options (`sourceMapsUploadOptions`, `release`); runtime init (`dsn`, `sendDefaultPii`, `tracesSampleRate`, `beforeSend`) lives in auto-discovered `sentry.client.config.mjs` + `sentry.server.config.mjs` at the project root. Passing `sendDefaultPii: false` to the integration call fails the TypeScript build with `Object literal may only specify known properties` — common trap.
+
 ```typescript
-// astro.config.ts — already covered in INFRASTRUCTURE.md
+// astro.config.ts — build-time only
 sentry({
-  dsn: process.env.SENTRY_DSN,
-  sendDefaultPii: false,
   sourceMapsUploadOptions: {
     project: process.env.SENTRY_PROJECT,
     authToken: process.env.SENTRY_AUTH_TOKEN,
@@ -166,7 +248,59 @@ sentry({
 }),
 ```
 
+```typescript
+// sentry.client.config.mjs (project root — auto-discovered)
+import * as Sentry from '@sentry/astro';
+
+Sentry.init({
+  dsn: import.meta.env.PUBLIC_SENTRY_DSN,
+  sendDefaultPii: false,  // non-negotiable per LEGAL.md §Rules at a glance
+  tracesSampleRate: 0.1,
+  beforeSend(event) {
+    if (event.request) {
+      event.request.cookies = undefined;
+      event.request.headers = undefined;
+      if (event.request.data) event.request.data = '[Filtered]';
+    }
+    return event;
+  },
+});
+```
+
+`sentry.server.config.mjs` follows the same shape using `process.env.SENTRY_DSN`.
+
 Set `SENTRY_AUTH_TOKEN` as **build-time only** in Vercel (not exposed at runtime). It is used during `pnpm build` to upload source maps to Sentry, then the bundle ships without the token.
+
+**Next.js — `@sentry/nextjs ^10` required for Next 16 + Turbopack. `instrumentation.ts` is mandatory in v9+.**
+
+| Next version | Required `@sentry/nextjs` floor | Server init via |
+|---|---|---|
+| Next 13–14 | `^7` or `^8` | `sentry.server.config.ts` auto-load |
+| Next 15 | `^8` or `^9` | `instrumentation.ts` (v9 deprecates auto-load) |
+| Next 16+ | **`^10` mandatory** (v8/v9 lacks Turbopack + Next 16 peer support) | `instrumentation.ts` required |
+
+```typescript
+// instrumentation.ts (project root — required by @sentry/nextjs v9+)
+import * as Sentry from '@sentry/nextjs';
+
+export async function register() {
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+    await import('./sentry.server.config');
+  }
+  if (process.env.NEXT_RUNTIME === 'edge') {
+    await import('./sentry.edge.config');
+  }
+}
+
+export const onRequestError = Sentry.captureRequestError;
+```
+
+`sentry.client.config.ts` is still auto-loaded by the SDK — keep it at the root with the standard `Sentry.init({ sendDefaultPii: false, ... })` shape.
+
+**v10 `withSentryConfig` options that changed:**
+
+- `hideSourceMaps: true` → `sourcemaps: { deleteSourcemapsAfterUpload: true }` (same intent — maps reach Sentry but not the web)
+- `disableLogger: true` → removed; replacement `webpack: { treeshake: { removeDebugLogging: true } }` is webpack-only and not supported under Turbopack (the Next 16 default). Drop the option.
 
 #### Release tracking
 
@@ -388,18 +522,28 @@ pnpm add -D drizzle-kit
 ```
 
 ```typescript
-// src/lib/db.ts
+// src/lib/db.ts — lazy-init per §Lazy initialization for env-dependent server modules.
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from './schema';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is required');
+let _db: ReturnType<typeof createDb> | undefined;
+
+function createDb() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is required');
+  }
+  const sql = neon(process.env.DATABASE_URL);
+  return drizzle(sql, { schema });
 }
 
-const sql = neon(process.env.DATABASE_URL);
-export const db = drizzle(sql, { schema });
+export function getDb() {
+  if (!_db) _db = createDb();
+  return _db;
+}
 ```
+
+Call site: `await getDb().insert(table).values({ ... })`.
 
 ### Schema-first migrations (Drizzle Kit)
 
@@ -491,36 +635,48 @@ pnpm add @upstash/redis @upstash/ratelimit
 ### Rate limiting recipe — form endpoints
 
 ```typescript
-// src/lib/ratelimit.ts
+// src/lib/ratelimit.ts — lazy-init per §Lazy initialization for env-dependent server modules.
+// `Redis.fromEnv()` throws if UPSTASH_REDIS_REST_URL / _TOKEN are missing.
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
 
-const redis = Redis.fromEnv();
+let _contactFormLimit: Ratelimit | undefined;
+let _bookingLimit: Ratelimit | undefined;
 
-export const contactFormLimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(5, '60 s'),   // 5 submissions per 60s per IP
-  analytics: true,
-  prefix: 'rl:contact',
-});
+export function getContactFormLimit(): Ratelimit {
+  if (!_contactFormLimit) {
+    _contactFormLimit = new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.slidingWindow(5, '60 s'),   // 5 submissions per 60s per IP
+      analytics: true,
+      prefix: 'rl:contact',
+    });
+  }
+  return _contactFormLimit;
+}
 
-export const bookingLimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(10, '60 s'),  // 10 booking attempts per 60s per IP
-  analytics: true,
-  prefix: 'rl:booking',
-});
+export function getBookingLimit(): Ratelimit {
+  if (!_bookingLimit) {
+    _bookingLimit = new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.slidingWindow(10, '60 s'),  // 10 booking attempts per 60s per IP
+      analytics: true,
+      prefix: 'rl:booking',
+    });
+  }
+  return _bookingLimit;
+}
 ```
 
 Use it in the form endpoint:
 
 ```typescript
 // src/pages/api/contact.ts
-import { contactFormLimit } from '@/lib/ratelimit';
+import { getContactFormLimit } from '@/lib/ratelimit';
 
 export async function POST(request: Request) {
   const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1';
-  const { success, limit, remaining, reset } = await contactFormLimit.limit(ip);
+  const { success, limit, remaining, reset } = await getContactFormLimit().limit(ip);
 
   if (!success) {
     return Response.json(
@@ -546,7 +702,7 @@ function hashIp(ip: string) {
 }
 
 // In the rate-limit call:
-const { success } = await contactFormLimit.limit(hashIp(ip));
+const { success } = await getContactFormLimit().limit(hashIp(ip));
 ```
 
 `IP_HASH_SALT` rotates per `SECURITY.md` §Secret rotation cadence — 90 days for PII-related secrets.
@@ -554,17 +710,22 @@ const { success } = await contactFormLimit.limit(hashIp(ip));
 ### Cache recipe — short-lived booking state
 
 ```typescript
-// src/lib/cache.ts
+// src/lib/cache.ts — lazy-init per §Lazy initialization for env-dependent server modules.
 import { Redis } from '@upstash/redis';
 
-const redis = Redis.fromEnv();
+let _redis: Redis | undefined;
+
+function getRedis(): Redis {
+  if (!_redis) _redis = Redis.fromEnv();
+  return _redis;
+}
 
 export async function cacheBookingState(token: string, state: object) {
-  await redis.set(`booking:${token}`, state, { ex: 600 });  // 10-min expiry
+  await getRedis().set(`booking:${token}`, state, { ex: 600 });  // 10-min expiry
 }
 
 export async function getBookingState(token: string) {
-  return redis.get(`booking:${token}`);
+  return getRedis().get(`booking:${token}`);
 }
 ```
 

@@ -42,9 +42,10 @@ clients/reference-studio-booking/
 ├── drizzle.config.ts             ← Drizzle migrations (Postgres dialect)
 ├── postcss.config.mjs            ← Tailwind v4 plugin
 ├── vercel.json                   ← 6 security headers (per SECURITY.md) · clean URLs
-├── sentry.client.config.ts       ← sendDefaultPii: false · client-side Sentry
-├── sentry.server.config.ts       ← sendDefaultPii: false · server-side Sentry
-├── sentry.edge.config.ts         ← sendDefaultPii: false · edge runtime Sentry
+├── instrumentation.ts            ← Next.js v15+ instrumentation hook · routes server/edge init via NEXT_RUNTIME · exports onRequestError = Sentry.captureRequestError (required by @sentry/nextjs v10+)
+├── sentry.client.config.ts       ← sendDefaultPii: false · client-side Sentry (auto-loaded by SDK)
+├── sentry.server.config.ts       ← sendDefaultPii: false · server-side Sentry (loaded via instrumentation.ts)
+├── sentry.edge.config.ts         ← sendDefaultPii: false · edge runtime Sentry (loaded via instrumentation.ts)
 ├── .github/workflows/ci.yml      ← pnpm lint + build on push/PR (per INFRASTRUCTURE.md)
 ├── .env.example                  ← All env-var stubs (Sentry, Neon, Upstash, Resend, GA, Clarity, PostHog)
 ├── .nvmrc                        ← Node 20 LTS

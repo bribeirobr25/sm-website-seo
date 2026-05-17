@@ -32,7 +32,9 @@ cp -r clients/reference-solo-barber clients/[real-client-slug]
 ```
 clients/reference-solo-barber/
 ├── package.json              ← Astro 6 + Tailwind v4 + @sentry/astro + @astrojs/sitemap
-├── astro.config.ts           ← Tailwind via @tailwindcss/vite plugin · Sentry integration · sitemap
+├── astro.config.ts           ← Tailwind via @tailwindcss/vite plugin · @sentry/astro (build-time source-map upload only) · sitemap
+├── sentry.client.config.mjs  ← Sentry runtime init (browser) · sendDefaultPii: false · beforeSend scrub
+├── sentry.server.config.mjs  ← Sentry runtime init (server) · sendDefaultPii: false · beforeSend scrub
 ├── tsconfig.json             ← astro/tsconfigs/strict · @/* path alias
 ├── biome.json                ← agency linting + formatting rules
 ├── vercel.json               ← 6 security headers (per SECURITY.md) · cache headers · clean URLs

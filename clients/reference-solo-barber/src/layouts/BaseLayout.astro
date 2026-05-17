@@ -59,19 +59,22 @@ const schema = JSON.stringify(barberShopSchema());
     <meta name="twitter:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
 
     <!-- Schema.org BarberShop -->
-    <script type="application/ld+json" set:html={schema} />
+    <script is:inline type="application/ld+json" set:html={schema} />
 
     <!--
       Analytics tags are consent-gated via type="text/plain" pattern.
       Per LEGAL.md §Cookie consent banner — universal spec.
       The CookieBanner script upgrades these on consent.
+      `is:inline` is required because these scripts carry custom attributes
+      that Astro's processor would otherwise strip.
     -->
     <script
+      is:inline
       type="text/plain"
       data-cookie-category="analytics"
       data-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXX"
       async></script>
-    <script type="text/plain" data-cookie-category="analytics">
+    <script is:inline type="text/plain" data-cookie-category="analytics">
       window.dataLayer = window.dataLayer || [];
       window.gtag = function () {
         window.dataLayer.push(arguments);

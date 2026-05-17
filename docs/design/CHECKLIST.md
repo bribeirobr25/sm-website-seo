@@ -161,6 +161,14 @@ Per `SOCIAL-SHARING.md` §Pre-launch verification.
 - [ ] **IG embed pattern (if used)** is the consent-gated `type="text/plain"` script-blocking — verify via DevTools that no IG SDK loads before consent
 - [ ] **IG bio-link UTMs set per canonical convention** — `?utm_source=instagram&utm_medium=bio_link&utm_campaign=...`
 
+### Build robustness — env-var resilience (any Tier 2+ build with env-dependent modules)
+
+Per `INTEGRATIONS.md` §Lazy initialization for env-dependent server modules. Catches the canonical failure mode: a `db.ts` / `ratelimit.ts` / `resend.ts` that throws at module-eval time breaks the Next.js *Collecting page data* phase, breaks CI builds, and breaks preview deploys — even though the routes would work fine at request time.
+
+- [ ] **`pnpm build` succeeds with no env vars set** — clone the repo into a clean directory, run `pnpm install && pnpm build` with an empty `.env`. The build must complete. If it fails on missing DATABASE_URL / RESEND_API_KEY / UPSTASH_REDIS_REST_URL, an env-dependent module is throwing at module-eval — refactor to lazy-init.
+- [ ] **Every env-dependent server module uses the `getX()` getter pattern** — `grep -rn "process.env" src/lib/` should return no top-level `new`/`throw` outside a function body. Eager top-level instantiation breaks the build.
+- [ ] **At least one preview deploy completed without production secrets** — Vercel preview deploys for non-main branches run with whatever env vars are scoped to "Preview". Any env-dependent module that throws at module-load will break preview deploys silently; the operational test is that previews build green.
+
 ### Sentry / error tracking (any Tier 2+ build or Tier 1 with form endpoint)
 
 - [ ] **`sendDefaultPii: false` is set** — `grep "sendDefaultPii: false" src/ astro.config.ts sentry.*.config.*` returns at least one match in every Sentry init.
