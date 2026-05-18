@@ -385,6 +385,8 @@ Use this matrix during the per-client scoping conversation, before any design wo
 | 3 | Menu-section engagement (% sessions that viewed the menu ≥ 50%) | Conversion (leading indicator) | GA4 / Clarity `menu_viewed` event | ≥ 40% of sessions |
 | 4 | GBP profile views + direction requests | Acquisition | GBP Insights | Month-over-month growth trend |
 | 5 | Returning-diner rate (clients booking ≥ 2× in 90 days) — Tier 3 only | Retention | PostHog cohort, joined on booking platform customer ID | ≥ 25% returning by month 3 |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **8-15 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
 
 ### 11.2 Per-tier stack
 
@@ -434,6 +436,15 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Upstash** | Tier 2+ on reservation form | Rate-limit reservation submissions (5/60s per IP-hash) |
 | **Booking platform** | Type 3+ | Resy / TheFork / OpenTable / direct — see `KPI.md` §Stack selection. Deep-link with UTMs; webhook to capture `booking_completed` |
 | **Stripe** | Type 4 only (rare in gastronomy — usually for paid event reservations) | Pix enabled for BR clients |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, gastronomy must-claim at launch:
+
+- **[Tripadvisor](https://www.tripadvisor.com/Owners)** — non-negotiable universal restaurant trust signal; still drives direct traffic independent of any ranking effect
+- **[TheFork DE](https://www.thefork.de/)** — OpenTable's EU brand; reservation lead-gen (deep-link from website)
+- **[Lieferando partner](https://partner.lieferando.de/)** — only if the client offers delivery
+- Optional: **[Speisekarte.de](https://www.speisekarte.de/)** for menu indexing on a directory many DE users still visit
 
 ### 11.7 Share strategy
 

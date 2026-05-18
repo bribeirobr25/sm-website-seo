@@ -422,6 +422,8 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 | 3 | Referral-source split (organic / direct / GBP / paid) | Acquisition | GA4 source/medium | Healthy = no single source > 60% (over-dependence risk) |
 | 4 | GBP-driven appointments (% of bookings attributed to GBP entry) | Acquisition | GBP Insights + GA4 source=gbp | ≥ 25% for local-search-led practices |
 | 5 | Mobile LCP p75 on slow connection | Health (UX) | Vercel Analytics + PageSpeed Insights | < 2.5s — older-patient audiences disproportionately on older devices |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **8-12 new reviews / month** (top quartile 15-20 per [Dominate Dental](https://www.dominatedental.com/dental-marketing-reviews/)) · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 — **competitive vertical: 42-day drought triggers visible rank softening** |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 — health practices over-index on responsiveness perception |
 
 ### 11.2 Per-tier stack
 
@@ -474,6 +476,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Upstash** | Tier 2+ appointment-request form | Rate-limit (5/60s per IP-hash) |
 
 **Special-category data rule:** never store appointment reason, symptom, condition, or any free-text patient input in any agency-side system. Booking platform stores it server-side under their DPA; agency systems only see specialty slugs.
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, health must-claim at launch:
+
+- **[Jameda](https://www.jameda.de/)** — DocPlanner-owned and dominant in DE; **non-negotiable for any DE doctor client**. Even at our retainer scope, Jameda drives direct appointment requests
+- **[Doctolib DE](https://pro.doctolib.de/)** — booking platform; deep-link from website if not already on Jameda
+- **[Sanego](https://www.sanego.de/)** — secondary review platform; lower-traffic but still indexed
 
 ### 11.7 Share strategy
 

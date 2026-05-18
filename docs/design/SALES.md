@@ -238,6 +238,8 @@ Pricing is organized by the product types defined in `TECH.md` §1. Always quote
 | Type 4 | Type 3 + payment reconciliation, refund handling escalations, inventory updates |
 | Type 5 | Quote per project — usually includes feature work, bug fixes, and on-call response in addition to the lighter-tier items |
 
+**Review-gen deliverables are orthogonal to product type — they scale with the retainer €-tier, not the product type.** See §10 "Review-gen by retainer tier" for the per-tier breakdown (≤€300 owner-managed, €300-500 SMS-sequence, €500+ full agency response handling). A Type 1 client on a €500 retainer gets the full review-gen scope; a Type 3 client on a €250 retainer gets the lean owner-managed scope. The product type determines what stack the agency monitors; the retainer tier determines how much review-gen the agency handles.
+
 ### Pricing rules
 
 - Always quote the product type explicitly in the proposal — clients should know what they're getting (and not getting)
@@ -420,12 +422,35 @@ Most project delays are caused by clients not sending content. After 2 weeks of 
 ### What's included (standard retainer)
 
 - 2–4 GBP posts per month (What's new, offers, events)
-- Respond to new Google reviews (draft + client approves)
+- **Review-generation deliverable (per-tier — see "Review-gen by retainer tier" subsection below for the full breakdown)** — at minimum: respond to new Google reviews (draft + client approves), maintain GBP review link visibility in site chrome, flag 21+ day review drought to client per `SEO.md` §8.4.3
 - Update hours for holidays/special events
 - Monthly GSC check: ranking changes, indexing errors, new opportunities
 - Monthly **Microsoft Clarity** review (heatmaps, rage clicks, session recordings — see SECURITY.md/PERFORMANCE.md tools sections for the broader tool kit). Free, no traffic cap, installed once at go-live. Surfaces what users actually do on the site so retainer recommendations are data-driven.
 - Minor website updates (text changes, new photo, price update) — max 2 hours included
-- Short monthly report (5 bullet points, not a 10-page PDF)
+- Short monthly report (5 bullet points, not a 10-page PDF) — **must include the 3 cross-type Health KPIs from `KPI.md`: `review_count_30d` + `review_response_rate_30d` + `days_since_last_review`** for every retainer client with a GBP listing
+- **6-month citation audit** (semi-annual, not monthly) per `CITATIONS.md` §9 — re-verify NAP consistency across claimed directories · refresh hours + holiday updates where supported · propagate photo refreshes · audit Sellwerk / 11880 / Das Örtliche cancellation status to catch silent premium-tier flips · per-tier audit depth: ≤€300 audit summary + flag killing inconsistencies for owner to fix; €300-500 agency fixes inconsistencies + propagates updates to top 5 directories; €500+ adds AI-search visibility check + 6-month-sprint plan
+
+### Review-gen by retainer tier
+
+Per `SEO.md` §8.4.8, review-generation deliverables and tooling scale with retainer tier. **Tool costs at €300+/mo tiers pass through to the client** as a separately-itemized invoice line — not absorbed in the retainer fee. Document the pass-through in the retainer agreement before tool selection.
+
+| Tier | Review-gen deliverable | Tooling | Monthly tool cost (pass-through) |
+|---|---|---|---|
+| **≤ €300/mo** | Monthly review-request cadence email to owner (template from `SEO.md` §8.4.5) + owner sends to recent customers · weekly review-response cadence by owner (agency drafts on request, ≤ 2 hours/month included) · drought-alert email to owner at 21+ days | Free GBP "Get more reviews" link + vanity redirect (`/bewertung` etc.) + printable QR card | €0 |
+| **€300-500/mo** | SMS post-visit drip sequence configured + agency-managed template + weekly review-response oversight (agency drafts; client approves) · drought-alert handled by agency | MessageBird or Twilio (pay-as-you-go SMS) | €5-15/mo client-paid |
+| **€500+/mo** | Full review-response handling by agency · daily monitoring · purge-recovery appeal drafts on agency's behalf · monthly review-quality audit (cluster analysis of complaint themes) | Optional Reputigo / NiceJob entry tier OR GBP API integration | €15-30/mo client-paid |
+
+**Paid platforms intentionally NOT recommended** for our segment (Birdeye $99-299, Podium $249+, GatherUp ~$99): overkill for €200-500/mo retainer scope.
+
+### Month 1 review sprint (every new retainer client)
+
+Plain-language client-facing recipe for the first 30 days. Hand this to the owner during kickoff. Full operational detail in `SEO.md` §8.4 — this box is the 3-minute version.
+
+1. **Baseline (day 0–1).** Capture today's GBP review count + last review date + average rating into the BRIEF.md or month-1 report. This is the 90-day before/after comparison baseline.
+2. **Wire the request channel (day 1–3).** Configure the vanity review redirect on the website (`/bewertung` DE / `/avaliacao` PT-BR / `/review` EN). Print 10–20 QR cards with the vanity URL for use at point of sale. Verify the redirect end-to-end (per `CHECKLIST.md` §Review generation — production blocker).
+3. **Collect 20 customer contacts (day 3–14).** Owner pulls 20 recent customers from their booking/POS/receipt system who would realistically leave a positive review. **Restrict to actual Bestandskunden** per `LEGAL.md` §DE Post-service communications.
+4. **Send the request (day 14–21).** **For DE clients with agency-managed campaigns:** confirm the client's legal counsel has cleared the `SEO.md` §8.4.5 DE template — this is a 🔴 `CHECKLIST.md` production blocker. Only proceed once the sign-off is on file. **For EN / PT-BR clients:** send the §8.4.5 template directly via SMS (preferred) or email (fallback). 24-48h post-visit timing; follow-up reminder at day 4-5; max 3 messages per customer.
+5. **Measure (day 30).** New reviews collected vs. vertical baseline from `SEO.md` §8.4.7. Response rate ≥ 80% within 24h. If baseline missed by ≥ 50%, diagnose (low send volume? bad timing? template friction?) and adjust the cadence in month 2.
 
 ### What triggers additional billing
 

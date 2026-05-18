@@ -19,6 +19,22 @@ This BRIEF.md exists to demonstrate the agency-canonical brief structure for sol
 | Languages | PT-BR only |
 | Booking platform | Trinks |
 
+## Canonical NAP
+
+Per `CITATIONS.md` §7. **Every directory listing matches this block exactly.** Owner-confirmed at scaffold time; semi-annual NAP audit per `CITATIONS.md` §9.
+
+```text
+Name:     Barbearia Tio Edu                 # Exact legal trade name — no city, no keyword stuffing
+Street:   Rua Aspicuelta, 123               # Spelled-out form used everywhere
+ZIP/City: 05433-010 São Paulo / SP          # Postal code + city + state
+Country:  Brazil / Brasil                   # Match each directory's locale field
+Phone:    +55 11 99999-9999                 # E.164 international, DRAFT — owner-confirm before production
+Website:  https://barbearia-tio-edu.com.br/ # https + trailing slash · DRAFT — placeholder domain
+```
+
+**Owner-confirmed:** _pending — DRAFT, see CLAUDE.md DRAFT list_
+**Last NAP-consistency audit:** _not yet performed — first audit at production cutover_
+
 ## Scope
 
 | Item | Decision |

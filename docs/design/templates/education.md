@@ -403,6 +403,8 @@ No canonical worked example in §7.11 — the benchmark skews to chains/franchis
 | 3 | Cohort retention (% students active month-over-month) | Retention | PostHog cohort (Tier 3) / platform data | ≥ 80% MoM for ongoing programs |
 | 4 | Parent-vs-student source split (when audience is mixed) | Acquisition | GA4 source + device (mobile/desktop heuristic) | Vertical-dependent |
 | 5 | Method-page engagement (% sessions reading the pedagogy page deeply) | Conversion (trust signal) | Clarity scroll depth on `/methode` or `/method` | ≥ 50% reach 75% scroll |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **2-5 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 — minor-student reviews: never name the student, never quote any session detail |
 
 ### 11.2 Per-tier stack
 
@@ -455,6 +457,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Stripe** | Type 4+ — tuition subscriptions, lesson packs | SEPA + Pix per jurisdiction; SCA-compliant flow for EU |
 
 **Minors rule:** every event captures `student_age_band` (`under_13`, `13_18`, `adult`) — never exact age. Never student name. Parent contact info stays in form payload (server-side); never duplicated to analytics events.
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, education must-claim at launch:
+
+- **[Superprof](https://www.superprof.de/)** — DE solo-tutor marketplace; high-value lead-gen for music teachers, language tutors, exam-prep specialists
+- **[Preply tutor](https://preply.com/de/teach)** — international online-tutor platform; complement Superprof for clients teaching remote
+- **[Berlin Weiterbildungsdatenbank](https://www.weiterbildung-berlin.de/)** — free Senatsverwaltung listing for adult-education providers (government-adjacent trust signal)
 
 ### 11.7 Share strategy
 

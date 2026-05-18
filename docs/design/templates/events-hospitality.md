@@ -394,6 +394,8 @@ No canonical worked example in §7.12 — benchmark skews to scale. Archetype D 
 | 3 | Portfolio-gallery engagement (% sessions viewing portfolio ≥ 50%) | Conversion (trust signal) | GA4 / Clarity `gallery_viewed` | ≥ 60% — portfolio is the conversion |
 | 4 | Average inquiry value (event size — guest count, budget band) | Conversion (business) | Form payload → CRM (NOT analytics payload) | Tracks segment shift over time |
 | 5 | IG-driven inquiry share (% of inquiries from IG source) | Acquisition | GA4 source=instagram + UTM | ≥ 40% for IG-heavy categories (weddings, photographers) |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **Hotel / B&B: 5-10 new reviews / month** · **Solo planner / photographer / caterer: 1-3 / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3. Hotel/B&B also tracks Booking.com + Tripadvisor reviews — see retainer report. |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
 
 ### 11.2 Per-tier stack
 
@@ -442,6 +444,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Upstash** | Tier 2+ inquiry form | Rate-limit 5/60s; venue clients sometimes see scraper traffic on availability endpoints |
 | **CRM** (HubSpot / Pipedrive / Notion) | Type 2+ standard | Premium-inquiry flow benefits from CRM. Connect via Zapier / Make. Manual CRM-update for solo operators is acceptable. |
 | **Stripe** | Type 4+ — deposit / package payment | SEPA for DE/PT, Pix for BR. Required for deposit-driven venue businesses. |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, events-hospitality must-claim at launch:
+
+- **[Booking.com partner](https://join.booking.com/)** — **mandatory for any lodging client** (hotel, B&B, hostel, vacation rental); commission-based but the only path to discovery for the segment
+- **[HRS](https://www.hrs.de/)** — DE business-travel platform; complementary to Booking.com for hotels targeting corporate travelers
+- **[Eventbrite organiser](https://www.eventbrite.de/organizer/)** — for event-led venues + solo planners; doubles as a citation and a ticketing platform
 
 ### 11.7 Share strategy
 

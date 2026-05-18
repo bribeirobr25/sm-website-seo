@@ -153,6 +153,48 @@ Identical structure to BR/PT — see §Cookie consent banner — universal spec.
 - [ ] All legal pages are **not** set to `noindex`
 - [ ] Footer link to Impressum uses the exact word "Impressum" (no creative rename)
 
+### Post-service communications (review-request emails, satisfaction surveys)
+
+The DSGVO + UWG framework governs outbound communication to a customer **after** they've completed a transaction. The boundary that matters for the agency: **transactional** vs **marketing**.
+
+**Bestandskunden exemption under UWG §7(2)(b) and §7(3) — review-request emails are lawful without separate marketing consent ONLY when ALL of the following hold:**
+
+1. **The recipient is a Bestandskunde** — they purchased a similar product or service from the client's business, in person or online, and the contact data was collected as part of that transaction
+2. **The email is solely about the transaction the customer already completed** — no promotion of new products, no upselling, no related-service push
+3. **No other marketing content is included** — no newsletter signup, no discount code, no announcements about new openings
+4. **Opt-out is clearly signposted at collection AND in every message** — the customer must have been informed at the time of collection that their email may be used for similar-service communications, AND every subsequent email must include a clear unsubscribe path
+5. **The communication is about a "similar service"** — a hair salon can email a former hair-cut customer about reviewing their hair-cut visit; a hair salon cannot email a former hair-cut customer about a new pedicure service
+
+**For review-request SMS or email under this exemption:**
+
+- ✅ "Thanks for your visit on [date] — please share a review at [link]" → falls within the exemption
+- ❌ "Thanks for your visit — please share a review AND check out our new color service" → falls OUT of the exemption (marketing content piggy-backed)
+- ❌ Sending the request to a contact who never transacted with the business (e.g., someone who only filled out a newsletter form) → falls OUT (not a Bestandskunde)
+
+**SMS-specific note for the DE market:** UWG and TKG (Telekommunikationsgesetz) apply to SMS the same way as email. **Double opt-in is the default expectation** for any SMS marketing list; the Bestandskunden exemption may apply for transactional review requests but **the agency does not make this legal call on the client's behalf**.
+
+**Agency posture (non-negotiable):**
+
+> The agency provides DRAFT templates (`SEO.md` §8.4.5) framed under the Bestandskunden exemption as engineering guidance. **The client's own legal counsel must clear the template before any mass SMS or email deployment** when the agency manages the campaign. This is documented as a 🔴 production blocker in `CHECKLIST.md` §3 (Schema policy + review-generation pre-launch). The agency does not provide legal advice and does not certify Bestandskunden eligibility for specific client situations.
+
+**What the agency DOES do:**
+
+- Provide DRAFT templates with the Bestandskunden frame already structured (`SEO.md` §8.4.5)
+- Document the 5 conditions above so the client's counsel has a clear gate to evaluate against
+- Document the "what content disqualifies the exemption" list (incentives, related-service push, non-Bestandskunden recipients)
+- Block production cutover (per `CHECKLIST.md` §3) until the client's counsel signs off
+
+**What the client (and their counsel) does:**
+
+- Confirm each recipient is a Bestandskunde under their specific business setup
+- Confirm the opt-in record exists at collection time
+- Confirm the template is unmodified or that any modifications stay within the exemption
+- Provide written sign-off before the agency activates an agency-managed campaign
+
+**Recovery if a campaign deploys without sign-off and a complaint is filed:** the liability is the client's; the agency-managed-campaign service is suspended pending re-clearance. The agency standards library treats this as a recoverable process error, not an existential incident — but the production-blocker exists to prevent it.
+
+**Related references:** `SEO.md` §8.4.5 (DRAFT templates) · `SEO.md` §8.4.1 (current Google TOS, separate concern from UWG) · [Bundesnetzagentur UWG enforcement guidance](https://www.bundesnetzagentur.de/) (German federal regulator for telecoms — handles SMS-related complaints).
+
 ---
 
 ## BR — Brazil (LGPD)

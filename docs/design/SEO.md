@@ -675,20 +675,293 @@ Google's own data: Businesses with photos receive 42% more direction requests an
 
 ### Reviews — the most important ranking factor
 
-Google's local ranking algorithm weighs: relevance, distance, and prominence. Reviews directly affect prominence.
+Reviews directly drive **prominence**, the third leg of Google's local ranking algorithm (alongside relevance + distance). As of 2026, **review velocity** moved from rank #93 (2023) to **#11** in Whitespark's Local Search Ranking Factors survey ([Whitespark 2026](https://whitespark.ca/local-search-ranking-factors/)) — and Sterling Sky data shows rankings "fall off a cliff" after ~3 weeks of zero new reviews.
 
-**Review strategy:**
-1. Set up the "Ask for a review" direct link: In GBP, go to "Get more reviews" → copy the short link (e.g., `g.page/[business-name]/review`)
-2. Put this link everywhere: WhatsApp follow-up messages, email signatures, business cards, a QR code at the point of sale
-3. Respond to every review — both positive and negative — within 48 hours
-4. Never offer incentives for reviews (violates Google's policy and can result in suspension)
-5. Never post fake reviews (severe penalty risk including delisting)
+The agency treats reviews as the single highest-leverage retainer deliverable. More impact in the 60-90 day measurement window than any other optimization.
 
-**Responding to negative reviews:**
-- Acknowledge the issue without being defensive
-- Offer to resolve it ("Please contact us directly at [phone]")
-- Keep responses professional — future customers read them too
-- Never argue or get emotional
+#### 8.4.1 Current Google TOS (2026)
+
+The 2026 policy update tightened multiple practices that were previously gray-area.
+
+**Forbidden** (triggers review removal, "Suspected Fake Review" warning, or profile suspension):
+
+- **Incentives of any kind** — discount, free coffee, raffle entry, loyalty points
+- **Review gating** — selectively soliciting only happy customers; pre-screening sentiment with "If you enjoyed your visit…" framing
+- **Discouraging negative reviews** in any form
+- **On-site kiosks or tablets** for "leave a review now" pressure (banned early 2026)
+- **Requesting specific content** — asking the reviewer to mention a staff member by name (banned early 2026)
+- **Bulk-soliciting non-customers** or asking employees to review their own employer
+- **Coordinated posting** (shared devices, IP clusters, emulators)
+
+**Allowed** (when applied uniformly to every customer):
+
+- Asking in person post-visit
+- Asking by email or SMS
+- Printed asks on receipts
+- QR code at the point of sale (linking to the review form — **not** an on-site kiosk)
+- Using the "Get more reviews" link from the GBP dashboard
+
+The request must be **neutral** and go to **all customers**, not only the satisfied ones.
+
+**Penalties:**
+
+- Google: review removal · "Suspected Fake Review" warning banner on the profile · profile suspension in extreme cases
+- DE: Google Maps now publicly displays **removed-review counts** on the profile — the reputational hit extends beyond the missing reviews themselves
+- US (since FTC August 2024 fake-review rule): civil penalty up to ~$51,000 per violation
+
+**Agency posture:** the agency never solicits reviews on a client's behalf. We document the rules, hand the playbook to the client, and confirm — in writing — that the client agrees to follow them. Compliance is the client's responsibility; the agency's responsibility is the rule.
+
+#### 8.4.2 Review-request link mechanics
+
+Three URL forms in 2026, all functional. Pick **one and use it consistently** per client.
+
+| Form | URL | When to use |
+|---|---|---|
+| Short link | `https://g.page/r/<short-id>/review` | **Default.** Surfaced from GBP dashboard → "Get more reviews → Share review form." Mobile-friendly. Stable. |
+| Place-ID form | `https://search.google.com/local/writereview?placeid=<PLACE_ID>` | Useful when you don't have dashboard access (audits, prospect intake — pull PLACE_ID from the Google Maps URL) |
+| **Vanity redirect** (recommended for production) | `https://[client-domain]/<vanity>` → HTTP 301 → the g.page URL | Survives Place-ID changes. Looks clean in print materials. Lets us A/B-test source. |
+
+**Vanity redirect naming convention per market:**
+
+| Market | Slug |
+|---|---|
+| Germany (DE) | `/bewertung` |
+| Portugal (PT) / Brazil (BR) | `/avaliacao` |
+| English-speaking (US, UK, etc.) | `/review` |
+
+**Implementation note:** the vanity redirect must be tested end-to-end before production cutover — HTTP 301 verified, destination resolves to the correct `g.page/r/<short-id>/review` URL. A broken vanity redirect sending customers to a 404 is worse than no redirect. This check is a 🔴 production blocker in `CHECKLIST.md` §3.
+
+#### 8.4.3 Velocity vs recency — 2026 weighting + drought-alert SLA
+
+**The shift:** Whitespark's 2026 Local Search Ranking Factors survey lifted review velocity from #93 to **#11** ([Whitespark 2026](https://whitespark.ca/local-search-ranking-factors/)). Sterling Sky case studies show **5 fresh reviews/month beats 200 stale ones** ([Sterling Sky 2025](https://www.sterlingsky.ca/number-of-reviews-impact-ranking/)).
+
+**Approximate 2026 weighting of review sub-signals:**
+
+1. Velocity (new reviews per 30 days) — strongest
+2. Recency of the last review (Google reads "alive vs dead")
+3. Owner-response rate (measurable ranking lift at 80%+ response rate)
+4. Total count — still matters, but **now subordinate** to velocity
+5. Keyword-in-review — diminished; still helps thematic relevance
+6. Reviewer diversity (different reviewer profiles, Local Guide mix) — anti-spam signal
+
+**Drought-alert SLA — wired into every retainer:**
+
+| Days since last review | Action |
+|---|---|
+| ≤ 21 days | Healthy. No action. |
+| 21-42 days | **🟡 First warning** — notify the client. Recommend triggering the §8.4.5 review-request sequence to the last 10-20 customers. |
+| 42+ days | **🔴 Rank softening risk** — Sterling Sky data shows visible Local Pack rank drops in competitive verticals (health, gastronomy) past 6 weeks of dormancy. Escalate the request cadence; baseline a recovery measurement at day zero of the escalation. |
+
+Encode `days_since_last_review` as a tracked metric in the monthly retainer report (see `KPI.md` §Per-product-type KPI defaults). Trigger the client-facing alert email automatically when the 21-day threshold flips.
+
+#### 8.4.4 Channel + timing decision matrix
+
+**Timing:** 24-48 hours post-visit is the consensus sweet spot. Immediate-on-premises is now policy-risky (pressure framing) **and** converts worse than a same-evening or next-day delay.
+
+**Channel conversion rates** (industry benchmarks — Birdeye / GatherUp practitioner data):
+
+| Channel | Complete-review rate | Notes |
+|---|---|---|
+| SMS | **12-20%** | Strongest single channel. Pay-as-you-go via Twilio / MessageBird. DE: must use service-email frame to stay UWG-compliant — see §8.4.5. |
+| WhatsApp | ~SMS-equivalent (no public benchmark) | Default in EU/BR markets. Free for low volume via WhatsApp Business. |
+| Email | 3-8% | Lowest single-channel rate, cheapest. Best as a follow-up after SMS. |
+| QR-at-POS (printed card / receipt) | 2-5% completion | High open rate, low completion. **Fallback channel, not primary.** |
+| **Hybrid: SMS primary + email follow-up day 4-5** | **+40-60% lift over single channel** | Agency default recommendation for retainer clients. |
+
+**The 1-2-3 sequence (max 3 messages):**
+
+1. **Initial ask** at 24-48h post-visit
+2. **Reminder** at day 4-5
+3. **Stop.** Three messages is the ceiling before complaint risk spikes.
+
+Never message the same customer about reviews more than 3 times total.
+
+#### 8.4.5 Message templates — DRAFT pending client legal review
+
+> 🔴 **All templates below ship as DRAFTS.** They are engineering guidance based on documented UWG / DSGVO / LGPD text. **The client's own legal counsel must clear the template before any mass SMS or email deployment** when the agency manages the campaign. See `CHECKLIST.md` §3 production blocker and `LEGAL.md` §DE "Post-service communications" for the Bestandskunden exemption frame. Agency standards explicitly say: real legal review is the client's responsibility.
+
+The DE template uses the **Bestandskunden service-email frame** under UWG §7(2)(b): lawful **without** separate marketing consent when (a) the email is solely about the transaction the customer already completed, (b) no other marketing content is included, (c) opt-out is clearly signposted.
+
+**SMS — German market (DE):**
+
+```text
+<!-- DRAFT — requires client legal counsel sign-off before mass deployment -->
+Hallo [Vorname], vielen Dank für Ihren Besuch bei [Salonname] am [Datum].
+Wir freuen uns, wenn Sie eine kurze Bewertung hinterlassen:
+[client-domain]/bewertung
+— [Inhaber], [Salonname]
+(Abmelden: SMS STOP an diese Nummer)
+```
+
+**SMS — English market (EN):**
+
+```text
+<!-- DRAFT — requires client legal counsel sign-off before mass deployment -->
+Hi [FirstName], thanks for visiting [BusinessName] on [Date].
+If you have a moment, we'd love a quick review:
+[client-domain]/review
+— [Owner], [BusinessName]
+Reply STOP to unsubscribe.
+```
+
+**SMS — Brazilian / Portuguese market (PT-BR / PT):**
+
+```text
+<!-- DRAFT — requires client legal counsel sign-off before mass deployment -->
+Olá [Nome], obrigado pela visita à [Estabelecimento] em [Data].
+Se puder, deixe uma breve avaliação:
+[client-domain]/avaliacao
+— [Proprietário], [Estabelecimento]
+Para sair desta lista, responda SAIR.
+```
+
+**Email follow-up (day 4-5 — DE example, adapt language per market):**
+
+Subject: `Wie war Ihr Besuch bei [Salonname]?`
+
+```text
+<!-- DRAFT — requires client legal counsel sign-off before mass deployment -->
+Hallo [Vorname],
+
+vor ein paar Tagen waren Sie bei uns für [Service].
+Wir hoffen, alles war zu Ihrer Zufriedenheit.
+
+Falls Sie kurz Zeit haben, würde uns Ihre Bewertung sehr helfen —
+andere Kunden lesen sie, bevor sie sich entscheiden:
+
+[client-domain]/bewertung
+
+Bei Fragen oder Problemen: antworten Sie einfach auf diese E-Mail.
+
+Herzliche Grüße,
+[Inhaber]
+[Salonname]
+```
+
+**Rules across all templates (non-negotiable):**
+
+- ✅ Neutral framing — request goes to **every** customer, not only happy ones
+- ✅ Single CTA (the review link) — no other marketing content
+- ✅ Clear opt-out
+- ❌ No incentive language ("get 10% off")
+- ❌ No specific request ("please mention [staff name]")
+- ❌ No 5-star steering ("if you enjoyed your visit…")
+
+#### 8.4.6 Response templates — 5★ / 4★ / 1-3★
+
+**Response-time target: within 24 hours.** Industry data (ReplyOnTheFly 2026): 32% of consumers expect next-day responses; food/drink expectation jumps to 48% next-day, 24% same-day. Studies cite +0.12 stars and +12% review volume from **starting** to respond, plus 89% of consumers prefer responsive businesses ([ReplyOnTheFly response statistics](https://www.replyonthefly.com/blog/google-review-response-statistics)).
+
+Responses are **public and indexed** — write for the next customer, not the reviewer.
+
+**5★ template (≤ 30 words):**
+
+```text
+Vielen Dank, [Vorname]! Schön, dass Ihnen [specific detail from the review —
+e.g., der Balayage, das Ambiente, der Service] gefallen hat.
+Wir freuen uns auf Ihren nächsten Besuch.
+— [Inhaber]
+```
+
+Include one specific detail from the review. Skip the generic "Thanks for the 5 stars!" — it reads as templated.
+
+**4★ template (acknowledge friction without defensiveness):**
+
+```text
+Danke für die Rückmeldung, [Vorname]. Schön, dass Sie zufrieden waren.
+Ihre Anmerkung zu [specific friction the reviewer noted — e.g., der Wartezeit,
+der Beratung] nehmen wir mit. Beim nächsten Besuch zeigen wir Ihnen gerne,
+was wir verbessert haben.
+— [Inhaber]
+```
+
+**1-3★ template (the hardest — write for the next customer):**
+
+```text
+Hallo, danke für Ihr Feedback. Es tut uns leid, dass Ihr Besuch nicht
+Ihren Erwartungen entsprochen hat. Wir möchten das gerne mit Ihnen
+besprechen — schreiben Sie uns bitte direkt: [phone] / [email].
+— [Inhaber]
+```
+
+**Non-negotiable rules for 1-3★ responses:**
+
+- ❌ Never identify the reviewer by name in a negative-review response
+- ❌ Never relitigate the facts publicly ("Actually, you arrived 30 minutes late…")
+- ❌ Never be defensive or emotional
+- ✅ Acknowledge the complaint
+- ✅ Move the conversation off-platform (phone / email / DM)
+- ✅ Keep it short — the reader is the next customer, not the reviewer
+
+**Template cadence:** don't use the same response copy on more than ~30% of reviews. Google's quality systems flag templated responses; reviewers see them too. Vary the specific detail per review.
+
+#### 8.4.7 Velocity targets per vertical
+
+Per `KPI.md` Health KPIs, `review_count_30d` is wired for every retainer client. Vertical baselines:
+
+| Vertical | Healthy monthly velocity | Floor (drought alert) |
+|---|---|---|
+| **Gastronomy** (restaurant / café / bar) | 8-15 / mo | ≥ 1 new review every 3 weeks |
+| **Beauty** (hair / nails / spa) | 3-8 / mo | same |
+| **Health** (dentist / physio / GP) | 8-12 / mo (top quartile 15-20 — practitioner-cited; one public benchmark, [Dominate Dental](https://www.dominatedental.com/dental-marketing-reviews/)) | same |
+| **Studio** (gym / yoga / pilates) | 2-5 / mo | same |
+| **Trades** (plumber / electrician / handyman) | 1-3 / mo | same |
+| **Professional services** (lawyer / accountant) | 1-3 / mo | same |
+| **Pets** (vet / groomer) | 2-5 / mo | same |
+| **Automotive** (mechanic / detailer) | 1-3 / mo | same |
+| **Education** (tutor / language school) | 2-5 / mo | same |
+| **Events-hospitality** | Hotel/B&B: 5-10 / mo · Solo planner/photographer/caterer: 1-3 / mo | same |
+| **Home & garden** (florist / landscaper) | 2-5 / mo | same |
+| **Artisan** (jeweler / ceramicist) | 1-3 / mo on GBP (most reviews live on Etsy / IG, not GBP — see `templates/artisan.md` §11 Measurement for full channel mix) | same |
+
+The floor in every vertical: **≥ 1 new review every 3 weeks** to stay outside Sterling Sky's "review drought" cliff.
+
+Treat the per-vertical numbers as targets-not-promises. Real velocity depends on customer volume, share-of-asks, owner response cadence, and seasonality. The 60-90 day measurement window per `SEO.md` §13 is what counts.
+
+#### 8.4.8 Tools tier per retainer level + cost pass-through
+
+| Retainer tier | Review tooling stack | Monthly tool cost |
+|---|---|---|
+| ≤ €300/mo | Free GBP "Get more reviews" link + vanity redirect + printable QR card. Owner sends messages manually. | €0 |
+| €300-500/mo | Add SMS sender (MessageBird / Twilio pay-as-you-go) for post-visit drip. Agency configures the template; client owns the contact list. | €5-15/mo |
+| €500+/mo | Optional Reputigo / NiceJob entry tier for sequencing + dashboard. Full response handling by agency. | €15-30/mo |
+
+**Paid platforms intentionally NOT recommended** for our segment (Birdeye $99-299, Podium $249+, GatherUp ~$99): overkill for €200-500/mo retainer scope; pricing absorbs the entire retainer margin.
+
+**Cost pass-through rule (non-negotiable at €300+/mo tier):**
+
+> Tool costs at the €300-500/mo and €500+/mo retainer tiers are **passed through to the client as a separately-itemized line on the monthly invoice**, not absorbed in the retainer fee. Alternative: the retainer agreement caps agency tool selection at €X/month, with anything above the cap requiring client approval. The agency does not subsidize per-client tool costs from the retainer fee.
+
+Document the pass-through arrangement in the retainer contract **before** tool selection. Surprise tool costs surfaced mid-quarter are a frequent friction point.
+
+#### 8.4.9 Recovery from the 2024-2025 review purge
+
+Between Jan-Jul 2025, Google review deletions rose **600%**. ~2% of monitored locations had a review removed weekly at peak ([Search Engine Land — record review deletions](https://searchengineland.com/google-deleting-reviews-record-levels-466546)). The pattern by market:
+
+- **English markets:** 38% of removed reviews were 5★ — Google's quality systems read effusive praise as suspect
+- **Germany:** disproportionate **1★ defamation takedowns** within ~50 days of posting (legal removal pathway is more developed in DE than in most markets)
+- **Volume:** restaurants are hit hardest
+
+**Implications baked into our playbook:**
+
+1. **Spread requests across time** — avoid week-long bursts that look automated. Sterling Sky data: 5/week spread beats 25 in one day.
+2. **Diversify reviewer profiles** — don't import the entire customer email list as one batch. Mix new + Local Guide + repeat customers naturally over weeks.
+3. **Neutral language only** — "5 stars please" framing increases removal probability.
+4. **Plan for ~15% attrition** — target velocity 15% above the §8.4.7 vertical baseline to account for legitimate removals.
+
+**Retainer SLA addition (every client):**
+
+- Monitor monthly GBP review count for unusual drops (10%+ in 7 days)
+- Notify the client within 7 days of detection with: (a) review count delta, (b) which specific reviews appear to have been removed, (c) any known cause (incentive language, kiosk usage, etc.)
+- If reviews appear to have been removed wrongly (real customer, real visit), the client can appeal via [Google's review removal policy](https://support.google.com/business/answer/4596773). Agency drafts the appeal text on behalf of the client at €300+/mo retainer tier.
+
+**Pre-launch defensive setup checklist:**
+
+- ✅ No incentive language anywhere in the template library
+- ✅ No staff-name requests in templates
+- ✅ No on-site kiosks (banned early 2026)
+- ✅ Vanity redirect documented in client onboarding (so the link survives Place-ID rotation)
+- ✅ Drought-alert SLA wired into the monthly retainer report (§8.4.3)
+- ✅ DE legal sign-off obtained before any DE mass SMS / email campaign (§8.4.5 production blocker)
 
 ### GBP posts — weekly updates via the Publications hub
 
@@ -742,6 +1015,19 @@ Hair salon → "Friseursalon" (primary) + "Haarpflege" + "Barbier" (secondary)
 Restaurant → "Italienisches Restaurant" (primary) + "Pizzeria" + "Restaurant" (secondary)
 Dentist → "Zahnarztpraxis" (primary) + "Kieferorthopäde" if applicable (secondary)
 ```
+
+### Citations beyond GBP — see `CITATIONS.md`
+
+GBP is the foundation citation (universal #1 in `CITATIONS.md` §2), but it is not the entire citation landscape. **Every client launches with a citation baseline across:**
+
+- **Universal directories** (Apple Business Connect, Bing Places, Yelp DE, Facebook, IG) — `CITATIONS.md` §2
+- **DE-general directories** with per-directory upsell-trap warnings (Gelbe Seiten / Sellwerk premium, Das Örtliche, 11880 ProfiEintrag telesales, meinestadt, **berlin.de**) — `CITATIONS.md` §3
+- **Vertical-specific must-claim** (Jameda for health · Treatwell for beauty · Tripadvisor for gastronomy · MyHammer for trades · etc.) — `CITATIONS.md` §4
+- **NAP canonical template** declared per client in BRIEF.md — `CITATIONS.md` §7
+- **Aggregator verdict** (don't pay Yext / Uberall below €500/mo retainer) — `CITATIONS.md` §8
+- **6-month refresh cadence** for retainer clients — `CITATIONS.md` §9
+
+The agency builds this baseline once at launch (~3-4 hours per client) and does **not** pay for monthly citation maintenance below €500/mo retainer per Sterling Sky 2026 evidence. `CITATIONS.md` is the canonical reference; this §8 stays focused on GBP itself.
 
 ---
 

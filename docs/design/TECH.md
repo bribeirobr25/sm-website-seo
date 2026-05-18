@@ -53,6 +53,13 @@ Two decisions, in order. **Product type first** (what the project does), then **
 | **4** | **Info + transactional** | Type 1 + online ordering, payment, fulfillment tracking. **PCI-relevant.** | Restaurant + delivery / takeaway ordering · Retail + online catalog · Studio + class purchases |
 | **5** | **Application** | Custom application with auth, user accounts, multi-role, dashboards. Marketing landing is a sub-component, not the whole product. | Todo / task system · Member portal · Loyalty program backend · Admin tooling |
 
+**Production-cutover deliverables apply to ALL types (1–5):** before flipping `noindex` off on any client build, two cross-type deliverables must ship regardless of product type:
+
+1. **Citation-building** per `CITATIONS.md` (universal directories — GBP, Apple Business Connect, Bing Places, Yelp DE, Facebook, IG · DE-general — Gelbe Seiten, Das Örtliche, 11880, meinestadt.de, berlin.de · vertical-specific — Jameda for health, Treatwell for beauty, Tripadvisor for gastronomy, etc.). Canonical NAP declared in BRIEF.md and matched across every claimed listing. *Note: `CITATIONS.md` ships in `SEO-DEPTH-EXPANSION-PLAN-2026-05-18.md` Batch 2.*
+2. **Review-link + vanity redirect setup** per `SEO.md` §8.4 — `/bewertung` (DE) / `/avaliacao` (PT/BR) / `/review` (EN) configured and verified end-to-end (HTTP 301 → correct `g.page/r/<short-id>/review` destination) per `CHECKLIST.md` §Review generation — pre-launch. GBP review link visible in site chrome. Vanity-redirect e2e test is a 🔴 production blocker.
+
+These are not feature additions or upsells. They are the **operational floor** every client launches with, regardless of stack tier or product type. Quote the build accordingly; do not treat them as in-scope-only-for-Type-3+ work.
+
 ### 1.2 Stack tier follows from product type
 
 | Product type | Stack tier (default) | Stack tier (acceptable alternative) |

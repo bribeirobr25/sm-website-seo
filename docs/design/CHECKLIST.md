@@ -187,6 +187,34 @@ Per `INTEGRATIONS.md` §Lazy initialization for env-dependent server modules. Ca
 - [ ] **US clients (when activated):** "Your Privacy Choices" link in footer; opt-out toggle reachable and persists
 - [ ] **All clients:** legal pages return `X-Robots-Tag` allowing indexing (NOT `noindex`). `curl -I [url]/datenschutz | grep -i x-robots-tag` must NOT return `noindex`.
 
+### Review generation — pre-launch (every retainer-tier production cutover)
+
+The full playbook lives in `SEO.md` §8.4. These items are the operational pre-launch tests. Owner-side legal compliance is documented in `LEGAL.md` §DE "Post-service communications" (Bestandskunden frame under UWG §7(2)(b)).
+
+**Configuration (every retainer client):**
+
+- [ ] **GBP review link visible in site chrome** — footer or About page carries the link to the GBP review form (the per-market vanity redirect from `SEO.md` §8.4.2, NOT a raw `g.page/r/...` URL exposed to end users)
+- [ ] **Vanity review redirect configured** — `/bewertung` (DE) / `/avaliacao` (PT/BR) / `/review` (EN) per market, declared in the client's hosting/redirect config
+- [ ] **QR card with review link prepared for client** — printable PDF at minimum 7 × 5 cm, vanity URL clearly readable, owner's name + business name + "Bewertung / Avaliação / Review" label
+- [ ] **Response SLA documented in retainer agreement** — 24h target per `SEO.md` §8.4.6; explicit at retainer-tier level (≤€300/mo = owner responds, €500+/mo = agency responds)
+- [ ] **Review velocity baseline captured at handoff** — record `review_count_30d` + `review_response_rate_30d` + `days_since_last_review` from the client's existing GBP listing into the BRIEF.md or initial monthly report, for the 90-day before/after comparison per `SEO.md` §13
+
+**🔴 Production blockers — must pass before flipping `noindex` off:**
+
+- [ ] 🔴 **Vanity review redirect tested end-to-end** — issue an HTTP HEAD against the vanity URL: response is `301 Moved Permanently` AND the `Location` header points to the correct `g.page/r/<short-id>/review` (NOT a 404, NOT a generic Google business search). Run: `curl -sI https://[client-domain]/bewertung | grep -E "HTTP|Location"` — both lines must be present and correct. A broken vanity redirect sending customers to a 404 is worse than no redirect.
+- [ ] 🔴 **DE clients with agency-managed campaigns: client legal counsel has cleared the §8.4.5 DE review-request template** — written sign-off from the client's counsel (email is sufficient, save to `docs/clients/[slug]/legal-signoff-bestandskunden.md` or equivalent) before any mass SMS or email deployment. Engagement-managed scope only — owner-managed cadence (≤€300/mo retainer where the client themselves sends individual requests) does not require agency-collected legal sign-off but the client is still on the hook for UWG compliance. The agency's role: provide the DRAFT, document the gate, never deploy mass campaign without the sign-off on file. See `LEGAL.md` §DE Post-service communications for the full Bestandskunden frame.
+
+### Citations — pre-launch (every client at production cutover)
+
+The full playbook lives in `CITATIONS.md`. Citations are a **cross-type** production-cutover deliverable per `TECH.md` §1 — every client builds the baseline at launch, regardless of stack tier or product type.
+
+- [ ] **Canonical NAP block declared in `BRIEF.md`** — per `CITATIONS.md` §7 template (name · street · ZIP/city · country · phone · website canonical) · owner-confirmed before any directory is claimed · matches the GBP listing exactly
+- [ ] **Universal citations claimed (___ / 6)** — Google Business Profile (postcard-verified) · Apple Business Connect · Bing Places · Yelp Germany · Facebook Business Page · Instagram Business Profile (NAP in bio matches canonical). See `CITATIONS.md` §2.
+- [ ] **DE-general citations claimed (___ / 8)** — Gelbe Seiten · Das Örtliche · Das Telefonbuch · 11880.com · meinestadt.de · berlin.de (for Berlin clients) · Cylex · GoYellow. See `CITATIONS.md` §3.
+- [ ] **berlin.de claimed (Berlin-primary clients only)** — Berliner Senatsverwaltung portal · free · government-adjacent trust signal · most-under-claimed entry · always claim for Berlin-primary
+- [ ] **Vertical-specific citations claimed (___ / N)** — 1-3 directories from the vertical's row in `CITATIONS.md` §4 (e.g., Jameda for health · Treatwell for beauty · Tripadvisor for gastronomy · MyHammer for trades · etc.) — see matching `templates/[vertical].md` §11.6 Citations subsection for the per-vertical pick
+- [ ] **Per-directory premium-upsell traps documented in retainer agreement** — Sellwerk 3-month auto-renewal (Gelbe Seiten / Das Örtliche bundle) cancellation reminder calendared 2 weeks before trial end · 11880 ProfiEintrag telesales follow-up window (2 weeks post-claim) flagged to owner · the agency never absorbs these tool costs from the retainer fee per `SEO.md` §8.4.8 pass-through rule
+
 ### Integration health checks (every production cutover with paid integrations)
 
 Per `INTEGRATIONS.md` pre-launch verification — one test per active integration.
@@ -366,11 +394,73 @@ grep -rnE "'YogaStudio'|\"YogaStudio\"" clients/
 
 # Guard 3 — no references to the renamed export (sportsActivityLocationSchema replaced it on 2026-05-18)
 grep -rn "yogaStudioSchema" clients/
+
+# Guard 4 — DRAFT marker integrity on SEO.md §8.4.5 message templates.
+# Every code block in §8.4.5 (DE/EN/PT-BR SMS + DE email) must carry the literal marker
+# `DRAFT — requires client legal counsel sign-off before mass deployment`. If a future
+# edit strips the marker, an agency-managed campaign could deploy without legal review —
+# the worst-case scenario the §8.4.5 framing exists to prevent.
+opens=$(awk '/^#### 8\.4\.5/,/^#### 8\.4\.6/' docs/design/SEO.md | grep -c '^```text')
+markers=$(awk '/^#### 8\.4\.5/,/^#### 8\.4\.6/' docs/design/SEO.md | grep -c 'DRAFT — requires client legal counsel')
+[ "$opens" = "$markers" ] && echo "Guard 4 PASS ($opens templates, $markers markers)" || echo "Guard 4 FAIL ($opens templates, $markers markers)"
+
+# Guard 5 — every vertical template's §11.1 carries the review_count_30d Health KPI row.
+# Catches a real regression risk: if someone edits a template §11.1 KPI table and
+# accidentally removes the review KPIs, the Batch 1 review-generation playbook silently
+# stops being enforced for that vertical. Per the 2026-05-18 Batch 1 contract, every
+# template's §11.1 must reference review_count_30d.
+missing=()
+for t in docs/design/templates/{gastronomy,beauty,trades,health,studio,professional-services,pets,automotive,education,events-hospitality,home-garden,artisan}.md; do
+  awk '/^### 11\.1 Product KPIs/,/^### 11\.2/' "$t" | grep -q "review_count_30d" || missing+=("$(basename $t)")
+done
+[ ${#missing[@]} -eq 0 ] && echo "Guard 5 PASS (all 12 templates carry review_count_30d in §11.1)" || echo "Guard 5 FAIL — missing in: ${missing[*]}"
+
+# Guard 6 — every vertical template's §11.6 carries a Citations subsection cross-linking
+# to CITATIONS.md §4. Catches the analogous regression for Batch 2: if a template §11.6
+# edit drops the Citations subsection, the per-vertical must-claim list silently stops
+# being enforced for that vertical at production cutover. Per the 2026-05-18 Batch 2
+# contract, every template's §11.6 must reference CITATIONS.md.
+missing=()
+for t in docs/design/templates/{gastronomy,beauty,trades,health,studio,professional-services,pets,automotive,education,events-hospitality,home-garden,artisan}.md; do
+  awk '/^### 11\.6/,/^### 11\.7/' "$t" | grep -q "CITATIONS\.md" || missing+=("$(basename $t)")
+done
+[ ${#missing[@]} -eq 0 ] && echo "Guard 6 PASS (all 12 templates reference CITATIONS.md in §11.6)" || echo "Guard 6 FAIL — missing in: ${missing[*]}"
+
+# Guard 7 — CITATIONS.md exists with all 9 canonical sections intact.
+# Every other doc (SEO.md §8, CHECKLIST.md §Citations, SALES.md §10, root CLAUDE.md,
+# 12 vertical templates §11.6, both reference-impl BRIEF.md files) cross-references
+# specific CITATIONS.md sections by number. If a section is renamed or deleted, all
+# those cross-references break silently — the production-cutover playbook stops being
+# enforceable. Verify all 9 sections still exist.
+required_sections=(
+  "## 1. State of citations"
+  "## 2. Universal citations"
+  "## 3. DE general directories"
+  "## 4. Vertical-specific must-claim"
+  "## 5. Portugal seed list"
+  "## 6. Brazil seed list"
+  "## 7. NAP canonical template"
+  "## 8. Aggregator verdict"
+  "## 9. 6-month refresh cadence"
+)
+if [ ! -f docs/design/CITATIONS.md ]; then
+  echo "Guard 7 FAIL — docs/design/CITATIONS.md is missing"
+else
+  missing=()
+  for section in "${required_sections[@]}"; do
+    grep -qF "$section" docs/design/CITATIONS.md || missing+=("$section")
+  done
+  [ ${#missing[@]} -eq 0 ] && echo "Guard 7 PASS (all 9 CITATIONS.md sections present)" || echo "Guard 7 FAIL — missing: ${missing[*]}"
+fi
 ```
 
 - [ ] Guard 1 (`aggregateRating` in `src/lib/seo/`) returns zero matches
 - [ ] Guard 2 (`'YogaStudio'` `@type`) returns zero matches
 - [ ] Guard 3 (`yogaStudioSchema` export name) returns zero matches
+- [ ] Guard 4 (§8.4.5 DRAFT-marker integrity) reports PASS — every template carries the legal-review marker
+- [ ] Guard 5 (review-KPI integrity across 12 templates) reports PASS — every vertical template's §11.1 carries `review_count_30d`
+- [ ] Guard 6 (Citations subsection integrity across 12 templates) reports PASS — every vertical template's §11.6 cross-links `CITATIONS.md`
+- [ ] Guard 7 (CITATIONS.md 9-section structural integrity) reports PASS — file exists with all 9 canonical sections intact
 
 If any guard returns nonzero, production is blocked. Either (a) it's a real regression — fix it by following the matching template's §11.8 pattern; or (b) it's a deliberate exception — document the reason inline + add a precise `--exclude` to the guard with the justification in the commit message.
 

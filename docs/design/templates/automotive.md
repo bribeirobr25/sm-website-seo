@@ -375,6 +375,8 @@ No canonical worked example in §7.10 — the benchmark skews to chains. Archety
 | 3 | Brand-specialty page split (BMW page vs Audi page vs Mercedes page) | Acquisition | GA4 `page_viewed` filtered to `/marken/[brand]` | Tracks which specialty drives traffic |
 | 4 | Service-area-based lead share (neighborhood/postcode driving leads) | Acquisition | GA4 + GSC location data | Identifies the 1-2 catchment areas to double down on |
 | 5 | Warranty-page engagement (% sessions that viewed warranty page) | Conversion (trust signal) | GA4 `page_viewed` /garantie or /warranty | ≥ 15% — high engagement = differentiator working |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **1-3 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
 
 ### 11.2 Per-tier stack
 
@@ -423,6 +425,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Neon** | Tier 3+ multi-bay shop appointment system | Quote requests, appointment schedule |
 | **Insurance API** (optional) | Type 3+ shops doing DRP work | Direct integration with insurance companies' booking systems (out of scope for typical agency build; document as future-state) |
 | **Calendly** (optional) | Tier 2+ appointment-based shops | Service-only operators (oil change, tire rotation) often use Calendly deep-link instead of own booking |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, automotive must-claim at launch:
+
+- **[Werkstars](https://werkstars.de/)** — DE workshop directory + reviews
+- **[Autoscout24 Werkstattportal](https://werkstattportal.autoscout24.de/)** — highest direct-traffic value for the vertical (driver-side platform)
+- **[fairgarage](https://www.fairgarage.de/)** — quote-aggregator platform; lead-gen channel
 
 ### 11.7 Share strategy
 

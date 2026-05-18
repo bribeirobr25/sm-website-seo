@@ -440,6 +440,8 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 | 3 | MRR (Monthly Recurring Revenue) | Conversion (business) | Mindbody / Stripe subscriptions | Track trend — flat-to-down for 2mo = retainer escalation trigger |
 | 4 | Member retention (active month-over-month) | Retention | PostHog cohort + Mindbody data | ≥ 85% MoM for established cohorts |
 | 5 | Mindbody/ClassPass/Glofox handoff rate (booking platform click rate) | Conversion | GA4 `booking_started` | ≥ 6% of sessions |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **2-5 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
 
 ### 11.2 Per-tier stack
 
@@ -490,6 +492,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Neon** | Tier 3+ — studios with own booking DB | Members table, bookings table, attendance records (encrypted PII) |
 | **Upstash** | Tier 2+ trial-signup form | Rate-limit 10/60s (studios get class-launch traffic spikes) |
 | **Stripe** | Tier 3+ Type 4 — membership subscriptions | Subscription billing for studios with own membership system; SEPA + Pix per jurisdiction |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, studio must-claim at launch:
+
+- **[Eversports](https://www.eversports.de/)** — DE-dominant studio booking platform
+- **[Urban Sports Club partner](https://urbansportsclub.com/de/partner)** — Berlin's largest employer-benefit fitness platform; partner status drives high-LTV recurring members. Often the single highest-impact citation for Berlin studios
+- **[ClassPass partner](https://classpass.com/partner-with-us)** — international member-benefit platform; lower DE penetration than Urban Sports Club but worth claiming
 
 ### 11.7 Share strategy
 

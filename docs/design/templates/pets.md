@@ -360,6 +360,8 @@ No canonical worked example in §7.9 — the benchmark skews to chains. The IA f
 | 3 | GBP-driven traffic share | Acquisition | GBP Insights + GA4 source=gbp | ≥ 35% — GBP is the dominant local-search surface for pets |
 | 4 | Real-pet gallery views (% sessions viewing customer-pet gallery) | Conversion (trust signal) | GA4 `gallery_viewed` | ≥ 35% |
 | 5 | Repeat-appointment rate (clients booking ≥ 2× in 90 days) | Retention | Booking platform / PostHog cohort (Tier 3) | ≥ 50% — pets need recurring care |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **2-5 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
 
 ### 11.2 Per-tier stack
 
@@ -409,6 +411,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Upstash** | Tier 2+ booking form | Rate-limit 5/60s |
 | **Booking platform** (Petlove BR / Petbacker / VetLink) | Optional — solo vets/groomers | Deep-link with UTM-preserve. Platform owns scheduling. |
 | **Stripe** | Type 4+ — pet-product retail or paid services up-front | Rare in agency scope; mostly post-visit payment direct |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, pets must-claim at launch:
+
+- **[Tasso e.V.](https://www.tasso.net/)** — dominant DE pet-trust signal (pet registry + finder); free vet listing
+- **[Doctolib Vet](https://pro.doctolib.de/)** — booking platform where vets are listed; deep-link if the practice uses Doctolib
+- Local breed / club directories (vertical-dependent — research per client)
 
 ### 11.7 Share strategy
 

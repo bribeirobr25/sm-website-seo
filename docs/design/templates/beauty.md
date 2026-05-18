@@ -378,6 +378,8 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 | 3 | No-show rate | Health (business) | Booking platform | < 10% — anything higher reduces effective utilization |
 | 4 | Repeat-client rate (2+ bookings within 90 days) | Retention | Booking platform / PostHog cohort (Tier 3) | ≥ 35% by month 3 |
 | 5 | Real-work gallery engagement (% sessions viewing before/after gallery) | Conversion (trust signal) | GA4 / Clarity `gallery_viewed` | ≥ 40% of sessions |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **3-8 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
 
 ### 11.2 Per-tier stack
 
@@ -426,6 +428,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Neon** | Tier 3+ own booking | Appointments table, customer table (encrypted PII). |
 | **Upstash** | Tier 2+ booking form | Rate-limit booking-form attempts (10/60s — higher than contact form, beauty clients book in bursts). |
 | **Stripe** | Type 4 only — rare (loyalty cards, gift cards) | Subscriptions for membership-based salons; Pix for BR. |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, beauty must-claim at launch:
+
+- **[Treatwell DE](https://www.treatwell.de/partners/)** — booking platform with marketplace; the agency's `reference-solo-barber/` impl uses the booking-deep-link pattern
+- **[Booksy biz](https://booksy.com/biz/en-de)** — competitor booking platform, stronger in some Berlin Bezirken
+- **[Fresha](https://www.fresha.com/for-business)** — free booking + POS; popular with solo operators
 
 ### 11.7 Share strategy
 

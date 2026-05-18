@@ -421,6 +421,10 @@ No canonical worked example in §7.8 — benchmark skews to brands. Archetype D 
 | 3 | Repeat-order rate (within 90 days) | Retention | Stripe customer ID + PostHog cohort | ≥ 20% repeat within 90d |
 | 4 | Commission-inquiry rate (custom-work form completion) | Conversion | GA4 `contact_form_completed` filtered to commission form | Vertical-dependent |
 | 5 | IG-driven traffic share | Acquisition | GA4 source=instagram + UTM | ≥ 30% for IG-heavy makers |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **1-3 new reviews / month on GBP** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
+
+> **Review-channel mix for artisan — GBP is NOT the dominant channel.** For most artisan clients, the bulk of customer reviews live on **Etsy** (per-shop rating + per-listing reviews) and **Instagram** (DMs + tagged posts), not GBP. The agency tracks GBP review velocity as the canonical Health KPI per `KPI.md`, but the monthly retainer report should also surface: (a) **Etsy shop rating** + new review count over the last 30 days, (b) **Etsy listing-level reviews** on the top 3 SKUs, (c) qualitative tag mentions on Instagram (manual scan). When a client sells through Shopify with off-Etsy traffic, **Trustpilot** + on-site product reviews become the dominant signal — track those instead. Frame KPI #6 in the retainer report as "GBP review velocity (one channel of three)" so the GBP-floor of 1-3/mo isn't read as a ceiling on overall review velocity.
 
 ### 11.2 Per-tier stack
 
@@ -469,6 +473,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Neon** | Tier 3+ shop with custom-order tracking | Orders + commission requests + customer (encrypted) |
 | **Upstash** | Tier 2+ commission form / Tier 4+ checkout | Rate-limit 5/60s commission form, 10/60s checkout |
 | **Image hosting** | Type 4+ (catalog) | Cloudinary or Vercel Blob for product images (the lockfile-heavy `assets/images/` pattern doesn't scale beyond ~30 products) |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, artisan must-claim at launch:
+
+- **[Etsy shop](https://www.etsy.com/sell)** — **primary citation channel for product-focused artisans.** Most artisan reviews live on Etsy (per-shop rating + per-listing reviews), NOT GBP — see §11.1 review-channel-mix note. Mandatory for any artisan selling physical products
+- **[Palundu](https://www.palundu.de/)** — DaWanda's spiritual successor; DE-specific handmade marketplace
+- **[Made in Berlin](https://www.madeinberlin.de/)** — Berlin-specific maker directory (where the client is Berlin-based)
 
 ### 11.7 Share strategy
 

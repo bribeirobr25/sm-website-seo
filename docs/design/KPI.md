@@ -123,7 +123,31 @@ Inherits Types 1–4 plus:
 | 19 | Activation rate (new sign-ups reaching key action within 7d) | Retention | PostHog funnel | ≥ 40% |
 | 20 | Uptime | Health | Better Stack / UptimeRobot | ≥ 99.9% |
 
-**Rule:** the per-client BRIEF.md picks **3–5** KPIs from the applicable list. More is not better — clients ignore dashboards with > 6 metrics.
+### Cross-type Health KPIs — review velocity (every client with a GBP listing)
+
+The 2026-05-18 review-generation playbook (`SEO.md` §8.4) promotes three review-related KPIs to **canonical Health KPIs** that ship with every retainer client, regardless of product type. These are not vertical-specific or type-specific — every local business with a Google Business Profile should track them.
+
+| # | KPI | Bucket | Source (varies per retainer tier — see below) | Target / benchmark |
+|---|---|---|---|---|
+| H1 | `review_count_30d` | Health | Manual screenshot / BrightLocal / GBP API | Per-vertical floor from `SEO.md` §8.4.7 |
+| H2 | `review_response_rate_30d` | Health | Same source | ≥ 80% of new reviews answered within 24h |
+| H3 | `days_since_last_review` | Health | Same source | ≤ 21 (🟡 alert at 21+, 🔴 escalate at 42+ per `SEO.md` §8.4.3 drought-alert SLA) |
+
+**Per-retainer-tier data source:**
+
+| Retainer tier | `review_count_30d` data source | Effort |
+|---|---|---|
+| ≤€300/mo | **Manual** — owner screenshots the GBP review count on the 1st of each month and sends to the agency. Entered in the monthly retainer report. No API or paid tool. | 5 min/month |
+| €300-500/mo | **Manual or BrightLocal reporting** — if BrightLocal is bundled for citation management (~€30/mo add-on), use its reporting. Otherwise manual. | 5-10 min/month |
+| €500+/mo | **GBP API** — via agency Google Cloud project with verified OAuth per client. Worth the setup cost at this tier. | Setup ~1 hr; then automated daily |
+
+**PostHog is NOT a data source for GBP metrics.** PostHog has no native GBP integration; building a custom GBP-ingestion pipeline is out of scope for the agency's stack per `INTEGRATIONS.md`. The review KPIs are sourced from GBP directly via the per-tier path above, then **entered into the monthly retainer report alongside the PostHog/GA4 product-event metrics**. The report aggregates; the data sources stay separate.
+
+**Vertical-specific velocity targets:** see `SEO.md` §8.4.7 for the per-vertical table (gastronomy 8-15/mo · beauty 3-8/mo · health 8-12/mo · trades 1-3/mo · studio 2-5/mo · etc.). Each vertical template's §11.1 cross-links to this table and re-states the target for the specific vertical.
+
+**Drought-alert SLA wiring:** the `days_since_last_review` KPI is the input to the §8.4.3 drought-alert SLA. 21 days = 🟡 first warning (notify client, recommend triggering the §8.4.5 review-request sequence). 42 days = 🔴 rank-softening risk in competitive verticals (health, gastronomy). Wire the monthly retainer report to flag both thresholds automatically.
+
+**Rule:** the per-client BRIEF.md picks **3–5** KPIs from the applicable list. More is not better — clients ignore dashboards with > 6 metrics. **Review KPIs (H1–H3) count toward the 3-5 picks** but should appear in the picks for every retainer client with a GBP listing (≈ every local-business client).
 
 ---
 
@@ -303,6 +327,8 @@ Default tiles (Clarity ships these out of the box; agency confirms they're enabl
 ### GBP / Google Search Console — not a custom dashboard
 
 GBP Insights and GSC are read directly in their native interfaces. Agency includes screenshots in the monthly KPI report (see §Retainer reporting cadence) but does not build a custom dashboard for them.
+
+**Review KPIs (H1 `review_count_30d` · H2 `review_response_rate_30d` · H3 `days_since_last_review`) ship in the monthly retainer report.** Source is per-tier (manual screenshot / BrightLocal / GBP API — see §Per-product-type KPI defaults → Cross-type Health KPIs). Track month-over-month delta + flag any 10%+ drop within 7 days (review-purge SLA per `SEO.md` §8.4.9).
 
 ---
 

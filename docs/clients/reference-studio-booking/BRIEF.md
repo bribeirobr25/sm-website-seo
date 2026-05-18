@@ -18,6 +18,22 @@ Per-client brief for `clients/reference-studio-booking/`. The studio is fictiona
 | Approximate active members | 80 (DRAFT — used only for sizing the trial-conversion funnel) |
 | Instructor count | 2 (Anna + Jonas) |
 
+## 1.5 Canonical NAP
+
+Per `CITATIONS.md` §7. **Every directory listing matches this block exactly.** Owner-confirmed at scaffold time; semi-annual NAP audit per `CITATIONS.md` §9.
+
+```text
+Name:     Studio Sereno Yoga                # Exact trade name — no Bezirk in name field
+Street:   Auguststraße 42                   # Spelled-out "Straße" form used everywhere (NOT "Auguststr.")
+ZIP/City: 10117 Berlin                      # ZIP + city
+Country:  Germany / Deutschland             # Match each directory's locale field
+Phone:    +49 30 1234 5678                  # E.164 international with spaces, DRAFT — owner-confirm before production
+Website:  https://studio-sereno-yoga.de/    # https + trailing slash · DRAFT — placeholder domain
+```
+
+**Owner-confirmed:** _pending — DRAFT, see CLAUDE.md DRAFT list_
+**Last NAP-consistency audit:** _not yet performed — first audit at production cutover_
+
 ---
 
 ## 2. Scope of engagement

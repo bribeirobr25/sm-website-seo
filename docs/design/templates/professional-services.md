@@ -374,6 +374,8 @@ No canonical worked example in the benchmark (no solo-practitioner sites in §7.
 | 3 | Practice-area page split (which expertise drives inquiries) | Acquisition | GA4 `page_viewed` filtered to `/leistungen/[area]` or `/practice-areas/[area]` | Identifies the 1-2 specialties to feature |
 | 4 | Credentials-page engagement (% sessions reading credentials deeply) | Conversion (trust signal) | Clarity scroll depth on `/team` or `/about` | ≥ 50% reach 75% scroll |
 | 5 | Direct-traffic share (referral / word-of-mouth attribution proxy) | Acquisition | GA4 source=direct | ≥ 40% — pro services is referral-driven |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **1-3 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 · pro-services confidentiality means review channels include `anwalt.de` / `ProvenExpert` alongside GBP — track all in retainer report |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 — privileged-content rule: 1-3★ responses must never reference the matter, the client name, or any case detail |
 
 ### 11.2 Per-tier stack
 
@@ -426,6 +428,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Stripe** | Type 4+ — productized service billing | Subscription for recurring services (tax filing, bookkeeping); SEPA + Pix per jurisdiction |
 
 **Confidentiality rule:** never store matter description, case content, or client-identifying free-text in any agency-side analytics or feature-flag system. Form payload travels to CRM + email (server-side only); never replicated to PostHog or Sentry events.
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, pro-services must-claim at launch:
+
+- **[Anwalt.de](https://www.anwalt.de/)** — DE-dominant lawyer directory + review platform (legal specialty)
+- **[Steuerberater.de](https://www.steuerberater.de/)** — tax specialty equivalent
+- **[ProvenExpert](https://www.provenexpert.com/)** — cross-vertical review aggregator (collects + republishes reviews from multiple sources); especially valuable for confidentiality-bound verticals where GBP-only reviews are sparse
 
 ### 11.7 Share strategy
 

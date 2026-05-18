@@ -92,7 +92,7 @@ clients/reference-studio-booking/
         ├── resend.ts             ← Resend SDK client + FROM_EMAIL
         ├── db.ts                 ← Neon HTTP driver + Drizzle ORM client
         ├── schema.ts             ← Drizzle schema: trial_signups (UUID PK · firstName/email/phone/classSlug/...)
-        └── seo/schema.ts         ← YogaStudio JSON-LD generator (per templates/studio.md §11.8)
+        └── seo/schema.ts         ← SportsActivityLocation JSON-LD generator (per templates/studio.md §11.8 — was YogaStudio before 2026-05-18 hotfix; renamed because schema.org has no YogaStudio type)
 ```
 
 ---
@@ -174,7 +174,7 @@ These items have placeholder values. Replace them with owner-confirmed real data
 | DSGVO Datenschutzerklärung (10 sections) | ✅ |
 | OG + Twitter Cards | ✅ |
 | ShareButton (WhatsApp + IG + Copy, DE labels) | ✅ |
-| YogaStudio JSON-LD | ✅ |
+| SportsActivityLocation JSON-LD | ✅ |
 | Mindbody deep-link | ✅ (placeholder URL) |
 | 404 + 500 branded pages (500 captures to Sentry) | ✅ |
 | `vercel.json` 6 security headers | ✅ |

@@ -416,6 +416,8 @@ No canonical worked example in §7.7 — benchmark skews to chains/ecommerce. Ar
 | 3 | Same-day-order rate (florists only — orders placed before cutoff) | Conversion (business) | Stripe + manual delivery log | Track trend — high rate = right inventory level |
 | 4 | Repeat-order rate (within 90 days) | Retention | Stripe customer ID + PostHog cohort | ≥ 25% for florists (high repeat); ≥ 15% for plant shops |
 | 5 | IG-driven traffic share (florists especially) | Acquisition | GA4 source=instagram + UTM | ≥ 40% for IG-heavy florists |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **2-5 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
 
 ### 11.2 Per-tier stack
 
@@ -465,6 +467,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **Upstash** | Tier 2+ order/quote form | Rate-limit 10/60s (florists see launch-day traffic spikes — Mother's Day campaign etc.) |
 | **Stripe** | Type 4+ florists with cart | SEPA + Pix per jurisdiction; supports same-day-delivery upcharge as a line item |
 | **Delivery API** (optional) | Type 4+ florists | Integration with local delivery platforms (Glovo / Uber Direct / iFood for BR); often manual handoff is fine |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, home-garden must-claim at launch:
+
+- **[MyHammer](https://www.my-hammer.de/)** — DE-dominant lead-gen marketplace for garden / landscape contractors (overlaps with trades-vertical claim — share the listing across both if the client offers both)
+- **[Houzz Pro DE](https://www.houzz.de/pro)** — design-led platform for landscape designers + boutique garden services; portfolio-driven
+- **[GaLaBau Berlin](https://www.galabau-berlin.de/)** — Berlin regional trade association directory for Garten- und Landschaftsbau
 
 ### 11.7 Share strategy
 

@@ -401,6 +401,8 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 | 3 | Phone-vs-form conversion split | Conversion | Ratio of `phone_click` ÷ `contact_form_completed` | Tracks where the audience converges — most trades = 70%+ phone |
 | 4 | Service-area-based leads (which neighborhood/postcode drives leads) | Acquisition | GA4 + GSC location data + form-payload postcode band | Identifies the 2-3 catchment areas |
 | 5 | Project-photo engagement (% sessions viewing before/after) | Conversion (trust signal) | GA4 / Clarity `gallery_viewed` | ≥ 30% — strong trust signal for hire decision |
+| 6 | Review velocity (`review_count_30d`) — new GBP reviews per 30 days | Health | Manual GBP screenshot (≤€300/mo retainer) · BrightLocal or GBP API (€500+/mo) — see `KPI.md` Cross-type Health KPIs | **1-3 new reviews / month** · floor ≥ 1 new review every 3 weeks · drought-alert at 21d 🟡 / 42d 🔴 per `SEO.md` §8.4.3 |
+| 7 | Review response rate (`review_response_rate_30d`) — % of new reviews answered within 24h | Health | Same source as KPI #6 | ≥ 80% within 24h per `SEO.md` §8.4.6 |
 
 ### 11.2 Per-tier stack
 
@@ -450,6 +452,14 @@ Per `INTEGRATIONS.md`. Tier-driven defaults plus vertical-specific:
 | **PostHog** | Tier 3+ (multi-crew with appointment system) only | Quote → appointment funnel, response-time distribution |
 | **Neon** | Tier 3+ multi-crew appointment system | Quote-requests table, scheduled-jobs table |
 | **Booking platform** | Optional — Calendly / TradeBox / similar | Used by appointment-based trades (heating maintenance, gardening); skip for emergency-only operators |
+
+#### Citations (per `CITATIONS.md` §4)
+
+Beyond the universal (§2) + DE-general (§3) directory stack, trades must-claim at launch:
+
+- **[MyHammer](https://www.my-hammer.de/auftragnehmer-werden)** — DE-dominant lead-gen marketplace; mandatory for most Handwerker clients
+- **[Check24 Profis](https://profis.check24.de/)** — competitor lead-gen platform; complementary to MyHammer
+- **[Handwerkskammer Berlin](https://www.hwk-berlin.de/)** — free trust-signal directory for HWK-registered trades; non-marketplace
 
 ### 11.7 Share strategy
 
