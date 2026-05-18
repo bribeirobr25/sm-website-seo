@@ -450,31 +450,92 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Very high leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `HairSalon` (default — most common solo-operator pick) · `BeautySalon` (multi-treatment) · `BarberShop` (barber-specific) · `NailSalon` (nails-only) · `DaySpa` (wellness, longer treatments).
 
-- `BeautySalon` — general beauty / aesthetic
-- `HairSalon` — hair-focused
-- `BarberShop` — barber-specific
-- `NailSalon` — nails-only
-- `DaySpa` — wellness, treatments, longer-duration
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo HairSalon). Archetype-specific blocks for `BeautySalon` (A — Editorial Portfolio) and `DaySpa` (C — Atmospheric Sensory) are trigger-gated — author when a real client picks the archetype.
+
+#### Paste-ready `@graph` block — HairSalon default archetype
+
+Berlin example. Swap 8 placeholders per client.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "BarberShop",
-  "name": "[Business name]",
-  "address": { "@type": "PostalAddress", "streetAddress": "...", "addressLocality": "[City]", "postalCode": "...", "addressCountry": "[DE/PT/BR]" },
-  "geo": { "@type": "GeoCoordinates", "latitude": ..., "longitude": ... },
-  "telephone": "+...",
-  "priceRange": "€€",
-  "openingHoursSpecification": [...],
-  "potentialAction": { "@type": "ReserveAction", "target": "https://[trinks/booksy URL]" }
+  "@graph": [
+    {
+      "@type": "HairSalon",
+      "@id": "https://salon-kreuzberg.de/#business",
+      "name": "Salon Kreuzberg",
+      "description": "Inhabergeführter Friseursalon in Kreuzberg. Schnitt · Farbe · Balayage · Pflege. Termine online über Treatwell.",
+      "url": "https://salon-kreuzberg.de",
+      "telephone": "+49 30 6987 5432",
+      "email": "hallo@salon-kreuzberg.de",
+      "image": [
+        "https://salon-kreuzberg.de/img/salon-16x9.jpg",
+        "https://salon-kreuzberg.de/img/salon-4x3.jpg",
+        "https://salon-kreuzberg.de/img/salon-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Oranienstraße 142",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10969",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.49984, "longitude": 13.41865 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "19:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "16:00" }
+      ],
+      "priceRange": "€€",
+      "potentialAction": { "@type": "ReserveAction", "target": "https://www.treatwell.de/place/salon-kreuzberg" },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Leistungen",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Damenhaarschnitt" }, "price": "55", "priceCurrency": "EUR" },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Herrenhaarschnitt" }, "price": "35", "priceCurrency": "EUR" },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Balayage" }, "price": "180", "priceCurrency": "EUR" },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Föhnen & Styling" }, "price": "25", "priceCurrency": "EUR" }
+        ]
+      },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.instagram.com/salon.kreuzberg",
+        "https://www.facebook.com/salon.kreuzberg",
+        "https://www.treatwell.de/place/salon-kreuzberg"
+      ],
+      "founder":  { "@id": "https://salon-kreuzberg.de/#owner" },
+      "employee": { "@id": "https://salon-kreuzberg.de/#owner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://salon-kreuzberg.de/#owner",
+      "name": "Marie Schäfer",
+      "jobTitle": "Inhaberin · Stylistin",
+      "worksFor": { "@id": "https://salon-kreuzberg.de/#business" },
+      "sameAs": ["https://www.instagram.com/marie.stylist"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://salon-kreuzberg.de/#website",
+      "url": "https://salon-kreuzberg.de",
+      "name": "Salon Kreuzberg",
+      "publisher": { "@id": "https://salon-kreuzberg.de/#business" }
+    }
+  ]
 }
 ```
 
-`potentialAction` wraps the booking deep-link, signaling to Google that booking is available.
+**Vertical-specific rules:**
 
-**No `aggregateRating` on the `BarberShop` (or any `LocalBusiness` subtype) — self-serving rating on own LocalBusiness is policy-banned per `SEO.md` §5.3.** Stars in the SERP come from the GBP listing, not from on-site schema. `aggregateRating` is allowed only on `Product` schema (none here) with visible on-page reviews + owner consent.
+- `potentialAction` ReserveAction wraps the booking platform deep-link (Treatwell / Booksy / Fresha) — signals booking availability to Google
+- `hasOfferCatalog` Service items with explicit price + currency — Google reads these for the "services" panel in the knowledge graph
+- For barbers, swap `@type` to `BarberShop` and adjust Service names accordingly (Haarschnitt, Rasur, Bart-Styling)
+- For nail salons, swap to `NailSalon`; spas use `DaySpa` (also include `amenityFeature` for sauna / pool / etc.)
+- **NO `aggregateRating`** — self-serving ban per `SEO.md` §5.3
 
 ### 11.9 GBP category + keyword pattern
 

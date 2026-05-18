@@ -449,29 +449,97 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Low leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `LegalService` (default — most common pro-services client per audit notes) · `AccountingService` · `Notary` · `FinancialService` · `InsuranceAgency`. **Do not use** `ProfessionalService` or `Attorney` — both deprecated on schema.org.
 
-- `LegalService` — lawyer / law firm
-- `AccountingService` — accountant / bookkeeper
-- `FinancialService` — financial advisor / broker
-- `InsuranceAgency` — insurance broker
-- `Notary` — notary public (DE / PT)
-- `ProfessionalService` — generic fallback
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo LegalService — agency's most common pro-services client). Variants for `AccountingService` and `Notary` follow the same shape — swap `@type` and `hasOfferCatalog` items. Archetypes A (Global Big-Law) and B (Productized Mid-Tier) are trigger-gated.
+
+#### Paste-ready `@graph` block — solo LegalService default archetype
+
+Berlin example.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "LegalService",
-  "name": "[Firm name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "areaServed": "[city]",
-  "openingHoursSpecification": [...],
-  "potentialAction": { "@type": "ContactAction", "target": "https://[calendly URL]" },
-  "knowsAbout": ["Familienrecht", "Arbeitsrecht", "Steuerrecht"]
+  "@graph": [
+    {
+      "@type": "LegalService",
+      "@id": "https://anwalt-kanzlei-laudam.de/#business",
+      "name": "Kanzlei Laudam",
+      "description": "Inhabergeführte Anwaltskanzlei in Berlin Charlottenburg. Schwerpunkte: Familienrecht, Arbeitsrecht, Erbrecht. Erstberatung in DE/EN.",
+      "url": "https://anwalt-kanzlei-laudam.de",
+      "telephone": "+49 30 8765 4321",
+      "email": "kanzlei@laudam-recht.de",
+      "image": [
+        "https://anwalt-kanzlei-laudam.de/img/kanzlei-16x9.jpg",
+        "https://anwalt-kanzlei-laudam.de/img/kanzlei-4x3.jpg",
+        "https://anwalt-kanzlei-laudam.de/img/kanzlei-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Kurfürstendamm 175",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10707",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.50138, "longitude": 13.32021 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "18:00" }
+      ],
+      "priceRange": "€€€",
+      "areaServed": { "@type": "City", "name": "Berlin" },
+      "knowsAbout": ["Familienrecht", "Arbeitsrecht", "Erbrecht"],
+      "knowsLanguage": ["de", "en"],
+      "potentialAction": { "@type": "ReserveAction", "target": "https://calendly.com/anwalt-laudam/erstberatung" },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Beratungsleistungen",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Erstberatung Familienrecht" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Erstberatung Arbeitsrecht" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Erstberatung Erbrecht" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Außergerichtliche Streitbeilegung" } }
+        ]
+      },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.anwalt.de/anwalt-kanzlei-laudam",
+        "https://www.provenexpert.com/kanzlei-laudam",
+        "https://www.linkedin.com/company/kanzlei-laudam"
+      ],
+      "founder":  { "@id": "https://anwalt-kanzlei-laudam.de/#practitioner" },
+      "employee": { "@id": "https://anwalt-kanzlei-laudam.de/#practitioner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://anwalt-kanzlei-laudam.de/#practitioner",
+      "name": "RAin Anna Laudam",
+      "jobTitle": "Inhaberin · Rechtsanwältin",
+      "worksFor": { "@id": "https://anwalt-kanzlei-laudam.de/#business" },
+      "alumniOf": "Humboldt-Universität zu Berlin",
+      "knowsAbout": ["Familienrecht", "Arbeitsrecht", "Erbrecht"],
+      "knowsLanguage": ["de", "en"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://anwalt-kanzlei-laudam.de/#website",
+      "url": "https://anwalt-kanzlei-laudam.de",
+      "name": "Kanzlei Laudam",
+      "publisher": { "@id": "https://anwalt-kanzlei-laudam.de/#business" }
+    }
+  ]
 }
 ```
+
+**Vertical-specific rules:**
+
+- `knowsAbout` lists practice areas — Google reads this for specialty matching. Use precise legal terminology in the target market language
+- `knowsLanguage` (BCP 47 codes: `de`, `en`, `tr`, `ar`, etc.) — important for multilingual Berlin clients
+- `priceRange` skews higher (`€€€`) for pro-services — most clients expect premium pricing for legal/tax/financial advice
+- `potentialAction` is `ReserveAction` if the firm uses Calendly / Doctolib-style booking; `ContactAction` if the firm prefers a phone-led intake
+- **Confidentiality:** never include client names, case details, or matter descriptions in the schema. Public schema = public commitment
+- **NO `aggregateRating`** — self-serving ban per `SEO.md` §5.3
 
 `knowsAbout` is critical — surfaces practice areas to Google for specialty-search ranking. Use the local-language terms (Familienrecht in DE, Direito de família in PT/BR).
 

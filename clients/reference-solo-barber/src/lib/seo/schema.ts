@@ -1,23 +1,45 @@
 /**
- * Schema.org JSON-LD generators — per templates/beauty.md §11.8.
- * Use BarberShop subtype (most specific for a single-operator barber).
+ * Schema.org JSON-LD generator — per templates/beauty.md §11.8.
+ *
+ * Pattern: `@graph`-rooted block with three nodes per SEO.md §5
+ * canonical pattern:
+ *  1. BarberShop (LocalBusiness subtype — the business entity)
+ *  2. Person (the solo operator — founder + employee)
+ *  3. WebSite (entity-graph cross-link to the site itself)
+ *
+ * Nodes linked via @id. Most-specific @type = BarberShop (more specific
+ * than HairSalon for a single-operator barbershop).
+ *
+ * NO `aggregateRating` on BarberShop or any LocalBusiness subtype —
+ * self-serving rating on own LocalBusiness is policy-banned per Google's
+ * review-snippet guidelines (see SEO.md §5.3). SERP stars come from the
+ * GBP listing, not from on-site schema.
+ *
+ * The visible on-page rating in Reviews.astro is a separate concern,
+ * gated by SITE.reviews.approvedForDisplay (UI-only).
  */
 
 import { SITE } from '../site';
 
 function dayMap(day: string): string {
-  return {
-    Sun: 'Sunday',
-    Mon: 'Monday',
-    Tue: 'Tuesday',
-    Wed: 'Wednesday',
-    Thu: 'Thursday',
-    Fri: 'Friday',
-    Sat: 'Saturday',
-  }[day] ?? day;
+  return (
+    {
+      Sun: 'Sunday',
+      Mon: 'Monday',
+      Tue: 'Tuesday',
+      Wed: 'Wednesday',
+      Thu: 'Thursday',
+      Fri: 'Friday',
+      Sat: 'Saturday',
+    }[day] ?? day
+  );
 }
 
 export function barberShopSchema(): Record<string, unknown> {
+  const businessId = `${SITE.url}/#business`;
+  const operatorId = `${SITE.url}/#owner`;
+  const websiteId = `${SITE.url}/#website`;
+
   const openingHours = SITE.hours
     .filter((h) => h.open && h.close)
     .map((h) => ({
@@ -27,9 +49,24 @@ export function barberShopSchema(): Record<string, unknown> {
       closes: h.close,
     }));
 
-  const schema: Record<string, unknown> = {
-    '@context': 'https://schema.org',
+  const offerCatalog = {
+    '@type': 'OfferCatalog',
+    name: 'Serviços',
+    itemListElement: SITE.services.map((service) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: service.name,
+        description: service.description,
+      },
+      price: service.price,
+      priceCurrency: 'BRL',
+    })),
+  };
+
+  const business: Record<string, unknown> = {
     '@type': 'BarberShop',
+    '@id': businessId,
     name: SITE.name,
     description: SITE.tagline,
     url: SITE.url,
@@ -54,13 +91,31 @@ export function barberShopSchema(): Record<string, unknown> {
       '@type': 'ReserveAction',
       target: SITE.booking.url,
     },
+    hasOfferCatalog: offerCatalog,
+    sameAs: [SITE.social.instagram].filter(Boolean),
+    founder: { '@id': operatorId },
+    employee: { '@id': operatorId },
+  };
+
+  const operator: Record<string, unknown> = {
+    '@type': 'Person',
+    '@id': operatorId,
+    name: SITE.founder,
+    jobTitle: 'Proprietário · Barbeiro',
+    worksFor: { '@id': businessId },
     sameAs: [SITE.social.instagram].filter(Boolean),
   };
 
-  // aggregateRating deliberately omitted — self-serving on own LocalBusiness
-  // (BarberShop is a LocalBusiness subtype) is policy-banned per Google's
-  // review-snippet guidelines. SERP stars come from the GBP listing, not from
-  // on-site schema. See SEO.md §5.3.
+  const website: Record<string, unknown> = {
+    '@type': 'WebSite',
+    '@id': websiteId,
+    url: SITE.url,
+    name: SITE.name,
+    publisher: { '@id': businessId },
+  };
 
-  return schema;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [business, operator, website],
+  };
 }

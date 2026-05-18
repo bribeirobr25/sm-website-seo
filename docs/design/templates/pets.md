@@ -432,29 +432,91 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Medium leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `VeterinaryCare` (default — vet clinic / solo vet) · `PetStore` (retail) · `AnimalShelter` (rescue) · `LocalBusiness` + `additionalType: https://en.wikipedia.org/wiki/Pet_grooming` for groomers.
 
-- `VeterinaryCare` — vet clinic
-- `PetStore` — retail
-- `AnimalShelter` — shelter / rescue
-- Generic services: `LocalBusiness` with `serviceType: "Pet grooming"` / `"Pet training"`
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo Vet). Variants for `PetStore` (Archetype B — Retail) and groomer/daycare patterns are trigger-gated.
+
+#### Paste-ready `@graph` block — solo VeterinaryCare default archetype
+
+Berlin example.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "VeterinaryCare",
-  "name": "[Practice name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "openingHoursSpecification": [...],
-  "potentialAction": { "@type": "ReserveAction", "target": "https://[booking URL]" },
-  "medicalSpecialty": ["VeterinaryMedicine"],
-  "amenityFeature": [
-    { "@type": "LocationFeatureSpecification", "name": "Emergency line 24/7" }
+  "@graph": [
+    {
+      "@type": "VeterinaryCare",
+      "@id": "https://tierarzt-friedrichshain.de/#business",
+      "name": "Tierarztpraxis Dr. Becker",
+      "description": "Tierarztpraxis in Berlin Friedrichshain. Kleintierheilkunde, Vorsorge, Chirurgie. Termine über Doctolib Vet + telefonisch.",
+      "url": "https://tierarzt-friedrichshain.de",
+      "telephone": "+49 30 5432 1098",
+      "email": "praxis@tierarzt-friedrichshain.de",
+      "image": [
+        "https://tierarzt-friedrichshain.de/img/praxis-16x9.jpg",
+        "https://tierarzt-friedrichshain.de/img/praxis-4x3.jpg",
+        "https://tierarzt-friedrichshain.de/img/praxis-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Boxhagener Straße 67",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10245",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.51234, "longitude": 13.45678 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Thursday","Friday"], "opens": "09:00", "closes": "18:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:00", "closes": "13:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "12:00" }
+      ],
+      "priceRange": "€€",
+      "potentialAction": { "@type": "ReserveAction", "target": "https://www.doctolib.de/tierarzt/tierarztpraxis-dr-becker" },
+      "availableService": [
+        { "@type": "Service", "name": "Allgemeine Sprechstunde Kleintier" },
+        { "@type": "Service", "name": "Impfung + Vorsorge" },
+        { "@type": "Service", "name": "Chirurgische Eingriffe (geplant)" },
+        { "@type": "Service", "name": "Zahnreinigung Hund/Katze" }
+      ],
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Wartebereich getrennt Hund/Katze" },
+        { "@type": "LocationFeatureSpecification", "name": "Hausbesuche auf Anfrage" }
+      ],
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.tasso.net/tierarzt/becker-friedrichshain",
+        "https://www.instagram.com/tierarzt.friedrichshain"
+      ],
+      "founder":  { "@id": "https://tierarzt-friedrichshain.de/#practitioner" },
+      "employee": { "@id": "https://tierarzt-friedrichshain.de/#practitioner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://tierarzt-friedrichshain.de/#practitioner",
+      "name": "Dr. med. vet. Sarah Becker",
+      "jobTitle": "Inhaberin · Tierärztin",
+      "worksFor": { "@id": "https://tierarzt-friedrichshain.de/#business" },
+      "alumniOf": "Freie Universität Berlin — Veterinärmedizin"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://tierarzt-friedrichshain.de/#website",
+      "url": "https://tierarzt-friedrichshain.de",
+      "name": "Tierarztpraxis Dr. Becker",
+      "publisher": { "@id": "https://tierarzt-friedrichshain.de/#business" }
+    }
   ]
 }
 ```
+
+**Vertical-specific rules:**
+
+- For groomers (non-vet), use `LocalBusiness` as base `@type` with `additionalType: "https://en.wikipedia.org/wiki/Pet_grooming"` — schema.org has no dedicated groomer type. `availableService` lists grooming services
+- `medicalSpecialty` exists on `VeterinaryCare` but the schema.org `MedicalSpecialty` enum doesn't include veterinary subspecialties — omit unless using `additionalProperty` for specifics
+- `Tasso e.V.` listing in `sameAs` is the strongest pets-vertical citation signal (DE-specific)
+- **NO `aggregateRating`** — self-serving ban per `SEO.md` §5.3
 
 For groomers / daycares, use `LocalBusiness` with `priceRange` + service offerings.
 

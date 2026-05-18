@@ -497,33 +497,95 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Low leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `Dentist` (default — most common solo health practice) · `Physician` · `Physiotherapy` · `MedicalClinic` (multi-doctor) · `Optician` · `MedicalOrganization` (generic). All subtypes of `MedicalOrganization`.
 
-- `MedicalClinic` — multi-doctor or multi-specialty
-- `Dentist` — dental practice
-- `Physiotherapist` — physio / PT
-- `MedicalOrganization` — generic fallback
-- `Pharmacy` — pharmacies (rare in agency scope)
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo Dentist — agency's most common health client). Variants for `MedicalClinic` (Archetype A — Content Authority) and `Physiotherapy` (Archetype B — Conversion Chain) are trigger-gated.
+
+⚠️ **Medical schema is policed strictly by Google.** `medicalSpecialty` may only be claimed by a licensed practitioner. Owner-confirm credentials before scaffolding.
+
+#### Paste-ready `@graph` block — solo Dentist default archetype
+
+Berlin example. Swap 8 placeholders per client + verify medical credentials.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "MedicalClinic",
-  "name": "[Practice name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "medicalSpecialty": ["Cardiology", "Internal Medicine"],
-  "physician": [
-    { "@type": "Physician", "name": "Dr. [Name]", "medicalSpecialty": "Cardiology" }
-  ],
-  "openingHoursSpecification": [...],
-  "potentialAction": { "@type": "ReserveAction", "target": "https://[doctolib URL]" },
-  "isAcceptingNewPatients": true
+  "@graph": [
+    {
+      "@type": "Dentist",
+      "@id": "https://zahnarzt-mitte.de/#business",
+      "name": "Zahnarztpraxis Dr. Müller",
+      "description": "Zahnarztpraxis in Berlin Mitte. Allgemeine Zahnheilkunde, Prophylaxe, Implantologie. Kassenpatienten + Privat.",
+      "url": "https://zahnarzt-mitte.de",
+      "telephone": "+49 30 2789 4567",
+      "email": "praxis@zahnarzt-mitte.de",
+      "image": [
+        "https://zahnarzt-mitte.de/img/praxis-16x9.jpg",
+        "https://zahnarzt-mitte.de/img/praxis-4x3.jpg",
+        "https://zahnarzt-mitte.de/img/praxis-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Friedrichstraße 124",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10117",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.52317, "longitude": 13.38765 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Thursday"], "opens": "08:00", "closes": "18:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "08:00", "closes": "13:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "08:00", "closes": "15:00" }
+      ],
+      "priceRange": "€€€",
+      "medicalSpecialty": ["Dentistry"],
+      "availableService": [
+        { "@type": "MedicalProcedure", "name": "Prophylaxe / Professionelle Zahnreinigung" },
+        { "@type": "MedicalProcedure", "name": "Zahnerhaltung (Füllung, Wurzelkanal)" },
+        { "@type": "MedicalProcedure", "name": "Implantologie" },
+        { "@type": "MedicalProcedure", "name": "Ästhetische Zahnheilkunde (Bleaching, Veneers)" }
+      ],
+      "isAcceptingNewPatients": true,
+      "healthPlanNetworkId": ["Gesetzliche Krankenversicherung", "Privatversicherung"],
+      "potentialAction": { "@type": "ReserveAction", "target": "https://www.doctolib.de/zahnarzt/zahnarztpraxis-dr-mueller" },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.jameda.de/berlin/zahnaerzte/dr-mueller",
+        "https://pro.doctolib.de/zahnarzt/zahnarztpraxis-dr-mueller"
+      ],
+      "founder":  { "@id": "https://zahnarzt-mitte.de/#practitioner" },
+      "employee": { "@id": "https://zahnarzt-mitte.de/#practitioner" }
+    },
+    {
+      "@type": "Physician",
+      "@id": "https://zahnarzt-mitte.de/#practitioner",
+      "name": "Dr. med. dent. Klaus Müller",
+      "medicalSpecialty": "Dentistry",
+      "jobTitle": "Inhaber · Zahnarzt",
+      "worksFor": { "@id": "https://zahnarzt-mitte.de/#business" },
+      "alumniOf": "Charité Universitätsmedizin Berlin"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://zahnarzt-mitte.de/#website",
+      "url": "https://zahnarzt-mitte.de",
+      "name": "Zahnarztpraxis Dr. Müller",
+      "publisher": { "@id": "https://zahnarzt-mitte.de/#business" }
+    }
+  ]
 }
 ```
 
-`isAcceptingNewPatients` is an under-used Schema.org property that improves local-pack ranking signals.
+**Vertical-specific rules:**
+
+- `medicalSpecialty` uses [schema.org MedicalSpecialty enum values](https://schema.org/MedicalSpecialty) — `Dentistry`, `Cardiology`, `Physiotherapy`, etc. Only claim what the practitioner is licensed for
+- `availableService` uses `MedicalProcedure` (not generic `Service`) for medical procedures — Google reads these as part of the practice's specialty profile
+- `isAcceptingNewPatients: true` is under-used and helps local-pack ranking
+- Person node uses `Physician` subtype (not generic `Person`) when the operator is a licensed medical practitioner
+- `healthPlanNetworkId` lists accepted insurance — useful for DE clients (Kassenpatient vs Privat). Swap per market: SUS for BR, SNS for PT, specific insurers for US
+- **NO `aggregateRating`** — medical schema also includes self-serving ban per `SEO.md` §5.3
 
 ### 11.9 GBP category + keyword pattern
 

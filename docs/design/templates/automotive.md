@@ -447,33 +447,93 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Low leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `AutoRepair` (default — general mechanic) · `AutoBodyShop` (collision / bodywork) · `TireShop` · `MotorcycleRepair` · `AutoDealer` · `AutoPartsStore`. All under `AutomotiveBusiness`.
 
-- `AutoRepair` — general mechanic
-- `AutoBodyShop` — bodywork / collision
-- `TireShop` — tire-focused
-- `MotorcycleRepair` — motorcycle / scooter
-- `AutoPartsStore` — parts retail (rare in agency scope)
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo AutoRepair). Variants for `AutoBodyShop` and `TireShop` are trigger-gated.
+
+#### Paste-ready `@graph` block — solo AutoRepair default archetype
+
+Berlin example.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "AutoRepair",
-  "name": "[Shop name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "openingHoursSpecification": [...],
-  "areaServed": ["[city]", "[neighborhood1]"],
-  "makesOffer": [
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Inspektion" } },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bremsen-Service" } }
-  ],
-  "potentialAction": { "@type": "ContactAction", "target": "tel:+..." }
+  "@graph": [
+    {
+      "@type": "AutoRepair",
+      "@id": "https://werkstatt-neukoelln.de/#business",
+      "name": "KFZ-Werkstatt Neukölln",
+      "description": "Inhabergeführte Meisterwerkstatt in Berlin Neukölln. Inspektion, HU/AU, Bremsen, Klima — alle Marken.",
+      "url": "https://werkstatt-neukoelln.de",
+      "telephone": "+49 30 6234 5678",
+      "email": "info@werkstatt-neukoelln.de",
+      "image": [
+        "https://werkstatt-neukoelln.de/img/halle-16x9.jpg",
+        "https://werkstatt-neukoelln.de/img/halle-4x3.jpg",
+        "https://werkstatt-neukoelln.de/img/halle-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Karl-Marx-Straße 92",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "12043",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.47921, "longitude": 13.43012 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "18:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "13:00" }
+      ],
+      "priceRange": "€€",
+      "areaServed": [
+        { "@type": "City", "name": "Berlin-Neukölln" },
+        { "@type": "City", "name": "Berlin-Kreuzberg" },
+        { "@type": "City", "name": "Berlin-Tempelhof" }
+      ],
+      "makesOffer": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Inspektion (alle Marken)" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "HU/AU (Hauptuntersuchung)" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bremsen-Service" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Klimaanlagen-Service" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reifenwechsel + Auswuchten" } }
+      ],
+      "potentialAction": { "@type": "ContactAction", "target": "tel:+493062345678" },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://werkstars.de/werkstatt-neukoelln",
+        "https://werkstattportal.autoscout24.de/werkstatt-neukoelln",
+        "https://www.facebook.com/werkstatt.neukoelln"
+      ],
+      "founder":  { "@id": "https://werkstatt-neukoelln.de/#owner" },
+      "employee": { "@id": "https://werkstatt-neukoelln.de/#owner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://werkstatt-neukoelln.de/#owner",
+      "name": "Mehmet Yilmaz",
+      "jobTitle": "Inhaber · KFZ-Meister",
+      "worksFor": { "@id": "https://werkstatt-neukoelln.de/#business" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://werkstatt-neukoelln.de/#website",
+      "url": "https://werkstatt-neukoelln.de",
+      "name": "KFZ-Werkstatt Neukölln",
+      "publisher": { "@id": "https://werkstatt-neukoelln.de/#business" }
+    }
+  ]
 }
 ```
 
-`makesOffer` lists the specific services — improves long-tail ranking ("[brand] Bremsen-Service [city]").
+**Vertical-specific rules:**
+
+- `makesOffer` lists specific services — improves long-tail ranking ("Bremsen-Service Neukölln", "HU/AU Berlin")
+- `areaServed` covers the Bezirke the shop serves — driver-side search radius
+- For brand-specialized shops (e.g., BMW-only), add `brand` array or use `knowsAbout` to list brands serviced
+- `Autoscout24 Werkstattportal` is the strongest automotive citation (driver-side platform)
+- **NO `aggregateRating`** — self-serving ban per `SEO.md` §5.3
 
 ### 11.9 GBP category + keyword pattern
 

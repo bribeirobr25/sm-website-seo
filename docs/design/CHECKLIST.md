@@ -371,12 +371,26 @@ Already covered in §Sentry / error tracking subsection.
 - [ ] No broken links (all phone, map, social, WhatsApp links tested)
 
 ### Schema.org
-- [ ] `LocalBusiness` schema (correct `@type` for the business category) present in `<head>`
-- [ ] Schema validated with **Google Rich Results Test** (zero errors)
-- [ ] Latitude/longitude verified against actual Google Maps pin location
+
+Per the 2026-05-18 schema cookbook in each `templates/[vertical].md` §11.8 (MVP scope: default archetype only — 12 paste-ready `@graph` blocks). Pick the matching template, swap 8 placeholders, validate.
+
+- [ ] `LocalBusiness` schema present in `<head>` as `<script type="application/ld+json">`
+- [ ] **Most-specific `@type` chosen from the per-vertical template** (`templates/[vertical].md` §11.8), NOT the generic `LocalBusiness` (that's the §5 fallback)
+- [ ] **`@graph`-rooted block** with `@id` cross-references between LocalBusiness + Person (when solo) + WebSite nodes — per `SEO.md` §5 canonical pattern
+- [ ] Schema validated with **Google Rich Results Test** (zero errors — warnings on missing optional fields acceptable). If `@graph` causes RRT inconsistency on the specific `@type`, fall back to three separate `<script>` tags per entity (same content, just split inline)
+- [ ] Schema validated with **Schema.org Validator** (zero errors)
+- [ ] Latitude/longitude verified against actual Google Maps pin (≥ 5 decimal places, never approximate)
+- [ ] `image` array carries **three aspect ratios** (16:9, 4:3, 1:1) — per Google's LocalBusiness docs
+- [ ] `openingHoursSpecification` array used (NOT the deprecated `openingHours` string)
 - [ ] Opening hours in schema match website and GBP exactly
-- [ ] No `aggregateRating` on own `LocalBusiness` schema (self-serving is policy-banned per `SEO.md` §5.3) — allowed only on `Product` schema with on-page visible reviews + owner consent
+- [ ] `sameAs` array links the GBP listing + Instagram + Facebook (entity-graph cross-linking)
+- [ ] `priceRange` set (`€`, `€€`, `€€€`, `€€€€` — max 4 chars)
+- [ ] `hasOfferCatalog` with `Service` items present when the business has a service menu (haircuts / treatments / classes / consultations / etc.)
+- [ ] Vertical-specific properties from the matching template's §11.8 are populated (`servesCuisine` for gastronomy · `medicalSpecialty` for health · `areaServed` for SAB / trades / pro-services · `hasCourse` for education · `amenityFeature` for studio / hotel · etc.)
+- [ ] No `aggregateRating` on own `LocalBusiness` schema (self-serving is policy-banned per `SEO.md` §5.3) — allowed only on `Product` schema (artisan / Type 4 ecommerce) with on-page visible reviews + owner consent
 - [ ] `FAQPage` schema matches visible FAQ content exactly (if FAQ section present) — note: SERP rich result deprecated for all sites 2026-05-07; markup is now an AI-extraction signal, not a SERP feature
+- [ ] Medical schema (`Dentist` / `Physician` / `Physiotherapy` / `VeterinaryCare`): `medicalSpecialty` is only claimed for licensed practitioners — owner-confirmed before scaffold
+- [ ] `studio` clients: `@type: SportsActivityLocation` is used (NOT `YogaStudio` — schema.org has no such type per the 2026-05-18 hotfix)
 
 #### Schema policy regression guards — run before production cutover
 
@@ -452,6 +466,37 @@ else
   done
   [ ${#missing[@]} -eq 0 ] && echo "Guard 7 PASS (all 9 CITATIONS.md sections present)" || echo "Guard 7 FAIL — missing: ${missing[*]}"
 fi
+
+# Guard 8 — every vertical template's §11.8 carries a paste-ready @graph-rooted
+# schema block (Batch 3 MVP contract). Catches the analogous regression for the
+# schema cookbook: if a template §11.8 edit drops the @graph block or reverts to
+# the pre-Batch-3 stub, the per-vertical paste-ready pattern silently stops being
+# available for client scaffolding. Verify every §11.8 contains `"@graph"` (the
+# canonical pattern marker per SEO.md §5).
+missing=()
+for t in docs/design/templates/{gastronomy,beauty,trades,health,studio,professional-services,pets,automotive,education,events-hospitality,home-garden,artisan}.md; do
+  awk '/^### 11\.8/,/^### 11\.9/' "$t" | grep -q '"@graph"' || missing+=("$(basename $t)")
+done
+[ ${#missing[@]} -eq 0 ] && echo "Guard 8 PASS (all 12 templates carry @graph-rooted schema block in §11.8)" || echo "Guard 8 FAIL — missing in: ${missing[*]}"
+
+# Guard 9 — canonical-pattern semantic integrity per SEO.md §5. Each template §11.8
+# @graph block must carry: (a) Person OR Physician node (the operator entity) ·
+# (b) WebSite node (entity-graph cross-link) · (c) openingHoursSpecification ·
+# (d) priceRange · (e) NO aggregateRating on the LocalBusiness root.
+# Catches the bugs the 2026-05-18 substantive review surfaced: missing
+# openingHoursSpecification in events-hospitality, missing priceRange in health,
+# accidental aggregateRating regression, missing Person/WebSite from accidental
+# edits. Promotes the canonical pattern from spec to enforceable.
+missing=()
+for t in docs/design/templates/{gastronomy,beauty,trades,health,studio,professional-services,pets,automotive,education,events-hospitality,home-garden,artisan}.md; do
+  block=$(awk '/^### 11\.8/{f=0} /^```json/{f=1; next} /^```$/{if(f){f=0}} f' "$t")
+  echo "$block" | grep -qE '"@type":[[:space:]]*"(Person|Physician)"' || missing+=("$(basename $t):Person/Physician")
+  echo "$block" | grep -q '"@type": "WebSite"' || missing+=("$(basename $t):WebSite")
+  echo "$block" | grep -q '"openingHoursSpecification"' || missing+=("$(basename $t):openingHoursSpecification")
+  echo "$block" | grep -q '"priceRange"' || missing+=("$(basename $t):priceRange")
+  echo "$block" | grep -q '"aggregateRating"' && missing+=("$(basename $t):aggregateRating-regression")
+done
+[ ${#missing[@]} -eq 0 ] && echo "Guard 9 PASS (all 12 templates §11.8 satisfy canonical pattern: Person/Physician + WebSite + openingHoursSpecification + priceRange · no aggregateRating)" || echo "Guard 9 FAIL — missing/violating: ${missing[*]}"
 ```
 
 - [ ] Guard 1 (`aggregateRating` in `src/lib/seo/`) returns zero matches
@@ -461,6 +506,8 @@ fi
 - [ ] Guard 5 (review-KPI integrity across 12 templates) reports PASS — every vertical template's §11.1 carries `review_count_30d`
 - [ ] Guard 6 (Citations subsection integrity across 12 templates) reports PASS — every vertical template's §11.6 cross-links `CITATIONS.md`
 - [ ] Guard 7 (CITATIONS.md 9-section structural integrity) reports PASS — file exists with all 9 canonical sections intact
+- [ ] Guard 8 (schema cookbook integrity across 12 templates) reports PASS — every vertical template's §11.8 carries a paste-ready `@graph`-rooted block
+- [ ] Guard 9 (canonical-pattern semantic integrity across 12 templates) reports PASS — every block has Person/Physician + WebSite + openingHoursSpecification + priceRange, and zero aggregateRating
 
 If any guard returns nonzero, production is blocked. Either (a) it's a real regression — fix it by following the matching template's §11.8 pattern; or (b) it's a deliberate exception — document the reason inline + add a precise `--exclude` to the guard with the justification in the commit message.
 

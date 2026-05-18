@@ -239,7 +239,17 @@ vercel --prod   # Gets a vercel.app URL
 
 ## Current client roster
 
-**No active client builds.** The agency is in a docs-expansion phase (see `docs/audit/AGENCY-STANDARDS-EXPANSION-PLAN-2026-05-16.md`). The previous portfolio attempts — Jean Souza Barbearia + Porto dos Ribeiros (3 variants) — were deleted from `clients/` on 2026-05-16 because they pre-dated the legal/KPI/monitoring rule expansion; their per-client docs are archived at `docs/clients/archived/` for historical reference. Reference implementations (solo barber + studio with booking) land in Batch 3 of the expansion plan.
+**No active paying client builds.** The agency is **post-docs-expansion** — two major plans shipped 2026-05-16 → 2026-05-18:
+- `docs/audit/AGENCY-STANDARDS-EXPANSION-PLAN-2026-05-16.md` (Batches 0–3) — legal · KPI · integrations · social sharing · reference impls
+- `docs/audit/SEO-DEPTH-EXPANSION-PLAN-2026-05-18.md` (hotfix + Batches 1, 2, 3 MVP) — review-generation playbook · citation-building playbook · schema cookbook
+
+**Two reference implementations live** as canonical worked examples — copy these when a real client signs (`cp -r clients/reference-{matching} clients/[real-slug]`):
+- `clients/reference-solo-barber/` (Tier 2 / Type 1 / BR-LGPD) — Astro 6 + Tailwind v4 + Sentry · full `@graph` schema (BarberShop + Person + WebSite)
+- `clients/reference-studio-booking/` (Tier 3 / Type 3 / DE-DSGVO) — Next.js 16 + Drizzle + Neon + Upstash + Resend + Sentry · full `@graph` schema (SportsActivityLocation + Person + WebSite)
+
+The previous portfolio attempts (Jean Souza Barbearia + Porto dos Ribeiros 3 variants) were deleted from `clients/` on 2026-05-16 because they pre-dated the legal/KPI/monitoring rule expansion; their per-client docs are archived at `docs/clients/archived/` for historical reference.
+
+**Next phase: client work.** The rule library is feature-complete for the agency's typical client. Either pick a friend-and-family portfolio site (per `SALES.md` §5 + this file's "Portfolio strategy" section) or pursue Café Del Corso / Laudam — both have intakes ready in `docs/audit/`. See `docs/audit/PENDING.md` for the current backlog and trigger-gated items.
 
 ---
 

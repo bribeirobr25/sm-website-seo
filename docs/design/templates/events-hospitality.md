@@ -466,34 +466,94 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Very high leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** for lodging — `Hotel` · `BedAndBreakfast` · `Hostel` · `Resort` · `Campground` (all under `LodgingBusiness`). For venues — `EventVenue` · `PerformingArtsTheater`. For solo photographers / planners / caterers (agency's most common archetype D) — `LocalBusiness` + descriptive properties (schema.org has no `Photographer` or `EventPlanner` type).
 
-- `EventVenue` — venue / event space
-- `PerformingArtsTheater` — theater / event-specific venue
-- `Hotel` / `LodgingBusiness` — boutique hotel / B&B
-- `Photographer` — photography service (use `LocalBusiness` + `serviceType: "Photography"` if not in core schema)
-- `CateringService` — catering
-- `EventPlanner` — planner (use `Organization` + descriptive properties)
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo Photographer / Event Planner — agency's typical events-hospitality client). Variants for `Hotel` / `BedAndBreakfast` (Archetype A — Luxury Hospitality / B — Boutique Hotel) and `EventVenue` (Archetype C) are trigger-gated.
+
+#### Paste-ready `@graph` block — solo Photographer default archetype
+
+Berlin example.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "EventVenue",
-  "name": "[Venue name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "maximumAttendeeCapacity": 200,
-  "amenityFeature": [
-    { "@type": "LocationFeatureSpecification", "name": "Parking" },
-    { "@type": "LocationFeatureSpecification", "name": "Catering on-site" },
-    { "@type": "LocationFeatureSpecification", "name": "Outdoor space" }
-  ],
-  "potentialAction": { "@type": "ContactAction", "target": "https://[inquiry form URL]" }
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "additionalType": "https://en.wikipedia.org/wiki/Photographer",
+      "@id": "https://fotografin-berlin.de/#business",
+      "name": "Klara Hoffmann Fotografie",
+      "description": "Hochzeits- und Portraitfotografie in Berlin und Brandenburg. Reportage-Stil, natürliches Licht. Buchung über Inquiry-Form.",
+      "url": "https://fotografin-berlin.de",
+      "telephone": "+49 30 7654 3210",
+      "email": "kontakt@fotografin-berlin.de",
+      "image": [
+        "https://fotografin-berlin.de/img/portfolio-16x9.jpg",
+        "https://fotografin-berlin.de/img/portfolio-4x3.jpg",
+        "https://fotografin-berlin.de/img/portfolio-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Choriner Straße 67",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10119",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.53412, "longitude": 13.40234 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "18:00", "description": "Consultation hours by appointment" }
+      ],
+      "priceRange": "€€€",
+      "areaServed": [
+        { "@type": "City", "name": "Berlin" },
+        { "@type": "State", "name": "Brandenburg" }
+      ],
+      "knowsLanguage": ["de", "en"],
+      "availableService": [
+        { "@type": "Service", "name": "Hochzeitsfotografie (Reportage)" },
+        { "@type": "Service", "name": "Portrait- und Familienfotografie" },
+        { "@type": "Service", "name": "Engagement-Shootings" },
+        { "@type": "Service", "name": "Business-Portraits" }
+      ],
+      "potentialAction": { "@type": "ContactAction", "target": "https://fotografin-berlin.de/anfrage" },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.instagram.com/klara.hoffmann.foto",
+        "https://www.facebook.com/klara.hoffmann.fotografie",
+        "https://www.eventbrite.de/o/klara-hoffmann-fotografie"
+      ],
+      "founder":  { "@id": "https://fotografin-berlin.de/#photographer" },
+      "employee": { "@id": "https://fotografin-berlin.de/#photographer" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://fotografin-berlin.de/#photographer",
+      "name": "Klara Hoffmann",
+      "jobTitle": "Inhaberin · Fotografin",
+      "worksFor": { "@id": "https://fotografin-berlin.de/#business" },
+      "sameAs": ["https://www.instagram.com/klara.hoffmann.foto"],
+      "knowsLanguage": ["de", "en"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://fotografin-berlin.de/#website",
+      "url": "https://fotografin-berlin.de",
+      "name": "Klara Hoffmann Fotografie",
+      "publisher": { "@id": "https://fotografin-berlin.de/#business" }
+    }
+  ]
 }
 ```
 
-For photographers / planners, the `EventVenue` schema doesn't fit — use `LocalBusiness` with descriptive `serviceType` and `areaServed`.
+**Vertical-specific rules:**
+
+- For **Hotel / B&B clients**, swap `@type` to `Hotel` or `BedAndBreakfast` and add: `numberOfRooms`, `checkinTime`, `checkoutTime`, `starRating`, `petsAllowed`, `amenityFeature`. Hotel rich results are still active in 2026
+- For **EventVenue clients**, swap `@type` to `EventVenue` and add `maximumAttendeeCapacity`. Useful for venue searches
+- For **solo Photographer / Planner / Caterer (default)**, use generic `LocalBusiness` + `additionalType` Wikipedia URL — schema.org has no native types for these roles
+- `areaServed` may include both `City` and `State` (Brandenburg) for travel-willing photographers / planners
+- **NO `aggregateRating`** — self-serving ban per `SEO.md` §5.3
 
 ### 11.9 GBP category + keyword pattern
 

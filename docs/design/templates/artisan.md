@@ -495,30 +495,95 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **High leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `JewelryStore` (default — agency's most common artisan archetype: solo jeweler / ceramicist with retail storefront) · `Store` + per-piece `Product` (catalog-driven maker) · `ClothingStore` (apparel) · `LocalBusiness` + `additionalType` Wikipedia URL when no subtype fits.
 
-- `Store` + `Product` — primary pattern for catalog-driven shops
-- `JewelryStore` — jewelry-specific
-- `ClothingStore` — apparel
-- `LocalBusiness` + descriptive properties — when no specific subtype fits (a ceramicist, woodworker, etc.)
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo JewelryStore / maker — agency's most common artisan client). Variants for `ClothingStore` apparel makers and pure ecommerce `Store` + per-piece `Product` patterns (Type 4 scope) are trigger-gated.
+
+#### Paste-ready `@graph` block — solo JewelryStore default archetype
+
+Berlin example.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "Store",
-  "name": "[Maker name / brand]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "founder": { "@type": "Person", "name": "[Maker name]" },
-  "makesOffer": [
-    { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Ceramic vase", "image": "https://[domain]/products/vase-1.jpg", "offers": { "@type": "Offer", "price": "85.00", "priceCurrency": "EUR" } } }
-  ],
-  "hasOfferCatalog": { "@type": "OfferCatalog", "itemListElement": [...] }
+  "@graph": [
+    {
+      "@type": "JewelryStore",
+      "@id": "https://schmuck-werkstatt-berlin.de/#business",
+      "name": "Schmuckwerkstatt Adler",
+      "description": "Handgefertigter Schmuck aus Berlin Mitte. Trauringe, Verlobungsringe, Einzelstücke. Beratung + Werkstatt vor Ort.",
+      "url": "https://schmuck-werkstatt-berlin.de",
+      "telephone": "+49 30 8901 2345",
+      "email": "atelier@schmuck-werkstatt-berlin.de",
+      "image": [
+        "https://schmuck-werkstatt-berlin.de/img/atelier-16x9.jpg",
+        "https://schmuck-werkstatt-berlin.de/img/atelier-4x3.jpg",
+        "https://schmuck-werkstatt-berlin.de/img/atelier-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Brunnenstraße 156",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10115",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.53517, "longitude": 13.39872 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"], "opens": "11:00", "closes": "19:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "11:00", "closes": "16:00" }
+      ],
+      "priceRange": "€€€",
+      "knowsLanguage": ["de", "en"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Werkstatt-Angebote",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Trauringe-Beratung + Anfertigung" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Verlobungsringe (Auswahl + Anfertigung)" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Einzelstück-Auftragsarbeit" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparatur + Umarbeitung" } }
+        ]
+      },
+      "potentialAction": { "@type": "ContactAction", "target": "https://schmuck-werkstatt-berlin.de/beratungstermin" },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.etsy.com/de/shop/SchmuckwerkstattAdler",
+        "https://www.instagram.com/schmuckwerkstatt.adler",
+        "https://www.palundu.de/Schmuckwerkstatt-Adler",
+        "https://www.madeinberlin.de/schmuckwerkstatt-adler"
+      ],
+      "founder":  { "@id": "https://schmuck-werkstatt-berlin.de/#maker" },
+      "employee": { "@id": "https://schmuck-werkstatt-berlin.de/#maker" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://schmuck-werkstatt-berlin.de/#maker",
+      "name": "Marlene Adler",
+      "jobTitle": "Inhaberin · Goldschmiedemeisterin",
+      "worksFor": { "@id": "https://schmuck-werkstatt-berlin.de/#business" },
+      "alumniOf": "Hochschule für Kunst und Design Halle",
+      "sameAs": ["https://www.instagram.com/marlene.adler.gold"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://schmuck-werkstatt-berlin.de/#website",
+      "url": "https://schmuck-werkstatt-berlin.de",
+      "name": "Schmuckwerkstatt Adler",
+      "publisher": { "@id": "https://schmuck-werkstatt-berlin.de/#business" }
+    }
+  ]
 }
 ```
 
-`founder` ties the brand to the person (essential for maker-led brands). Per-product `Product` schema improves long-tail SEO ("ceramic vase Berlin").
+**Vertical-specific rules:**
+
+- `founder` ties the brand to the person — essential for maker-led artisan brands where the maker's reputation IS the brand
+- For non-jewelry artisans (ceramicists, woodworkers, leatherworkers), use `Store` + `additionalType: "https://en.wikipedia.org/wiki/[Craft]"` or fall back to `LocalBusiness` + descriptive `keywords` — schema.org has no generic `Workshop` type
+- **Per-piece `Product` schema** for individual catalog items: separate concern, trigger-gated for Type 4 ecommerce clients. The MVP block above covers the LocalBusiness presence; per-product schemas live on their own product detail pages
+- **Etsy listing in `sameAs`** is the strongest artisan citation signal — Etsy reviews + Etsy product detail pages drive 60-90% of discovery for product-focused artisans (per §11.1 channel-mix note)
+- **`aggregateRating` is allowed on `Product` schema** (individual catalog items with visible reviews + owner consent) — see `SEO.md` §5.3. **NOT allowed on `JewelryStore` / `Store` (the LocalBusiness root)** — self-serving ban applies regardless of catalog state
 
 ### 11.9 GBP category + keyword pattern
 

@@ -488,35 +488,97 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **High leverage** (floris
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `Florist` (default — solo florist) · `Store` (boutique plant shop) · `HomeGoodsStore` (general home + garden retail) · `LandscapingBusiness` (landscapers, but **note**: schema.org has no `LandscapingBusiness` type — use `HomeAndConstructionBusiness` + `additionalType: https://en.wikipedia.org/wiki/Landscape_contracting`). `GardenStore` likewise doesn't exist in schema.org — use `Store` + keywords.
 
-- `Florist` — flower-focused
-- `LandscapingBusiness` — landscaping / lawn-care services
-- `HomeGoodsStore` — general home + garden retail
-- `Store` + `Product` — when product catalog is the focus
-- `GardenStore` — garden-center specific
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo Florist — agency's most common home-garden client). Variants for `Store` plant shops and landscaping services are trigger-gated.
+
+#### Paste-ready `@graph` block — solo Florist default archetype
+
+Berlin example.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "Florist",
-  "name": "[Shop name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "openingHoursSpecification": [...],
-  "areaServed": ["[city]", "[neighborhood]"],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "itemListElement": [
-      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Bridal bouquet" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Sympathy arrangement" } }
-    ]
-  }
+  "@graph": [
+    {
+      "@type": "Florist",
+      "@id": "https://blumen-mitte.de/#business",
+      "name": "Blumen Mitte",
+      "description": "Inhabergeführte Floristin in Berlin Mitte. Hochzeit · Trauer · Geschäftsdekoration · Lieferservice in ganz Berlin.",
+      "url": "https://blumen-mitte.de",
+      "telephone": "+49 30 4321 0987",
+      "email": "hallo@blumen-mitte.de",
+      "image": [
+        "https://blumen-mitte.de/img/laden-16x9.jpg",
+        "https://blumen-mitte.de/img/laden-4x3.jpg",
+        "https://blumen-mitte.de/img/laden-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Linienstraße 87",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10119",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.52801, "longitude": 13.40123 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "19:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "16:00" }
+      ],
+      "priceRange": "€€",
+      "areaServed": [
+        { "@type": "City", "name": "Berlin-Mitte" },
+        { "@type": "City", "name": "Berlin-Prenzlauer Berg" },
+        { "@type": "City", "name": "Berlin-Friedrichshain" }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Floristik-Angebote",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Hochzeitsfloristik (Brautstrauß + Trauung)" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Trauer-Floristik (Sargschmuck + Kränze)" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Geschäftsdekoration (Abo)" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lieferservice Berlin (taggleich bis 14:00 Bestellung)" } }
+        ]
+      },
+      "potentialAction": { "@type": "OrderAction", "target": "https://blumen-mitte.de/shop" },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.instagram.com/blumen.mitte.berlin",
+        "https://www.facebook.com/blumen.mitte"
+      ],
+      "founder":  { "@id": "https://blumen-mitte.de/#owner" },
+      "employee": { "@id": "https://blumen-mitte.de/#owner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://blumen-mitte.de/#owner",
+      "name": "Sophie Bauer",
+      "jobTitle": "Inhaberin · Floristin (Meisterin)",
+      "worksFor": { "@id": "https://blumen-mitte.de/#business" },
+      "sameAs": ["https://www.instagram.com/sophie.floristin"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://blumen-mitte.de/#website",
+      "url": "https://blumen-mitte.de",
+      "name": "Blumen Mitte",
+      "publisher": { "@id": "https://blumen-mitte.de/#business" }
+    }
+  ]
 }
 ```
 
-For landscapers: `LandscapingBusiness` + `makesOffer` with `Service` items (Lawn care, Garden design, Tree pruning).
+**Vertical-specific rules:**
+
+- `Florist` IS a schema.org type — use it directly for flower shops
+- For boutique plant shops (succulents, indoor plants), use `Store` + `keywords: "Plants, Indoor plants, ..."` since schema.org has no `PlantShop` type
+- For landscapers, use `HomeAndConstructionBusiness` + `additionalType: "https://en.wikipedia.org/wiki/Landscape_contracting"` + `makesOffer` with `Service` items
+- `areaServed` for florists = the Bezirke covered by delivery (same-day cutoff matters for time-sensitive orders)
+- For Type 4 ecommerce florists, individual `Product` items can be authored separately (not in this MVP — trigger-gated when a Type 4 florist client signs)
+- **NO `aggregateRating` on `Florist`** — self-serving ban per `SEO.md` §5.3. `aggregateRating` IS allowed on individual `Product` items when reviews are visible on-page + owner-approved (also trigger-gated for Type 4)
 
 ### 11.9 GBP category + keyword pattern
 

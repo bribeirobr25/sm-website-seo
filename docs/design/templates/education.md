@@ -480,33 +480,91 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Medium leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `EducationalOrganization` (generic) · `MusicSchool` (default — agency's solo-tutor music-teacher archetype) · `LanguageSchool` · `Preschool` · `School` · `College` (rare in scope). Note: Google deprecated the `Course Info` rich result on 2026-06-12; the schema is still valid for AI ingestion.
 
-- `EducationalOrganization` — generic
-- `School` — primary / secondary school
-- `Preschool` — daycare / kindergarten
-- `MusicSchool` — music-focused
-- `LanguageSchool` — language learning
-- `CollegeOrUniversity` — higher ed (rare in agency scope)
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo music teacher / language tutor — agency's most common education client). Variants for `Preschool` (Archetype A — Premium Daycare) and `LanguageSchool` (Archetype C — Adult Education) are trigger-gated.
+
+#### Paste-ready `@graph` block — solo MusicSchool default archetype
+
+Berlin example.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "MusicSchool",
-  "name": "[School name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "openingHoursSpecification": [...],
-  "hasCourse": [
-    { "@type": "Course", "name": "Klavier", "courseCode": "PIANO-1", "audience": { "@type": "EducationalAudience", "audienceType": "Children" } },
-    { "@type": "Course", "name": "Gesang", "courseCode": "VOICE-1" }
-  ],
-  "potentialAction": { "@type": "ContactAction", "target": "https://[trial-form URL]" }
+  "@graph": [
+    {
+      "@type": "MusicSchool",
+      "@id": "https://klavierunterricht-berlin.de/#business",
+      "name": "Klavierunterricht Schwedler",
+      "description": "Klavierunterricht in Berlin Prenzlauer Berg — Kinder ab 5 Jahre + Erwachsene. Klassik, Jazz, Pop. Probestunde kostenlos.",
+      "url": "https://klavierunterricht-berlin.de",
+      "telephone": "+49 30 4567 8901",
+      "email": "kontakt@klavierunterricht-berlin.de",
+      "image": [
+        "https://klavierunterricht-berlin.de/img/studio-16x9.jpg",
+        "https://klavierunterricht-berlin.de/img/studio-4x3.jpg",
+        "https://klavierunterricht-berlin.de/img/studio-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Schönhauser Allee 145",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10435",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.54012, "longitude": 13.41234 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "14:00", "closes": "20:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "16:00" }
+      ],
+      "priceRange": "€€",
+      "areaServed": { "@type": "City", "name": "Berlin" },
+      "knowsLanguage": ["de", "en"],
+      "hasCourse": [
+        { "@type": "Course", "name": "Klavier — Kinder (5-12 Jahre)", "courseCode": "PIANO-KIDS", "provider": { "@id": "https://klavierunterricht-berlin.de/#business" }, "audience": { "@type": "EducationalAudience", "audienceType": "Children" } },
+        { "@type": "Course", "name": "Klavier — Jugendliche & Erwachsene", "courseCode": "PIANO-ADULT", "provider": { "@id": "https://klavierunterricht-berlin.de/#business" }, "audience": { "@type": "EducationalAudience", "audienceType": "Adults" } },
+        { "@type": "Course", "name": "Klavier — Jazz & Pop", "courseCode": "PIANO-JAZZ" },
+        { "@type": "Course", "name": "Prüfungsvorbereitung (Musikhochschule)", "courseCode": "PIANO-EXAM" }
+      ],
+      "potentialAction": { "@type": "ContactAction", "target": "https://klavierunterricht-berlin.de/probestunde" },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.superprof.de/klavierunterricht-schwedler",
+        "https://www.instagram.com/klavier.berlin"
+      ],
+      "founder":  { "@id": "https://klavierunterricht-berlin.de/#tutor" },
+      "employee": { "@id": "https://klavierunterricht-berlin.de/#tutor" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://klavierunterricht-berlin.de/#tutor",
+      "name": "Lena Schwedler",
+      "jobTitle": "Inhaberin · Klavierlehrerin",
+      "worksFor": { "@id": "https://klavierunterricht-berlin.de/#business" },
+      "alumniOf": "Universität der Künste Berlin",
+      "knowsAbout": ["Klassik", "Jazz", "Pop", "Musiktheorie"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://klavierunterricht-berlin.de/#website",
+      "url": "https://klavierunterricht-berlin.de",
+      "name": "Klavierunterricht Schwedler",
+      "publisher": { "@id": "https://klavierunterricht-berlin.de/#business" }
+    }
+  ]
 }
 ```
 
-`hasCourse` lists the offerings — long-tail ranking ("Klavierunterricht [stadtteil]"). Use `audience` to target search by age group.
+**Vertical-specific rules:**
+
+- `hasCourse` lists offerings with audience targeting (`Children` / `Adults` / `EducationalAudience` enums) — drives long-tail ranking ("Klavierunterricht Kinder Prenzlauer Berg")
+- Google deprecated the `Course Info` rich result 2026-06-12; markup remains valuable for AI Overviews + Gemini ingestion
+- For language schools, use `LanguageSchool` `@type` + `inLanguage` per course
+- For solo tutor pattern (the agency default), the Person node carries the qualifications (`alumniOf`, `knowsAbout`)
+- **Minors data:** never include student names, ages, or session-specific details in schema — public schema = public commitment. Keep all student references generic ("Kinder ab 5 Jahre")
+- **NO `aggregateRating`** — self-serving ban per `SEO.md` §5.3
 
 ### 11.9 GBP category + keyword pattern
 

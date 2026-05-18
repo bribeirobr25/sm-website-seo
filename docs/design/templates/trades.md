@@ -473,33 +473,95 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Low leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `Plumber` (default per-vertical example below) · `Electrician` · `Locksmith` · `HVACBusiness` · `RoofingContractor` · `HousePainter` · `GeneralContractor` (multi-trade) · `HomeAndConstructionBusiness` (generic parent). All are subtypes of `HomeAndConstructionBusiness`.
 
-- `Plumber`
-- `Electrician`
-- `Locksmith`
-- `HVACBusiness`
-- `RoofingContractor`
-- `GeneralContractor` — when work spans multiple trades
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo Plumber — agency's most common trades archetype). Variants for other trade subtypes follow the same shape — swap `@type` and `hasOfferCatalog` items. Archetype A (Heritage Craft Premium) and B (Conversion Chain Emergency) are trigger-gated.
+
+#### Paste-ready `@graph` block — solo Plumber default archetype
+
+Berlin example. Swap 8 placeholders per client + 3 service-area neighborhoods.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "Plumber",
-  "name": "[Business name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "areaServed": ["[city]", "[neighborhood1]", "[neighborhood2]"],
-  "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "18:00" }
-  ],
-  "potentialAction": { "@type": "ContactAction", "target": "tel:+..." },
-  "priceRange": "€€"
+  "@graph": [
+    {
+      "@type": "Plumber",
+      "@id": "https://klempner-pankow.de/#business",
+      "name": "Klempner Pankow",
+      "description": "Inhabergeführter Sanitärbetrieb in Berlin Pankow. Heizung, Wasser, Notdienst. Über 15 Jahre Erfahrung.",
+      "url": "https://klempner-pankow.de",
+      "telephone": "+49 30 4123 5678",
+      "email": "kontakt@klempner-pankow.de",
+      "image": [
+        "https://klempner-pankow.de/img/team-16x9.jpg",
+        "https://klempner-pankow.de/img/team-4x3.jpg",
+        "https://klempner-pankow.de/img/team-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Wisbyer Straße 18",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10439",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.55012, "longitude": 13.41023 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "18:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "13:00" }
+      ],
+      "priceRange": "€€",
+      "areaServed": [
+        { "@type": "City", "name": "Berlin-Pankow" },
+        { "@type": "City", "name": "Berlin-Prenzlauer Berg" },
+        { "@type": "City", "name": "Berlin-Mitte" },
+        { "@type": "City", "name": "Berlin-Wedding" }
+      ],
+      "potentialAction": { "@type": "ContactAction", "target": "tel:+49301234567" },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Leistungen",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sanitärinstallation" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Heizungswartung" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Rohrreinigung" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sanitärnotdienst (24/7)" } }
+        ]
+      },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.my-hammer.de/handwerker/klempner-pankow",
+        "https://www.facebook.com/klempner.pankow"
+      ],
+      "founder":  { "@id": "https://klempner-pankow.de/#owner" },
+      "employee": { "@id": "https://klempner-pankow.de/#owner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://klempner-pankow.de/#owner",
+      "name": "Thomas Schmidt",
+      "jobTitle": "Inhaber · Meister",
+      "worksFor": { "@id": "https://klempner-pankow.de/#business" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://klempner-pankow.de/#website",
+      "url": "https://klempner-pankow.de",
+      "name": "Klempner Pankow",
+      "publisher": { "@id": "https://klempner-pankow.de/#business" }
+    }
+  ]
 }
 ```
 
-`areaServed` is critical — Google Local uses this to surface the trade for searches in matching neighborhoods.
+**Vertical-specific rules:**
+
+- `areaServed` is critical for trades — Google uses this to match the trade for local-pack searches across the named neighborhoods. List 3-5 Bezirke / postcode bands the trade actually serves
+- For emergency-trade clients, add a 24/7 `OpeningHoursSpecification` entry: `{ "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "00:00", "closes": "23:59" }` AND include the emergency service in `hasOfferCatalog`
+- Swap `@type` per the actual trade (`Electrician` for electricians, `HVACBusiness` for heating, etc.) — see schema.org subtypes
+- **NO `aggregateRating`** — self-serving ban per `SEO.md` §5.3
 
 ### 11.9 GBP category + keyword pattern
 

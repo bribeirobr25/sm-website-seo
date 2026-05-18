@@ -458,25 +458,88 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **Very high leverage**.
 
 ### 11.8 Schema.org variants
 
-Use `Restaurant` (most common), `CafeOrCoffeeShop`, or `FoodEstablishment` (generic):
+**`@type` choices:** `Restaurant` (default — most common) · `CafeOrCoffeeShop` · `BarOrPub` · `Bakery` · `FastFoodRestaurant` · `FoodEstablishment` (generic fallback).
+
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (Restaurant). Archetype-specific blocks for `CafeOrCoffeeShop` (B) and `BarOrPub` (C) are trigger-gated — author when a real client picks the archetype, log in `docs/audit/PENDING.md`.
+
+#### Paste-ready `@graph` block — Restaurant default archetype
+
+Berlin example data. Swap 8 placeholders per client: `[BUSINESS_NAME]` · `[STREET]` · `[ZIP]` · `[CITY]` · `[LAT]/[LNG]` · `[PHONE]` · `[EMAIL]` · `[OWNER_NAME]`. Validate against Google Rich Results Test + Schema.org Validator before production cutover per `SEO.md` §5 pre-flight.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "Restaurant",
-  "name": "[Business name]",
-  "address": { "@type": "PostalAddress", "streetAddress": "...", "addressLocality": "[City]", "postalCode": "...", "addressCountry": "[DE/PT/BR]" },
-  "geo": { "@type": "GeoCoordinates", "latitude": ..., "longitude": ... },
-  "telephone": "+...",
-  "servesCuisine": ["Italian", "Mediterranean"],
-  "priceRange": "€€",
-  "openingHoursSpecification": [...],
-  "menu": "https://[domain]/menu",
-  "acceptsReservations": true
+  "@graph": [
+    {
+      "@type": "Restaurant",
+      "@id": "https://trattoria-bergmann.de/#business",
+      "name": "Trattoria Bergmann",
+      "description": "Familienbetriebene italienische Trattoria in Kreuzberg seit 2014. Hausgemachte Pasta, neapolitanische Pizza, regionale Weine.",
+      "url": "https://trattoria-bergmann.de",
+      "telephone": "+49 30 6123 4567",
+      "email": "kontakt@trattoria-bergmann.de",
+      "image": [
+        "https://trattoria-bergmann.de/img/hero-16x9.jpg",
+        "https://trattoria-bergmann.de/img/hero-4x3.jpg",
+        "https://trattoria-bergmann.de/img/hero-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Bergmannstraße 56",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10961",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.48817, "longitude": 13.39654 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday"], "opens": "17:30", "closes": "22:30" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "17:30", "closes": "23:30" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "22:00" }
+      ],
+      "servesCuisine": ["Italian", "Neapolitan"],
+      "priceRange": "€€",
+      "acceptsReservations": true,
+      "menu": "https://trattoria-bergmann.de/speisekarte",
+      "potentialAction": { "@type": "ReserveAction", "target": "https://www.thefork.de/restaurant/trattoria-bergmann" },
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.instagram.com/trattoria_bergmann",
+        "https://www.facebook.com/trattoria.bergmann",
+        "https://www.tripadvisor.com/Restaurant_Review-trattoria-bergmann"
+      ],
+      "founder":  { "@id": "https://trattoria-bergmann.de/#owner" },
+      "employee": { "@id": "https://trattoria-bergmann.de/#owner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://trattoria-bergmann.de/#owner",
+      "name": "Giulia Romano",
+      "jobTitle": "Inhaberin · Küchenchefin",
+      "worksFor": { "@id": "https://trattoria-bergmann.de/#business" },
+      "sameAs": ["https://www.instagram.com/giulia.romano.cooks"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://trattoria-bergmann.de/#website",
+      "url": "https://trattoria-bergmann.de",
+      "name": "Trattoria Bergmann",
+      "publisher": { "@id": "https://trattoria-bergmann.de/#business" }
+    }
+  ]
 }
 ```
 
-Use `acceptsReservations: true` if the site has any reservation flow (form, deep-link, or full booking). **No `aggregateRating` on the `Restaurant` (or any `LocalBusiness` subtype) — self-serving rating on own LocalBusiness is policy-banned per `SEO.md` §5.3.** Stars in the SERP come from the GBP listing, not from on-site schema. `aggregateRating` is allowed only on `Product` schema (none here) with visible on-page reviews + owner consent.
+**Vertical-specific rules:**
+
+- `acceptsReservations: true` whenever there's a reservation flow (form, TheFork/OpenTable deep-link, full booking system)
+- `menu` URL points to the menu page; if you also have a structured menu, link `hasMenu` to a `Menu` entity (separate `MenuItem` schema — out of MVP scope, trigger-gated)
+- `potentialAction` wraps the booking-platform deep-link with `ReserveAction`
+- `servesCuisine` accepts multiple values; use schema.org cuisine tokens (`Italian`, `Mediterranean`, `French`, etc.) — see [schema.org/Restaurant](https://schema.org/Restaurant)
+- **NO `aggregateRating` on `Restaurant`** — self-serving ban per `SEO.md` §5.3 (stars in SERP come from GBP, not on-site schema)
+
+For non-Italian / non-Berlin clients, swap `servesCuisine`, `addressCountry`, currency in `priceRange` (`R$$` for BR, `€€` for DE/PT). The Person node is optional for chain-owned restaurants — drop the `founder`/`employee` refs and the Person entity, keep the Restaurant + WebSite nodes.
 
 ### 11.9 GBP category + keyword pattern
 

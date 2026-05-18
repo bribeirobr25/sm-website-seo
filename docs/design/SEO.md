@@ -297,6 +297,59 @@ Rules:
 
 LocalBusiness schema is the most important structured data for local SEO. Add in the `<head>` as `<script type="application/ld+json">`.
 
+### Canonical `@graph` pattern (2026-05-18)
+
+The agency standard is a **3-node `@graph`-rooted block** that links the business, the operator (when solo), and the website via `@id`. This pattern is used by every per-vertical paste-ready block in `templates/*.md` §11.8. Google supports `@graph` for `LocalBusiness` + `Person` + `WebSite` per their structured-data docs.
+
+```text
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "[VerticalSpecificType]",   ← Restaurant / HairSalon / Dentist / etc.
+      "@id": "https://[domain]/#business",
+      ... base LocalBusiness fields + vertical-specific extensions ...
+      "founder":  { "@id": "https://[domain]/#owner" },   ← for solo operators
+      "employee": { "@id": "https://[domain]/#owner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://[domain]/#owner",
+      "name": "[Owner name]",
+      "worksFor": { "@id": "https://[domain]/#business" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://[domain]/#website",
+      "url": "https://[domain]",
+      "publisher": { "@id": "https://[domain]/#business" }
+    }
+  ]
+}
+```
+
+**Rules baked into every per-vertical block:**
+
+- ✅ `@graph`-rooted with `@id` cross-references (canonical Google + Schema.org form)
+- ✅ Most-specific `@type` from `templates/[vertical].md` §11.8 (NOT generic `LocalBusiness`)
+- ✅ `image` array with 3 aspect ratios (16:9 + 4:3 + 1:1) per [Google's LocalBusiness docs](https://developers.google.com/search/docs/appearance/structured-data/local-business)
+- ✅ `geo` with ≥ 5 decimal places (verify against Google Maps pin, never approximate)
+- ✅ `openingHoursSpecification` array (NOT the deprecated `openingHours` string)
+- ✅ `sameAs` array linking GBP listing + Instagram + Facebook (entity-graph cross-linking)
+- ✅ `priceRange` (≤ 4 chars: `€`, `€€`, `€€€`, `€€€€`)
+- ✅ `hasOfferCatalog` with `Service` items when the business has a service menu (haircuts, treatments, classes, courses, etc.)
+- ✅ Vertical-specific properties per the matching template's §11.8 (`servesCuisine`, `medicalSpecialty`, `areaServed`, etc.)
+- ❌ **NO self-serving `aggregateRating` on the LocalBusiness subtype** — policy-banned per §5.3
+- ❌ **NO `FAQPage` schema claimed as a SERP rich result** — deprecated 2026-05-07 per §5.4 (still valid as AI-extraction signal)
+
+**Pre-flight validation (mandatory at production cutover, per `CHECKLIST.md` §3):**
+
+1. Submit the populated block to [Google Rich Results Test](https://search.google.com/test/rich-results) — must pass with zero errors (warnings on missing optional fields are acceptable)
+2. Submit the same block to [Schema.org Validator](https://validator.schema.org) — must pass with zero errors
+3. If `@graph` causes RRT inconsistency on a specific `@type` (rare but documented historically), fall back to **three separate `<script>` tags** per entity instead of one `@graph` block — same content, just split inline
+
+**Per-vertical paste-ready blocks** live in each `templates/*.md` §11.8. Pick the matching template per the client's vertical, swap the Berlin-example placeholders for real client data, validate, ship. The `§5 Base LocalBusiness template` (below) is the **fallback** when no vertical template matches.
+
 ### Base LocalBusiness template
 
 ```json

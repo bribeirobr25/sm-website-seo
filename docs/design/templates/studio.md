@@ -513,31 +513,98 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **High leverage**.
 
 ### 11.8 Schema.org variants
 
-Use the most specific subtype:
+**`@type` choices:** `SportsActivityLocation` (default — correct pick for yoga / pilates / barre — schema.org has NO `YogaStudio` type) · `ExerciseGym` (generic gym) · `HealthClub` (full-service multi-discipline) · `SportsClub`.
 
-- `ExerciseGym` — generic gym
-- `SportsActivityLocation` — **the correct pick for yoga-focused studios** (schema.org has no `YogaStudio` type — verified 2026-05-18; the previously-listed `YogaStudio` does not exist in the schema.org vocabulary). Use `SportsActivityLocation` + descriptive `name` / `keywords` instead.
-- `HealthClub` — full-service club with multiple disciplines
+**MVP scope (2026-05-18):** the paste-ready block below covers the **default archetype** (solo SportsActivityLocation — yoga / pilates / boutique fitness). Variants for `ExerciseGym` (Archetype B — Mass-Market Value) and `HealthClub` (Archetype A — Premium Editorial) are trigger-gated.
+
+#### Paste-ready `@graph` block — solo SportsActivityLocation default archetype
+
+Berlin example.
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "SportsActivityLocation",
-  "name": "[Studio name]",
-  "address": { ... },
-  "geo": { ... },
-  "telephone": "+...",
-  "openingHoursSpecification": [...],
-  "potentialAction": { "@type": "ReserveAction", "target": "https://[mindbody URL]" },
-  "amenityFeature": [
-    { "@type": "LocationFeatureSpecification", "name": "Changing rooms" },
-    { "@type": "LocationFeatureSpecification", "name": "Showers" },
-    { "@type": "LocationFeatureSpecification", "name": "Mat storage" }
+  "@graph": [
+    {
+      "@type": "SportsActivityLocation",
+      "@id": "https://studio-sereno-yoga.de/#business",
+      "name": "Studio Sereno Yoga",
+      "description": "Boutique Yoga-Studio in Berlin Mitte. Hatha · Vinyasa · Yin · Pranayama. Probestunde + Mindbody-Buchung.",
+      "url": "https://studio-sereno-yoga.de",
+      "telephone": "+49 30 1234 5678",
+      "email": "hallo@studio-sereno-yoga.de",
+      "image": [
+        "https://studio-sereno-yoga.de/img/studio-16x9.jpg",
+        "https://studio-sereno-yoga.de/img/studio-4x3.jpg",
+        "https://studio-sereno-yoga.de/img/studio-1x1.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Auguststraße 42",
+        "addressLocality": "Berlin",
+        "addressRegion": "Berlin",
+        "postalCode": "10117",
+        "addressCountry": "DE"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 52.52641, "longitude": 13.39654 },
+      "hasMap": "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "07:00", "closes": "21:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday","Sunday"], "opens": "09:00", "closes": "18:00" }
+      ],
+      "priceRange": "€€",
+      "keywords": "Yoga, Hatha, Vinyasa, Yin, Pranayama, Berlin Mitte",
+      "potentialAction": { "@type": "ReserveAction", "target": "https://clients.mindbodyonline.com/classic/ws?studioid=999999" },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Mitgliedschaften & Karten",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Probestunde" }, "price": "12", "priceCurrency": "EUR" },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Drop-in (Einzelstunde)" }, "price": "22", "priceCurrency": "EUR" },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "10er Karte" }, "price": "190", "priceCurrency": "EUR" },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Monatsmitgliedschaft" }, "price": "85", "priceCurrency": "EUR" }
+        ]
+      },
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Umkleiden" },
+        { "@type": "LocationFeatureSpecification", "name": "Duschen" },
+        { "@type": "LocationFeatureSpecification", "name": "Matten verfügbar" }
+      ],
+      "sameAs": [
+        "https://www.google.com/maps/place/?q=place_id:CHANGE_TO_REAL_PLACE_ID",
+        "https://www.instagram.com/studio.sereno.yoga",
+        "https://www.facebook.com/studio.sereno.yoga",
+        "https://www.eversports.de/s/studio-sereno-yoga"
+      ],
+      "founder":  { "@id": "https://studio-sereno-yoga.de/#owner" },
+      "employee": { "@id": "https://studio-sereno-yoga.de/#owner" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://studio-sereno-yoga.de/#owner",
+      "name": "Anna Hartmann",
+      "jobTitle": "Inhaberin · Yoga-Lehrerin",
+      "worksFor": { "@id": "https://studio-sereno-yoga.de/#business" },
+      "sameAs": ["https://www.instagram.com/anna.hartmann.yoga"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://studio-sereno-yoga.de/#website",
+      "url": "https://studio-sereno-yoga.de",
+      "name": "Studio Sereno Yoga",
+      "publisher": { "@id": "https://studio-sereno-yoga.de/#business" }
+    }
   ]
 }
 ```
 
-**No `aggregateRating` on the `SportsActivityLocation` (or any `LocalBusiness` subtype) — self-serving rating on own LocalBusiness is policy-banned per `SEO.md` §5.3.** Stars in the SERP come from the GBP listing, not from on-site schema. `aggregateRating` is allowed only on `Product` schema (none here) with visible on-page reviews + owner consent.
+**Vertical-specific rules:**
+
+- `@type` is `SportsActivityLocation` for yoga / pilates / boutique studios — schema.org has **no `YogaStudio` type** (verified 2026-05-18; the rejected `YogaStudio` was removed in the 2026-05-18 hotfix). Use `keywords` to surface discipline-specific terms for AI extraction
+- `hasOfferCatalog` Service items with explicit price model (drop-in, 10er Karte, Monatskarte) — surfaces in Google's knowledge panel for pricing
+- `amenityFeature` lists facility highlights (showers, changing rooms, mat storage, parking) — local-pack signal
+- For multi-discipline studios, add multiple `Service` items under `hasOfferCatalog` per discipline + the membership tiers
+- **NO `aggregateRating`** — self-serving ban per `SEO.md` §5.3
 
 ### 11.9 GBP category + keyword pattern
 
