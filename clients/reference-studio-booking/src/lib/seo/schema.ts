@@ -1,5 +1,8 @@
 /**
- * Schema.org JSON-LD — YogaStudio variant per templates/studio.md §11.8.
+ * Schema.org JSON-LD — SportsActivityLocation variant per templates/studio.md §11.8.
+ * schema.org has no `YogaStudio` type (verified 2026-05-18). The correct pick
+ * for a yoga-focused studio is `SportsActivityLocation` with a descriptive
+ * `name` and `keywords`. See SEO.md §5.
  */
 
 import { SITE } from '../site';
@@ -16,7 +19,7 @@ function dayMap(day: string): string {
   }[day] ?? day;
 }
 
-export function yogaStudioSchema(): Record<string, unknown> {
+export function sportsActivityLocationSchema(): Record<string, unknown> {
   const openingHours = SITE.hours
     .filter((h) => h.open && h.close)
     .map((h) => ({
@@ -28,7 +31,7 @@ export function yogaStudioSchema(): Record<string, unknown> {
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'YogaStudio',
+    '@type': 'SportsActivityLocation',
     name: SITE.name,
     description: SITE.tagline,
     url: SITE.url,

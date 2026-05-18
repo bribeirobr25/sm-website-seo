@@ -506,14 +506,13 @@ Per `SOCIAL-SHARING.md` §Per-vertical share strategy: **High leverage**.
 Use the most specific subtype:
 
 - `ExerciseGym` — generic gym
-- `YogaStudio` — yoga-focused
-- `SportsActivityLocation` — generic fallback
+- `SportsActivityLocation` — **the correct pick for yoga-focused studios** (schema.org has no `YogaStudio` type — verified 2026-05-18; the previously-listed `YogaStudio` does not exist in the schema.org vocabulary). Use `SportsActivityLocation` + descriptive `name` / `keywords` instead.
 - `HealthClub` — full-service club with multiple disciplines
 
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "YogaStudio",
+  "@type": "SportsActivityLocation",
   "name": "[Studio name]",
   "address": { ... },
   "geo": { ... },
@@ -524,10 +523,11 @@ Use the most specific subtype:
     { "@type": "LocationFeatureSpecification", "name": "Changing rooms" },
     { "@type": "LocationFeatureSpecification", "name": "Showers" },
     { "@type": "LocationFeatureSpecification", "name": "Mat storage" }
-  ],
-  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": 120 }
+  ]
 }
 ```
+
+**No `aggregateRating` on the `SportsActivityLocation` (or any `LocalBusiness` subtype) — self-serving rating on own LocalBusiness is policy-banned per `SEO.md` §5.3.** Stars in the SERP come from the GBP listing, not from on-site schema. `aggregateRating` is allowed only on `Product` schema (none here) with visible on-page reviews + owner consent.
 
 ### 11.9 GBP category + keyword pattern
 

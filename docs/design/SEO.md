@@ -343,13 +343,6 @@ LocalBusiness schema is the most important structured data for local SEO. Add in
   ],
   "priceRange": "€€",
   "servesCuisine": "[only for restaurants]",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "127",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
   "sameAs": [
     "https://www.google.com/maps/place/[business-name]",
     "https://www.instagram.com/[handle]",
@@ -403,21 +396,29 @@ If the two results agree within ~50 m, that centroid is good enough for the demo
 | Real estate | `RealEstateAgent` |
 | Generic local business | `LocalBusiness` |
 
-### Aggregate rating — only use with real data + written consent
+### Aggregate rating — never on own LocalBusiness (self-serving); Product-only
 
-Only include `aggregateRating` in schema if **all three** are true:
+**Rule (updated 2026-05-18 per Google's review-snippet policy):** `aggregateRating` is **never** placed on the business's own `LocalBusiness` schema (or any LocalBusiness subtype — `Restaurant`, `HairSalon`, `Dentist`, etc.). Google's review-snippet policy treats this as **self-serving** — the entity reviewing itself — and the markup is **ineligible** for SERP stars. Persistent use risks a manual action against the site.
 
-1. **The data is real and verifiable** — pulled from Google Maps or another public source, not estimated or aspirational
-2. **The values are current** — refresh at least monthly, ideally on every site update
-3. **The client has given written consent** — even though the reviews themselves are public, displaying them as a schema attribute the client is officially attesting to is a different commitment. Email confirmation with the value + count is enough. Save the email to `docs/clients/[slug]/`.
+**Where SERP stars actually come from for local businesses:** the Google Business Profile listing. Reviews collected there feed the local pack + the knowledge panel star rating independently of any schema on the website. Removing self-serving `aggregateRating` does not remove the stars users see — those live on GBP.
 
-The third condition is the one most often skipped — and the riskiest. A client who later disputes the count or rating ("we never approved that") has a defensible complaint. Get the consent in writing before shipping the markup.
+**`aggregateRating` IS allowed on:**
 
-**During demo phase:** `aggregateRating` can be present with public data (Google's reviews are public), but flag it for client review *before* the noindex flip. If the client doesn't confirm, drop the markup before going live — the schema is enhancement, not a requirement.
+- `Product` schema for retail / artisan / ecommerce items — the business is *selling* the product, not reviewing itself
+- Third-party `Review` markup where someone else has reviewed the business (e.g., a review aggregator embedding reviews on the business's site — uncommon for our segment)
 
-Update rating data every time you update the site (monthly at minimum). Cross-reference with the client's actual GBP profile, not a one-time scrape — review counts move.
+**Both conditions must hold when `aggregateRating` is used on `Product`:**
 
-### FAQ schema — add when the page has a FAQ section
+1. **The reviews are visible on the page itself** — Google requires the visible review content to match the schema. Schema-only ratings without visible reviews on the page → manual action.
+2. **The client has given written consent** — Email confirmation with the value + count is enough. Save the email to `docs/clients/[slug]/`. A client who later disputes the count has a defensible complaint without the consent.
+
+**Migration note for any inherited code:** if you find `aggregateRating` on a `LocalBusiness` (or subtype) in an existing client build, remove it. The reference impls were patched in the 2026-05-18 hotfix; new client work inherits the corrected pattern.
+
+### FAQ schema (AI-extraction signal; no SERP feature in 2026)
+
+**2026 policy update:** Google deprecated the FAQPage rich result for **all sites on 2026-05-07** (previously restricted to government + health sites since August 2023). The SERP accordion no longer renders for any site. The schema.org markup itself **remains valid** and **continues to be useful** as an AI-extraction signal — AI Overviews, Gemini, and other LLM ingestion pipelines parse FAQPage schema to source Q&A content. Add it when a real FAQ section is on the page, but do not set client expectations around a SERP rich result.
+
+Add when the page has a FAQ section:
 
 ```json
 {
@@ -724,7 +725,7 @@ GBP now shows a **Profile Strength** indicator. Keep it in the green zone:
 
 ### Q&A section (removed November 2025)
 
-Google removed the Q&A feature from GBP in November 2025. **Do not** attempt to set up or pre-populate Q&A for new clients — the feature no longer exists. Instead, add FAQ content directly to the website and use FAQPage schema to make it visible in search results.
+Google removed the Q&A feature from GBP in November 2025. **Do not** attempt to set up or pre-populate Q&A for new clients — the feature no longer exists. Instead, add FAQ content directly to the website and use `FAQPage` schema. Note that the FAQPage **SERP rich result was also deprecated for all sites on 2026-05-07** — the schema markup is now useful for AI-extraction (AI Overviews, Gemini) rather than producing a SERP accordion. See §5 for the current FAQ schema rule.
 
 ### GBP category optimization
 
@@ -1154,8 +1155,8 @@ Run this before every client delivery. No exceptions.
 - [ ] Schema validated with Google Rich Results Test (zero errors)
 - [ ] Latitude/longitude verified against actual Google Maps location
 - [ ] Opening hours match what's on the website and GBP
-- [ ] `aggregateRating` only included if pulled from real review data
-- [ ] FAQPage schema matches visible FAQ content exactly
+- [ ] No `aggregateRating` on own `LocalBusiness` schema (self-serving is policy-banned per §5.3) — allowed only on `Product` schema with on-page visible reviews + owner consent
+- [ ] `FAQPage` schema matches visible FAQ content exactly (AI-extraction only — SERP rich result deprecated 2026-05-07)
 
 ### Performance
 

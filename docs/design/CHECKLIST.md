@@ -347,8 +347,32 @@ Already covered in §Sentry / error tracking subsection.
 - [ ] Schema validated with **Google Rich Results Test** (zero errors)
 - [ ] Latitude/longitude verified against actual Google Maps pin location
 - [ ] Opening hours in schema match website and GBP exactly
-- [ ] `aggregateRating` only present if pulled from real, verified review data
-- [ ] `FAQPage` schema matches visible FAQ content exactly (if FAQ section present)
+- [ ] No `aggregateRating` on own `LocalBusiness` schema (self-serving is policy-banned per `SEO.md` §5.3) — allowed only on `Product` schema with on-page visible reviews + owner consent
+- [ ] `FAQPage` schema matches visible FAQ content exactly (if FAQ section present) — note: SERP rich result deprecated for all sites 2026-05-07; markup is now an AI-extraction signal, not a SERP feature
+
+#### Schema policy regression guards — run before production cutover
+
+The three commands below catch the 2026 schema-policy violations from sneaking back into client builds (the 2026-05-18 hotfix patched all of these; these guards prevent regression). Run from the agency root. **All three MUST return zero matches before flipping `noindex` off.**
+
+```bash
+# Guard 1 — no aggregateRating ASSIGNMENT on own LocalBusiness schema (self-serving ban, SEO.md §5.3).
+# The pattern below matches code (`aggregateRating:` object property OR `aggregateRating =` assignment)
+# but NOT narrative mentions in comments / JSDoc / prohibition notes — the word followed by `:` or `=`.
+# Scoped to src/lib/seo/ since visible UI rating values in src/components/ are a separate concern (allowed).
+grep -rnE "aggregateRating[[:space:]]*[=:]" clients/*/src/lib/seo/
+
+# Guard 2 — no 'YogaStudio' as @type (non-existent schema.org type; use SportsActivityLocation)
+grep -rnE "'YogaStudio'|\"YogaStudio\"" clients/
+
+# Guard 3 — no references to the renamed export (sportsActivityLocationSchema replaced it on 2026-05-18)
+grep -rn "yogaStudioSchema" clients/
+```
+
+- [ ] Guard 1 (`aggregateRating` in `src/lib/seo/`) returns zero matches
+- [ ] Guard 2 (`'YogaStudio'` `@type`) returns zero matches
+- [ ] Guard 3 (`yogaStudioSchema` export name) returns zero matches
+
+If any guard returns nonzero, production is blocked. Either (a) it's a real regression — fix it by following the matching template's §11.8 pattern; or (b) it's a deliberate exception — document the reason inline + add a precise `--exclude` to the guard with the justification in the commit message.
 
 ### Crawlability
 - [ ] `sitemap.xml` submitted to **Google Search Console**
@@ -665,7 +689,7 @@ Save the result to `docs/audit/[business-slug].md` (no date suffix — the file 
 | Source | Rating | Count | Notable quote(s) |
 |---|---|---|---|
 
-> Capture 3–5 verbatim review quotes if possible — they become candidate testimonials for the site (subject to owner clearance — see `SEO.md` rule on unverified `aggregateRating`).
+> Capture 3–5 verbatim review quotes if possible — they become candidate testimonials for the site (subject to owner clearance). Note: quotes can be shown as visible on-page testimonials with owner consent; `aggregateRating` is **never** placed on the business's own `LocalBusiness` schema regardless of consent (self-serving ban per `SEO.md` §5.3).
 
 ## Hours, services, pricing — initial public data
 

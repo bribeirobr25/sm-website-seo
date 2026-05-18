@@ -555,7 +555,7 @@ Better structure for local-business review sections:
 **Rules:**
 
 - Never fabricate reviews. Pull from the client's verified Google Business Profile with their consent.
-- Never show `aggregateRating` in Schema.org unless the client confirms they want the rating displayed; even then, the value must match the live GBP exactly.
+- **Never put `aggregateRating` on the business's own `LocalBusiness` schema** (or any subtype — `Restaurant`, `HairSalon`, `Dentist`, etc.). Self-serving rating on own LocalBusiness is policy-banned per `SEO.md` §5.3. SERP stars come from the GBP listing, not on-site schema. Visible on-page ratings (a "4.9 ★" element rendered in HTML) are a separate UI concern and are allowed when the value is real + owner-approved.
 - Stars must be SVG icons, not unicode `★` — see §9.
 - If three quotes are wanted, give them **different lengths** (2 lines, 4 lines, 1 line) so the section doesn't read as a fabricated trio.
 

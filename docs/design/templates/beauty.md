@@ -458,12 +458,13 @@ Use the most specific subtype:
   "telephone": "+...",
   "priceRange": "€€",
   "openingHoursSpecification": [...],
-  "potentialAction": { "@type": "ReserveAction", "target": "https://[trinks/booksy URL]" },
-  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": 52 }
+  "potentialAction": { "@type": "ReserveAction", "target": "https://[trinks/booksy URL]" }
 }
 ```
 
 `potentialAction` wraps the booking deep-link, signaling to Google that booking is available.
+
+**No `aggregateRating` on the `BarberShop` (or any `LocalBusiness` subtype) — self-serving rating on own LocalBusiness is policy-banned per `SEO.md` §5.3.** Stars in the SERP come from the GBP listing, not from on-site schema. `aggregateRating` is allowed only on `Product` schema (none here) with visible on-page reviews + owner consent.
 
 ### 11.9 GBP category + keyword pattern
 

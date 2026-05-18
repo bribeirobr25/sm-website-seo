@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { SITE } from '@/lib/site';
-import { yogaStudioSchema } from '@/lib/seo/schema';
+import { sportsActivityLocationSchema } from '@/lib/seo/schema';
 import { ConsentBootstrap } from '@/components/ui/ConsentBootstrap';
 import { CookieBanner } from '@/components/ui/CookieBanner';
 
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const schema = JSON.stringify(yogaStudioSchema());
+  const schema = JSON.stringify(sportsActivityLocationSchema());
 
   return (
     <html lang={SITE.locale}>

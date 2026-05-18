@@ -461,12 +461,11 @@ Use `Restaurant` (most common), `CafeOrCoffeeShop`, or `FoodEstablishment` (gene
   "priceRange": "€€",
   "openingHoursSpecification": [...],
   "menu": "https://[domain]/menu",
-  "acceptsReservations": true,
-  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.7", "reviewCount": 287 }
+  "acceptsReservations": true
 }
 ```
 
-Use `acceptsReservations: true` if the site has any reservation flow (form, deep-link, or full booking). `aggregateRating` only displayed when owner-approved.
+Use `acceptsReservations: true` if the site has any reservation flow (form, deep-link, or full booking). **No `aggregateRating` on the `Restaurant` (or any `LocalBusiness` subtype) — self-serving rating on own LocalBusiness is policy-banned per `SEO.md` §5.3.** Stars in the SERP come from the GBP listing, not from on-site schema. `aggregateRating` is allowed only on `Product` schema (none here) with visible on-page reviews + owner consent.
 
 ### 11.9 GBP category + keyword pattern
 

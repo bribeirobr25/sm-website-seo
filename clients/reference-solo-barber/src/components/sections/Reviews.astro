@@ -12,7 +12,11 @@ const review = SITE.reviews.featured[0];
       <p class="text-sm uppercase tracking-wider text-text-muted">Avaliações</p>
 
       <!-- Star rating — rendered as SVGs per DESIGN-BEST-PRACTICES.md icon rules.
-           aggregateRating displayed only when owner-approved. -->
+           VISIBLE on-page rating display only — gated by approvedForDisplay
+           because the value must be real + owner-approved before it appears on
+           the page. Schema.org `aggregateRating` is never emitted on the
+           BarberShop LocalBusiness regardless of this flag (self-serving ban
+           per SEO.md §5.3 — see src/lib/seo/schema.ts). -->
       {SITE.reviews.approvedForDisplay && (
         <div class="mt-3 inline-flex items-center gap-2">
           <div class="flex gap-0.5" aria-hidden="true">

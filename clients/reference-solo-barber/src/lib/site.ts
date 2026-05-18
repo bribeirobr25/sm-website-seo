@@ -102,7 +102,10 @@ export const SITE = {
   },
 
   // Reviews — pre-approved drafts; gated until owner approval.
-  // approvedForDisplay: false → schema.org aggregateRating NOT rendered.
+  // approvedForDisplay controls the VISIBLE on-page star rating element in
+  // Reviews.astro. Schema.org `aggregateRating` is never emitted on the
+  // BarberShop LocalBusiness regardless of this flag (self-serving ban per
+  // SEO.md §5.3 — see src/lib/seo/schema.ts).
   reviews: {
     aggregateRating: 4.9,
     reviewCount: 87, // DRAFT

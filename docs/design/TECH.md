@@ -472,7 +472,7 @@ export const RATING = {
 **Three rules:**
 
 1. **Every DRAFT in `site.ts` must mirror an open question in `BRIEF.md`.** The two documents track the same unresolved items in different formats; out-of-sync DRAFTs are a sign one was updated and the other wasn't.
-2. **Approval gates use a boolean flag, not a comment.** `RATING.approvedForDisplay = false` is enforceable in code (schema generators check the flag before rendering `aggregateRating`); a comment is not.
+2. **Approval gates use a boolean flag, not a comment.** A boolean field like `reviews.approvedForDisplay` is enforceable in code (visible UI components check the flag before rendering a star rating element on the page); a comment is not. **Note:** the flag does NOT gate Schema.org `aggregateRating` rendering — `aggregateRating` is **never** placed on the business's own `LocalBusiness` schema regardless of approval (self-serving ban per `SEO.md` §5.3). The flag controls visible HTML / UI only.
 3. **Pre-launch `noindex` removal is gated on zero DRAFT comments in `site.ts`.** Add a grep to the pre-launch checklist: `grep -i "DRAFT" src/lib/` should return empty before flipping the meta tag.
 
 A reference implementation lives in `clients/jean-souza-barber/src/lib/site.ts` — 8 DRAFT-marked fields, every one cross-referenced to `BRIEF.md` §"Open questions for the owner conversation."

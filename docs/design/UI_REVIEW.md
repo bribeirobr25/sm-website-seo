@@ -431,7 +431,7 @@ This is **not a demo-phase fix** — the demo runs noindex on `*.vercel.app` and
 | `Restaurant` schema with all required fields | ✓ |
 | `openingHoursSpecification` matches site | ✓ |
 | `noindex, nofollow` on every page (demo phase) | ✓ |
-| `aggregateRating` not rendered (no client confirmation yet) | ✓ correct per BRIEF.md |
+| `aggregateRating` not rendered on `Restaurant` LocalBusiness schema | ✓ correct — self-serving ban per `SEO.md` §5.3 (never on own LocalBusiness regardless of consent) |
 | Sitemap generated | ✓ (will need exclusion for noindex pages, but fine in demo) |
 
 **Concern:** the `geo.latitude / geo.longitude` in schema is `41.166, -8.628` — a guess, not verified against the actual GMaps pin. Before production, run the coordinates through `https://www.google.com/maps?q=R.+da+Constituição+982,+4200-196+Porto`, copy the URL coords, update `SITE.geo` in `src/lib/site.ts`. Schema.org `Restaurant` rich results depend on accurate geo.

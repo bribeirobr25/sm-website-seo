@@ -57,14 +57,10 @@ export function barberShopSchema(): Record<string, unknown> {
     sameAs: [SITE.social.instagram].filter(Boolean),
   };
 
-  // aggregateRating only rendered when owner-approved
-  if (SITE.reviews.approvedForDisplay) {
-    schema.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: SITE.reviews.aggregateRating,
-      reviewCount: SITE.reviews.reviewCount,
-    };
-  }
+  // aggregateRating deliberately omitted — self-serving on own LocalBusiness
+  // (BarberShop is a LocalBusiness subtype) is policy-banned per Google's
+  // review-snippet guidelines. SERP stars come from the GBP listing, not from
+  // on-site schema. See SEO.md §5.3.
 
   return schema;
 }
