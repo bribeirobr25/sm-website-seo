@@ -1,0 +1,45 @@
+---
+import EyebrowDisplayHero from '@/components/sections/EyebrowDisplayHero.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Demo · Eyebrow display hero">
+  <main id="main">
+    <div class="container-page section">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Demo · ⚠ Portfolio only</p>
+      <h1 class="text-3xl sm:text-4xl text-text mt-2">Eyebrow + display hero</h1>
+      <div class="mt-6 p-4 border-l-4 border-warning bg-surface rounded-r-md max-w-prose">
+        <p class="text-sm text-text leading-relaxed">
+          <strong>HARD RESTRICTION:</strong> this component is FORBIDDEN for local-business clients.
+          Permitted only when SEO is explicitly deprioritized in BRIEF.md (portfolio, agency-self,
+          referral-only luxury). See <code>SEO.md §15</code> and the component's frontmatter
+          doc-comment.
+        </p>
+      </div>
+    </div>
+
+    <EyebrowDisplayHero
+      eyebrow="Japanese Philosophy of Kokoro"
+      display="Auwa: a character, a philosophy, a world. Built on the ancient idea that a life force, or Kokoro, lives in every quiet, ordinary thing."
+      seoNote="Demo only — agency-self example, not bound to a local-business client."
+    />
+
+    <div class="border-t border-border">
+      <EyebrowDisplayHero
+        eyebrow="Portfolio · Independent practice"
+        display="Type, identity, and editorial systems for studios who would rather think than shout."
+        seoNote="Portfolio site, referral acquisition only — confirmed via BRIEF.md."
+      />
+    </div>
+
+    <div class="container-page section">
+      <h2 class="text-xl font-display text-text">Build-time warning</h2>
+      <p class="prose mt-4 max-w-prose">
+        Rendering this component with an empty <code>seoNote</code> prop fires a
+        <code>console.warn(...)</code> during build. This is intentional friction — do not bypass.
+        If you find yourself adding empty seoNote strings to silence the warning, you are about to
+        ship a local-business hero with an eyebrow-h1. Stop and reread the spec.
+      </p>
+    </div>
+  </main>
+</BaseLayout>

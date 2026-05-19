@@ -369,6 +369,37 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 
 ---
 
+### 9.4 Marvell Tile & Stone — `marvellco.com.au` (Archetype: premium-heritage artisan — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §11)
+
+**Why this lands in trades:** the single best reference in the study for the "premium-heritage artisan" trades archetype. Perth-based tiling and natural-stone studio for high-end residential. Direct fit for any Berlin stonemason, fine-woodworker, or master-craft trades client whose customer base is architects + interior designers.
+
+**What to borrow:**
+- **"Your color is your material"** — accent `#B1A781` is literally the color of cut sandstone, sampled from product photography. Codify as the trades default sourcing rule via `DESIGN-BEST-PRACTICES.md` §5 Sourcing the palette tier 3.5 (color-as-material).
+- **256px wordmark hero** — single-viewport landing with the business name as the entire above-fold. Works only for short names (Marvell ✓, "Schmitz Heizungs- und Sanitärtechnik" ✗) — confirm the name fits before adopting.
+- **70 % alpha white nav over dark hero** — `rgba(255, 255, 255, 0.7)` on uppercase tracked-14px nav items. Yields to the wordmark visually.
+- **Project-as-street-name editorial pattern** — portfolio entries titled by location (`Ainslie Street`, `Duncraig Road`) instead of by client. Solves the "Client A / [redacted]" generic-portfolio problem for trades clients bound by client confidentiality.
+
+### 9.5 MODUS Projects — `modusprojects.nl` (Archetype: premium B2B contractor — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §3)
+
+**Why this lands in trades:** Dutch construction-finishing for real-estate projects. The premium B2B trades archetype — selling to project managers, architects, and developers, not to end-consumers.
+
+**What to borrow:**
+- **Three-font role allocation:** Jubilee Silver (uppercase transitional serif) for display + Neue Montreal (humanist sans light) for body + Telegraf (neo-grotesque) for UI/buttons. Each family does one job; none overlap.
+- **Uppercase serif headlines** — niche but powerful when the client's customer is design-conscious (architects).
+- **`min(1450px, 100vw - 6rem)` container** — one-line replacement for `max-w-7xl mx-auto px-6`. Behaves better at 1024-1440px viewports.
+- **`color-mix(in srgb, currentColor 70%, transparent)` for body text** — adaptive low-contrast body that inherits from any context. Modern but evergreen since 2023.
+
+### 9.6 Sweeping Corp of America — `sweepingcorp.com` (Archetype: industrial / commercial-services — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §14)
+
+**Why this lands in trades:** large-scale fleet-based industrial services. Reference for any Berlin trades client at the "regulated / commercial / municipal" tier — HVAC contractors, fleet operators, commercial cleaning, industrial electricians.
+
+**What to borrow:**
+- **Eurostile Condensed weight 900 for display** — the canonical mid-century industrial typeface. Single-decision telegraph of "heavy machinery / equipment." Use weight 900 only, uppercase, ~54px at the hero.
+- **Maritime navy `#042940`** as body text color → codified as `--color-text-trade-navy` in `TECH.md` §7. More credible than pure black, more quiet than corporate cobalt.
+- **Small utility-chip pills (`border-radius: 7.5-12px`)** for B2B catalog filters. **Do not use the 980+ premium pill in B2B contexts** — reserve premium pills for premium-consumer positioning.
+
+---
+
 ## 10. Decision matrix — picking the archetype per client
 
 | Question | If yes → | If no → |

@@ -1,0 +1,72 @@
+---
+import Section from '@/components/layout/Section.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const sections = [
+  {
+    id: 'switch',
+    title: 'Switch to iPhone.',
+    body: 'The new lineup, the new features, the new everything.',
+  },
+  {
+    id: 'lineup',
+    title: 'Explore the lineup.',
+    body: 'iPhone 17 Pro, iPhone 17, iPhone Air, iPhone 17e.',
+  },
+  {
+    id: 'closer',
+    title: 'Take a closer look.',
+    body: 'Camera systems, chip benchmarks, battery life.',
+  },
+  {
+    id: 'buy',
+    title: 'Why buy from us.',
+    body: 'Trade-in, financing, two-year care, free shipping.',
+  },
+  {
+    id: 'trade-in',
+    title: 'Trade in. Upgrade.',
+    body: 'Your old iPhone, applied to your new one.',
+  },
+  {
+    id: 'features',
+    title: 'The features.',
+    body: 'Action button, Dynamic Island, USB-C, MagSafe.',
+  },
+  {
+    id: 'privacy',
+    title: 'Privacy. Built in.',
+    body: 'On-device intelligence, app tracking transparency.',
+  },
+  { id: 'essentials', title: 'The essentials.', body: 'Cases, MagSafe, AirPods, accessories.' },
+];
+---
+
+<BaseLayout title="Demo · Alternating section background">
+  <main id="main">
+    <div class="container-page section">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Demo</p>
+      <h1 class="text-3xl sm:text-4xl text-text mt-2">Alternating section background</h1>
+      <p class="prose mt-4 max-w-prose">
+        Spec: <code>docs/design/components/alternating-section-bg.md</code>. Apple's 14-section
+        rhythm, simulated below with 8 sections alternating between the solo-barber primary bg
+        (<code>--color-bg</code>) and the warm surface bg (<code>--color-surface</code>).
+      </p>
+    </div>
+
+    {
+      sections.map((s, i) => (
+        <Section
+          id={s.id}
+          ariaLabelledBy={`${s.id}-heading`}
+          variant={i % 2 === 0 ? 'primary' : 'alt'}
+        >
+          <h2 id={`${s.id}-heading`} class="text-3xl sm:text-4xl text-text">
+            {s.title}
+          </h2>
+          <p class="text-text-muted mt-4 max-w-prose leading-relaxed">{s.body}</p>
+        </Section>
+      ))
+    }
+  </main>
+</BaseLayout>

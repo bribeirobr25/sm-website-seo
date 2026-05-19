@@ -1,0 +1,70 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const demos = [
+  {
+    slug: 'half-pill-cta',
+    title: 'Half-pill CTA',
+    spec: 'docs/design/components/half-pill-cta.md',
+  },
+  {
+    slug: 'label-count-header',
+    title: 'LABEL (N) header',
+    spec: 'docs/design/components/label-count-header.md',
+  },
+  { slug: 'hours-in-nav', title: 'Hours-in-nav', spec: 'docs/design/components/hours-in-nav.md' },
+  {
+    slug: 'stat-callouts',
+    title: 'Stat callouts',
+    spec: 'docs/design/components/stat-callouts.md',
+  },
+  {
+    slug: 'alternating-section-bg',
+    title: 'Alternating section background',
+    spec: 'docs/design/components/alternating-section-bg.md',
+  },
+  {
+    slug: 'marquee-cta',
+    title: 'Marquee-on-hover CTA',
+    spec: 'docs/design/components/marquee-cta.md',
+  },
+  {
+    slug: 'eyebrow-display-hero',
+    title: 'Eyebrow + display hero ⚠ portfolio-only',
+    spec: 'docs/design/components/eyebrow-display-hero.md',
+  },
+  {
+    slug: 'split-text',
+    title: 'SplitText (per-character)',
+    spec: 'docs/design/components/per-character-split.md',
+  },
+];
+---
+
+<BaseLayout title="Component demos" description="Internal component demos — not for production.">
+  <main id="main" class="section">
+    <div class="container-page">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Internal</p>
+      <h1 class="text-3xl sm:text-4xl text-text mt-2">Component demos</h1>
+      <p class="prose mt-4 max-w-prose">
+        Internal demo surface for the 8 components derived from the UI/UX reference study. Each
+        page renders the component in this scaffold's dark+amber identity and lists the
+        per-vertical token swaps for adaptation. Not linked from production; `demo/` is excluded
+        from indexing via robots.txt and inherits the BaseLayout default `noindex` meta.
+      </p>
+
+      <ul class="mt-10 grid sm:grid-cols-2 gap-4">
+        {
+          demos.map((demo) => (
+            <li class="p-6 rounded-lg bg-surface-elev border border-border hover:border-accent transition-colors">
+              <a href={`/demo/${demo.slug}`} class="block">
+                <h2 class="text-xl text-text font-display">{demo.title}</h2>
+                <p class="text-xs text-text-muted tabular mt-2">{demo.spec}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
+</BaseLayout>

@@ -1541,6 +1541,15 @@ Run this before every client delivery. No exceptions.
 - **Ignoring competitor reviews and mentions.** Local SEO is competitive. Monitor what competitors are doing.
 - **Building backlinks with spammy link schemes.** Focus on natural mentions (local press, directories, partners) only. Buying links is a penalty risk.
 
+### Tech SEO anti-patterns (added 2026-05-19)
+
+Measured anti-patterns from `docs/audit/ui-ux-reference-study.md`:
+
+- **Fixed-viewport SPA / scroll-hijacked navigation.** `docs/audit/ui-ux-reference-study.md` §4 Aircenter, §9 Hubtown, §11 Marvell, §21 Victor Furuya all render at `100vh` and translate/cross-fade panels in place rather than scrolling. Crawlers see one viewport of content; below-fold sections are invisible to search; deep-linking breaks; CLS regresses during programmatic transforms. **Forbidden for any client whose acquisition channel includes Google search.** Acceptable only when SEO is explicitly deprioritized in `BRIEF.md` (portfolio, agency-self, referral-only luxury). Cross-reference: `DESIGN-BEST-PRACTICES.md` §3 Forbidden visual directions.
+- **Inverted `h1`/`h2` hierarchy (eyebrow h1).** Three sites in the UI/UX study (§6 Auwa, §16 Lesse, §18 Juan Mora) ship a 12-15px tracked-uppercase `h1` as a quiet "eyebrow label" and let the visual hero be a 32-60px paragraph. The `h1` is the most-indexed element on the page; reducing it to an eyebrow hands away the primary keyword target. **Forbidden for all local-business clients.** The `h1` must be the visually primary headline AND carry the primary SEO keyword (`Physiotherapie Prenzlauer Berg`, `Friseur Mitte`, `Café in Kreuzberg`). Cross-reference: `DESIGN-BEST-PRACTICES.md` §4 Typography rules — "Inverted h1/h2 hierarchy."
+- **WebGL-rendered hero text (no DOM text).** `docs/audit/ui-ux-reference-study.md` §8 Hubtown renders its entire hero (including the wordmark "WE BUILD THE FUTURE OF REAL ESTATE") inside a `<canvas>`. The DOM contains zero `<h1>` / `<h2>` / `<p>`. Crawlers, screen readers, and accessibility tooling see one `<canvas>` and the page `<title>`. Same SEO failure mode as fixed-viewport SPA. **Forbidden for any local-business client.**
+- **Lazy autoplay video as the LCP element.** A `<video>` rendered larger than the hero image's bounding box becomes the LCP element. Lighthouse penalises this because video metadata loads after image LCP fires — pushing the measured LCP > 2.5 s. Per `PERFORMANCE.md` §8, the `poster` image must be the LCP element with `fetchpriority="high"`. Validate via Lighthouse → Performance → "Largest Contentful Paint element" before flipping `noindex` off.
+
 ### Content anti-patterns
 
 - **Stock photos presented as the actual business.** Destroys trust and misleads users.

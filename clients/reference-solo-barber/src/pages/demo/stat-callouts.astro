@@ -1,0 +1,54 @@
+---
+import StatCallouts from '@/components/sections/StatCallouts.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const trades = [
+  { number: '15+', label: 'Jahre Erfahrung', ariaLabel: 'Mehr als 15 Jahre Erfahrung' },
+  { number: '200+', label: 'Kunden', ariaLabel: 'Mehr als 200 Kunden' },
+  { number: '1500+', label: 'Projekte', ariaLabel: 'Mehr als 1500 Projekte' },
+];
+
+const proServices = [
+  { number: '12', label: 'Jahre', ariaLabel: '12 Jahre' },
+  { number: '350+', label: 'Mandate', ariaLabel: 'Mehr als 350 Mandate' },
+  { number: '6', label: 'Sprachen', ariaLabel: '6 Sprachen' },
+];
+
+const agencySelf = [
+  { number: '8', label: 'Jahre', ariaLabel: '8 Jahre Agentur' },
+  { number: '40+', label: 'Kunden', ariaLabel: 'Mehr als 40 Kunden' },
+  { number: '95', label: 'Lighthouse Mobile', ariaLabel: 'Lighthouse Mobile Score 95' },
+];
+---
+
+<BaseLayout title="Demo · Stat callouts">
+  <main id="main">
+    <div class="container-page section">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Demo</p>
+      <h1 class="text-3xl sm:text-4xl text-text mt-2">Big-number stat callouts</h1>
+      <p class="prose mt-4 max-w-prose">
+        Spec: <code>docs/design/components/stat-callouts.md</code>. Per-vertical examples below.
+        Honesty rule: never invent numbers — omit the callout if the client is unsure.
+      </p>
+    </div>
+
+    <div class="border-t border-border">
+      <p class="text-sm uppercase tracking-wider text-text-muted container-page pt-12">Trades</p>
+      <StatCallouts stats={trades} ariaLabel="Trades statistics" />
+    </div>
+
+    <div class="border-t border-border">
+      <p class="text-sm uppercase tracking-wider text-text-muted container-page pt-12">
+        Professional services
+      </p>
+      <StatCallouts stats={proServices} ariaLabel="Professional services statistics" />
+    </div>
+
+    <div class="border-t border-border">
+      <p class="text-sm uppercase tracking-wider text-text-muted container-page pt-12">
+        Agency-self
+      </p>
+      <StatCallouts stats={agencySelf} ariaLabel="Agency statistics" align="center" />
+    </div>
+  </main>
+</BaseLayout>

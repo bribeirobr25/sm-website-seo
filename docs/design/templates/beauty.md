@@ -345,6 +345,28 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 
 ---
 
+### 9.4 Auwa — `auwa.life` (Archetype A — wellness / holistic, added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §6)
+
+**Why this lands in beauty:** the holistic-wellness archetype done at Awwwards-tier polish. Japanese-philosophy lifestyle brand built on Tailwind v4 with OKLCH color tokens — the most modern stack in the entire study.
+
+**What to borrow:**
+- **OKLCH color tokens with cultural names** — `--color-sumi` (ink black) + `--color-washi` (paper cream). Brand-as-design-tokens. Encourage clients to name their primary pair after something real (a stone, a fabric, a flower).
+- **Eyebrow `h1` + display-paragraph hero** — 12px tracked-uppercase h1 as a *label*, 32px serif paragraph as the visual hero. **Caveat:** permitted ONLY for portfolio/referral clients per `DESIGN-BEST-PRACTICES.md` §4 inverted-h1 restriction; for a Berlin local-business beauty/wellness client (with organic-search acquisition), the h1 must be the visually primary headline AND carry the SEO keyword.
+- **Marquee-on-hover CTA** — the highest-leverage interaction in the study. Fully decoded in `ui-ux-reference-study.md` §6 Motion block. Component spec in `docs/design/components/marquee-cta.md` (Phase 3a).
+- **Numbered section labels (`01 · STORE`, `01 / 04`)** — editorial flourish at zero cost. Adopt for beauty's curated-treatment menus.
+
+### 9.5 Kindred of Ireland — `kindredofireland.com` (Archetype B — heritage craft, added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §20)
+
+**Why this lands in beauty:** the "fragile elegance" archetype — luxury linen, made-to-order, handmade. Direct reference for premium boutique-beauty (botanical apothecary, perfumer, bridal-makeup atelier).
+
+**What to borrow:**
+- **Light-weight serif at extreme size** — Freight Big Pro weight **300** at 100px h3 (category labels), 44px h1/h2. Free equivalents: Cormorant Garamond Light, EB Garamond Light.
+- **Cream bg `#FBF8F5`** — fifth confirming sample in the cream-not-white synthesis.
+- **Serif body fallback** — body `font-family: "Folio Std", serif` (not `sans-serif`). The site survives a font-load failure with the brand voice intact.
+- **Mobile video pause** — Phase 1a measurement showed 0/7 videos playing on mobile. Use as the responsible-pause precedent in client conversations.
+
+---
+
 ## 10. Decision matrix — picking the archetype per client
 
 | Question | If yes → | If no → |

@@ -7,6 +7,17 @@
 
 ---
 
+## Amendment log
+
+This study is a living document. Each addendum is logged below.
+
+| Date | Phase | Sites affected | Change |
+|---|---|---|---|
+| 2026-05-18 | Initial draft | All 24 | Original audit at 1440 × 900 desktop. 22 sites measured; HBA §2 and Bulgari §23 blocked by bot-mitigation. |
+| 2026-05-19 | Phase 1c | §2 HBA, §23 Bulgari | Re-attempted MCP-browser navigation; both still blocked. Placeholders updated to reference `RUNBOOK-real-browser-audit.md`. Manual measurement deferred to a non-headless session. |
+
+---
+
 ## Table of contents
 
 1. [apple.com/iphone](#1-applecomiphone) — flagship product launch · cinematic scrollytelling
@@ -89,17 +100,47 @@ No border-radius on text-link CTAs (`0px`). No drop-shadow anywhere on the page.
 - This page is for a desktop reader on a fast connection. The image count (112) and section depth are not something a Tier-1 single-page agency landing should imitate. Apple gets away with it because their cache hit rates and edge POPs are exceptional. For a Berlin restaurant on a free Vercel tier, two or three of these sections, max.
 - The "Apple blue" CTA does not work in any non-Apple brand context. Borrow the *shape* of the button (pill, 11/21 padding, 17px/400, no shadow), not the color.
 
+### Motion (Phase 1b — measured 2026-05-19)
+
+Apple uses **pure CSS animations and transitions** — `window.gsap`, `window.Framer`, and `window.THREE` are all undefined. Every motion on the page is in the CSSOM.
+
+**Standard transition unit (the Apple "snap"):**
+- `transition: color 0.32s cubic-bezier(0.4, 0, 0.6, 1)` — applied to nav `a` and `button` color changes
+- 320ms duration with the smooth-ease curve is the Apple house unit; reuse for nav/button color hover
+
+**Scroll-reveal transitions (h2, section content):**
+- `transition: opacity, transform 0.32s ease 0.08s` — applied to h2 elements
+- 80ms transition-delay is what gives the staggered "headline lands first, body follows" effect when an IntersectionObserver toggles the visibility class
+
+**Stagger cascade (search results dropdown / lineup tiles):**
+- `@keyframes globalnav-search-fade-and-slide` — 320ms linear, delays incrementing by 20ms per item (200 / 220 / 240 / 260 / 280 / 300 ms)
+- The 20ms inter-item delay is short enough to feel like one continuous wave, long enough that each item registers as its own arrival
+
+**Hero ribbon drop:**
+- `@keyframes ribbon-drop` — 800ms linear, one-shot. Applied to `DIV.ribbon-drop-wrapper`.
+
+**Recipe for the agency template:**
+```css
+:root {
+  --motion-fast: 0.18s;     /* button color */
+  --motion-base: 0.32s;     /* Apple's house unit — nav, h2 reveal */
+  --motion-slow: 0.5s;      /* large element entries, hospitality calm */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.6, 1);  /* Apple's ease-in-out */
+  --stagger-step: 20ms;     /* per-item delay in cascades */
+}
+```
+
 ---
 
 ## 2. hba.com
 
 **Vertical match:** fashion brand / artist e-commerce. Closest agency analogue: a boutique apparel or independent designer landing — would land in the *artisan* template's "designer-led" archetype if we add one.
 
-> ⚠️ **Inspection blocked:** hba.com sits behind Cloudflare's interactive bot-check, which the headless MCP browser cannot solve. Three navigation attempts with 6 s, 8 s, and 15 s waits all stalled on the "Just a moment…" challenge page. **No live measurements were taken** and the entry below is excluded from the cross-site synthesis. To audit it properly, open in a real browser (Cloudflare lets a human through on the first interaction), then run the same `getComputedStyle` script that was used on Apple's entry §1.
+> ⚠️ **Inspection blocked — deferred to manual session.** `hba.com` sits behind Cloudflare's interactive bot-check, which the headless MCP browser cannot solve. Two audit attempts (2026-05-18 with 6/8/15 s waits; 2026-05-19 Phase 1c retry with 25 s wait) both stalled on the "Just a moment…" challenge page. **No live measurements have been taken.** Per `docs/audit/RUNBOOK-real-browser-audit.md`, measurement is deferred to a manual non-headless session — open in real Chrome, run the inspector script from the runbook §Step 3, paste results here.
 
-**What is publicly known** (industry/press record, *not* a runtime read on this session): HBA = Hood By Air, Shayne Oliver's fashion label. The brand's web presence is recognized in the awwwards / fashion-tech press for a brutalist editorial layout — oversized condensed display type, deep-black backgrounds, asymmetric grids that break expectations every scroll, and product photography styled like a magazine spread rather than a product catalog. The borrowable principle (*if confirmed manually*) is **"magazine first, shop second"** — useful for the artisan template when the client is a craftsperson with strong visual identity who wants the work to lead and the store to be a quiet outcome.
+**What is publicly known** (industry/press record, *not* a runtime read): HBA = Hood By Air, Shayne Oliver's fashion label. The brand's web presence is recognized in the awwwards / fashion-tech press for a brutalist editorial layout — oversized condensed display type, deep-black backgrounds, asymmetric grids that break expectations every scroll, and product photography styled like a magazine spread rather than a product catalog. The borrowable principle (*if confirmed manually*) is **"magazine first, shop second"** — useful for the artisan template when the client is a craftsperson with strong visual identity who wants the work to lead and the store to be a quiet outcome.
 
-**Action item:** flag for manual re-audit in a non-headless session before referencing in any client deck.
+**Status:** placeholder. Excluded from cross-site synthesis until manually measured. Will trigger an entry in `docs/audit/PENDING.md` for next non-headless session.
 
 ---
 
@@ -229,6 +270,26 @@ A true 12-column viewport-fluid grid with 20px gutters. Every layout decision on
 - Z-stacked panels break browser back/forward, deep-linking, and SEO. Aircenter accepts this because their leads come from broker referrals, not organic search. For any Berlin agency client whose acquisition includes search, do *not* copy the pattern.
 - Uppercase body text fails roughly 100 % of plain-language readability tests. Use uppercase for chrome (nav, buttons, micro-labels) — not for paragraphs.
 
+### Motion (Phase 1b — measured 2026-05-19)
+
+**Correction to original v1 analysis.** The page is NOT z-stacked cross-fade as described initially. The live runtime read shows it's a **horizontal-translate panel system** with click-driven navigation:
+
+- All sections beyond the visible first have `transform: matrix(1, 0, 0, 1, -2560, 0)` — i.e. translated 2560px to the left, off-screen
+- `opacity: 0` is set on the off-screen sections
+- Sections themselves declare `transition: all 0s ease` — meaning the *underlying* CSS transition is zero; an external JS controller is animating these elements imperatively (likely via inline-style updates, GSAP or a custom request-animation-frame loop)
+- `bodyHasWheelHandler` returned `false` — no wheel hijacking. Navigation is click-driven via the "CHOOSE AN OFFICE" UI, not scroll. (Previous v1 claim of "wheel events drive cross-fade" was wrong.)
+
+**Class taxonomy:** `ui-light` / `ui-dark` swap describes the visible state of each section. `section--full-height` and `section--no-overflow-clip` are used as the structural primitives for the off-screen-then-slide-in pattern.
+
+**Color hover transition:**
+- `transition: color 0.6s cubic-bezier(0.25, 0.74, 0.22, 0.99)` on `a` and `button`
+- 600ms is slow; the easing curve has a *very* late-finishing tail (0.99 final-y) — visually reads as "decisive snap, long settle." Appropriate for a Class-A real-estate brand where every interaction wants to feel deliberate.
+
+**Active CSS animation at runtime:**
+- `@keyframes spin` — 1500ms linear infinite, on `DIV.spinner js-carousel-webgl-spinner` — a small WebGL preloader for the in-section image carousel (so Three.js *is* loaded somewhere, but namespaced into the carousel rather than as `window.THREE`)
+
+**Recipe correction for the agency:** if cloning Aircenter's pattern, build it as **horizontal `translate-X` + opacity transitions of duration ~600-800ms with an aggressive ease-out**, NOT as z-stacked panels. The horizontal-translate pattern is also slightly more SEO-tolerable because deep-linking can scroll-into-view a specific section by ID; z-stacked panels can't.
+
 ---
 
 ## 5. watchhouse.com
@@ -357,6 +418,37 @@ All flat-text CTAs measured: `padding: 12px 24px`, `font-size: 12px`, `font-weig
 - A 32px-serif lead paragraph is heavy line-length-wise. The site keeps it short (3-4 lines max) for a reason. Clients without strong copywriting will fail to fill the space and the move collapses.
 - Six autoplay videos + a canvas is still heavy. For a Berlin yoga studio, target *one* hero loop + the canvas grain, not six.
 
+### Motion (Phase 1b — measured 2026-05-19)
+
+**Marquee-on-hover CTA — fully decoded.** This is the highest-leverage interaction in the study; the live runtime read showed exactly how it's built.
+
+The button is a stack of three layered spans inside `<a>` with `overflow-hidden`:
+1. **Outer button:** `transition: color 0.5s cubic-bezier(0.7, 0, 0.3, 1), border-color 0.5s cubic-bezier(0.7, 0, 0.3, 1)`
+2. **Background fill layer** (e.g., `.bg-sumi` on dark hover variants): `transform-origin: bottom; transform: scaleY(0)` at rest. On hover, `transform: scaleY(1)` with `transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1)`. The bg slides up from the bottom to fill the button.
+3. **Inner label spans** (the visible label + its hidden duplicate below): `transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1)`. On hover, the column translates up by 100%, replacing the visible label with the duplicate.
+
+All three layers share the same **0.5s duration** and the same **`cubic-bezier(0.7, 0, 0.3, 1)` easing curve** (≈ easeInOutQuart). The coincidence is intentional: bg slide-up + label translate up + color change all complete at the same moment, producing one unified "the link acknowledged me" event rather than three separable animations.
+
+**Other transitions:**
+- General `a` selector: `transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1)` (≈ easeOutExpo — decelerating, almost-physical settle). Used for image-card hover lifts.
+- `button`: `transition: color 0.18s ease-out` (fast text-only hover).
+- `nav a`: `transition: <all color tokens> 0.3s cubic-bezier(0.4, 0, 0.2, 1)` — Tailwind's default ease for color changes.
+- **No GSAP / Framer / Three.js loaded.** Pure CSS.
+- Scroll cue line: `@keyframes scrollCueBreathe` — 2800ms linear infinite, scaleY pulsing (a slow visible breath).
+
+**The portable recipe (drop into Tailwind v4 `@theme`):**
+```css
+:root {
+  --motion-marquee: 0.5s;
+  --ease-marquee: cubic-bezier(0.7, 0, 0.3, 1);
+}
+.cta--marquee { overflow: hidden; transition: color var(--motion-marquee) var(--ease-marquee), border-color var(--motion-marquee) var(--ease-marquee); }
+.cta--marquee .cta__label { display: flex; flex-direction: column; transition: transform var(--motion-marquee) var(--ease-marquee); }
+.cta--marquee:hover .cta__label { transform: translateY(-100%); }
+.cta--marquee .cta__fill { position: absolute; inset: 0; transform: scaleY(0); transform-origin: bottom; transition: transform var(--motion-marquee) var(--ease-marquee); }
+.cta--marquee:hover .cta__fill { transform: scaleY(1); }
+```
+
 ---
 
 ## 7. reallyupthere.com
@@ -394,6 +486,18 @@ Tile heights are deliberately non-uniform: 455, 513, 448, 392, 384, 357, 411, 47
 
 - "Black-on-black labels reveal on hover" is anti-pattern for accessibility on touch devices (no hover state). The portfolio almost certainly has a mobile fallback where labels are visible by default — confirm before borrowing.
 - Heavy reliance on GSAP for letter animations means a JS-execution-blocked user sees only a list of words. Acceptable for a portfolio (Brandon's audience opens JS); not acceptable for a restaurant landing.
+
+### Motion (Phase 1b — measured 2026-05-19)
+
+**GSAP v3.15.0 is loaded** (`window.gsap.version = '3.15.0'`). Library defaults: `duration: 0.5`, `overwrite: false`, `delay: 0` — i.e. the studio uses GSAP's house defaults rather than overriding them.
+
+**Per-character letter setup confirmed:** the W / O / R / R / K divs (one per character) each carry `will-change: transform` at rest. That's the unambiguous signal GSAP applies before a `gsap.to(target, {y, x, rotation, ...})` tween — it pre-promotes the element to its own GPU layer so the upcoming transform animation runs at 60 fps. The visible transform is `none` at rest; GSAP writes inline `transform: matrix(...)` only during scroll or hover events that fire the tween.
+
+**Project-tile reveal — pure CSS, not GSAP:**
+- `transition: clip-path 1s cubic-bezier(0.9, 0, 0.1, 1)` on `[class*=tile]`
+- 1000ms duration is unusually long; the `cubic-bezier(0.9, 0, 0.1, 1)` is an extreme S-curve (very flat → very steep → very flat) — visually reads as "pause → snap → settle." Used here because the project preview reveals are the centerpiece of the page; the 1 s duration earns its weight.
+
+**GSAP scope caveat (per Phase 1b scoping):** the actual letter-animation tweens (their targets, end values, ease string, scroll-trigger configs) are *not* in the CSSOM and not in `getAnimations()`. They live in GSAP's internal timeline, which is empty at rest (`activeTweens: 0`). To capture the full tween definition, a manual DevTools session is needed — open the page, hover the WORK letters, then snapshot `window.gsap.globalTimeline.getChildren(true, true, false)` while the tween is mid-flight. Deferred to a future Phase 4 manual session.
 
 ---
 
@@ -807,6 +911,23 @@ For a hospitality client, opening hours are the single most-checked piece of inf
 - The site is in French + English. Translations are well-handled. For our DACH market this is the equivalent challenge (DE + EN minimum). Confirm Haven uses a CMS-driven translation pipeline before extrapolating the build cost — for our agency a separately-tracked Astro `astro-i18n` setup is appropriate.
 - A 300-weight body is delicate. On the `#FFFAF7` cream it works because contrast is strong (~12:1); on pure white it would feel thin.
 
+### Motion (Phase 1b — measured 2026-05-19)
+
+**Correction to original v1 analysis.** The RESERVE button is **NOT `position: fixed`** — it returned `position: static` and sits at x=1162, y=14 (in the top nav row, right-aligned). The half-pill shape (`border-radius: 30px 0 0 30px`) is **purely visual** — it suggests "sticking out from the right edge of the viewport" but the button is just inline in the nav. The optical illusion does the work; no JS, no sticky CSS.
+
+**Hospitality motion vocabulary:**
+- `a { transition: color 0.5s ease }` — the entire site runs on a slow, calming **0.5s ease** color hover. Compare Apple's 0.32s `cubic-bezier(0.4, 0, 0.6, 1)`: Apple snaps; Haven *settles.* A 200ms difference produces a completely different brand register — fast-precise (Apple) vs. slow-warm (Haven). For gastronomy / beauty / wellness clients, default to the slow side.
+- RESERVE button: `transition: background-color 0.5s ease` (color shift on hover; no transform, no scale, no shadow change). The lightest possible CTA hover.
+
+**Active animations at runtime:**
+- One SVG `@keyframes drawSVG` — 1407ms linear, one-shot. Likely an SVG logo or illustration stroking itself in on first load.
+- **Zero JS motion library.** No GSAP, no Framer Motion, no Lenis. The entire site's motion is CSS color transitions + a single SVG keyframe animation. 5536px page height, zero motion JS. The lesson: **a hospitality site can win an award entirely on type, color, and 500ms ease transitions.** Don't reach for Lottie or GSAP before the simpler stack has been exhausted.
+
+**Recipe correction for `templates/gastronomy.md` half-pill component:**
+- Build the half-pill as a static (not fixed) component in the nav row's right cell
+- `transition: background-color 0.5s ease`
+- Don't add a transform on hover — the color shift is enough; warmth comes from restraint
+
 ---
 
 ## 16. lessestudio.com
@@ -1063,11 +1184,11 @@ The brand has effectively forked Apple's button system, swapping only the color.
 
 **Vertical match:** luxury fashion / haute joaillerie campaign microsite. Closest agency analogue: a **beauty** template's "couture / heritage-luxury" archetype, or a one-off events-hospitality launch site.
 
-> ⚠️ **Inspection blocked:** the Bulgari campaign microsite returned `net::ERR_HTTP2_PROTOCOL_ERROR` on three consecutive headless-browser navigation attempts (both `/emerald-strata` and the bare domain). This is consistent with deliberate TLS/HTTP fingerprinting against automated clients — luxury brands routinely deploy bot-mitigation that targets headless Chrome's HTTP/2 implementation. **No live measurements were taken.**
+> ⚠️ **Inspection blocked — deferred to manual session.** The Bulgari campaign microsite returns `net::ERR_HTTP2_PROTOCOL_ERROR` on every headless-browser navigation attempt — four attempts to date (three on 2026-05-18; one on 2026-05-19 Phase 1c retry). This is consistent with deliberate TLS/HTTP fingerprinting against automated clients — luxury brands routinely deploy bot-mitigation that targets headless Chrome's HTTP/2 implementation. **No live measurements have been taken.** Per `docs/audit/RUNBOOK-real-browser-audit.md`, measurement is deferred to a manual non-headless session.
 
-**What is publicly known** (Bulgari press kit + the broader awwwards record, *not* a runtime read on this session): the Eclettica platform is Bulgari's editorial micro-experiences hub, with per-collection microsites built as cinematic scroll-narratives. Common moves across that platform: oversized italic serif display (Bulgari uses a custom variant of `Bulgari Serif`), deep emerald + ink-black palette with thin gold accents, full-bleed video hero, scroll-locked panel transitions with 60+ fps GPU-composited animation, no visible CTAs above the second viewport (the experience leads, the store is downstream). The borrowable principle (*if confirmed manually*) is **"campaign is the product"** — when launching a single piece of work (a collection, a wedding venue, a tasting menu, a seasonal capsule), the page does not need to be a website; it can be a sequence of cinematic frames with the call-to-action arriving only after the visitor has *felt* the brand.
+**What is publicly known** (Bulgari press kit + the broader awwwards record, *not* a runtime read): the Eclettica platform is Bulgari's editorial micro-experiences hub, with per-collection microsites built as cinematic scroll-narratives. Common moves across that platform: oversized italic serif display (Bulgari uses a custom variant of `Bulgari Serif`), deep emerald + ink-black palette with thin gold accents, full-bleed video hero, scroll-locked panel transitions with 60+ fps GPU-composited animation, no visible CTAs above the second viewport (the experience leads, the store is downstream). The borrowable principle (*if confirmed manually*) is **"campaign is the product"** — when launching a single piece of work (a collection, a wedding venue, a tasting menu, a seasonal capsule), the page does not need to be a website; it can be a sequence of cinematic frames with the call-to-action arriving only after the visitor has *felt* the brand.
 
-**Action item:** flag for manual re-audit in a non-headless session (open in Chrome, save full DOM via DevTools, re-run the computed-style script). Two unaudited entries in this study (HBA §2, Bulgari §23) both exhibit bot-mitigation that headless can't bypass — note as an agency capability gap.
+**Status:** placeholder. Excluded from cross-site synthesis until manually measured. Both unaudited entries in this study (HBA §2, Bulgari §23) exhibit bot-mitigation that headless can't bypass — closed as a capability gap by the runbook.
 
 ---
 
@@ -1225,6 +1346,109 @@ Three sites had `pageHeight = window.innerHeight` (900 px) and used some form of
 - Hubtown (§8): canvas-rendered WebGL "page" with no DOM scroll
 
 **Pattern:** appropriate when the client is selling a single high-trust, low-volume item (a building, a couture piece, a portfolio, a service) where the visitor arrives via personal referral, not search. **Hostile to SEO; do not use for any client whose acquisition includes Google.**
+
+### 12. Mobile responsive collapse — measured (Phase 1a addendum, 2026-05-19)
+
+Eight high-relevance sites were re-probed at 375 × 812 viewport. Findings ground the agency's mobile-first defaults.
+
+**Display-h1 scale-down ratio (desktop → 375px):**
+
+| Site | Desktop h1 | Mobile h1 | Ratio | Notes |
+|---|---:|---:|---:|---|
+| Watch House §5 | 20px (wordmark) | 20px | 100 % | h1 is a small wordmark; never needs scaling |
+| Haven §15 | 49.5px | 39.6px | 80 % | Modest scale-down — fits hospitality calm |
+| Marvell §11 | 256px | 112px | 44 % | Large reduction because the wordmark must stay visible |
+| Mily §9 | 108.5px | 62px | 57 % | |
+| Auwa §6 | 12px (eyebrow) | 12px | 100 % | Eyebrow-style h1 stays identical (12px / +1.92px tracking) |
+| Modus §3 | 121.6px | 59.25px | 49 % | |
+| Horeca-Social §10 | 163.7px | 86.6px | 53 % | |
+| Kindred §20 | 44px | 32px | 73 % | h3 (category labels): 100px → 50px = 50 % |
+
+**Pattern:** display heroes that exceed ~80px desktop almost universally **halve to ~50 %** on mobile (Marvell 44 %, Modus 49 %, Mily 57 %, Horeca 53 %). Heroes ≤ 50px desktop stay closer to their original size (Haven 80 %, Kindred 73 %). Tiny/eyebrow h1s (Auwa 12px, Watch House 20px) don't scale at all. **Agency rule (Phase 2 codification): for fluid display headlines, use `clamp(min, fluid, max)` where min ≈ 50 % of max for the >80px tier, and ~75 % of max for the ≤50px tier.**
+
+**Body text — no site goes below 14px on mobile:**
+
+| Site | Mobile body | Weight |
+|---|---:|---|
+| Watch House | 16px | 300 |
+| Haven | 18px | 300 |
+| Auwa, Mily, Marvell, Kindred | 16px | 400 |
+| Modus | 14.4px | 400 |
+| Horeca-Social | 20px | 400 |
+
+**Pattern:** mobile body is **never below 14px**, never above 20px. The 16-18px range covers 6 of 8 sites. **Agency rule already in place** (`PERFORMANCE.md` body-size floor) is validated by the data.
+
+**Mobile nav collapse:**
+
+5 of 8 sites collapse desktop nav to a hamburger (`navHidden: true`): Mily, Auwa, Horeca-Social, Kindred, Modus (after threshold). The 3 that *don't* collapse — Watch House, Haven, Marvell — keep their nav inline because their desktop nav is already minimal (4-6 short labels). **Agency rule:** if desktop nav has ≥ 6 labels, collapse to hamburger below 768 ; if ≤ 4 labels, keep inline.
+
+**Ambient video on mobile — the brand-policy split:**
+
+| Site | Videos on page | Still playing on mobile |
+|---|---:|---:|
+| Watch House §5 | 7 | **7/7** ⚠️ |
+| Auwa §6 | 6 | **0/6** ✅ |
+| Kindred §20 | 7 | **0/7** ✅ |
+
+Two of three video-heavy sites *pause all autoplay videos on mobile* (Auwa, Kindred) — likely via `<video autoplay playsinline>` with a `prefers-reduced-data` or `effectiveType` media query gating. Watch House does not pause; all 7 videos continue auto-playing on 375 viewport. **This is the live evidence behind the Phase 2 mandatory-constraints rule for ambient video** (`PERFORMANCE.md`). The pattern works *only* when paused on mobile.
+
+**Container padding observed:** 16-24px horizontal padding on most sites at 375 (gutters appear inside child elements rather than on `main`). For our agency template, default `padding-inline: 1rem` at < 480, `1.5rem` at 480-768, `2rem` at ≥ 768.
+
+### 11. Motion recipes — measured house units (Phase 1b addendum, 2026-05-19)
+
+Five sites with the most distinctive motion were re-probed with `document.getAnimations()` + computed-transition reads. Three findings ground the agency's motion vocabulary:
+
+**Duration map by brand register:**
+
+| Register | Duration | House examples | Use for |
+|---|---|---|---|
+| Tech-snap | **180-320 ms** | Apple §1 (0.32s) · Auwa nav (0.3s) · Really Up There button (0.18s) | tech / SaaS / consumer-product / agency-self |
+| Hospitality-warm | **500 ms** | Watch House (inferred) · Haven §15 (0.5s) · Auwa marquee CTA (0.5s) | gastronomy / beauty / wellness / artisan |
+| Premium-deliberate | **600 ms** | Aircenter §4 (0.6s) | real estate / luxury / institutional |
+| Statement-reveal | **800-1000 ms** | Apple ribbon-drop (0.8s) · Really Up There tile clip-path (1.0s) | one-time hero entries; not for ongoing interactions |
+
+**Easing curves — measured & named:**
+
+| Curve | Cubic-bezier | Where seen | When to reach for it |
+|---|---|---|---|
+| Apple smooth | `cubic-bezier(0.4, 0, 0.6, 1)` | Apple nav, h2 reveal | Default ease-in-out for *everything* in a tech/agency-self build |
+| Tailwind default | `cubic-bezier(0.4, 0, 0.2, 1)` | Auwa nav | Free baseline if not opinionated |
+| Quart in/out (Auwa marquee) | `cubic-bezier(0.7, 0, 0.3, 1)` | Auwa marquee CTA | Symmetrical "consciously paced" transitions — labels swapping, panel reveals |
+| Expo out | `cubic-bezier(0.16, 1, 0.3, 1)` | Auwa image-card lift | "Settles into place" — image lifts, card hovers, dropdown menus |
+| Extreme S | `cubic-bezier(0.9, 0, 0.1, 1)` | Really Up There clip-path | One-time reveals where the "pause-then-snap" is the visual punctuation |
+| Decisive snap, long tail | `cubic-bezier(0.25, 0.74, 0.22, 0.99)` | Aircenter color hover | Luxury / institutional, deliberate interactions |
+| Hospitality `ease` | browser default ease | Haven `a` color | When the choice is restraint — let the OS default handle calm color hovers |
+
+**Stagger cascade — Apple's 20ms inter-item rule:**
+- Items in a dropdown / lineup appear at 20ms incremental delays (item 1: 200ms, item 2: 220ms, item 3: 240ms, …). All items share the same 320ms transition duration; the staggered delay is what creates the wave.
+- Adopt as default for any list-of-items animation (menu sections, project grid reveals, FAQ accordions): `delay: calc(var(--base-delay) + var(--stagger-step, 20ms) * var(--i))`.
+
+**JS motion library audit (across 5 sites measured):**
+- Apple §1 — pure CSS · Auwa §6 — pure CSS · Haven §15 — pure CSS · Aircenter §4 — pure CSS (imperative JS, library un-detected globally) · Really Up There §7 — **GSAP 3.15** (only one of the five)
+- Lesson: **4 of 5 best-in-class motion sites use no JS animation library.** For our agency Tier-1/Tier-2 builds, the default position should be *zero motion library* — CSS transitions + `@keyframes` cover the entire range of moves seen in this study except the per-character letter animations (Brandon Herbel only). Lottie/GSAP/Framer Motion is a Tier-3 tool, not a Tier-2 default.
+
+**Drop-in agency motion-token block:**
+```css
+:root {
+  /* duration tokens */
+  --motion-fast: 180ms;       /* button color hover, tech register */
+  --motion-base: 320ms;       /* Apple house unit — nav, default scroll-reveal */
+  --motion-warm: 500ms;       /* hospitality / artisan / wellness register */
+  --motion-deliberate: 600ms; /* luxury / institutional */
+  --motion-reveal: 800ms;     /* one-time hero entries, ribbon drops */
+
+  /* easing tokens — pick the curve that matches the brand register */
+  --ease-apple-smooth: cubic-bezier(0.4, 0, 0.6, 1);    /* default ease-in-out */
+  --ease-quart: cubic-bezier(0.7, 0, 0.3, 1);           /* symmetric paced */
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);       /* settle-into-place */
+  --ease-luxe: cubic-bezier(0.25, 0.74, 0.22, 0.99);    /* deliberate, long tail */
+
+  /* stagger */
+  --stagger-step: 20ms;
+}
+```
+
+These tokens land in `TECH.md` §7 as part of Phase 2.
 
 ### 10. Color-as-material (4 implicit confirmations)
 

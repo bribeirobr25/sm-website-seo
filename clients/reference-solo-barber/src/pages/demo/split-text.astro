@@ -1,0 +1,71 @@
+---
+import SplitText from '@/components/ui/SplitText.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Demo · SplitText">
+  <main id="main" class="section">
+    <div class="container-page space-y-16">
+      <header>
+        <p class="text-sm uppercase tracking-wider text-text-muted">Demo</p>
+        <h1 class="text-3xl sm:text-4xl text-text mt-2">SplitText (per-character)</h1>
+        <p class="prose mt-4 max-w-prose">
+          Spec: <code>docs/design/components/per-character-split.md</code>. The split itself is
+          structural — animations are layered on top. Use ≤ 3 splits per page; reserved for
+          portfolio / agency-self.
+        </p>
+      </header>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Static split (no animation)</h2>
+        <p class="text-sm text-text-muted mt-2">
+          The DOM contains one span per letter. Selecting and copying the word still yields the
+          un-split string. Screen readers announce one word via aria-label.
+        </p>
+        <div class="mt-6">
+          <SplitText
+            text="WORK"
+            as="h2"
+            class="font-display text-6xl sm:text-8xl text-accent"
+          />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Stagger fade-in on scroll</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Scroll until the text enters the viewport — each letter fades in 20ms after the previous.
+          Reload the page to re-trigger.
+        </p>
+        <div class="mt-[60vh] mb-32">
+          <SplitText
+            text="HELLO"
+            as="h2"
+            stagger
+            class="font-display text-6xl sm:text-8xl text-accent"
+          />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Reduced motion</h2>
+        <p class="text-sm text-text-muted mt-2">
+          With <code>prefers-reduced-motion: reduce</code> active, the stagger version above
+          renders all letters opaque immediately — no fade, no transform.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Multi-word (with space)</h2>
+        <div class="mt-6">
+          <SplitText
+            text="MAKE IT LAST"
+            as="h2"
+            stagger
+            class="font-display text-5xl sm:text-7xl text-accent"
+          />
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

@@ -622,6 +622,86 @@ Standardize on **`--color-accent`** (rest state) + **`--color-accent-deep`** (da
 
 **Worked example:** Jean Souza Barber initially used `--color-accent-hi: #ef4444` (lighter) for button hover with white text. White on `#ef4444` is 3.76:1 — fails WCAG AA for body-size text. Renamed and re-valued to `--color-accent-deep: #b91c1c` (darker) → 6.50:1 — comfortably AA. The fix was a single tokens.css line; the design pattern is what matters.
 
+### Extended token canon — backgrounds, warm text, motion (added 2026-05-19)
+
+The token block above is the minimum every client ships with. The tokens below are *additional* options grounded in measured patterns from `docs/audit/ui-ux-reference-study.md` §Cross-site synthesis. They are opt-in per vertical, not universal — use only when the client's brand voice calls for them.
+
+**Background variants** (the cream-not-white rule + the dark-mode-warmth rule):
+
+```css
+@theme {
+  /* Hospitality / artisan / beauty default — measured across 5 awarded sites */
+  --color-bg-cream:       #FBF8F3;   /* median of measured creams: Watch House #F9F4EE, Auwa, Haven #FFFAF7, Juan Mora, Kindred */
+
+  /* Dark-bg alternates — warmer than pure black */
+  --color-bg-charcoal:    #1D1D1D;   /* Evagria — "charcoal" rather than pure black, OLED-friendly */
+  --color-bg-night:       #020A18;   /* Hubtown — luxury nighttime, faint blue cast */
+  --color-bg-studio:      #EBEBEB;   /* Lesse Studio — architectural neutral grey */
+}
+```
+
+**Warm body-text variants** (the body-color-is-a-brand-decision rule):
+
+```css
+@theme {
+  --color-text-warm:        #2B1A12;   /* deep coffee/leather — Haven, Mily, Flyward */
+  --color-text-warm-grey:   #333333;   /* friendly dark grey — Juan Mora, Awwwards */
+  --color-text-trade-navy:  #042940;   /* regulated-trades navy — SweepingCorp */
+}
+```
+
+**Pill radius:** the existing `--radius-full: 9999px` already covers the premium-CTA pill case. **Do not introduce `--radius-pill` as a duplicate.** For the half-pill sticky CTA pattern (Haven §15) add:
+
+```css
+@theme {
+  --radius-pill-half:  30px 0 0 30px;   /* right-edge "tab" effect; visual only, not position:fixed */
+}
+```
+
+**Motion tokens** — duration + easing + stagger, grounded in the Phase 1b measurements in `ui-ux-reference-study.md` §11:
+
+```css
+@theme {
+  /* duration — pick by brand register */
+  --motion-fast:        180ms;   /* tech-snap button color hover */
+  --motion-base:        320ms;   /* Apple house unit — nav, default scroll-reveal */
+  --motion-warm:        500ms;   /* hospitality / artisan / wellness */
+  --motion-deliberate:  600ms;   /* luxury / institutional */
+  --motion-reveal:      800ms;   /* one-time hero entries */
+
+  /* easing — measured cubic-bezier from the study */
+  --ease-apple-smooth:  cubic-bezier(0.4, 0, 0.6, 1);    /* default ease-in-out */
+  --ease-quart:         cubic-bezier(0.7, 0, 0.3, 1);    /* symmetric paced — marquee CTAs */
+  --ease-expo-out:      cubic-bezier(0.16, 1, 0.3, 1);   /* settle-into-place */
+  --ease-luxe:          cubic-bezier(0.25, 0.74, 0.22, 0.99);   /* deliberate, long tail */
+
+  /* stagger cascade — Apple's 20ms inter-item rule */
+  --stagger-step:       20ms;
+}
+```
+
+**Tracking tokens** — measured negative tracking on display sans / positive on uppercase serif:
+
+```css
+@theme {
+  --tracking-display-sans:        -0.022em;   /* ~2.2 % negative — Apple, Auwa, Juan Mora */
+  --tracking-display-serif-caps:  +0.025em;   /* ~2.5 % positive — Flyward, Aircenter */
+  --tracking-body:                -0.005em;   /* Apple's quiet body tightening */
+}
+```
+
+**System-font Tier-1 option** (chrome runs on the OS, custom font only for display):
+
+```css
+@theme {
+  /* For Tier-1 single-page solo-practitioner builds where every KB matters */
+  --font-body-system:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                       "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+```
+
+Use this as the body font for clients without budget for two custom faces; keep `--font-display` as the single custom face. Measured pattern across Really Up There §7, Lesse §16, Juan Mora §18 — cuts font payload ~70 % vs. a two-custom-font setup with no perceived quality loss.
+
 ### Tailwind v4 — tokens live in CSS, not in a config file
 
 Tailwind v4 is configured **in CSS** via the `@theme {}` block. There is no `tailwind.config.ts` (the old v3 pattern). Tokens declared inside `@theme {}` are accessible both as CSS custom properties (`var(--color-accent)`) and as auto-generated Tailwind utilities (`bg-accent`, `text-text`, `border-border`).
@@ -1458,6 +1538,23 @@ pnpm validate     # Full validation pipeline (tier-appropriate; see QUALITY.md)
 ## Project structure
 
 [Link to or describe the key directories for this client]
+
+## Imported components
+
+The agency ships a canonical reference library at `docs/design/components/` (8
+components derived from the 24-site UI/UX reference study). List the
+components imported into THIS client below, with the spec-sheet path. This
+gives reviewers a one-shot view of "which canonical patterns are in use, and
+where to find the per-vertical token swaps + WCAG cross-references."
+
+| Component | Spec sheet | File in this client | Surface |
+|---|---|---|---|
+| HalfPillCTA | `docs/design/components/half-pill-cta.md` | `src/components/ui/HalfPillCTA.astro` | [where used, e.g., header] |
+| (delete rows for components not used) | | | |
+
+If the client uses no canonical components yet, write **"none"** below the
+table. New components added later: add a row + a one-line `BRIEF.md`
+note + the section/page where the component lands.
 
 ## Business context
 

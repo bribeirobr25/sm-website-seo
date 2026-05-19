@@ -352,6 +352,29 @@ When you scaffold a new gastronomy client, pick the archetype that matches the b
 
 ---
 
+### 9.5 Watch House — `watchhouse.com` (Archetype A — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §5)
+
+**Why this lands in gastronomy:** the single most directly applicable reference for any Berlin café / boutique-coffee client. Modern London-based specialty coffee chain demonstrating "premium hospitality with restraint."
+
+**What to borrow:**
+- **`#F9F4EE` cream background** — measured live, *not pure white*. Pairs with deep coffee text. Adopt `--color-bg-cream` per `TECH.md` §7. (One of 5 confirming samples in the cream-not-white synthesis.)
+- **Two-CTA-voice system:** sentence-case period-terminated (`Shop.` · `Visit us.` · `Menu.`) for actions; tracked-uppercase 11px / +2.2px-tracking for directory entries (`SHOP ALL`, `BISHOPSGATE`).
+- **Text is the interface** — zero pill buttons, zero shadows, zero border-radius on CTAs. Period-terminated brand voice (see `DESIGN-BEST-PRACTICES.md` §11 voice rules — period-terminated CTAs).
+- **Ambient autoplay-muted MP4 loops** — but with mandatory constraints per `PERFORMANCE.md` §8 (the live measurement showed 7/7 videos still autoplay on mobile; **our agency standard requires mobile pause** — do not copy Watch House's mobile behavior).
+
+### 9.6 Haven Annecy — `haven-annecy.fr/en` (Archetype A/B blend — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §15)
+
+**Why this lands in gastronomy:** the closest-to-Berlin-Frühstückslokal reference in the entire 24-site study. Independent café + brunch venue, single location, three colors total. **The half-pill sticky RESERVE pattern originates here.**
+
+**What to borrow:**
+- **Three-color discipline:** `#FFFAF7` cream bg + `#2B1A12` coffee body text + `#C1643B` terracotta accent. The accent appears on exactly two elements: active nav state + RESERVE button. Codify as the default gastronomy palette when client has no brand.
+- **Hours-in-nav** — two-line nav items with the hours under the label: `COFFEE / 8:00 – 4:00`, `BRUNCH / 9:00 – 2:00`. For a hospitality client, opening hours are the single most-checked piece of information; putting them *in the nav* (not the footer) is the most efficient signal.
+- **Half-pill sticky-edge RESERVE** — `border-radius: 30px 0 0 30px`, terracotta fill, white text, **`position: static`** (corrected Phase 1b read — the right-edge-tab feel is *visual only*, no sticky CSS). Component spec lands in `docs/design/components/half-pill-cta.md` (Phase 3a).
+- **Calm hospitality motion** — every transition is `0.5s ease` color (no transform, no scale, no shadow change). Use `--motion-warm` from `TECH.md` §7.
+- **PF DinText Pro substitute:** for clients without budget for licensed DIN-family fonts, use IBM Plex Sans or Sora — same precision-geometric voice, free.
+
+---
+
 ## 10. Decision matrix — picking the archetype per client
 
 Use this matrix during the per-client scoping conversation, before any design work begins.

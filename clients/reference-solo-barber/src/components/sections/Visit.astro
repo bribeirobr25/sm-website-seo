@@ -1,7 +1,7 @@
 ---
-import { SITE } from '@/lib/site';
 import Button from '@/components/ui/Button.astro';
 import ShareButton from '@/components/ui/ShareButton.astro';
+import { SITE } from '@/lib/site';
 
 const formatHour = (open: string | null, close: string | null) => {
   if (!open || !close) return 'Fechado';

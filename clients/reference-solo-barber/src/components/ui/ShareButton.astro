@@ -18,11 +18,7 @@ interface Props {
   source: string; // source_section parameter for analytics
 }
 
-const {
-  url = SITE.url,
-  title = SITE.name,
-  source,
-} = Astro.props;
+const { url = SITE.url, title = SITE.name, source } = Astro.props;
 
 const encUrl = encodeURIComponent(url);
 const encTitle = encodeURIComponent(title);

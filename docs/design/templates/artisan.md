@@ -386,6 +386,35 @@ No canonical worked example in §7.8 — benchmark skews to brands. Archetype D 
 
 ---
 
+### 9.8 Mily Group — `milygroup.com` (Archetype: B2B natural-materials wholesale — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §9)
+
+**Why this lands in artisan:** Polish manufacturer + supplier of natural antler dog chews. The B2B natural-materials wholesale archetype — for any maker who sells craft products to retailers rather than direct-to-consumer.
+
+**What to borrow:**
+- **Deep warm-brown body text `#2C1A11`** instead of black. Codified as `--color-text-warm` in `TECH.md` §7. The single shift — body in brown rather than black — is the entire reason the site reads as "natural materials" before any imagery loads.
+- **IBM Plex Mono for `LABEL (count)` section headers** — `PRODUCTS (5)` pattern. Adopt for any artisan catalog with curated collections.
+- **Instrument Serif at hero scale** — free premium-serif alternative to Tiempos / GT Sectra. Measured here at 108px.
+
+### 9.9 Kindred of Ireland — `kindredofireland.com` (Archetype: heritage textile / made-to-order — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §20)
+
+**Why this lands in artisan:** luxury linen apparel, handmade in Ireland, made-to-order with explicit 3-4 week production time. The "fragile elegance" heritage-craft archetype.
+
+**What to borrow:**
+- **Light-weight serif at extreme size (Freight Big Pro 300, 100px)** — the "type as material metaphor" principle: weight 300 + slim Freight Big strokes evoke linen itself (airy, draped, made of thin fibers).
+- **Cream `#FBF8F5`** + serif body fallback (`"Folio Std", serif`). The site survives a font-load failure with the brand voice intact.
+- **Made-to-order honesty pattern** — "Most pieces are made to order. Current production time is 3-4 weeks" sits as a top-of-page micro-banner. For any artisan client whose lead time is real, surface it explicitly rather than hiding it in checkout.
+
+### 9.10 Evagria — `evagria.com` (Archetype: solo creative-industries portfolio — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §12)
+
+**Why this lands in artisan:** fashion-industry casting director portfolio. The "maximum minimalism" archetype — one font, one color, one size, one direction.
+
+**What to borrow:**
+- **Constraint as the brand** — for any solo-practitioner artisan with strong work but limited budget. Reduce to: one font + one color + one size + one direction. A single hover-image preview pattern completes the system. One-week build, looks intentional rather than thin.
+- **Charcoal bg `#1D1D1D`** (not pure black) — codified as `--color-bg-charcoal` in `TECH.md` §7. Warmth-cast avoids OLED-pixel-snap on modern phones.
+- **Same-size project titles** — resist typographic-ranking a portfolio. If every project is "the work," let every title be the same size. The visitor's hover does the ranking.
+
+---
+
 ## 10. Decision matrix — picking the archetype per client
 
 | If the client is… | Pick archetype | Stack tier (per `TECH.md` §1) |

@@ -166,6 +166,7 @@ For any place-based multi-location client (trades chain, health network, gym cha
 - Parchment, stained glass, or nostalgic clip-art (unless it is genuinely the brand)
 - Heavy animations on every scroll (slows the page, annoys mobile users)
 - Five-column grids on mobile (it will break)
+- **Fixed-viewport SPA / scroll-hijacked navigation** — measured anti-pattern from `docs/audit/ui-ux-reference-study.md` §4 Aircenter, §9 Hubtown, §11 Marvell, §21 Victor Furuya. These pages render at a fixed `100vh` and use JS to translate/cross-fade panels in place rather than letting the document scroll. They look cinematic on referral traffic but destroy organic search: crawlers see one viewport of content, deep-linking breaks, browser back/forward is hostile, Core Web Vitals (especially CLS during programmatic transforms) collapse. **Acceptable only when SEO is explicitly deprioritized in `BRIEF.md`** (a portfolio site, an invite-only experience, a referral-driven luxury brand). For any local-business client whose acquisition channel includes Google search — **forbidden, no exceptions.** Cross-reference: `SEO.md` §Tech SEO anti-patterns.
 
 ### The real-photo rule
 
@@ -281,9 +282,16 @@ Desktop increases display sizes by one step. Never reduce below 14px for any use
 
 - **Line height:** Headings 1.1–1.25. Body 1.6. Never use default (1.0) on any prose.
 - **Letter spacing:** Large display (hero): `tracking-tight`. Uppercase structural labels: `tracking-widest`. Body: default.
+- **Measured tracking ranges** (added 2026-05-19, grounded in `docs/audit/ui-ux-reference-study.md` §Cross-site synthesis):
+  - **Display sans, large (≥ 50px):** `letter-spacing: -0.022em` (≈ -2.2 % of size). The "premium tech" signature. Measured across Apple §1 (-1.5 %), Auwa §6, Juan Mora §18 (-3.7 %), Fourmula §22 (-3.0 %), Victor Furuya §21 (-5.0 %). Use the TECH.md §7 token `--tracking-display-sans`.
+  - **Display serif, uppercase:** `letter-spacing: +0.025em` (≈ +2.5 % positive). The "premium classical" signature. Measured at Flyward §13, Aircenter §4. Positive on uppercase serif reads as "certified / heritage"; negative on uppercase sans reads as "modern / consumer." Use the token `--tracking-display-serif-caps`.
+  - **Display serif, sentence-case:** `letter-spacing: 0` — let the typeface do the work.
+  - **Body:** `letter-spacing: -0.005em` (Apple's quiet body tightening). Use the token `--tracking-body`.
 - **Tabular numbers:** Use `tabular-nums` or a mono font on phone numbers, prices, and hours. Proportional digits misalign in these contexts.
 - **Minimum weight:** 400 on body. 500 on display. Never use 300 on anything the user needs to read quickly.
 - **Never:** more than 65 characters per line on body text (set `max-width` on prose containers).
+- **Inverted h1/h2 hierarchy — HARD RESTRICTION** (added 2026-05-19). Three sites in the UI/UX reference study (§6 Auwa, §16 Lesse, §18 Juan Mora) ship a 12-15px tracked-uppercase `h1` as an "eyebrow label" and let the visual hero be a 32-60px paragraph or h2. Visually it reads "considered" — but the h1 is the most-indexed element on the page for SEO, and an eyebrow h1 hands away the primary keyword target. **Permitted only when SEO is explicitly deprioritized in `BRIEF.md`** (portfolio, agency-self, referral-only luxury). **For local-business clients (gastronomy, beauty, trades, health, studio, professional-services, pets, automotive, education, events-hospitality, home-garden, artisan) — forbidden.** The h1 must be the visually primary headline AND carry the primary SEO keyword (e.g., `Physiotherapie Prenzlauer Berg`, `Friseur Mitte`, `Café in Kreuzberg`). Cross-reference: `SEO.md` §On-page SEO.
+- **Mono font for catalog / portfolio labels** (added 2026-05-19). Three sites in the study independently use a monospace face for section headers that count or label curated items: Mily Group §9 (`PRODUCTS (5)`), T11 §19 (`OFFLIMITS FESTIVAL`, `PORTFOLIO [21]`), Hubtown §8. The mono reads as "directory / curated index / system reference." Adopt as an optional pattern in any template that lists menu sections, service categories, project portfolios, or product collections. Free options: JetBrains Mono, IBM Plex Mono, Commit Mono, Geist Mono.
 
 ---
 
@@ -306,6 +314,8 @@ Minimum tokens per client:
 
 ### Color rules
 
+- **Cream beats white for hospitality / artisan / beauty** (added 2026-05-19). Measured across 5 awarded sites in `docs/audit/ui-ux-reference-study.md` §Cross-site synthesis: Watch House `#F9F4EE` (§5), Auwa `#F7F5EE` (§6), Haven `#FFFAF7` (§15), Juan Mora `#FAF6EF` (§18), Kindred `#FBF8F5` (§20). All five are in the warm 92-100 L\* range, hue 80-95 (yellow-to-peach axis). **Pure white reads as "tech product"; cream reads as "considered hospitality."** Default to `--color-bg-cream` (defined in `TECH.md` §7) for gastronomy, beauty, artisan, and any solo-practitioner portfolio. The dark equivalents — `--color-bg-charcoal: #1D1D1D` (warmer than pure black, OLED-friendly) and `--color-bg-night: #020A18` (luxury nighttime) — apply only when the dark sub-archetype is documented in the per-vertical template.
+- **Warm body text beats pure-black** for material-led brands (added 2026-05-19). Measured across `docs/audit/ui-ux-reference-study.md` §9 Mily (`#2C1A11`), §13 Flyward (`#3D2D20`), §15 Haven (`#2B1A12`): when the client's product is a *material* (coffee, leather, wood, stone, food, fabric, paper), body text in a deep warm-brown rather than pure black gives the page atmospheric warmth that no other single token does. Use `--color-text-warm` from `TECH.md` §7. **The same hex must also be the primary CTA background** for token discipline (Flyward demonstrates: `body { color: #3D2D20 }` AND `.btn-primary { background: #3D2D20 }` — one hex, two roles). Friendly dark-grey variant `--color-text-warm-grey: #333` (Juan Mora, Awwwards) works for portfolio/agency-self where warmth-without-material is wanted.
 - **Never pure black (#000) or pure white (#FFF)** as a page background or body text. Use near-black and warm or cool off-white derived from the client's brand palette. **Two documented exceptions** apply:
   1. **Tier-1/2/3 brand-source override** — when the client's actual brand uses pure white or pure black (sampled per §5 priority hierarchy), the brand source supersedes this rule. Example: Jean Souza Barber's tier-3 brand source is `#ffffff` text on `#131418` bg — pure white text is the actual brand identity, documented in `clients/jean-souza-barber/design.md`.
   2. **Conversion-driven mass-market sub-archetype exception** — pure white bg is acceptable for high-volume conversion-led chains where catalog clarity outranks warmth (Safelite, Firestone, Mathnasium, OneMedical, Petz retail, TruGreen). Each per-vertical template's §6 "Default palette" subsection documents which sub-archetypes legitimately use pure white with rationale. Outside these documented sub-archetypes, default to near-white (`#fafafa`, `#fbfaf7`, etc.).
@@ -340,6 +350,7 @@ The agency's typical client is a solo operator with no brand guide, no design sy
 | 1 | **Client brand guide** (formal style guide if one exists — rare for small local businesses) | Primary, secondary, neutrals — already specified. Treat as authoritative. |
 | 2 | **Existing client website** | Sample the dominant background, primary text, primary CTA, secondary surfaces. Use a color picker against live screenshots — never eyeball from memory. |
 | 3 | **Client signage and storefront photo** (from `docs/audit/[name].md` GBP photo set or Instagram exterior shots) | Real-world colors that customers already associate with the business — the awning paint, the menu board, the chair upholstery. These are the brand whether the owner thinks of them that way or not. |
+| 3.5 | **Color-as-material — sample directly from the product** (added 2026-05-19) | For clients whose product *is* a material (a stonemason's stone, a baker's bread, a florist's stem-green, a coffee roaster's bean), open a high-resolution photo of the finished work in a color picker, RGB-pick the dominant hue, lighten 5-10 %, desaturate 5-10 %. That value becomes the brand accent. Measured precedents: Marvell §11 (`#B1A781` = cut sandstone), Mily §9 (`#2C1A11` = antler/leather), Haven §15 (`#C1643B` = roasted coffee / terracotta brick), Kindred §20 implicit (`#FBF8F5` cream = unwashed linen). **Slots between tiers 3 and 4** because the source signal (the actual product photograph) is closer-to-source than IG curation but harder to extract than direct signage observation. |
 | 4 | **Instagram feed** (`@[handle]`) | If the IG feed has a consistent color grade (most curated accounts do), extract from a 9-grid average. The IG feed IS the brand for most small businesses with no other materials. |
 | 5 | **Vertical-default palette** per `templates/[vertical].md` "Default palette when client has no brand" subsection | Vertical-archetype defaults backed by reference-site analysis. Apply only when sources 1–4 yield no consistent signal. |
 | 6 | **First-principles from the aesthetic sentence** in `design.md` (the "this site feels like ___" line) | Last-resort construction. If the aesthetic sentence describes "warm wood, leather, brass," derive the palette from that material vocabulary. |
@@ -451,6 +462,39 @@ Always check the headline at 768 px before declaring a hero done. If it wraps in
 ```
 
 One primary CTA per section. Repeating it is fine; competing CTAs ("Call now" vs "Book online" vs "Learn more" in the same visual area) is not.
+
+**Border-radius convention** (added 2026-05-19, grounded in `docs/audit/ui-ux-reference-study.md` §Cross-site synthesis §3 the-pill-arms-race): always use `var(--radius-full)` (= 9999px) for the premium pill. The agency standard is one value, not the escalating series observed in the wild (Apple 980 → Fourmula 1317 → Horeca 1440 → Flyward 1600 — all functionally identical). For utility / filter chips, use `var(--radius-md)` (= 8px) (SweepingCorp §14 chip pattern). Do not introduce a new `--radius-pill` token; reuse the existing `--radius-full`.
+
+### Half-pill sticky-edge CTA (hospitality / beauty / health / studio reservation pattern)
+
+A measured pattern from `ui-ux-reference-study.md` §15 Haven Annecy: a high-emphasis "RESERVE / BOOK NOW" button rendered as a *half-pill* — rounded on the left side, square on the right — sitting in the top-right of the nav row. The visual reads as "a tab sticking in from the right edge of the viewport."
+
+**Important implementation note (corrected in Phase 1b runtime read):** Haven's button is **NOT `position: fixed`**. It's `position: static` inside the top-nav row's right cell. The half-pill shape (`border-radius: 30px 0 0 30px`) does *all* the work; the optical illusion of "edge tab" comes from the radius, not from sticky positioning.
+
+```html
+<!-- Half-pill sticky-feel CTA — visual only, position is static -->
+<a href="/book" class="inline-flex items-center gap-2 px-6 py-3
+  bg-[--color-accent] text-white font-bold text-base
+  hover:bg-[--color-accent-deep]
+  motion-safe:transition-[background-color] duration-500 ease-[var(--ease-quart)]
+  focus-visible:ring-2 focus-visible:ring-[--color-accent] focus-visible:ring-offset-2"
+  style="border-radius: var(--radius-pill-half)">
+  RESERVE
+</a>
+```
+
+`--radius-pill-half: 30px 0 0 30px` (defined in `TECH.md` §7). Per-vertical CTA verb: gastronomy = `RESERVE`, beauty = `BOOK`, health = `TERMIN`, studio = `JOIN`, trades = `QUOTE`. Component spec lands in `docs/design/components/` (Phase 3a).
+
+### Marquee-on-hover CTA (boutique / artisan / beauty interaction pattern)
+
+A measured pattern from `ui-ux-reference-study.md` §6 Auwa with all three layers fully decoded by Phase 1b runtime probe. The CTA label *appears to repeat itself*: hovering swaps the visible text with an identical duplicate while a background fill slides up from the bottom. Costs ~6 lines of CSS, registers as luxury polish.
+
+Three coordinated transitions, all sharing the same duration (500 ms) and easing (`cubic-bezier(0.7, 0, 0.3, 1)`, the `--ease-quart` token):
+1. Outer button color: rest → hover via `transition: color 0.5s var(--ease-quart)`
+2. Background fill layer: `transform: scaleY(0)` at rest, `transform-origin: bottom`; on hover `scaleY(1)` over 500ms
+3. Inner label column: contains two copies of the label stacked; on hover the column `translateY(-100%)` so the duplicate replaces the original
+
+See `docs/design/components/marquee-cta.md` (Phase 3a) for the full HTML + CSS recipe and per-vertical surface mapping.
 
 ### CTA repetition — vary on the second appearance
 
@@ -622,14 +666,23 @@ Local business landing pages are not apps. Motion should be minimal and purposef
 
 ### Duration scale (canonical)
 
-Pick from this scale. Don't invent new durations.
+Pick from this scale. Don't invent new durations. **As of 2026-05-19 the scale aligns with the measured motion tokens in `TECH.md` §7** — derived from runtime probes of Apple, Auwa, Haven, Aircenter, Really Up There (`docs/audit/ui-ux-reference-study.md` §11 Motion recipes).
 
-| Token | Duration | Use for |
-|-------|----------|---------|
-| Fast | 150 ms | Hover, focus, button press feedback |
-| Medium | 200 ms | Standard color/shadow transitions, small reveals |
-| Slow | 300 ms | Section reveal on scroll, image zoom-on-hover |
-| Slower | 500 ms | Modal open/close, page transitions |
+| Token | Duration | TECH.md token | Use for | Brand register |
+|-------|----------|---|---|---|
+| Fast | 180 ms | `--motion-fast` | Hover, focus, button press feedback, fast text-only color hover | Tech / SaaS / agency-self |
+| Base | 320 ms | `--motion-base` | Standard scroll-reveal, nav color, small reveals | Apple house unit — fits most brand registers |
+| Warm | 500 ms | `--motion-warm` | Marquee CTAs, hospitality color hovers, calm settles | Gastronomy / beauty / wellness / artisan |
+| Deliberate | 600 ms | `--motion-deliberate` | Luxury / institutional color hovers | Real estate / luxury / regulated trades |
+| Reveal | 800 ms | `--motion-reveal` | One-time hero entries, ribbon drops | Statement reveals only — not ongoing interactions |
+
+**Easing curves — pick by brand register, not by feel.** Use the measured tokens (defined in `TECH.md` §7):
+- `--ease-apple-smooth` (`cubic-bezier(0.4, 0, 0.6, 1)`) — default ease-in-out for tech / agency-self
+- `--ease-quart` (`cubic-bezier(0.7, 0, 0.3, 1)`) — marquee CTAs, paced symmetrical transitions
+- `--ease-expo-out` (`cubic-bezier(0.16, 1, 0.3, 1)`) — settles into place; image lifts, card hovers
+- `--ease-luxe` (`cubic-bezier(0.25, 0.74, 0.22, 0.99)`) — deliberate, long tail; luxury/institutional
+
+**Stagger cascade — 20ms inter-item rule.** When items in a list (menu sections, project tiles, FAQ accordion, lineup) reveal together, stagger them by 20ms each: `delay: calc(var(--base-delay) + var(--stagger-step) * var(--i))`. Apple's house pattern (measured across the iPhone-lineup search dropdown).
 
 ### Allowed motion
 
@@ -662,10 +715,10 @@ For Tailwind v4 the equivalent utility is `motion-safe:animate-fade-in`. Use `mo
 
 ### Motion bans
 
-- Never linear easing (feels robotic) — use `ease-out` as the default
-- Never exceed 500 ms on any single transition
+- Never linear easing (feels robotic) — use `ease-out` as the default. Two specific exceptions documented in `ui-ux-reference-study.md` §11: (1) Apple's stagger cascade uses linear because each item is delay-staggered rather than eased; (2) one-time SVG draw-in keyframes (Haven §15 `drawSVG` 1407ms linear) can use linear for the same reason.
+- ~~Never exceed 500 ms on any single transition~~ → **Updated 2026-05-19:** 500ms is the default ceiling, but two extensions apply: (a) `--motion-deliberate` (600ms) for luxury/institutional registers (Aircenter §4 uses 600ms); (b) `--motion-reveal` (800ms) for one-time hero entries only (Apple ribbon-drop, Really Up There clip-path tile reveal). Recurring interactions still cap at 500ms.
 - Never animate every scroll event (parallax, etc.) — mobile users will hate it and `prefers-reduced-motion` users will see a broken page
-- Never autoplay video or audio
+- ~~Never autoplay video or audio~~ → **Updated 2026-05-19:** **Autoplay audio is still always forbidden.** **Autoplay-muted ambient video is permitted as a measured premium-hospitality pattern (Watch House §5, Auwa §6, Kindred §20 in `ui-ux-reference-study.md`) ONLY when all five constraints in `PERFORMANCE.md` §8 ship simultaneously** (conditional load, `preload="none"`, deferred autoplay, poster-as-LCP, ≤ 2 MB / ≤ 5 s / ≤ 720p, mobile pause). Without all five, autoplay video stays banned.
 - Never decorative animation (sparkles, confetti, bouncing)
 
 ### Performance implication
@@ -743,6 +796,7 @@ This doc cross-references it by name only; section structure inside `ACCESSIBILI
 - No corporate filler: "We are dedicated to providing…", "We pride ourselves on…", "Our passion is…"
 - No exclamation marks in body copy. One maximum in the hero CTA.
 - Second person: "your" not "the customer's"
+- **Period-terminated CTAs and short phrases — an optional brand-voice signature** (added 2026-05-19). Four sites in `docs/audit/ui-ux-reference-study.md` independently use a full-stop at the end of short CTA labels and headline phrases: Watch House §5 (`Shop.` · `Visit us.` · `Menu.` · brand tagline `Modern Coffee.`), Laurenti §17 (`Digital.\nDesign to move.`), Apple iPhone copy (`Privacy. That's iPhone.`), Fourmula §22 (`Your catalog, instantly re-shot.` · `On-brand visuals.\nMade by AI.`). The period turns a CTA from a verb-imperative into a complete utterance — reads as "considered" rather than "shouted." Use sparingly: pick one (CTAs *or* taglines, not both) and apply it consistently. Particularly suits gastronomy boutique, beauty, artisan, and agency-self templates; less natural in trades / health where directness is preferred.
 
 ### What must never be invented
 

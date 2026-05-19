@@ -68,9 +68,12 @@ export function track(eventName: EventName, params: EventParams = {}): void {
  * (consent_given, consent_rejected). They are emitted to Sentry breadcrumbs
  * if Sentry is loaded — never to GA4/Clarity (those require consent).
  */
-export function trackEssential(eventName: typeof EVENTS.CONSENT_GIVEN | typeof EVENTS.CONSENT_REJECTED): void {
+export function trackEssential(
+  eventName: typeof EVENTS.CONSENT_GIVEN | typeof EVENTS.CONSENT_REJECTED,
+): void {
   if (typeof window === 'undefined') return;
-  const sentry = (window as unknown as { Sentry?: { addBreadcrumb?: (b: unknown) => void } }).Sentry;
+  const sentry = (window as unknown as { Sentry?: { addBreadcrumb?: (b: unknown) => void } })
+    .Sentry;
   if (sentry?.addBreadcrumb) {
     sentry.addBreadcrumb({ category: 'consent', message: eventName, level: 'info' });
   }

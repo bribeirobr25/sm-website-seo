@@ -360,6 +360,37 @@ No canonical worked example in §7.12 — benchmark skews to scale. Archetype D 
 
 ---
 
+### 9.8 Flyward — `flyward.com` (Archetype: luxury travel-management concierge — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §13)
+
+**Why this lands in events-hospitality:** premium travel management for individuals + corporates. High-touch concierge archetype, applicable to luxury wedding-planning, private-event-curation, or executive-events clients.
+
+**What to borrow:**
+- **Brown + cream as neutral pair** instead of black + white. Body color `#3D2D20` + background near-cream. Particularly for "trust / craftsmanship / time"–themed brands.
+- **`body { color: same hex as primary-button-bg }`** — Flyward demonstrates the token-discipline rule: `#3D2D20` is both body text and CTA fill. One hex, two roles. Adopt agency-wide.
+- **Positive tracking on uppercase serif** — `+1.6px` on h2-uppercase-serif at 80px. Signals "premium / certified / classical." The polarity rule: negative tracking sans = tech/consumer; positive tracking serif = luxury/heritage.
+- **Defense-adjacent copy positioning** — Flyward borrows defense-industry vocabulary ("uncompromising," "foundation," "beyond the reach of search engines") to position adjacent to private security. Less directly portable, but worth noting as a copy-voice technique: when a client wants to feel more upscale than the literal category supports, borrow vocabulary from the next-tier-up category.
+
+### 9.9 T11 — `t11.com` (Archetype: experiential events agency — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §19)
+
+**Why this lands in events-hospitality:** "360° events management" agency. Reference for festival production, experiential marketing, or large-format event clients.
+
+**What to borrow:**
+- **Mono-font for catalog labels** — Monument Grotesk Mono for `OFFLIMITS FESTIVAL` and `PORTFOLIO [21]`. Third independent vote in the study (with Mily Group, Hubtown) confirming "mono = directory / curated index" is a coherent 2026 catalog convention.
+- **Bracketed counts next to nav labels** (`PORTFOLIO [21]`) — adopt for any template that lists curated work.
+
+### 9.10 Aircenter — `aircenter.space` (Archetype: high-value low-volume sale — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §4)
+
+**Why this lands in events-hospitality:** Moscow Class-A business center sold to corporate buyers via broker referral. Direct fit for any client selling a single high-value, slow-decision item — a wedding venue, a destination retreat, a corporate-events estate.
+
+**What to borrow:**
+- **One typeface, two weights, used at extreme scale** — Onest, weights 400 + 500 only. 71px h1/h2 at uppercase + negative tracking + tight line-height (line < font-size). Architectural feel.
+- **The single error-red token `--c-error: #e34a4a`** reserved for form errors only. Adopt as the agency's canonical error color.
+- **12-column viewport-fluid grid** — `--grid-col: calc((100vw - 20px * 11) / 12)`. Cleaner than the standard `grid-template-columns: repeat(12, 1fr)` at wide viewports.
+
+**Caveat — the structural anti-pattern:** Aircenter's fixed-viewport horizontal-translate panel system is **forbidden for our clients** per `DESIGN-BEST-PRACTICES.md` §3 Forbidden visual directions and `SEO.md` §15 Tech SEO anti-patterns. Take the typography and color system; do *not* take the navigation pattern.
+
+---
+
 ## 10. Decision matrix — picking the archetype per client
 
 | If the client is… | Pick archetype | Stack tier (per `TECH.md` §1) |

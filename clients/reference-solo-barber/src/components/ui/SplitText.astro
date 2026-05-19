@@ -1,0 +1,124 @@
+---
+/**
+ * SplitText — per-character DOM split primitive (letter-animation enabler).
+ * Spec: docs/design/components/per-character-split.md
+ *
+ * Breaks a string into one `<span>` per character so letter-level
+ * animations become possible. The split itself ships ZERO motion CSS
+ * — that's layered on by the consumer or via the `stagger` prop.
+ *
+ * Restrictions:
+ *   - ≤ 3 splits per page (each `will-change: transform` reserves a GPU
+ *     layer, ~2-4 MB)
+ *   - ≤ 12 characters per split (DOM bloat beyond that costs more than
+ *     it pays)
+ *   - Reserved for portfolio / agency-self / creative-industries — on
+ *     a local-business hero (Friseur / Café) it reads as design vanity
+ *
+ * Accessibility (mandatory):
+ *   - `aria-label` on parent contains the un-split string so screen
+ *     readers announce one word, not letter-by-letter
+ *   - `aria-hidden="true"` on every character span
+ *   - Copy-paste of the un-split string still works because spans are
+ *     inline-flex / inline-block (browser preserves selection)
+ *   - `prefers-reduced-motion: reduce` produces the static word, no
+ *     stagger animation
+ *
+ * Visual identity (this scaffold): dark + amber
+ *   inherits color from parent — usually --color-text (cream on dark)
+ */
+
+interface Props {
+  text: string;
+  as?: 'h1' | 'h2' | 'span' | 'div';
+  stagger?: boolean;
+  class?: string;
+}
+
+const { text, as: Tag = 'span', stagger = false, class: extraClass = '' } = Astro.props as Props;
+
+const characters = [...text];
+
+const splitId = `spc-${Math.random().toString(36).slice(2, 10)}`;
+---
+
+<Tag
+  id={stagger ? splitId : undefined}
+  class:list={['spc-text', stagger && 'spc-text--stagger', extraClass]}
+  aria-label={text}
+>
+  {
+    characters.map((ch, i) => (
+      <span aria-hidden="true" style={`--spc-i: ${i}`}>
+        {ch === ' ' ? ' ' : ch}
+      </span>
+    ))
+  }
+</Tag>
+
+{
+  stagger && (
+    <script is:inline define:vars={{ splitId }}>
+      (() => {
+        const el = document.getElementById(splitId);
+        if (!el) return;
+        if (!('IntersectionObserver' in window)) {
+          el.classList.add('is-visible');
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.4 },
+        );
+        io.observe(el);
+      })();
+    </script>
+  )
+}
+
+<style>
+  .spc-text {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    user-select: text;
+    -webkit-user-select: text;
+    letter-spacing: inherit;
+  }
+
+  .spc-text > span {
+    display: inline-block;
+    will-change: transform;
+    vertical-align: baseline;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .spc-text--stagger > span {
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity var(--motion-base) var(--ease-apple-smooth),
+        transform var(--motion-base) var(--ease-apple-smooth);
+      transition-delay: calc(var(--spc-i) * var(--stagger-step));
+    }
+
+    .spc-text--stagger.is-visible > span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spc-text--stagger > span {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

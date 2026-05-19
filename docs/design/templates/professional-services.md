@@ -340,6 +340,43 @@ No canonical worked example in the benchmark (no solo-practitioner sites in §7.
 
 ---
 
+### 9.7 Lesse Studio — `lessestudio.com` (Archetype: design-and-tech studio — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §16)
+
+**Why this lands in professional-services:** the "design-and-technology studio" archetype. Italy-based full-service agency. Direct comparator for the agency's own future portfolio.
+
+**What to borrow:**
+- **System-font body + custom display only** — `ui-sans-serif, system-ui, ...` for chrome, HostGrotesk + DMSans for display. Cuts custom-font payload ~70 %. Adopt for our own agency-self page.
+- **Mid-grey body bg `#EBEBEB`** — confident architectural neutral. Not white, not cream. Reads as "Swiss-influenced design office."
+- **Agency-self 8-section outline** (mission → studio description → services → approach/values → work → testimonials → news → closing CTA). Use as the canonical agency-portfolio template.
+
+### 9.8 Laurenti Web Design — `laurentiwebdesign.it` (Archetype: solo / two-person studio — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §17)
+
+**Why this lands in professional-services:** the most-comparable-scale reference to our own operation. Italian regional studio. Three Manrope weights, no motion library, no canvas — pure HTML + CSS.
+
+**What to borrow:**
+- **One free font, three weights, zero motion library** = credible agency-self build on a Vercel free tier. Codify in our future agency-portfolio scaffold.
+- **Manrope as Inter alternative** — for clients/portfolio where you want "design Twitter" register without using Inter (the obvious choice).
+
+### 9.9 Juan Mora — `juanmora.co` (Archetype: independent design director — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §18)
+
+**Why this lands in professional-services:** solo-practitioner brand-and-web designer; 16-year practitioner. Reference for any freelance / consultant client.
+
+**What to borrow:**
+- **Two-color heading system:** personality color (peach) on h1/h3 (the "what I say about myself" elements), neutral grey on h2 (the "structural taxonomy" elements). Brilliant hierarchy control through color, not font-size.
+- **Body color `#333` warm grey** instead of `#000`. Friendlier across long-form copy.
+- **`Arial, sans-serif` body** for solo-practitioner Tier-1 builds — saves a custom-font fetch, signals confidence over cheapness when the headings carry the weight.
+
+### 9.10 Horeca-Social — `horeca-social.com` (Archetype: niche-vertical agency — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §10)
+
+**Why this lands in professional-services — and worth studying as a competitor:** German social-media + influencer agency specializing in HoReCa (Hotel/Restaurant/Café) clients. **Direct competitor to our agency's gastronomy vertical** — studying them is studying what our target client has already seen.
+
+**What to borrow:**
+- **Brand color as the body text default** — `body { color: rgb(223, 5, 103) }` (hot pink). Most agencies invert; Horeca inverts the inversion. Voice signal in 200ms of page load. AA contrast at 5.0:1 (borderline — measure before adopting).
+- **20px body text** — pushes the page toward editorial weight. Already aligned with our beauty / wellness templates.
+- **Big-number stat callouts as h2** (`15+`, `400+`, `150+`) — free brand-trust pattern for service businesses with quantifiable claims.
+
+---
+
 ## 10. Decision matrix — picking the archetype per client
 
 | If the client is… | Pick archetype | Stack tier (per `TECH.md` §1) |

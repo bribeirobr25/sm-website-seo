@@ -1,0 +1,41 @@
+---
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Demo · LABEL (N) header">
+  <main id="main" class="section">
+    <div class="container-page space-y-12">
+      <header>
+        <p class="text-sm uppercase tracking-wider text-text-muted">Demo</p>
+        <h1 class="text-3xl sm:text-4xl text-text mt-2">LABEL (N) section header</h1>
+        <p class="prose mt-4 max-w-prose">
+          Spec: <code>docs/design/components/label-count-header.md</code>. Monospace catalog header
+          confirmed across Mily, T11, and Hubtown.
+        </p>
+      </header>
+
+      <section class="space-y-8">
+        <div>
+          <LabelCountHeader label="Menü" count={12} countLabel="12 Gerichte" />
+          <p class="text-text-muted text-sm mt-2">Gastronomy — menu category headers</p>
+        </div>
+
+        <div>
+          <LabelCountHeader label="Leistungen" count={8} countLabel="8 Leistungen" />
+          <p class="text-text-muted text-sm mt-2">Trades / pro-services — service catalog</p>
+        </div>
+
+        <div>
+          <LabelCountHeader label="Projekte" count={24} countLabel="24 Projekte" />
+          <p class="text-text-muted text-sm mt-2">Portfolio — referenced project count</p>
+        </div>
+
+        <div>
+          <LabelCountHeader label="Behandlungen" count={15} countLabel="15 Behandlungen" level={3} />
+          <p class="text-text-muted text-sm mt-2">Nested level (h3) — for sub-sections</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,61 @@
+---
+import MarqueeCTA from '@/components/ui/MarqueeCTA.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Demo · Marquee CTA">
+  <main id="main" class="section">
+    <div class="container-page space-y-12">
+      <header>
+        <p class="text-sm uppercase tracking-wider text-text-muted">Demo</p>
+        <h1 class="text-3xl sm:text-4xl text-text mt-2">Marquee-on-hover CTA</h1>
+        <p class="prose mt-4 max-w-prose">
+          Spec: <code>docs/design/components/marquee-cta.md</code>. Three coordinated 500ms
+          transitions on <code>cubic-bezier(0.7, 0, 0.3, 1)</code>. Hover over each CTA to see the
+          marquee.
+        </p>
+      </header>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Dark-fill variant (default)</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Rest: transparent + accent border. Hover: accent fills from below; text inverts.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-4">
+          <MarqueeCTA href="#menu" label="Explore Menu" ariaLabel="Explore the menu" />
+          <MarqueeCTA href="#work" label="View Work" ariaLabel="View our work" />
+          <MarqueeCTA href="#contact" label="Get in Touch" ariaLabel="Get in touch with us" />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Light-fill variant</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Rest: accent bg. Hover: deeper accent fills in.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-4">
+          <MarqueeCTA
+            href="#book"
+            label="Book Now"
+            ariaLabel="Book your appointment"
+            variant="light-fill"
+          />
+          <MarqueeCTA
+            href="#join"
+            label="Join Us"
+            ariaLabel="Join the club"
+            variant="light-fill"
+          />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Reduced motion</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Enable <code>prefers-reduced-motion: reduce</code> in your OS settings to verify the
+          hover state becomes a flat color swap (no transforms).
+        </p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

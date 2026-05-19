@@ -303,6 +303,16 @@ Already covered in §Sentry / error tracking subsection.
 - [ ] **Primary CTA does not appear unchanged in two sections** — second appearance differs in shape/label/variant (see `DESIGN-BEST-PRACTICES.md` CTA repetition rule)
 - [ ] Hero section answers: **what** the business does, **where** it is, **how to contact**
 
+**Vertical-scoped gates** (added 2026-05-19, grounded in `docs/audit/ui-ux-reference-study.md`):
+- [ ] **For gastronomy / beauty / artisan clients:** if background is pure white (`#fff`), flag for client discussion — cream is the pattern-evidenced default (5 awarded sites). See `DESIGN-BEST-PRACTICES.md` §5 "Cream beats white for hospitality."
+- [ ] **For gastronomy / beauty / health / studio clients:** if the client has a reservation/booking flow, the **half-pill sticky-edge CTA** (`RESERVE` / `BOOK` / `TERMIN` / `JOIN`) is the recommended pattern. See `DESIGN-BEST-PRACTICES.md` §7 Half-pill sticky-edge CTA. Optional but strongly recommended.
+- [ ] **For gastronomy / beauty / health clients:** opening hours surfaced in the nav (`COFFEE 8:00 – 16:00` style, two-line nav-item) rather than buried in footer. See `templates/gastronomy.md` hours-in-nav recipe.
+- [ ] **For trades / industrial / regulated-services clients:** body text color is `--color-text-trade-navy` (`#042940`) OR a brand-extracted navy/charcoal, NEVER pure black. See `DESIGN-BEST-PRACTICES.md` §5 Warm body text — section "trade navy variant."
+- [ ] **For any client whose product is a natural material** (stone, leather, wood, food, fabric, paper, ceramic): brand accent color was sampled from a product photograph per `DESIGN-BEST-PRACTICES.md` §5 Sourcing the palette tier 3.5 — *not* invented from a generic vertical palette.
+- [ ] **For any client with ambient autoplay video:** all 5 mandatory constraints in `PERFORMANCE.md` §8 are met AND Lighthouse confirms the poster image (not the video) is the LCP element. If even one constraint is missing — pull the video before launch.
+- [ ] **For local-business clients (every vertical except portfolio / agency-self):** the `h1` is the visually primary headline AND carries the primary SEO keyword. No eyebrow-h1 pattern. See `DESIGN-BEST-PRACTICES.md` §4 inverted-h1 restriction + `SEO.md` §15 Tech SEO anti-patterns.
+- [ ] **No fixed-viewport SPA / scroll-hijacking.** Document scrollable. Sections not absolutely-positioned-with-translate. See `DESIGN-BEST-PRACTICES.md` §3 Forbidden visual directions + `SEO.md` §15 Tech SEO anti-patterns.
+
 ### Typography
 - [ ] Body text minimum 16px
 - [ ] Line height on body: 1.6 (not default 1.0)

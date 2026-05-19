@@ -328,6 +328,18 @@ No canonical worked example in §7.9 — the benchmark skews to chains. The IA f
 
 ---
 
+### 9.7 Mily Group — `milygroup.com` (Archetype: B2B natural-materials wholesale — added 2026-05-19, source: `docs/audit/ui-ux-reference-study.md` §9)
+
+**Why this lands in pets:** Polish manufacturer + supplier of *natural antler dog chews*. **Closest direct reference in the entire 24-site study for the pets vertical** — the actual product is in the pets / natural-materials category. Direct fit for any pets-vertical client selling natural products (raw food, antler chews, hemp accessories, organic pet supplies) at B2B scale.
+
+**What to borrow:**
+- **Three-font role allocation:** Instrument Serif (free, hero display at 108px) + IBM Plex Sans (body + nav) + IBM Plex Mono (`PRODUCTS (5)` catalog labels). Each family does one job — display, body, catalog — none overlap.
+- **`PRODUCTS (5)` monospace section header** for catalog navigation. The mono signals "this is a directory" instantly. For any pets-retail client with a clear product taxonomy (treats, toys, accessories, food), this is the most efficient catalog signal.
+- **Body color `#2C1A11` warm brown** instead of pure black — codified as `--color-text-warm` in `TECH.md` §7. For natural-pet brands (antler, leather, hemp, organic), brown body text reads as "natural materials" the moment the page loads.
+- **Instrument Serif** as a free premium-serif alternative for the hero. Measured at 108px holding up cleanly.
+
+---
+
 ## 10. Decision matrix — picking the archetype per client
 
 | If the client is… | Pick archetype | Stack tier (per `TECH.md` §1) |

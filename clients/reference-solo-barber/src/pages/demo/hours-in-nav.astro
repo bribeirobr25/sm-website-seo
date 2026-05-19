@@ -1,0 +1,54 @@
+---
+import HoursInNav from '@/components/layout/HoursInNav.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const gastronomy = [
+  { label: 'Coffee', hours: '8:00 – 16:00', ariaLabel: 'Geöffnet 8 bis 16 Uhr', href: '#coffee' },
+  { label: 'Brunch', hours: '9:00 – 14:00', ariaLabel: 'Brunch 9 bis 14 Uhr', href: '#brunch' },
+];
+
+const beauty = [
+  { label: 'Salon', hours: 'Mo-Fr 9-19', ariaLabel: 'Salon Montag bis Freitag 9 bis 19 Uhr' },
+  { label: 'Walk-in', hours: 'Sa 10-16', ariaLabel: 'Walk-in Samstag 10 bis 16 Uhr' },
+  { label: 'Event', hours: 'Auf Anfrage', ariaLabel: 'Events nach Vereinbarung' },
+];
+---
+
+<BaseLayout title="Demo · Hours in nav">
+  <main id="main" class="section">
+    <div class="container-page space-y-12">
+      <header>
+        <p class="text-sm uppercase tracking-wider text-text-muted">Demo</p>
+        <h1 class="text-3xl sm:text-4xl text-text mt-2">Hours in nav</h1>
+        <p class="prose mt-4 max-w-prose">
+          Spec: <code>docs/design/components/hours-in-nav.md</code>. Two-line stack from Haven
+          Annecy. Pair with <code>OpeningHoursSpecification</code> schema.
+        </p>
+      </header>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Gastronomy (2 items — Haven canonical)</h2>
+        <div class="mt-6 p-6 border border-border rounded-lg bg-surface">
+          <HoursInNav items={gastronomy} />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Beauty (3 items)</h2>
+        <div class="mt-6 p-6 border border-border rounded-lg bg-surface">
+          <HoursInNav items={beauty} />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Mobile hamburger variant</h2>
+        <p class="text-sm text-text-muted mt-2">
+          When collapsed, items stack vertically. The two-line label/hours pattern survives.
+        </p>
+        <div class="mt-6 p-6 border border-border rounded-lg bg-surface max-w-xs">
+          <HoursInNav items={beauty} variant="mobile-list" />
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

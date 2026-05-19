@@ -1,0 +1,88 @@
+---
+/**
+ * Eyebrow-h1 + display-paragraph hero — PORTFOLIO / AGENCY-SELF ONLY.
+ * Spec: docs/design/components/eyebrow-display-hero.md
+ *
+ * ⚠️ HARD RESTRICTION (DESIGN-BEST-PRACTICES.md §4 + SEO.md §15):
+ * Forbidden for local-business clients. The h1 is the most-indexed
+ * element on the page; reducing it to a 12px eyebrow hands away the
+ * primary SEO keyword target. Permitted only when SEO is explicitly
+ * deprioritized in BRIEF.md — portfolio sites, agency-self pages,
+ * referral-only luxury.
+ *
+ * The `seoNote` prop is required and must explain why the SEO
+ * restriction does not apply. A build-time warning fires if it is
+ * empty — this is intentional friction; do not bypass.
+ *
+ * Visual identity (this scaffold): dark + amber
+ *   eyebrow: --color-text-muted (cream-muted on dark)
+ *   display: --color-text (cream on dark)
+ *   Use the display font (Georgia / Cormorant) on the paragraph.
+ *
+ * Per-vertical token swaps:
+ *   agency-self cream:   bg cream, eyebrow muted-warm-brown, display warm
+ *   portfolio designer:  bg charcoal, eyebrow neutral grey, display white
+ */
+
+interface Props {
+  eyebrow: string;
+  display: string;
+  seoNote: string;
+  class?: string;
+}
+
+const { eyebrow, display, seoNote, class: extraClass = '' } = Astro.props;
+
+if (!seoNote || seoNote.trim().length === 0) {
+  // biome-ignore lint/suspicious/noConsole: intentional build-time SEO restriction warning
+  console.warn(
+    '[EyebrowDisplayHero] `seoNote` is empty. This component is restricted ' +
+      'to portfolio / agency-self / referral-only clients per ' +
+      'docs/design/components/eyebrow-display-hero.md §1. If this is a ' +
+      'local-business client, REPLACE the component with a standard hero. ' +
+      'Otherwise, populate `seoNote` with a one-line confirmation that ' +
+      'organic-search acquisition is deprioritized for this client.',
+  );
+}
+---
+
+<section class:list={['edh-hero', extraClass]} data-seo-note={seoNote}>
+  <div class="container-page">
+    <h1 class="edh-eyebrow">{eyebrow}</h1>
+    <p class="edh-display">{display}</p>
+  </div>
+</section>
+
+<style>
+  .edh-hero {
+    padding-block: clamp(4rem, 8vw, 8rem);
+  }
+
+  .edh-hero > .container-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .edh-eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 1.92px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .edh-display {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: var(--tracking-body);
+    color: var(--color-text);
+    margin: 0;
+    max-width: 22ch;
+  }
+</style>

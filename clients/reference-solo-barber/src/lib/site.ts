@@ -59,8 +59,7 @@ export const SITE = {
     {
       slug: 'corte-classico',
       name: 'Corte clássico',
-      description:
-        'Corte tradicional com tesoura, acabamento na navalha. Inclui lavagem.',
+      description: 'Corte tradicional com tesoura, acabamento na navalha. Inclui lavagem.',
       price: 'R$ 70',
       durationMinutes: 45,
       confirmed: false, // DRAFT
@@ -68,8 +67,7 @@ export const SITE = {
     {
       slug: 'corte-maquina',
       name: 'Corte máquina',
-      description:
-        'Corte com máquina, ideal para quem prefere o estilo mais curto e prático.',
+      description: 'Corte com máquina, ideal para quem prefere o estilo mais curto e prático.',
       price: 'R$ 50',
       durationMinutes: 30,
       confirmed: false, // DRAFT
@@ -77,8 +75,7 @@ export const SITE = {
     {
       slug: 'barba',
       name: 'Barba',
-      description:
-        'Barba completa com toalha quente, óleo e finalização com bálsamo.',
+      description: 'Barba completa com toalha quente, óleo e finalização com bálsamo.',
       price: 'R$ 55',
       durationMinutes: 30,
       confirmed: false, // DRAFT
@@ -86,8 +83,7 @@ export const SITE = {
     {
       slug: 'combo',
       name: 'Combo Corte + Barba',
-      description:
-        'O ritual completo. Corte, barba, toalha quente, ofuras e cuidados finais.',
+      description: 'O ritual completo. Corte, barba, toalha quente, ofuras e cuidados finais.',
       price: 'R$ 110',
       durationMinutes: 75,
       confirmed: false, // DRAFT
@@ -132,7 +128,11 @@ export const SITE = {
     processors: [
       { name: 'Vercel', purpose: 'Hospedagem do site', location: 'EUA / Brasil (CDN regional)' },
       { name: 'Sentry', purpose: 'Monitoramento de erros (servidor)', location: 'UE' },
-      { name: 'Microsoft Clarity', purpose: 'Análise de comportamento (heatmaps)', location: 'EUA' },
+      {
+        name: 'Microsoft Clarity',
+        purpose: 'Análise de comportamento (heatmaps)',
+        location: 'EUA',
+      },
       { name: 'Trinks', purpose: 'Plataforma de agendamento (link externo)', location: 'Brasil' },
     ],
   },

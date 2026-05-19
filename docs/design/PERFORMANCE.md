@@ -24,6 +24,7 @@ Other standards docs reference this doc by name, never by section. Section struc
 - **Diagnose slow LCP by reading the breakdown** (TTFB / load delay / load duration / **render delay**) — not the headline score. Render delay > 1 s almost always means render-blocking fonts or CSS.
 - **Use the framework's image pipeline.** Astro: `<Image>` from `astro:assets` against files in `src/assets/`. Raw `<img>` against `public/` ships originals unchanged.
 - **Animate only `transform` and `opacity`.** Never animate `width`, `height`, `top`, `left`, `margin` — those force layout.
+- **Ambient autoplay video:** five mandatory constraints (§8) — never ship without all five. Live evidence: of 3 video-heavy sites in the UI/UX study, 2 pause all videos on mobile (Auwa, Kindred); 1 doesn't (Watch House — measurable LCP hit). Our agency standard requires the pause.
 
 ---
 
@@ -36,7 +37,8 @@ Other standards docs reference this doc by name, never by section. Section struc
 5. [Image rules](#5-image-rules)
 6. [Font rules](#6-font-rules)
 7. [Animation performance](#7-animation-performance)
-8. [Tools](#8-tools)
+8. [Ambient autoplay video](#8-ambient-autoplay-video)
+9. [Tools](#9-tools)
 
 ---
 
@@ -202,7 +204,62 @@ Only animate `transform` and `opacity` (GPU-composited properties). Never animat
 
 ---
 
-## 8. Tools
+## 8. Ambient autoplay video
+
+Ambient autoplay-muted MP4 loops are now standard for premium hospitality / artisan brands (`docs/audit/ui-ux-reference-study.md` §5 Watch House, §6 Auwa, §20 Kindred). Used right, they evoke the brick-and-mortar atmosphere at low JS cost. Used wrong, they blow this doc's < 500 KB page-weight budget by **4-16×** (a 10 s 1080p MP4 at q=50 weighs ~3-5 MB).
+
+The pattern is **only acceptable when all five constraints ship simultaneously.** If any one is missing, the video does not ship.
+
+### The five mandatory constraints
+
+| # | Constraint | Why | How to verify |
+|---|---|---|---|
+| 1 | **Conditional load by connection quality** | A 4G/wifi visitor can afford 2 MB ambient. A 3G visitor cannot. | `navigator.connection.effectiveType === '4g'` gate before `<video>` mount. On slower connections, render the `poster` image only and skip the video entirely. |
+| 2 | **`preload="none"`** | Default `preload="metadata"` still fetches ~200 KB *before* the video plays — wasted bytes when LCP is what matters | Inspect the `<video>` tag; `preload="metadata"` and `preload="auto"` are both forbidden |
+| 3 | **Autoplay deferred until hero image LCP has fired** | Otherwise the video competes with the hero image for early bandwidth and pushes LCP > 2.5 s | Wire `play()` to an IntersectionObserver + a `requestIdleCallback` after the hero image's `load` event |
+| 4 | **The `poster` image is the LCP element with `fetchpriority="high"`** | The video itself never becomes the LCP element — too slow to be measured as a "contentful paint" | Lighthouse → Performance → "Largest Contentful Paint element" must point to the poster `<img>` or `<picture>`, not the `<video>` |
+| 5 | **Loop ≤ 5 s, resolution ≤ 720p, payload ≤ 2 MB** | The mobile budget. Encoding to H.264 + VP9 dual-codec, q=50, 24fps usually lands at ~1.5 MB for a 5 s 720p loop. | `ffprobe` the file: `Duration ≤ 5.0s`, `width ≤ 1280`, `file size ≤ 2 MB` |
+
+**Mobile pause is non-negotiable.** The Phase 1a re-audit (`ui-ux-reference-study.md` §12) measured 3 video-heavy sites at 375 viewport: Auwa pauses 6/6 videos on mobile, Kindred pauses 7/7, Watch House plays 7/7. The agency standard follows Auwa/Kindred — **all autoplay videos must pause when `window.innerWidth < 768`**, gated either by JS or by `@media (max-width: 767px) { video[autoplay] { display: none } }`.
+
+### Minimal reference implementation (Astro / vanilla, drop-in)
+
+```html
+<picture>
+  <source srcset="/hero-poster.avif" type="image/avif">
+  <img src="/hero-poster.jpg" alt="…" fetchpriority="high" decoding="async" width="1280" height="720">
+</picture>
+<video
+  poster="/hero-poster.jpg"
+  muted
+  playsinline
+  loop
+  preload="none"
+  aria-hidden="true"
+  data-ambient
+></video>
+
+<script>
+  // Constraint 1 + 3 + mobile-pause guard
+  if (window.innerWidth >= 768 && navigator.connection?.effectiveType === '4g') {
+    const v = document.querySelector('video[data-ambient]');
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        requestIdleCallback(() => { v.src = '/hero-ambient.mp4'; v.play(); io.disconnect(); });
+      }
+    }, { rootMargin: '100px' });
+    io.observe(v);
+  }
+</script>
+```
+
+### Verification gate (pre-launch)
+
+Before flipping `noindex` to production, the LCP element must NOT be the `<video>`. Lighthouse → Performance → LCP element must show the poster image. If it shows the video, one of the five constraints failed; do not ship.
+
+---
+
+## 9. Tools
 
 Use these to verify the rules above. All entries are free or have a usable free tier (as of 2026-05-13).
 

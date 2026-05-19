@@ -1,0 +1,62 @@
+---
+import HalfPillCTA from '@/components/ui/HalfPillCTA.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Demo · Half-pill CTA">
+  <main id="main" class="section">
+    <div class="container-page space-y-12">
+      <header>
+        <p class="text-sm uppercase tracking-wider text-text-muted">Demo</p>
+        <h1 class="text-3xl sm:text-4xl text-text mt-2">Half-pill CTA</h1>
+        <p class="prose mt-4 max-w-prose">
+          Spec: <code>docs/design/components/half-pill-cta.md</code>. The radius
+          <code>30px 0 0 30px</code> creates the "tab sticking from the right edge" effect — purely
+          visual, NOT <code>position: fixed</code>.
+        </p>
+      </header>
+
+      <section>
+        <h2 class="text-xl font-display text-text">In a header right cell (canonical placement)</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Place inside <code>&lt;header&gt;</code>'s right cell — the half-pill clips against the
+          viewport's right edge.
+        </p>
+        <div class="mt-6 border border-border rounded-lg overflow-hidden">
+          <div class="flex items-center justify-between py-4 pl-6 pr-0 bg-surface">
+            <span class="font-display text-lg text-text">Solo Barber</span>
+            <HalfPillCTA
+              href="https://example.com/book"
+              label="Reservar"
+              ariaLabel="Reservar horário no Trinks"
+              target="_blank"
+              dataEvent="booking_started"
+              dataSourceSection="demo_header"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Standalone (for inspection)</h2>
+        <div class="mt-6 flex flex-wrap gap-6 items-start">
+          <HalfPillCTA
+            href="#"
+            label="Reservieren"
+            ariaLabel="Tisch reservieren"
+          />
+          <HalfPillCTA href="#" label="Termin" ariaLabel="Termin buchen" />
+          <HalfPillCTA href="#" label="Kostenvoranschlag" ariaLabel="Kostenvoranschlag anfragen" />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-display text-text">Per-vertical token swaps</h2>
+        <p class="text-sm text-text-muted mt-2">
+          See the component's frontmatter doc-comment for the canonical mapping. All variants must
+          pass WCAG AA contrast — verify per `CHECKLIST.md` before client launch.
+        </p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
