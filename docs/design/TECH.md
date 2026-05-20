@@ -55,7 +55,7 @@ Two decisions, in order. **Product type first** (what the project does), then **
 
 **Production-cutover deliverables apply to ALL types (1–5):** before flipping `noindex` off on any client build, two cross-type deliverables must ship regardless of product type:
 
-1. **Citation-building** per `CITATIONS.md` (universal directories — GBP, Apple Business Connect, Bing Places, Yelp DE, Facebook, IG · DE-general — Gelbe Seiten, Das Örtliche, 11880, meinestadt.de, berlin.de · vertical-specific — Jameda for health, Treatwell for beauty, Tripadvisor for gastronomy, etc.). Canonical NAP declared in BRIEF.md and matched across every claimed listing. *Note: `CITATIONS.md` ships in `SEO-DEPTH-EXPANSION-PLAN-2026-05-18.md` Batch 2.*
+1. **Citation-building** per `CITATIONS.md` (universal directories — GBP, Apple Business Connect, Bing Places, Yelp DE, Facebook, IG · DE-general — Gelbe Seiten, Das Örtliche, 11880, meinestadt.de, berlin.de · vertical-specific — Jameda for health, Treatwell for beauty, Tripadvisor for gastronomy, etc.). Canonical NAP declared in BRIEF.md and matched across every claimed listing. *Note: `CITATIONS.md` ships in the 2026-05-18 SEO depth work Batch 2.*
 2. **Review-link + vanity redirect setup** per `SEO.md` §8.4 — `/bewertung` (DE) / `/avaliacao` (PT/BR) / `/review` (EN) configured and verified end-to-end (HTTP 301 → correct `g.page/r/<short-id>/review` destination) per `CHECKLIST.md` §Review generation — pre-launch. GBP review link visible in site chrome. Vanity-redirect e2e test is a 🔴 production blocker.
 
 These are not feature additions or upsells. They are the **operational floor** every client launches with, regardless of stack tier or product type. Quote the build accordingly; do not treat them as in-scope-only-for-Type-3+ work.
@@ -786,7 +786,7 @@ For any Type 1–2 build where the conversion is a single non-form action (call 
 
 #### Reusing across clients
 
-Copy from `docs/design/components/_impl/` rather than from a prior client. Each project still reviews + reconciles tokens at import time — but `_impl/` is the single canonical source, so token-name drift across clients is eliminated by construction. **Copy-paste between clients is how stale tokens propagate** (the same way the `--color-secondary` vs `--color-open` inconsistency happened in Porto — see `docs/audit/porto-dos-ribeiros-2026-05-14.md` §3.4 for the cautionary tale).
+Copy from `docs/design/components/_impl/` rather than from a prior client. Each project still reviews + reconciles tokens at import time — but `_impl/` is the single canonical source, so token-name drift across clients is eliminated by construction. **Copy-paste between clients is how stale tokens propagate** (the same way the `--color-secondary` vs `--color-open` inconsistency happened in Porto — the cautionary tale is in the agency archive).
 
 ### Semantic HTML elements
 

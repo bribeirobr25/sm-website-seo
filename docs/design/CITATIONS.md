@@ -275,4 +275,4 @@ Semi-annual hits all three without the time-tax of monthly churn.
 
 ---
 
-*Sources cited inline. Last research refresh: 2026-05-18 per `docs/audit/SEO-DEPTH-EXPANSION-PLAN-2026-05-18.md` Batch 2.*
+*Sources cited inline. Last research refresh: 2026-05-18.*

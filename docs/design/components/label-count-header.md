@@ -1,7 +1,7 @@
 # `LABEL (N)` monospace section header
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §9 (Mily Group, `PRODUCTS (5)`) and §19 (T11, `PORTFOLIO [21]`). Confirmed independently by three sites in the study (third: §8 Hubtown, loaded mono font).
-**Implementation:** `docs/design/components/_impl/LabelCountHeader.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
+**Implementation:** `docs/design/components/_impl/LabelCountHeader.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/`).
 
 ## 1. Purpose + when to use
 

@@ -1,7 +1,7 @@
 # Alternating-section-background rhythm
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §1 (Apple iPhone — alternating `#fff` ↔ `rgb(245, 245, 247)` across 14 sections).
-**Implementation:** `docs/design/components/_impl/Section.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
+**Implementation:** `docs/design/components/_impl/Section.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/`).
 
 ## 1. Purpose + when to use
 

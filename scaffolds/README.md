@@ -26,12 +26,12 @@ Then follow the scaffold's own `README.md` for the per-client setup steps (renam
 
 ## What scaffolds are NOT
 
-- **Not reference impls.** The reference impls (deleted 2026-05-19 via `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md`) had per-client palette + content baked in. These scaffolds are content-neutral starters. Archived per-client docs at `docs/clients/archived/reference-solo-barber/` and `docs/clients/archived/reference-studio-booking/` retain the canonical worked-example shapes.
+- **Not reference impls.** The reference impls (deleted 2026-05-19 via the 2026-05-19 restructure) had per-client palette + content baked in. These scaffolds are content-neutral starters. Archived per-client docs at `docs/clients/archived/reference-solo-barber/` and `docs/clients/archived/reference-studio-booking/` retain the canonical worked-example shapes.
 - **Not where you put client code.** `clients/[slug]/` is where your client builds live. `scaffolds/` is where you copy FROM. They are NOT interchangeable.
 
 ## Scaffold purity — what must NOT land here
 
-> Per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` §7 R17:
+> Per the 2026-05-19 restructure §7 R17:
 
 These scaffolds must remain **content-neutral, token-neutral, version-pinned**. Per a quarterly scaffold-purity audit (PENDING.md, calendar trigger 2026-08-19):
 
@@ -60,4 +60,4 @@ The 8 agency-canonical components from the 24-site UI/UX reference study live at
 
 ## Build validation gate
 
-Per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` §7 R1 — these scaffolds REPLACE the deleted reference impls as the agency's build-validation surface. Quarterly cadence (calendar trigger 2026-08-19): re-run `pnpm install && pnpm build` on both scaffolds to catch dep-bump regressions before they affect new client work.
+Per the 2026-05-19 restructure §7 R1 — these scaffolds REPLACE the deleted reference impls as the agency's build-validation surface. Quarterly cadence (calendar trigger 2026-08-19): re-run `pnpm install && pnpm build` on both scaffolds to catch dep-bump regressions before they affect new client work.

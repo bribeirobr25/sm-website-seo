@@ -118,7 +118,7 @@ Per-client files live in `docs/clients/[client-slug]/`:
 | `design.md` | Per-client design decisions (color tokens, fonts, copy, aesthetic) |
 | `BRIEF.md` | Business context, contacts, scope, timeline |
 
-Client source code lives in `clients/[client-slug]/`, scaffolded from `scaffolds/astro-tier2/` or `scaffolds/nextjs-tier3/` per Step 3 below. The `clients/` directory itself is intentionally otherwise empty post-`CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` — see `clients/README.md` for the convention.
+Client source code lives in `clients/[client-slug]/`, scaffolded from `scaffolds/astro-tier2/` or `scaffolds/nextjs-tier3/` per Step 3 below. The `clients/` directory itself is intentionally otherwise empty by design — see `clients/README.md` for the convention.
 
 Cross-client audit + intake artifacts live in `docs/audit/`:
 
@@ -137,7 +137,7 @@ Cross-client audit + intake artifacts live in `docs/audit/`:
 
 If a prospect-intake file exists at `docs/audit/[client-slug].md` (per `CHECKLIST.md` §9), read it **before any code**. The intake is the canonical source for every reachable URL the scaffold will pull from. Image sources, brand source signals, contact info, hours discrepancies — all already enumerated there.
 
-Reference implementations: `docs/audit/jean.md`, `docs/audit/cafedelcorso.md`, `docs/audit/laudam.md`.
+Reference implementations: `docs/audit/cafedelcorso.md`, `docs/audit/laudam.md`.
 
 ### Step 1 — Create the client docs
 
@@ -258,11 +258,9 @@ vercel --prod   # Gets a vercel.app URL
 
 ## Current client roster
 
-**No active paying client builds.** The agency is **post-docs-expansion** — two major plans shipped 2026-05-16 → 2026-05-18:
-- `docs/audit/AGENCY-STANDARDS-EXPANSION-PLAN-2026-05-16.md` (Batches 0–3) — legal · KPI · integrations · social sharing · reference impls
-- `docs/audit/SEO-DEPTH-EXPANSION-PLAN-2026-05-18.md` (hotfix + Batches 1, 2, 3 MVP) — review-generation playbook · citation-building playbook · schema cookbook
+**No active paying client builds.** The agency rule library is feature-complete (legal · KPI · integrations · social sharing · review-generation · citations · schema cookbook all shipped through 2026-05-19; "Recently resolved" entries in `docs/audit/PENDING.md` summarize the work).
 
-**Two install-ready scaffolds** at `scaffolds/` are the canonical starting points (per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md`, the prior reference impls in `clients/reference-*/` were distilled into `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/` and the original `clients/` tree was deleted in Phase 6):
+**Two install-ready scaffolds** at `scaffolds/` are the canonical starting points. The prior reference impls in `clients/reference-*/` were distilled into `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/` and the original `clients/` tree was deleted 2026-05-19:
 - `scaffolds/astro-tier2/` (Tier 2 / Astro 6 / Tailwind v4 / Sentry — for Type 1 + Type 2 client builds)
 - `scaffolds/nextjs-tier3/` (Tier 3 / Next.js 16 / Tailwind v4 / Drizzle + Neon + Upstash + Resend + Sentry + PostHog — for Type 3+ client builds)
 

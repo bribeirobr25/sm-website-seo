@@ -35,7 +35,7 @@ Then per root `CLAUDE.md` Step 3 follow-ups:
 
 ## What must NOT be in this scaffold
 
-> Per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` R17 (scaffold purity):
+> Per the 2026-05-19 restructure R17 (scaffold purity):
 
 - **No client-specific copy** — every page is a placeholder until you swap in real content
 - **No client-specific palette values** — `tokens.css` ships a neutral starting palette; override per the vertical template

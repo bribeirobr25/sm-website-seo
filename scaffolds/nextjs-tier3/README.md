@@ -42,7 +42,7 @@ The reference Tier-3 impl (now archived) shipped a full end-to-end form endpoint
 
 ## What must NOT be in this scaffold
 
-> Per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` R17 (scaffold purity):
+> Per the 2026-05-19 restructure R17 (scaffold purity):
 
 - **No client-specific copy** — every page is a placeholder until you swap in real content
 - **No client-specific palette values** — `globals.css` ships canonical tokens + a neutral starting palette; override per the vertical template

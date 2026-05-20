@@ -1,4 +1,4 @@
-> **Status:** Archived 2026-05-19. Original code at `clients/reference-solo-barber/` was distilled into `docs/design/components/_impl/` + `docs/design/_impl/` + `scaffolds/astro-tier2/` per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md`. Retained as the canonical worked example of a Tier-2 / BR-LGPD per-client doc set. Read-only — do not edit.
+> **Status:** Archived 2026-05-19. Original code at `clients/reference-solo-barber/` was distilled into `docs/design/components/_impl/` + `docs/design/_impl/` + `scaffolds/astro-tier2/`. Retained as the canonical worked example of a Tier-2 / BR-LGPD per-client doc set. Read-only — do not edit.
 
 # CLAUDE.md — Reference: Solo Barber (Tier 2 / Type 1 / BR-LGPD)
 

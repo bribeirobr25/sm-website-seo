@@ -650,7 +650,7 @@ A site that fails any gate is not ready for handoff. Re-run the failed gate afte
 
 When auditing a site (one of ours coming up for retainer review, or a client's previous site we've been asked to take over), use this template. Save the result to `docs/audit/[client-slug]-[YYYY-MM-DD].md`.
 
-The structure below mirrors the canonical Porto dos Ribeiros audit (`docs/audit/porto-dos-ribeiros-2026-05-14.md`, which covers all 3 variants + the new §3/§5/§9 rules — supersedes the original 05-13 audit now archived at `docs/audit/archived/porto-dos-ribeiros-2026-05-13.md`) — replicate it section-for-section. Consistency across audits lets you compare clients, track agency-wide compliance trends, and reuse fix recipes.
+The structure below mirrors the canonical Porto dos Ribeiros audit — replicate it section-for-section. Consistency across audits lets you compare clients, track agency-wide compliance trends, and reuse fix recipes.
 
 ### Template structure
 
@@ -764,7 +764,7 @@ Audits are point-in-time snapshots. When work after the audit changes its findin
 
 **Why amend rather than re-date:** auditing is a discipline tied to specific gates (kickoff, quarterly, handoff). Renaming the file every time a finding changes loses the audit gate semantics and creates churn in git history. The pattern that survived the Jean Souza Barber 05-15 brand correction was inline amendment + clear "Superseded YYYY-MM-DD" notes — preserving the audit's identity while keeping it current.
 
-**Worked example:** `docs/audit/jean-souza-barber-2026-05-14.md` was amended 2026-05-15 with 4 in-line supersession notes (palette tier 5 → tier 3, favicon priority-4 fallback → tier-1 real brand, sub-archetype changed, etc.) — file name unchanged. The next dated audit md (`-2026-08-XX.md`) will be the next quarterly review, not the post-correction snapshot.
+**Worked example:** a prior in-progress audit was amended 2026-05-15 with 4 in-line supersession notes (palette tier 5 → tier 3, favicon priority-4 fallback → tier-1 real brand, sub-archetype changed, etc.) — file name unchanged. The next dated audit md (`-2026-08-XX.md`) will be the next quarterly review, not the post-correction snapshot.
 
 ---
 
@@ -772,7 +772,7 @@ Audits are point-in-time snapshots. When work after the audit changes its findin
 
 **Distinct from §8.** Section 8 audits an *existing site* against agency standards. Section 9 captures *prospect research* — public information about a business the agency is considering as a client, before any code is written, before the cold call is made.
 
-Save the result to `docs/audit/[business-slug].md` (no date suffix — the file evolves as the conversation progresses). Reference implementations: `docs/audit/jean.md`, `docs/audit/cafedelcorso.md`, `docs/audit/laudam.md`.
+Save the result to `docs/audit/[business-slug].md` (no date suffix — the file evolves as the conversation progresses). Reference implementations: `docs/audit/cafedelcorso.md`, `docs/audit/laudam.md`.
 
 **The intake exists for one reason:** to give the scaffold step (and the cold-call step) a single source of truth for *every reachable URL and asset of the prospect*. Per `DESIGN-BEST-PRACTICES.md` §3 "Sourcing photos and favicon from the prospect intake," the scaffold reads this file and pulls assets from the listed URLs.
 

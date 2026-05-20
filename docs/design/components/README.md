@@ -1,6 +1,6 @@
 # Component spec sheets
 
-**Created:** 2026-05-19 as Phase 3a of `docs/audit/UI-UX-INTEGRATION-PLAN-2026-05-18.md`.
+**Created:** 2026-05-19 from the agency's 24-site UI/UX reference study (see `docs/audit/ui-ux-reference-study.md`).
 
 **Source measurements:** `docs/audit/ui-ux-reference-study.md` (24 sites, live runtime data at 1440 × 900 + mobile re-audit at 375 for the 8 most-relevant + animation specs for 5).
 
@@ -43,7 +43,7 @@ This folder is the agency's **canonical reference for reusable UI components** d
 | 7 | `alternating-section-bg.md` | ✅ Drafted 2026-05-19 | ✅ `layout/Section.astro` 2026-05-19 |
 | 8 | `per-character-split.md` | ✅ Drafted 2026-05-19 | ✅ `ui/SplitText.astro` 2026-05-19 |
 
-**Phase 3a + 3b are complete; CLIENTS-RESTRUCTURE 2026-05-19 relocated the impls.** All 8 spec sheets drafted; all 8 components live at `docs/design/components/_impl/` (relocated from `clients/reference-solo-barber/src/components/`). Companion demo pages at `docs/design/components/_impl/_demo/` retain the visual-test surface. The original reference impl was deleted in Phase 6 of `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md`; per-client docs archived at `docs/clients/archived/reference-solo-barber/`. See `archived/PHASE-3B-PREP.md` for the implementation pickup brief that was followed.
+**All 8 spec sheets + all 8 component implementations are complete.** Components live at `docs/design/components/_impl/`; companion demo pages at `docs/design/components/_impl/_demo/` retain the visual-test surface. Per-client docs of the prior reference impls (the original homes of these components before the 2026-05-19 restructure relocated them here) are archived at `docs/clients/archived/reference-{solo-barber,studio-booking}/`.
 
 ## How to use these specs (for client builds)
 

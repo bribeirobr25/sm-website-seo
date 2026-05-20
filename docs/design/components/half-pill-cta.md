@@ -1,7 +1,7 @@
 # Half-pill sticky-edge CTA
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §15 (Haven Annecy, live-measured + Phase 1b motion read).
-**Implementation:** `docs/design/components/_impl/HalfPillCTA.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
+**Implementation:** `docs/design/components/_impl/HalfPillCTA.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/`).
 
 ## 1. Purpose + when to use
 

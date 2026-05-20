@@ -1,6 +1,6 @@
 # docs/design/_impl/
 
-**Canonical working code for the non-component agency assets** — lib utilities, layouts, app primitives, legal pages, page errors, configs. Distilled from the reference impls (`clients/reference-solo-barber/` Tier 2 + `clients/reference-studio-booking/` Tier 3) on 2026-05-19 per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md`.
+**Canonical working code for the non-component agency assets** — lib utilities, layouts, app primitives, legal pages, page errors, configs. Distilled from the reference impls (`clients/reference-solo-barber/` Tier 2 + `clients/reference-studio-booking/` Tier 3) on 2026-05-19 per the 2026-05-19 restructure.
 
 For canonical UI **components** (the 8 from the 24-site reference study + 5 universal primitives), see `docs/design/components/_impl/`.
 
@@ -33,7 +33,7 @@ Examples:
 
 ## What's at `app/api/trial/route.ts`
 
-The canonical Tier-3 form-endpoint pattern: Zod validation + honeypot + Upstash rate-limit + Drizzle insert + Resend confirmation + Sentry capture. Also embedded as a fenced code block in `FORMS.md` per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` §7 R2 (redundancy against `_impl/` loss). The most asymmetric-pain artifact in the plan — its loss would be most painful because no end-to-end worked example exists elsewhere.
+The canonical Tier-3 form-endpoint pattern: Zod validation + honeypot + Upstash rate-limit + Drizzle insert + Resend confirmation + Sentry capture. Also embedded as a fenced code block in `FORMS.md` per the 2026-05-19 restructure §7 R2 (redundancy against `_impl/` loss). The most asymmetric-pain artifact in the plan — its loss would be most painful because no end-to-end worked example exists elsewhere.
 
 ## What's at `styles/tokens.canonical.css`
 

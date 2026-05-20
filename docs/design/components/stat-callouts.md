@@ -1,7 +1,7 @@
 # Big-number stat callouts
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §10 (Horeca-Social, live-measured: h2-as-statistic at `15+`, `400+`, `150+`).
-**Implementation:** `docs/design/components/_impl/StatCallouts.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
+**Implementation:** `docs/design/components/_impl/StatCallouts.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/`).
 
 ## 1. Purpose + when to use
 

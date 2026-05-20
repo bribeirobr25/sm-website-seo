@@ -1,6 +1,6 @@
 # clients/
 
-**This directory is where client builds live.** It is intentionally otherwise empty post-`CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` (the previous reference impls `reference-solo-barber/` and `reference-studio-booking/` were distilled into `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/` and the originals deleted).
+**This directory is where client builds live.** It is intentionally otherwise empty by design — the canonical agency assets live at `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/`, not here.
 
 ## How to populate this directory
 
@@ -36,4 +36,4 @@ Read these BEFORE drafting your first real `docs/clients/[slug]/` doc set — th
 - `scaffolds/README.md` — what's in each scaffold + the "must NOT be in this scaffold" purity constraints
 - `docs/design/components/_impl/README.md` — the 8 canonical components + 5 universal primitives
 - `docs/design/_impl/README.md` — non-component canonical assets (lib, legal pages, configs, Sentry)
-- `docs/audit/CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` — the plan that produced this empty-by-design `clients/` directory
+- `docs/audit/PENDING.md` — agency-level backlog aggregator + historical "Recently resolved" log of how this architecture emerged

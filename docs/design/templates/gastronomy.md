@@ -340,7 +340,7 @@ These are AI-template tells *specific to the gastronomy vertical* — beyond the
 
 ### 9.4 Archetype patterns — what each looks like in practice
 
-When you scaffold a new gastronomy client, pick the archetype that matches the business (use §10 decision matrix below) and apply the patterns below. A live reference implementation for the gastronomy vertical lands in Batch 3 of the agency-standards expansion (see `docs/audit/AGENCY-STANDARDS-EXPANSION-PLAN-2026-05-16.md`); until then, the patterns alone are the source of truth.
+When you scaffold a new gastronomy client, pick the archetype that matches the business (use §10 decision matrix below) and apply the patterns below from `scaffolds/astro-tier2/` (or `scaffolds/nextjs-tier3/` if Type 3+).
 
 | Archetype | Pattern signature |
 |-----------|-------------------|

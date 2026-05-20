@@ -1,4 +1,4 @@
-> **Status:** Archived 2026-05-19. Original code at `clients/reference-studio-booking/` was distilled into `docs/design/components/_impl/` + `docs/design/_impl/` + `scaffolds/nextjs-tier3/` per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md`. Retained as the canonical worked example of a Tier-3 / DE-DSGVO `design.md` shape. Read-only — do not edit.
+> **Status:** Archived 2026-05-19. Original code at `clients/reference-studio-booking/` was distilled into `docs/design/components/_impl/` + `docs/design/_impl/` + `scaffolds/nextjs-tier3/`. Retained as the canonical worked example of a Tier-3 / DE-DSGVO `design.md` shape. Read-only — do not edit.
 
 # design.md — Reference: Studio (Booking)
 

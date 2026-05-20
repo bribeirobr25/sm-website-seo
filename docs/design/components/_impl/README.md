@@ -48,8 +48,8 @@ The leading underscore prefix `_impl/` follows the same convention as `_demo/`: 
 
 ## History
 
-These components were extracted from `clients/reference-solo-barber/` and `clients/reference-studio-booking/` on 2026-05-19 per `docs/audit/CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` Phase 1. The reference impls were deleted in Phase 6 of the same plan; the working code lives here permanently as the agency-canonical source.
+These components were extracted from `clients/reference-solo-barber/` and `clients/reference-studio-booking/` on 2026-05-19 per `docs/audit/the 2026-05-19 restructure` Phase 1. The reference impls were deleted in Phase 6 of the same plan; the working code lives here permanently as the agency-canonical source.
 
 ## Drift prevention
 
-Per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` §7 R4: each `_impl/` file should remain byte-aligned with the values measured in its spec sheet §3 CSS spec. Quarterly drift check in PENDING.md (calendar trigger 2026-08-19) — copy each file into `scaffolds/astro-tier2/src/components/` temporary tree + `pnpm build` to confirm compilation; revert.
+Per the 2026-05-19 restructure §7 R4: each `_impl/` file should remain byte-aligned with the values measured in its spec sheet §3 CSS spec. Quarterly drift check in PENDING.md (calendar trigger 2026-08-19) — copy each file into `scaffolds/astro-tier2/src/components/` temporary tree + `pnpm build` to confirm compilation; revert.
