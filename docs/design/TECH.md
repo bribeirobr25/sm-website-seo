@@ -482,7 +482,7 @@ export const RATING = {
 2. **Approval gates use a boolean flag, not a comment.** A boolean field like `reviews.approvedForDisplay` is enforceable in code (visible UI components check the flag before rendering a star rating element on the page); a comment is not. **Note:** the flag does NOT gate Schema.org `aggregateRating` rendering — `aggregateRating` is **never** placed on the business's own `LocalBusiness` schema regardless of approval (self-serving ban per `SEO.md` §5.3). The flag controls visible HTML / UI only.
 3. **Pre-launch `noindex` removal is gated on zero DRAFT comments in `site.ts`.** Add a grep to the pre-launch checklist: `grep -i "DRAFT" src/lib/` should return empty before flipping the meta tag.
 
-A reference implementation lives in `clients/jean-souza-barber/src/lib/site.ts` — 8 DRAFT-marked fields, every one cross-referenced to `BRIEF.md` §"Open questions for the owner conversation."
+A reference implementation lives in `scaffolds/astro-tier2/src/lib/site.example.ts` — DRAFT-marked fields, every one cross-referenced to the client's `BRIEF.md` §"Open questions for the owner conversation."
 
 ### The 3× rule
 
@@ -767,7 +767,7 @@ Per `DESIGN-BEST-PRACTICES.md` §3 "Sourcing photos and favicon from the prospec
 - Respects an `aspect` prop (`video` · `square` · `portrait` · `wide`) so the layout shows the final image's footprint, preventing CLS when the photo lands
 - `role="img"` with `aria-label` — screen readers announce the missing slot meaningfully
 
-**Reference implementation:** `clients/jean-souza-barber/src/components/ui/Placeholder.astro` (~40 lines, zero dependencies).
+**Reference implementation:** `docs/design/components/_impl/Placeholder.astro` (Astro) + `Placeholder.tsx` (Next.js / React variant), ~40 lines each, zero dependencies.
 
 **Anti-pattern:** stock photos as "interim" content. The moment a stock photo lands on the page, the slot stops being visibly unfinished — and *interim* becomes *production* through neglect. A dashed-border placeholder forces resolution; a stock photo enables drift.
 
@@ -780,13 +780,13 @@ For any Type 1–2 build where the conversion is a single non-form action (call 
 - **Mobile (< 768 px):** a sticky bottom-bar with the primary CTA pill + secondary CTA icon. Always visible while scrolling, never blocks content.
 - **Desktop (≥ 768 px):** a floating bubble in the bottom-right with the secondary CTA (WhatsApp / Call). The primary CTA lives in the header.
 
-**Reference implementation:** `clients/jean-souza-barber/src/components/ui/StickyMobileCta.astro` — handles both viewports in a single component using Tailwind `md:` breakpoints. ~50 lines including inline SVG icons.
+**Reference implementation:** pattern described above; no canonical `_impl/` working file yet. Tracked as a follow-up: build a `StickyMobileCta.astro` for `docs/design/components/_impl/` per the high-leverage applicability for all 12 verticals (see `PENDING.md`).
 
 **When to use:** every solo-operator build per `DESIGN-BEST-PRACTICES.md` "Solo-Operator meta-archetype" (cross-vertical pattern, ~70–95 % of agency clients). When NOT to use: multi-CTA hero patterns (e.g., Equinox-style premium with `BOOK` + `MEMBER LOGIN` + `LOCATIONS` — the sticky pattern dilutes their hierarchy).
 
 #### Reusing across clients
 
-Don't copy these components file-by-file from a prior client. Each project should *type out* its own Placeholder / StickyMobileCta with the local tokens. The component bodies are short (~40–50 lines each) and the discipline forces token-name reconciliation per project. **Copy-paste between clients is how stale tokens propagate** (the same way the `--color-secondary` vs `--color-open` inconsistency happened in Porto — see `docs/audit/porto-dos-ribeiros-2026-05-14.md` §3.4 for the cautionary tale).
+Copy from `docs/design/components/_impl/` rather than from a prior client. Each project still reviews + reconciles tokens at import time — but `_impl/` is the single canonical source, so token-name drift across clients is eliminated by construction. **Copy-paste between clients is how stale tokens propagate** (the same way the `--color-secondary` vs `--color-open` inconsistency happened in Porto — see `docs/audit/porto-dos-ribeiros-2026-05-14.md` §3.4 for the cautionary tale).
 
 ### Semantic HTML elements
 

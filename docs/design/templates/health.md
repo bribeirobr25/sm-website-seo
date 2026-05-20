@@ -385,6 +385,27 @@ Beyond the generic anti-slop in `DESIGN-BEST-PRACTICES.md`:
 - Promotional pricing is acceptable (it's accepted dental-chain language)
 - Phone number prominent at the top, like trades
 
+### 9.5 Cross-applicable patterns from the 24-site UI/UX reference study (derived)
+
+> **Why this subsection exists:** Health is one of three verticals (alongside education and automotive) that lacks measured reference sites in the 24-site UI/UX study at `docs/audit/ui-ux-reference-study.md`. Until Phase 1d of `UI-UX-INTEGRATION-PLAN-2026-05-18.md` is triggered (first health client engagement), this section captures cross-applicable patterns inferred from analogous verticals. **Each entry is explicitly labeled as a derivation — NOT a native health measurement.** When Phase 1d ships measured health-vertical sites, those primary measurements will supersede everything below.
+
+**Cross-applicable pattern (derived from gastronomy reference Haven Annecy §15 — not a native health measured site):** The **half-pill sticky-edge CTA** (`docs/design/components/half-pill-cta.md`) maps directly to clinical reservation flows — `TERMIN` for German clinics, `APPOINTMENT` for Anglo. Place in the nav row right cell with Doctolib / Jameda / `mailto:` as the target. Verify per-vertical contrast: clinical palettes lean cream-on-cream or white-on-blue; check WCAG against `--color-accent` per CHECKLIST.md before launch.
+
+**Cross-applicable pattern (derived from trades reference Marvell §10 — not a native health measured site):** **Big-number stat callouts** (`docs/design/components/stat-callouts.md`) translate the trades trust-signal pattern to clinical credentials — `15+ Jahre · 12.000+ Behandlungen · 4 Standorte` or `25 Jahre Erfahrung · 50.000+ Patienten · 4.8★ Bewertung`. The honesty rule per `DESIGN-BEST-PRACTICES.md` §11 is doubly important in health: never invent treatment counts. If the client isn't sure, omit the callout — invented health numbers are a regulatory + reputation risk beyond the typical "DRAFT it" exception.
+
+**Cross-applicable pattern (derived from gastronomy reference Watch House §10 + Haven §15 — not a native health measured site):** **Hours-in-nav** (`docs/design/components/hours-in-nav.md`) is high-leverage for health — `SPRECHSTUNDE / MO-FR 8-12, 14-18` + `NOTFALL / 24h` surfaces the single most-asked question (when is the practice open?) above the fold. Pair with `OpeningHoursSpecification` schema per `SEO.md` §5 so the hours hit rich results.
+
+**Cross-applicable pattern (derived from beauty reference Mily Group §9 — not a native health measured site):** **`LABEL (N)` monospace section header** (`docs/design/components/label-count-header.md`) works for treatment catalogs — `BEHANDLUNGEN (15)` · `KURSE (8)` · `STANDORTE (4)`. The mono signals "directory / curated list" which fits clinical-services framing better than narrative typography.
+
+**Cross-applicable pattern (derived from Apple iPhone §1 — not a native health measured site):** **Alternating-section-bg rhythm** (`docs/design/components/alternating-section-bg.md`) earns its weight on long-scroll content-authority health sites (Mayo/Cleveland-style) where ≥5 sections are typical. For solo-practitioner sites with 3–4 sections, skip — the rhythm doesn't read with so few sections.
+
+**Cross-applicable pattern (derived from gastronomy reference Haven §15 + artisan reference Mily §9 — not a native health measured site):** **Warm-brown body text** (`--color-text-warm: #2B1A12`) over pure black is appropriate for material-rooted health clients — chiropractors, holistic clinics, naturopaths, aesthetic-medicine practices using wood/stone/linen aesthetics. Avoid for clinical-conservative practices (general practice, pediatric, dental) where the cooler/sharper register reads "competent."
+
+**NOT applicable to local-business health clients (forbidden, not derived):**
+- **EyebrowDisplayHero** (`docs/design/components/eyebrow-display-hero.md`) — explicit HARD SEO restriction per `SEO.md` §15. Health clients depend on organic search ("Zahnarzt Berlin", "Hausarzt Prenzlauer Berg"); reducing the h1 to a 12px eyebrow forfeits the keyword target.
+- **SplitText / per-character split** — pattern is portfolio/agency-self only. On a clinical site it reads as misplaced design vanity.
+- **MarqueeCTA** is borderline — acceptable on premium private-clinic sites where the exploratory register fits, NOT on conversion-chain Tier-B clinics or solo GP practices.
+
 ---
 
 ## 10. Decision matrix — picking the archetype per client

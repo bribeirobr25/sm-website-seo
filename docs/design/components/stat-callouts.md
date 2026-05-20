@@ -1,7 +1,7 @@
 # Big-number stat callouts
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §10 (Horeca-Social, live-measured: h2-as-statistic at `15+`, `400+`, `150+`).
-**Implementation:** `clients/reference-solo-barber/src/components/sections/StatCallouts.astro` (Phase 3b — pending).
+**Implementation:** `docs/design/components/_impl/StatCallouts.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
 
 ## 1. Purpose + when to use
 
@@ -137,7 +137,7 @@ When auditing a service-business client whose trust signals are buried in prose:
 
 ## 8. Implementation pointer
 
-**Phase 3b deliverable:** `clients/reference-solo-barber/src/components/sections/StatCallouts.astro`
+**Phase 3b deliverable (shipped 2026-05-19):** `docs/design/components/_impl/StatCallouts.astro`
 
 Props (planned):
 - `stats: Array<{ number: string; label: string; ariaLabel: string }>` (required, length 2-4) — the number is a string (so `15+`, `4.8★`, `5/5` all work)

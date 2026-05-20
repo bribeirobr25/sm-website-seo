@@ -118,7 +118,7 @@ Per-client files live in `docs/clients/[client-slug]/`:
 | `design.md` | Per-client design decisions (color tokens, fonts, copy, aesthetic) |
 | `BRIEF.md` | Business context, contacts, scope, timeline |
 
-Client source code lives in `clients/[client-slug]/`.
+Client source code lives in `clients/[client-slug]/`, scaffolded from `scaffolds/astro-tier2/` or `scaffolds/nextjs-tier3/` per Step 3 below. The `clients/` directory itself is intentionally otherwise empty post-`CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` — see `clients/README.md` for the convention.
 
 Cross-client audit + intake artifacts live in `docs/audit/`:
 
@@ -160,30 +160,48 @@ Use the decision tree in `TECH.md` §1:
 
 **Then pick the matching vertical template in `docs/design/templates/`** (12 available — one per benchmark category): gastronomy · beauty · trades · health · studio · professional-services · pets · automotive · education · events-hospitality · home-garden · artisan. The template captures archetype options, default palette per sub-archetype (when client has no brand), photography rules, typography pairings, anti-patterns, and reference sites. Read its §1 archetype matrix + §10 decision matrix before drafting the per-client `design.md`.
 
-### Step 3 — Scaffold the project
+### Step 3 — Scaffold the project from `scaffolds/`
+
+**The agency ships two install-ready scaffolds** at `scaffolds/`. Copy the one matching the client's tier:
 
 ```bash
-mkdir -p clients/[client-slug]
+# Tier 2 (Astro — default for most Berlin SMB clients: Type 1 static info / Type 2 info + contact form):
+cp -r scaffolds/astro-tier2 clients/[client-slug]
 cd clients/[client-slug]
+pnpm install
+cp .env.example .env.local                  # fill with real keys later
+pnpm dev                                    # http://localhost:4321
 
-# Tier 2 (Astro — most common):
-pnpm create astro@latest . -- --template minimal --typescript strict --no-git
-npx astro add tailwind    # Uses @tailwindcss/vite — correct for Tailwind v4
-pnpm add -D biome
-
-# Tier 1 (Pure HTML):
-# Create index.html + src/styles/tokens.css + src/styles/global.css manually
+# Tier 3 (Next.js — Type 3 booking with DB / Type 4 transactional / Type 5 application):
+cp -r scaffolds/nextjs-tier3 clients/[client-slug]
+cd clients/[client-slug]
+pnpm install
+cp .env.example .env.local                  # fill with real keys (DATABASE_URL etc.) later
+pnpm dev                                    # http://localhost:3000
 ```
 
+**Then per-client setup** (in this order):
+1. Rename `package.json` `"name"` field → `[client-slug]`
+2. Edit `src/lib/site.ts` (already a copy of `site.example.ts` so the build works out-of-the-box). Replace every `TODO`/`DRAFT` with owner-confirmed data; cross-reference unresolved DRAFT items in `docs/clients/[slug]/BRIEF.md` §Open questions
+3. Override the palette in `src/styles/tokens.css` (Tier 2) or `src/app/globals.css` (Tier 3) per the matching `docs/design/templates/[vertical].md` archetype. Keep the canonical motion/easing/tracking/radii tokens unchanged
+4. Replace the placeholder `src/lib/seo/schema.ts` with the per-vertical paste-ready `@graph` block from `docs/design/templates/[vertical].md` §11.8 (swap `LocalBusiness` for the most-specific subtype)
+5. Declare any canonical components imported from `docs/design/components/_impl/` in the client's `docs/clients/[slug]/CLAUDE.md` "Imported components" table per `TECH.md` §20
+6. **Source palette + photos + favicon per the hierarchies in `DESIGN-BEST-PRACTICES.md` §3 + §5** — try booking-platform profile pages (Trinks / Booksy / Treatwell / Mindbody / Doctolib / Resy) **FIRST** for beauty/health/studio/gastronomy verticals (WebFetch-accessible, yield master logo + structured business data in one call). Instagram + GBP are blocked for automated extraction — manual download path only
+
+**`clients/` vs `scaffolds/` distinction:**
+- `scaffolds/` is where you copy **FROM** — install-ready, content-neutral, token-neutral, version-pinned starters. Do NOT add client-specific data here.
+- `clients/[slug]/` is where you copy **TO** — your client builds live here. Each gets its own palette, content, photos, domain.
+- They are NOT interchangeable. See `clients/README.md` and `scaffolds/README.md` for the convention.
+
+**Why scaffolds replace `pnpm create astro@latest`:** the scaffolds ship pre-wired with Sentry · cookie banner · consent layer · analytics · canonical agency tokens · `vercel.json` (6 security headers + cache) · `.github/workflows/ci.yml` (`pnpm validate` gate) · biome config. The Astro CLI's `--template minimal` produces a bare project that takes ~2 hours to bring up to agency baseline; the scaffold is the agency baseline pre-applied.
+
 **Required public files** (every site, no exceptions — per `TECH.md` §20):
-- `public/favicon.svg` + `public/favicon.ico` (32×32 PNG fallback) + `public/apple-touch-icon.png` (180×180)
-- `public/robots.txt` (`Disallow: /` during demo; flip at production cutover)
+- `public/favicon.svg` (scaffold ships placeholder; replace with client brand) + `public/favicon.ico` (32×32 PNG fallback — generate via `rsvg-convert` per `TECH.md` §8) + `public/apple-touch-icon.png` (180×180)
+- `public/robots.txt` (scaffold ships `Disallow: /` for demo phase; flip at production cutover)
 
-Generate favicons from the brand source via `rsvg-convert` — recipes in `TECH.md` §8 "Image-extraction operational toolkit."
+**Canonical components** are at `docs/design/components/_impl/` (8 + 5 universal primitives). Scaffolds do NOT auto-include the 8 from the UI/UX reference study — opt in per the matching `docs/design/components/[component].md` §1 per-vertical applicability table. Universal primitives (`Button`, `CookieBanner`, `Placeholder`, `Header`/`Footer`) ARE in each scaffold's `src/components/`.
 
-**Source palette + photos + favicon per the hierarchies in `DESIGN-BEST-PRACTICES.md` §3 + §5** — try booking-platform profile pages (Trinks / Booksy / Treatwell / Mindbody / Doctolib / Resy) **FIRST** for beauty/health/studio/gastronomy verticals. They're WebFetch-accessible and yield the master logo + structured business data in one call (per the Jean Souza Barber worked example). Instagram + GBP are blocked for automated extraction — manual download path only.
-
-Drop in the agency-template **infrastructure scaffold** at this step OR before the production cutover gate — `docs/design/INFRASTRUCTURE.md` packages `vercel.json` + `404.astro` + `500.astro` + `.github/workflows/ci.yml` + uptime monitoring as a single recipe. ~30-45 min, applies retroactively to every existing build, applies automatically to future ones.
+**Non-component canonical assets** (lib code, legal pages, configs, Sentry recipes) are at `docs/design/_impl/`. The scaffolds include the universal subset; per-vertical assets (DSGVO Impressum/Datenschutz, LGPD política, Drizzle schema, form-endpoint route.ts) are opt-in copies from `docs/design/_impl/`.
 
 ### Step 4 — Set noindex for the demo
 
@@ -232,6 +250,7 @@ vercel --prod   # Gets a vercel.app URL
 - **Sentry instruments every server-side execution surface** — Tier 1 pure-static has no surface; Tier 1 + form endpoint instruments only the function; Tier 2/3 use the full SDK. `send_default_pii: false` is non-negotiable in every Sentry init (`INFRASTRUCTURE.md` §Error tracking).
 - **KPI dashboards delivered with every retainer client** — every production cutover wires at least 3 KPIs from `KPI.md` §Per-product-type KPI defaults (Type 1: ≥ 3 acquisition/conversion KPIs · Type 2+: add form-conversion · Type 3+: add funnel + retention via PostHog). Per-vertical picks live in each template's §11 Measurement. The BRIEF.md "KPI contract" block (`KPI.md` §KPI contract) is owner-confirmed before scaffold starts. No KPIs wired = no production launch.
 - **Track unresolved items in `docs/audit/PENDING.md`** — agency-level backlog aggregator across all clients. Add to it when a DRAFT item surfaces; move to "Recently resolved" when it closes.
+- **Imported canonical components declared in per-client CLAUDE.md** — when a client imports a component from `docs/design/components/_impl/` (the 8 from the 24-site UI/UX reference study + 5 universal primitives), record the import in the client's `docs/clients/[slug]/CLAUDE.md` "Imported components" table per `TECH.md` §20. Makes per-client review of "what canonical patterns are in use, where to find the spec sheets + per-vertical token swaps" a one-shot lookup.
 - **Citation hygiene applied per client at launch** — claim universal directories (GBP/Apple/Bing/Yelp DE/Facebook/IG) + DE-general (Gelbe Seiten/Das Örtliche/11880/meinestadt/**berlin.de**) + 1-3 vertical-specific (Jameda/Treatwell/Tripadvisor/MyHammer/etc.) per `CITATIONS.md` §2-§4. Canonical NAP declared in `BRIEF.md` per §7 template before any directory is claimed. **No monthly citation maintenance below €500/mo retainer** — Sterling Sky 2026 retainer-experiments evidence shows it's wasted budget; default cadence is the semi-annual 6-month audit per `CITATIONS.md` §9. Per-directory premium-upsell traps (Sellwerk 3-month auto-renewal, 11880 telesales) documented in retainer agreement at claim time.
 - **Review-generation playbook applied per retainer client** — every retainer client with a GBP listing ships with `review_count_30d` + `review_response_rate_30d` + `days_since_last_review` as canonical Health KPIs per `KPI.md` Cross-type Health KPIs. Vanity review redirect (`/bewertung` DE / `/avaliacao` PT-BR / `/review` EN) configured + e2e tested as 🔴 production blocker per `CHECKLIST.md` §Review generation. DE message templates ship as DRAFT requiring client legal counsel sign-off (Bestandskunden frame per `LEGAL.md` §DE) before any agency-managed mass campaign deploys. Drought-alert SLA at 21 days 🟡 / 42 days 🔴 per `SEO.md` §8.4.3.
 
@@ -243,9 +262,11 @@ vercel --prod   # Gets a vercel.app URL
 - `docs/audit/AGENCY-STANDARDS-EXPANSION-PLAN-2026-05-16.md` (Batches 0–3) — legal · KPI · integrations · social sharing · reference impls
 - `docs/audit/SEO-DEPTH-EXPANSION-PLAN-2026-05-18.md` (hotfix + Batches 1, 2, 3 MVP) — review-generation playbook · citation-building playbook · schema cookbook
 
-**Two reference implementations live** as canonical worked examples — copy these when a real client signs (`cp -r clients/reference-{matching} clients/[real-slug]`):
-- `clients/reference-solo-barber/` (Tier 2 / Type 1 / BR-LGPD) — Astro 6 + Tailwind v4 + Sentry · full `@graph` schema (BarberShop + Person + WebSite)
-- `clients/reference-studio-booking/` (Tier 3 / Type 3 / DE-DSGVO) — Next.js 16 + Drizzle + Neon + Upstash + Resend + Sentry · full `@graph` schema (SportsActivityLocation + Person + WebSite)
+**Two install-ready scaffolds** at `scaffolds/` are the canonical starting points (per `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md`, the prior reference impls in `clients/reference-*/` were distilled into `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/` and the original `clients/` tree was deleted in Phase 6):
+- `scaffolds/astro-tier2/` (Tier 2 / Astro 6 / Tailwind v4 / Sentry — for Type 1 + Type 2 client builds)
+- `scaffolds/nextjs-tier3/` (Tier 3 / Next.js 16 / Tailwind v4 / Drizzle + Neon + Upstash + Resend + Sentry + PostHog — for Type 3+ client builds)
+
+Per-client doc archives at `docs/clients/archived/reference-solo-barber/` (Tier 2 / BR-LGPD worked example) and `docs/clients/archived/reference-studio-booking/` (Tier 3 / DE-DSGVO worked example) retain the canonical `CLAUDE.md` + `BRIEF.md` + `design.md` shapes.
 
 The previous portfolio attempts (Jean Souza Barbearia + Porto dos Ribeiros 3 variants) were deleted from `clients/` on 2026-05-16 because they pre-dated the legal/KPI/monitoring rule expansion; their per-client docs are archived at `docs/clients/archived/` for historical reference.
 

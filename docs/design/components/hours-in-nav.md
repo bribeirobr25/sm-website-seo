@@ -1,7 +1,7 @@
 # Hours-in-nav
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §15 (Haven Annecy, live-measured).
-**Implementation:** `clients/reference-solo-barber/src/components/layout/HoursInNav.astro` (Phase 3b — pending).
+**Implementation:** `docs/design/components/_impl/HoursInNav.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
 
 ## 1. Purpose + when to use
 
@@ -130,7 +130,7 @@ When auditing a client whose hours are buried in the footer or behind a "Contact
 
 ## 8. Implementation pointer
 
-**Phase 3b deliverable:** `clients/reference-solo-barber/src/components/layout/HoursInNav.astro`
+**Phase 3b deliverable (shipped 2026-05-19):** `docs/design/components/_impl/HoursInNav.astro`
 
 Props (planned):
 - `items: Array<{ label: string; hours: string; ariaLabel: string; href?: string }>` (required)

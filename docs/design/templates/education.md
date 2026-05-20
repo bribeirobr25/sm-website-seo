@@ -365,6 +365,27 @@ Kids performing-arts benchmark. Classes, age groups, local schools, parent-facin
 
 No canonical worked example in §7.11 — the benchmark skews to chains/franchises. Archetype D is the cross-vertical **Solo-Operator meta-archetype** from `DESIGN-BEST-PRACTICES.md` §3 — same pattern as `templates/studio.md` Solo Instructor (closest), `templates/health.md` Solo Practitioner (parent-trust adjacency).
 
+### 9.11 Cross-applicable patterns from the 24-site UI/UX reference study (derived)
+
+> **Why this subsection exists:** Education is one of three verticals (alongside health and automotive) that lacks measured reference sites in the 24-site UI/UX study at `docs/audit/ui-ux-reference-study.md`. Until Phase 1d of `UI-UX-INTEGRATION-PLAN-2026-05-18.md` is triggered (first education client engagement), this section captures cross-applicable patterns inferred from analogous verticals. **Each entry is explicitly labeled as a derivation — NOT a native education measurement.** When Phase 1d ships measured education sites, those primary measurements will supersede everything below.
+
+**Cross-applicable pattern (derived from beauty reference Mily Group §9 + T11 §19 — not a native education measured site):** **`LABEL (N)` monospace section header** (`docs/design/components/label-count-header.md`) is the highest-leverage pattern for education sites — `KURSE (24)` · `SEMESTERANGEBOTE (12)` · `LEHRER (8)` · `STANDORTE (3)` · `INSTRUMENTE (6)`. Education is fundamentally about catalog structure (courses, instructors, levels, languages); the mono "directory" register fits perfectly.
+
+**Cross-applicable pattern (derived from trades reference Marvell §10 + professional-services Horeca §10 — not a native education measured site):** **Big-number stat callouts** (`docs/design/components/stat-callouts.md`) for education trust signals — `15 Jahre · 500+ Schüler · 12 Lehrer` or `8 Sprachen · 1.000+ Absolventen · 95% Zufriedenheit`. The honesty rule per `DESIGN-BEST-PRACTICES.md` §11 applies: never invent the number. Avoid for brand-new schools (< 50 students) — `1+ Jahr` actively undermines parental trust.
+
+**Cross-applicable pattern (derived from gastronomy reference Haven §15 — not a native education measured site):** **Hours-in-nav** (`docs/design/components/hours-in-nav.md`) works for education — `UNTERRICHT / MO-FR 14-19` + `SPRECHZEIT / DO 16-18` surfaces the time-discoverable info parents/students need before signing up. Pair with `OpeningHoursSpecification` schema.
+
+**Cross-applicable pattern (derived from professional-services reference Lesse §16 + Laurenti §17 — not a native education measured site):** **Architectural restraint typography** — large display serifs paired with measured uppercase eyebrows works well for premium tutoring, music schools, and language schools targeting Bildungsbürgertum / Académie-style segments. Reference Lesse's measured tracking values in `docs/design/components/eyebrow-display-hero.md` §3 — BUT note the SEO restriction: education clients depending on organic search ("Klavierunterricht Berlin Mitte", "Musikschule Charlottenburg") CANNOT use the inverted-h1 pattern. Use the typography aesthetic without the inverted hierarchy.
+
+**Cross-applicable pattern (derived from artisan reference Evagria §12 — not a native education measured site):** **Curated boutique aesthetic** — for premium specialty education (high-end music schools, boutique language academies, prep tutoring) the curated/restrained register from `templates/artisan.md` §6 applies. Warm cream backgrounds, single accent color, slow motion (`--motion-deliberate`).
+
+**Cross-applicable pattern (derived from gastronomy reference Auwa §6 — not a native education measured site):** **Marquee-on-hover CTA** (`docs/design/components/marquee-cta.md`) is appropriate for ONE exploratory CTA on premium education sites — `EXPLORE PROGRAM` / `VIEW CURRICULUM`. Reserve for branding-led schools, not for conversion-chain tutoring franchises where transactional speed wins.
+
+**NOT applicable to local-business education clients (forbidden, not derived):**
+- **EyebrowDisplayHero** (`docs/design/components/eyebrow-display-hero.md`) — explicit HARD SEO restriction per `SEO.md` §15. Local-search keywords ("Klavierunterricht Berlin", "Englisch lernen Charlottenburg", "Mathe-Nachhilfe Kreuzberg") MUST be the h1.
+- **SplitText / per-character split** — portfolio/agency-self only. On a Musikschule or Sprachschule it reads as misplaced.
+- **HalfPillCTA** is borderline — appropriate for institutional schools with a real "ENROLL" / "APPLY" flow; NOT useful for solo tutors whose CTA is `tel:` or `WhatsApp`.
+
 ---
 
 ## 10. Decision matrix — picking the archetype per client

@@ -1,7 +1,7 @@
 # Eyebrow-h1 + display-paragraph hero
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §6 (Auwa), §16 (Lesse), §18 (Juan Mora) — measured across 3 sites.
-**Implementation:** `clients/reference-solo-barber/src/components/sections/EyebrowDisplayHero.astro` (Phase 3b — pending).
+**Implementation:** `docs/design/components/_impl/EyebrowDisplayHero.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
 
 > ⚠️ **HARD RESTRICTION — read before adopting.** This component is **forbidden for local-business clients** per `DESIGN-BEST-PRACTICES.md` §4 (inverted-h1 restriction) and `SEO.md` §15 (Tech SEO anti-patterns). Permitted ONLY when SEO is explicitly deprioritized in `BRIEF.md` — portfolio sites, agency-self pages, referral-only luxury. For any gastronomy / beauty / trades / health / studio / pro-services / pets / automotive / education / events-hospitality / home-garden / artisan client whose acquisition includes organic search — **do not use this component.** Use the standard hero (`DESIGN-BEST-PRACTICES.md` §7) instead.
 
@@ -117,7 +117,7 @@ When auditing a local-business client that has adopted this pattern:
 
 ## 8. Implementation pointer
 
-**Phase 3b deliverable:** `clients/reference-solo-barber/src/components/sections/EyebrowDisplayHero.astro`
+**Phase 3b deliverable (shipped 2026-05-19):** `docs/design/components/_impl/EyebrowDisplayHero.astro`
 
 Props (planned):
 - `eyebrow: string` (required) — will be uppercased; cap at 30 characters

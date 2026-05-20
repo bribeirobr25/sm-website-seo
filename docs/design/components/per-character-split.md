@@ -1,7 +1,7 @@
 # Per-character DOM split (letter animation primitive)
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §7 (Really Up There — Brandon Herbel's portfolio with each nav letter split into individual `<div>`s, GSAP 3.15 loaded), §21 (Victor Furuya — h1 split per-letter with variable-font weight 650).
-**Implementation:** `clients/reference-solo-barber/src/components/ui/SplitText.astro` (Phase 3b — pending).
+**Implementation:** `docs/design/components/_impl/SplitText.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
 
 ## 1. Purpose + when to use
 
@@ -142,7 +142,7 @@ When auditing a local-business client that has adopted this pattern:
 
 ## 8. Implementation pointer
 
-**Phase 3b deliverable:** `clients/reference-solo-barber/src/components/ui/SplitText.astro`
+**Phase 3b deliverable (shipped 2026-05-19):** `docs/design/components/_impl/SplitText.astro`
 
 Props (planned):
 - `text: string` (required) — the source string, kept intact in `aria-label`

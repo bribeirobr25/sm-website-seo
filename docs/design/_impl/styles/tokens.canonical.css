@@ -1,0 +1,52 @@
+/*
+ * tokens.canonical.css
+ *
+ * EXECUTABLE FORM of `TECH.md` §7 token canon.
+ *
+ * **TECH.md §7 is the canonical source.** If these diverge, TECH.md §7 wins.
+ * Sync quarterly per CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md §7 R1.
+ *
+ * This file holds the universal, non-vertical-specific tokens:
+ *  - Motion (5 durations measured in Phase 1b across 5 award sites)
+ *  - Easing (4 curves paired with motion durations)
+ *  - Tracking (3 values measured from Apple / Auwa / Juan Mora / hospitality serifs)
+ *  - Radii (5 values including --radius-pill-half from Haven §15)
+ *  - Stagger step (20ms — Apple's measured house rule for letter staggers)
+ *
+ * The palette is NOT in this file. Per-vertical palette swaps come from
+ * `docs/design/templates/[vertical].md` §6 Color archetypes when scaffolding
+ * a client. The scaffolds at `scaffolds/{astro-tier2,nextjs-tier3}/`
+ * concatenate this file with a per-vertical palette block.
+ *
+ * Source measurements: `docs/audit/ui-ux-reference-study.md` §11 Motion
+ * recipes (Phase 1b addendum 2026-05-19).
+ */
+
+@theme {
+  /* Motion — measured house units */
+  --motion-fast: 180ms;        /* tech-snap button color hover */
+  --motion-base: 320ms;        /* Apple house unit — nav, default scroll-reveal */
+  --motion-warm: 500ms;        /* hospitality / artisan / wellness */
+  --motion-deliberate: 600ms;  /* luxury / institutional */
+  --motion-reveal: 800ms;      /* one-time hero entries */
+
+  /* Easing — paired with the durations above */
+  --ease-apple-smooth: cubic-bezier(0.4, 0, 0.6, 1);    /* default ease-in-out */
+  --ease-quart: cubic-bezier(0.7, 0, 0.3, 1);            /* marquee CTAs — symmetric paced */
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);        /* settle-into-place */
+  --ease-luxe: cubic-bezier(0.25, 0.74, 0.22, 0.99);     /* deliberate, long tail */
+
+  --stagger-step: 20ms;        /* per-letter stagger — Apple's measured house rule */
+
+  /* Tracking — measured from Apple, Auwa, Juan Mora, hospitality serifs */
+  --tracking-display-sans: -0.022em;       /* ~2.2% negative — Apple, Auwa, Juan Mora */
+  --tracking-display-serif-caps: 0.025em;  /* uppercase serif eyebrows */
+  --tracking-body: -0.005em;               /* tight body tracking */
+
+  /* Radii — universal */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --radius-pill-half: 30px 0 0 30px;       /* Haven §15 — visual half-pill, NOT position:fixed */
+}

@@ -339,6 +339,29 @@ Global rental reference. Fast booking + location UX.
 
 No canonical worked example in §7.10 — the benchmark skews to chains. Archetype D is the cross-vertical **Solo-Operator meta-archetype** from `DESIGN-BEST-PRACTICES.md` §3 — same pattern as `templates/trades.md` Archetype D. Adapt to Automotive specifics: brand-specialty disclosure, real shop floor + customer-car photography, insurance-partner logos if applicable.
 
+### 9.9 Cross-applicable patterns from the 24-site UI/UX reference study (derived)
+
+> **Why this subsection exists:** Automotive is one of three verticals (alongside health and education) that lacks measured reference sites in the 24-site UI/UX study at `docs/audit/ui-ux-reference-study.md`. Until Phase 1d of `UI-UX-INTEGRATION-PLAN-2026-05-18.md` is triggered (first automotive client engagement), this section captures cross-applicable patterns inferred from analogous verticals — primarily trades, where the conversion-chain mechanics are nearly isomorphic. **Each entry is explicitly labeled as a derivation — NOT a native automotive measurement.** When Phase 1d ships measured automotive sites, those primary measurements will supersede everything below.
+
+**Cross-applicable pattern (derived from trades reference Marvell §10 + SweepingCorp §11 — not a native automotive measured site):** **Trades conversion-chain mechanics map 1:1 to automotive.** SweepingCorp's B2B conversion pattern (top utility bar + service-category nav + emergency CTA + service grid + project portfolio + multi-location grid) is structurally identical to Safelite / Jiffy Lube. Use `templates/trades.md` §9 Marvell + SweepingCorp annotations as the primary reference for automotive Archetype A/B builds.
+
+**Cross-applicable pattern (derived from trades reference Marvell §10 — not a native automotive measured site):** **Big-number stat callouts** (`docs/design/components/stat-callouts.md`) for shop credentials — `15 Jahre · 200+ Kunden · 1.500+ Reparaturen` (independent shop) or `25 Jahre · 5.000+ TÜV-Abnahmen · 4.8★` (TÜV-Partnerwerkstatt). The honesty rule applies — never invent counts.
+
+**Cross-applicable pattern (derived from gastronomy reference Haven Annecy §15 — not a native automotive measured site):** **The half-pill sticky-edge CTA** (`docs/design/components/half-pill-cta.md`) maps to automotive booking — `TERMIN` (German) / `BOOK` (English) targeting a workshop scheduler, `tel:`, or `mailto:`. Place in the nav row right cell. For 24h emergency services (towing, breakdown), use a second always-visible mobile sticky `NOTDIENST` CTA per the SweepingCorp emergency pattern.
+
+**Cross-applicable pattern (derived from beauty reference Mily Group §9 — not a native automotive measured site):** **`LABEL (N)` monospace section header** (`docs/design/components/label-count-header.md`) for service catalogs — `LEISTUNGEN (8)` · `MARKEN (6)` · `STANDORTE (3)`. The catalog-directory register fits the automotive service-list grain.
+
+**Cross-applicable pattern (derived from gastronomy reference Haven §15 — not a native automotive measured site):** **Hours-in-nav** (`docs/design/components/hours-in-nav.md`) is high-value for automotive — `WERKSTATT / MO-FR 8-18` + `NOTDIENST / 24h` makes the two-mode availability scannable. For Tier-B chains, also show `NÄCHSTER FREI / HEUTE 14:00` if real-time availability is wired.
+
+**Cross-applicable pattern (derived from Apple iPhone §1 — not a native automotive measured site):** **Alternating-section-bg rhythm** (`docs/design/components/alternating-section-bg.md`) for content-rich automotive sites (multi-service + multi-location + insurance partners + reviews + financing + about). The rhythm needs ≥5 sections to register; solo single-bay shops with 3-4 sections don't benefit.
+
+**Cross-applicable pattern (derived from trades reference SweepingCorp §11 — not a native automotive measured site):** **Industrial dark + safety accent palette** — for fleet service providers, commercial automotive (trucks, buses), and heavy-duty repair, the SweepingCorp `#1D1D1D` charcoal + safety-orange accent works directly. For passenger-vehicle independent shops, lean lighter palette per the trades neighborhood-shop archetype.
+
+**NOT applicable to local-business automotive clients (forbidden, not derived):**
+- **EyebrowDisplayHero** (`docs/design/components/eyebrow-display-hero.md`) — explicit HARD SEO restriction per `SEO.md` §15. Local-search keywords ("KFZ-Werkstatt Berlin Mitte", "Reifenwechsel Charlottenburg", "TÜV Service") MUST be the h1.
+- **SplitText / per-character split** — portfolio/agency-self only. On a Werkstatt site it reads as misplaced.
+- **MarqueeCTA** — automotive CTAs are overwhelmingly transactional ("Call now", "Book service"). The marquee adds 500ms intent-to-action time that's wrong for the urgency profile. Skip.
+
 ---
 
 ## 10. Decision matrix — picking the archetype per client

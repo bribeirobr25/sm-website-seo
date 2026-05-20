@@ -244,6 +244,8 @@ Future client audits (in the style of UI_REVIEW.md) should be able to reference 
 - **Option A (recommended):** Extend `clients/reference-solo-barber/src/components/` — 8 components + `_demo/` pages. No maintenance overhead, no PENDING.md/CLAUDE.md update, no ambiguous scaffold selection.
 - **Option B:** Create `clients/reference-gastronomy-cafe/` + update PENDING.md + CLAUDE.md with three-impl selection rule.
 
+> **Resolution 2026-05-19** (added retroactively): Option A was implicitly adopted. The 8 components shipped to `clients/reference-solo-barber/src/components/` per the original Phase 3b plan. Subsequently, `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md` Phase 1 relocated all 8 components to `docs/design/components/_impl/` and Phase 6 deleted the entire `clients/reference-solo-barber/` tree. The post-restructuring state supersedes Option A — components are now agency-canonical assets (not embedded in any reference impl) and the working code is build-validated via `scaffolds/astro-tier2/`. Option B was never executed. Decision resolved.
+
 ### Decision 2 — Phase 1d: which 8 specific URLs? (Required before Phase 1d starts)
 
 Define before execution. Avoid SaaS platform sites (Doctolib) — use actual local clinic/studio/garage sites in Berlin or comparable German market.

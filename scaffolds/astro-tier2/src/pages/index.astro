@@ -1,0 +1,42 @@
+---
+/**
+ * Index page — minimal scaffold placeholder.
+ *
+ * **Setup steps for new client:**
+ * Replace the body of this page with the client-specific sections per
+ * the vertical template at `docs/design/templates/[vertical].md`.
+ * Typical sections by vertical:
+ *   - gastronomy:  Hero · Menü · Visit (hours + map) · Reviews · About
+ *   - beauty:      Hero · Services · Gallery · Reviews · Visit
+ *   - trades:      Hero · Services · Projects · About · CTA
+ *   - professional-services: Hero · Services · About · Contact
+ *
+ * Import canonical components from `docs/design/components/_impl/` only
+ * when they fit the vertical surface per the component's spec sheet §1.
+ */
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import { SITE } from '@/lib/site';
+---
+
+<BaseLayout title={SITE.name} description={SITE.tagline}>
+  <Header />
+  <main id="main" class="section">
+    <div class="container-page">
+      <p class="text-sm uppercase tracking-wider text-text-muted">Scaffold</p>
+      <h1 class="mt-2 text-4xl sm:text-5xl text-text">
+        Astro Tier 2 scaffold is live.
+      </h1>
+      <p class="prose mt-4 max-w-prose">
+        This is the agency Tier-2 starter at <code>scaffolds/astro-tier2/</code>. Replace the body
+        of <code>src/pages/index.astro</code> with the client's sections per
+        <code>docs/design/templates/[vertical].md</code>. Populate
+        <code>src/lib/site.ts</code> from <code>site.example.ts</code> and override the palette in
+        <code>src/styles/tokens.css</code> before going to demo.
+      </p>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

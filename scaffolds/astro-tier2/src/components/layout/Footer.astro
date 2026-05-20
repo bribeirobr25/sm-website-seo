@@ -1,0 +1,67 @@
+---
+/**
+ * Content-neutral Footer — scaffold default.
+ * Replace per client identity + per-jurisdiction legal disclosure.
+ * See `docs/design/_impl/components/Footer.astro` for the canonical
+ * worked example (solo-barber Tier-2 BR-LGPD identity).
+ *
+ * Per `docs/design/LEGAL.md`:
+ *   - DE: include Impressum + Datenschutzerklärung links
+ *   - BR: include Política de Privacidade link + Razão Social/CNPJ disclosure
+ *   - PT: include Privacy + Livro de Reclamações link + NIF/CAE disclosure
+ *   - US: include Privacy + "Your Privacy Choices" link
+ */
+import { SITE } from '@/lib/site';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-bg mt-16">
+  <div class="container-page py-12">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="space-y-3">
+        <p class="font-display text-lg text-text">{SITE.name}</p>
+        <p class="text-sm text-text-muted leading-relaxed">{SITE.tagline}</p>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <p class="uppercase tracking-wider text-text-muted text-xs">Contact</p>
+        <p>
+          <a
+            href={`tel:${SITE.phone}`}
+            class="text-text hover:text-accent transition-colors tabular"
+            data-event="phone_click"
+            data-source-section="footer"
+          >
+            {SITE.phoneDisplay}
+          </a>
+        </p>
+        <p>
+          <a
+            href={`mailto:${SITE.email}`}
+            class="text-text hover:text-accent transition-colors"
+          >
+            {SITE.email}
+          </a>
+        </p>
+        <p class="text-text-muted">
+          {SITE.address.street}, {SITE.address.city}
+        </p>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <p class="uppercase tracking-wider text-text-muted text-xs">Legal</p>
+        <!-- TODO: add per-jurisdiction legal links per docs/design/LEGAL.md mapping -->
+        <p>
+          <a href="/privacy-policy" class="text-text-muted hover:text-accent transition-colors">
+            Privacy Policy
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-border text-xs text-text-muted">
+      © {currentYear} {SITE.name}. All rights reserved.
+    </div>
+  </div>
+</footer>

@@ -1,7 +1,7 @@
 # Half-pill sticky-edge CTA
 
 **Source:** `docs/audit/ui-ux-reference-study.md` §15 (Haven Annecy, live-measured + Phase 1b motion read).
-**Implementation:** `clients/reference-solo-barber/src/components/ui/HalfPillCTA.astro` (Phase 3b — pending).
+**Implementation:** `docs/design/components/_impl/HalfPillCTA.astro` (Phase 3b — complete 2026-05-19; relocated from `clients/reference-solo-barber/` per CLIENTS-RESTRUCTURE-PLAN-2026-05-19).
 
 ## 1. Purpose + when to use
 
@@ -123,7 +123,7 @@ When auditing a client's existing site and a missing reservation/booking CTA is 
 
 ## 8. Implementation pointer
 
-**Phase 3b deliverable:** `clients/reference-solo-barber/src/components/ui/HalfPillCTA.astro`
+**Phase 3b deliverable (shipped 2026-05-19):** `docs/design/components/_impl/HalfPillCTA.astro`
 
 Props (planned):
 - `href: string` (required)

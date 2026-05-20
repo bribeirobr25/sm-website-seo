@@ -15,7 +15,7 @@ This folder is the agency's **canonical reference for reusable UI components** d
 - **Performance constraints** (mandatory for media-heavy components)
 - **Reference sites** with study §N anchors
 - **Bidirectional UI_REVIEW.md cross-link**
-- **Implementation pointer** to the working Astro file in `clients/reference-solo-barber/src/components/`
+- **Implementation pointer** to the working Astro / React file in `docs/design/components/_impl/`
 
 ## Component index
 
@@ -43,13 +43,13 @@ This folder is the agency's **canonical reference for reusable UI components** d
 | 7 | `alternating-section-bg.md` | ✅ Drafted 2026-05-19 | ✅ `layout/Section.astro` 2026-05-19 |
 | 8 | `per-character-split.md` | ✅ Drafted 2026-05-19 | ✅ `ui/SplitText.astro` 2026-05-19 |
 
-**Phase 3a + 3b are complete.** All 8 spec sheets drafted; all 8 components shipped to `clients/reference-solo-barber/src/components/`. Companion demo pages live at `clients/reference-solo-barber/src/pages/demo/` (excluded from indexing via robots.txt + BaseLayout default `noindex`). See `PHASE-3B-PREP.md` for the implementation pickup brief that was followed.
+**Phase 3a + 3b are complete; CLIENTS-RESTRUCTURE 2026-05-19 relocated the impls.** All 8 spec sheets drafted; all 8 components live at `docs/design/components/_impl/` (relocated from `clients/reference-solo-barber/src/components/`). Companion demo pages at `docs/design/components/_impl/_demo/` retain the visual-test surface. The original reference impl was deleted in Phase 6 of `CLIENTS-RESTRUCTURE-PLAN-2026-05-19.md`; per-client docs archived at `docs/clients/archived/reference-solo-barber/`. See `archived/PHASE-3B-PREP.md` for the implementation pickup brief that was followed.
 
 ## How to use these specs (for client builds)
 
 1. **Pick the component** for the client's vertical from the index above.
 2. **Read its spec sheet** — confirm the per-vertical surface fit and the WCAG requirements.
-3. **Check the implementation pointer** — the working `.astro` file in `clients/reference-solo-barber/src/components/` is ready to copy.
+3. **Check the implementation pointer** — the working `.astro` / `.tsx` file in `docs/design/components/_impl/` is ready to copy into `clients/[slug]/src/components/`.
 4. **Verify required tokens** — the spec's §"Required CSS custom properties" section lists the tokens the component consumes. Confirm the client's `tokens.css` defines them (or add them per `TECH.md` §7).
 5. **Adapt visual identity** — components ship in `reference-solo-barber`'s dark+amber identity. Per-vertical token swaps (cream + terracotta for gastronomy, cream + peach for beauty, navy for trades) are documented inline in each component.
 
