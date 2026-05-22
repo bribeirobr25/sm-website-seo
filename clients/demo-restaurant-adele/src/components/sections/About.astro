@@ -1,0 +1,76 @@
+---
+/**
+ * About — Adèle V5 Concept section.
+ * Centered editorial layout — drops StatCallouts in favor of a quiet
+ * magazine-style narrative + chef signature + portrait image.
+ * Visually distinct from Bellini (left-aligned + stat callouts) and
+ * Saltlines (image-pair with stat-less attribution).
+ */
+import { type Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Konzept' : 'Concept';
+const h2 =
+  locale === 'de' ? 'Eine Karte, die nicht wartet.' : 'A menu that does not wait.';
+
+const p1 =
+  locale === 'de'
+    ? 'Adèle Voss hat 2010 bei Tim Raue gelernt, dann in Paris bei Sylvestre und in Kopenhagen bei Geranium gearbeitet. 2017 hat sie in der Behrenstraße ein kleines Lokal aufgemacht — zweiundzwanzig Plätze, eine Sitzung am Abend, keine Karte zum Mitnehmen.'
+    : "Adèle Voss trained with Tim Raue in 2010, then worked at Sylvestre in Paris and Geranium in Copenhagen. In 2017 she opened a small room on Behrenstraße — twenty-two seats, one seating per evening, no menu to take home.";
+
+const p2 =
+  locale === 'de'
+    ? 'Die Speisefolge wird Sonntagnacht geschrieben, am Mittwoch zum ersten Mal gekocht, sieben Tage lang gehalten. Zulieferer sind benannt — Hof Marquardt, Beelitzer Spargelhöfe, Spreewälder Fischer, ein einziger Käseimporteur aus Frankreich.'
+    : 'The course list is written Sunday night, first cooked Wednesday, held in service for seven days. Suppliers are named — Hof Marquardt, Beelitz asparagus farms, Spreewald fishermen, one cheese importer from France.';
+
+const signature = locale === 'de'
+  ? 'Adèle Voss · Chef de Cuisine'
+  : 'Adèle Voss · Chef de Cuisine';
+---
+
+<section class="bg-bg">
+  <div class="container-page py-24 sm:py-32">
+    <div class="max-w-2xl mx-auto text-center space-y-7">
+      <p class="text-[11px] tracking-[0.35em] uppercase text-accent-secondary-deep font-medium">
+        {eyebrow}
+      </p>
+      <h2 class="font-display text-4xl sm:text-5xl text-text leading-[1.05]">
+        {h2}
+      </h2>
+      <div class="space-y-5 text-lg text-text-muted leading-relaxed">
+        <p>{p1}</p>
+        <p>{p2}</p>
+      </div>
+
+      <div class="pt-4">
+        <p class="font-display text-base text-accent italic">
+          — {signature}
+        </p>
+      </div>
+
+      <figure class="pt-8">
+        <div class="relative aspect-[16/10] max-w-3xl mx-auto rounded-sm overflow-hidden shadow-elev">
+          <img
+            src="/img/restaurant-interior.jpg"
+            alt={locale === 'de'
+              ? 'Speisesaal mit zweiundzwanzig Plätzen — gedämpftes Licht, einfache Tische'
+              : 'Dining room with twenty-two seats — dimmed light, simple tables'}
+            width="1600"
+            height="1000"
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+        <figcaption class="mt-3 text-[11px] uppercase tracking-[0.25em] text-text-muted">
+          {locale === 'de' ? 'Speisesaal · Behrenstraße 47' : 'Dining room · Behrenstraße 47'}
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

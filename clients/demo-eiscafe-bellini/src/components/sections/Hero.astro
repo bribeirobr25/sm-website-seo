@@ -1,9 +1,8 @@
 ---
 /**
- * Hero — Eiscafé Bellini (full-bleed variant per gastronomy.md §3 Variant 1).
- * Rebuilt 2026-05-22 — replaces the prior grid-with-image-on-right pattern.
- * H1 carries the SEO keyword pattern: "[Vertical] Bezirk seit YEAR".
- * Per `docs/design/SEO.md` §15: NO inverted-h1 — local-biz keyword in H1.
+ * Hero — Eiscafé Bellini.
+ * Clean variant per 2026-05-22 feedback: kicker (address) dropped + subhead
+ * tightened. Address lives in Footer + Visit page only.
  */
 import { type Locale, SITE } from '@/lib/site';
 import FullBleedHero from './FullBleedHero.astro';
@@ -17,18 +16,16 @@ const t = SITE.i18n[locale];
 
 const heroH1 =
   locale === 'de'
-    ? ['Bronte-Pistazie. Modica-Schokolade.', 'Aus benannten Quellen, seit 1987.']
-    : ['Bronte pistachio. Modica chocolate.', 'Named-source gelato, since 1987.'];
+    ? ['Bronte-Pistazie.', 'Modica-Schokolade.']
+    : ['Bronte pistachio.', 'Modica chocolate.'];
 
 const body =
   locale === 'de'
-    ? 'Wir machen Eis nach den Rezepten, die Rosa Bellini 1987 aus Treviso mitbrachte — mit Zutaten von sieben benannten Produzenten aus Sizilien, Piemont und Brandenburg. Jeden Morgen frisch in der Husemannstraße.'
-    : 'We make gelato from the recipes Rosa Bellini brought from Treviso in 1987 — with ingredients from seven named producers in Sicily, Piemonte, and Brandenburg. Made fresh every morning on Husemannstraße.';
+    ? 'Familieneis nach den Rezepten von 1987 — mit Zutaten von benannten Produzenten aus Sizilien, Piemont und Brandenburg.'
+    : 'Family gelato from the 1987 recipes — with ingredients from named producers in Sicily, Piemonte, and Brandenburg.';
 
 const menuHref = locale === 'de' ? '/gelato' : '/en/gelato';
-const callLabel = locale === 'de' ? 'Anrufen — +49 30 4400 1987' : 'Call us — +49 30 4400 1987';
-
-const kicker = `${SITE.name} · ${SITE.address.street} · ${SITE.address.postalCode} ${SITE.address.city}`;
+const callLabel = locale === 'de' ? 'Anrufen' : 'Call us';
 
 const imageAlt =
   locale === 'de'
@@ -39,7 +36,6 @@ const imageAlt =
 <FullBleedHero
   imageSrc="/img/hero-gelato-counter.jpg"
   imageAlt={imageAlt}
-  kicker={kicker}
   titleLines={heroH1}
   body={body}
   ctaPrimary={{ href: menuHref, label: t.cta.viewMenu }}

@@ -24,7 +24,10 @@ interface Props {
   imageSrc: string;
   /** Alt text — required for accessibility */
   imageAlt: string;
-  /** Optional small-caps kicker above H1 (e.g., "EISCAFÉ BELLINI · BERLIN") */
+  /** Optional small-caps kicker above H1. **Do NOT include the street address** —
+   * the kicker is a brand-positioning line (e.g., "FAMILIENGELATO · PRENZLAUER BERG"),
+   * not contact metadata. Address belongs in Footer + Visit page only.
+   * Updated 2026-05-22 per user feedback (hero overload). Most clients should omit this prop. */
   kicker?: string;
   /** H1 lines — array allows manual line breaks; each entry becomes a <br>-separated line */
   titleLines: string[];
@@ -86,7 +89,7 @@ const overlayClass = {
   <div class="relative z-10 h-full flex items-end">
     <div class="container-page py-16 sm:py-24 lg:py-32 max-w-4xl">
       {kicker && (
-        <p class="fbh-kicker text-xs sm:text-sm uppercase tracking-[0.2em] text-white/80 mb-4">
+        <p class="fbh-kicker text-xs uppercase tracking-[0.18em] text-white/70 mb-5">
           {kicker}
         </p>
       )}

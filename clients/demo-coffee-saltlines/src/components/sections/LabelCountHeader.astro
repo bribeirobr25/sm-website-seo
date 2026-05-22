@@ -1,0 +1,61 @@
+---
+/**
+ * `LABEL (N)` monospace section header — catalog / directory cue.
+ * Spec: docs/design/components/label-count-header.md
+ *
+ * Mono signals "directory / curated index" rather than narrative. Use
+ * 2-4 times max per page; over-use erodes the "curated" weight. Avoid
+ * on sections with a single item (count of 1 reads as a system error).
+ *
+ * Visual identity (this scaffold): dark + amber
+ *   text inherits --color-text (#f5f0e8 cream-on-dark) — high contrast
+ *   on the barber bg
+ *
+ * Per-vertical token swaps:
+ *   gastronomy/beauty/artisan (cream bg): override .lch-header color to
+ *     var(--color-text-warm) (#2B1A12) — measured warm-brown
+ *   trades:                              color: var(--color-text)
+ *                                         on cream or charcoal bg
+ *   pets/professional-services:           color inheritance is usually fine
+ */
+
+interface Props {
+  label: string;
+  count: number;
+  level?: 2 | 3;
+  countLabel?: string;
+  class?: string;
+}
+
+const { label, count, level = 2, countLabel, class: extraClass = '' } = Astro.props;
+
+const Tag = `h${level}`;
+const computedCountAria = countLabel ?? `${count} items`;
+---
+
+<Tag class:list={['lch-header', extraClass]}>
+  <span class="lch-label">{label}</span>
+  <span class="lch-count" aria-label={computedCountAria}>({count})</span>
+</Tag>
+
+<style>
+  .lch-header {
+    font-family: var(--font-mono);
+    font-size: 15.9px;
+    font-weight: 600;
+    line-height: 24.3px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: inherit;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .lch-count {
+    font-weight: 400;
+    opacity: 0.7;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

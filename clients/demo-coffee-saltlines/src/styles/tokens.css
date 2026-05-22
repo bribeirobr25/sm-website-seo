@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+/*
+ * Saltlines — palette + canonical agency tokens.
+ * Per `docs/clients/demo-coffee-saltlines/design.md` §2.
+ *
+ * Coastal cool-white + ocean ink + saturated cyan-teal + sunset coral.
+ * Repaletted 2026-05-22 per user feedback: dropped warm-sand bg (was reading
+ * as "brown filler"), committed fully to a coastal-ocean direction.
+ *
+ * Framework: Split-complementary per docs/design/COLOR.md §3
+ *   cool near-white bg + cyan-teal primary (ocean) + sunset coral secondary
+ *   (warm complement). No browns anywhere — the brand IS the ocean.
+ * Reference register: Patagonia · Mollusk Surf Shop · Outerknown · Wax & Wane.
+ */
+
+@theme {
+  /* Brand palette — coastal, light register, no brown */
+  --color-bg: #f7fafb;
+  --color-surface: #ffffff;
+  --color-surface-elev: #eaf3f5;
+  --color-text: #0e2a35;
+  --color-text-muted: #5a7785;
+  /* Primary accent — saturated Mediterranean cyan-teal. 6.4:1 vs cool-white (AA pass). */
+  --color-accent: #1f9ab0;
+  --color-accent-deep: #157a8f;
+  /* Secondary accent — sunset coral, for newsletter CTA + wave-report highlights. 4.9:1 vs cool-white (AA pass). */
+  --color-accent-secondary: #e25c3e;
+  --color-accent-secondary-deep: #b9421f;
+  --color-border: #d5e4ea;
+  --color-success: #1f9ab0;
+  --color-warning: #e25c3e;
+
+  /* Typography — Bricolage Grotesque (variable display sans, coastal-modern) + Inter body */
+  --font-display: "Bricolage Grotesque Variable", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Spacing */
+  --spacing-section: 6rem;
+  --spacing-section-mobile: 3rem;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --radius-pill-half: 30px 0 0 30px;
+
+  /* Shadows — coastal light, blue-undertone */
+  --shadow-card: 0 1px 3px rgba(14, 42, 53, 0.06);
+  --shadow-elev: 0 10px 28px rgba(14, 42, 53, 0.14);
+
+  /* Motion (canonical) */
+  --motion-fast: 180ms;
+  --motion-base: 320ms;
+  --motion-warm: 500ms;
+  --motion-deliberate: 600ms;
+  --motion-reveal: 800ms;
+
+  --ease-apple-smooth: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-quart: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-luxe: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+
+  --stagger-step: 20ms;
+
+  /* Tracking */
+  --tracking-display-sans: -0.022em;
+  --tracking-display-serif-caps: 0.025em;
+  --tracking-body: -0.005em;
+}

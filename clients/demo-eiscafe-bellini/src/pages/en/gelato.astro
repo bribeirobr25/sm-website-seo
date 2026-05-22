@@ -6,6 +6,24 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/lib/site';
 
 const locale = 'en' as const;
+
+const categories = [
+  {
+    key: 'creme' as const,
+    image: '/img/category-creme.jpg',
+    alt: 'Creamy Italian gelato in the display case — milky pastel tones',
+  },
+  {
+    key: 'sorbetti' as const,
+    image: '/img/category-sorbetti.jpg',
+    alt: 'Fruit sorbetti in vivid colors — strawberry, mango, lemon',
+  },
+  {
+    key: 'spezialitaeten' as const,
+    image: '/img/category-spezialitaeten.jpg',
+    alt: 'Affogato — vanilla gelato drowned in espresso',
+  },
+];
 ---
 
 <BaseLayout
@@ -19,8 +37,8 @@ const locale = 'en' as const;
     <section class="bg-bg">
       <div class="container-page py-16 sm:py-24">
         <div class="max-w-2xl">
-          <p class="text-xs uppercase tracking-[0.2em] text-text-muted">Menu</p>
-          <h1 class="mt-2 font-display text-4xl sm:text-5xl text-text">The menu.</h1>
+          <p class="text-xs uppercase tracking-[0.2em] text-accent font-semibold">Menu</p>
+          <h1 class="mt-2 font-display text-4xl sm:text-5xl text-text leading-[1.05]">The menu.</h1>
           <p class="mt-6 text-lg text-text-muted leading-relaxed">
             Fresh daily, with ingredients from small Italian producers. Some flavors rotate with the season — the board inside is always current.
           </p>
@@ -28,28 +46,44 @@ const locale = 'en' as const;
       </div>
     </section>
 
-    {(['creme', 'sorbetti', 'spezialitaeten'] as const).map((key, idx) => {
-      const section = SITE.menu[key];
+    {categories.map((cat, idx) => {
+      const section = SITE.menu[cat.key];
       const bg = idx % 2 === 0 ? 'bg-surface-elev' : 'bg-bg';
       return (
         <section class={bg}>
           <div class="container-page py-16">
-            <LabelCountHeader
-              label={section.label[locale]}
-              count={section.count}
-              countLabel={`${section.count} flavors`}
-            />
-            <p class="mt-4 max-w-2xl text-text-muted leading-relaxed">
-              {section.intro[locale]}
-            </p>
-            <ul class="mt-10 grid sm:grid-cols-2 gap-x-10 gap-y-6">
-              {section.items.map((item: { de: { name: string; desc: string }; en: { name: string; desc: string } }) => (
-                <li class="border-b border-border pb-4">
-                  <h3 class="font-display text-xl text-text">{item[locale].name}</h3>
-                  <p class="mt-1 text-text-muted text-sm leading-relaxed">{item[locale].desc}</p>
-                </li>
-              ))}
-            </ul>
+            <div class="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
+              <div class="space-y-5">
+                <div class="relative aspect-[4/3] rounded-lg overflow-hidden border border-border shadow-card">
+                  <img
+                    src={cat.image}
+                    alt={cat.alt}
+                    width="800"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <LabelCountHeader
+                  label={section.label[locale]}
+                  count={section.count}
+                  countLabel={`${section.count} flavors`}
+                />
+                <p class="text-text-muted leading-relaxed">
+                  {section.intro[locale]}
+                </p>
+              </div>
+
+              <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-5">
+                {section.items.map((item: { de: { name: string; desc: string }; en: { name: string; desc: string } }) => (
+                  <li class="border-b border-border pb-3">
+                    <h3 class="font-display text-xl text-text leading-tight">{item[locale].name}</h3>
+                    <p class="mt-1 text-text-muted text-sm leading-relaxed">{item[locale].desc}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
       );
@@ -57,14 +91,41 @@ const locale = 'en' as const;
 
     <section class="bg-surface-elev">
       <div class="container-page py-16">
-        <LabelCountHeader label="ICE-CREAM CAKES TO ORDER" count={0} countLabel="to order" />
-        <p class="mt-4 max-w-2xl text-text-muted leading-relaxed">
-          We make ice-cream cakes for birthdays, weddings, and everything in between. Call or email at least five days ahead. Flavors, size, and number of scoops — your call.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors">
-            Call us — {SITE.phoneDisplay}
-          </a>
+        <div class="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
+          <div class="space-y-5">
+            <div class="relative aspect-[4/3] rounded-lg overflow-hidden border border-border shadow-card">
+              <img
+                src="/img/category-eistorten.jpg"
+                alt="Ice-cream cake with fruit and cream — made to order"
+                width="800"
+                height="600"
+                loading="lazy"
+                decoding="async"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <LabelCountHeader label="ICE-CREAM CAKES TO ORDER" count={0} countLabel="to order" />
+            <p class="text-text-muted leading-relaxed">
+              We make ice-cream cakes for birthdays, weddings, and everything in between. Call or email at least five days ahead. Flavors, size, and number of scoops — your call.
+            </p>
+          </div>
+
+          <div class="space-y-4 lg:pt-16">
+            <p class="text-text-muted leading-relaxed">
+              A few classics to start the conversation — exact composition is worked out on the phone:
+            </p>
+            <ul class="space-y-3 text-text-muted">
+              <li><strong class="text-text">Cassata Siciliana</strong> — Ricotta, candied fruit, marzipan jacket.</li>
+              <li><strong class="text-text">Semifreddo Pistachio</strong> — Half-frozen, Bronte pistachio paste, meringue.</li>
+              <li><strong class="text-text">Stracciatella Bombe</strong> — Layered cream and dark chocolate.</li>
+              <li><strong class="text-text">Kids' birthday cake</strong> — Bright, sprinkles, photo-topper on request.</li>
+            </ul>
+            <div class="pt-3 flex flex-wrap gap-3">
+              <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors">
+                Call us — {SITE.phoneDisplay}
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

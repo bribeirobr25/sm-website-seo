@@ -1,0 +1,71 @@
+---
+/**
+ * Hero — Adèle.
+ * V5 — switched from FullBleedHero to SplitHero (half-and-half) per
+ * `docs/design/templates/gastronomy.md` §3 Modern hero variants → Variant 2.
+ * Primary CTA uses MarqueeCTA (luxury polish per docs/design/components/marquee-cta.md).
+ */
+import MarqueeCTA from '@/components/ui/MarqueeCTA.astro';
+import { type Locale, SITE } from '@/lib/site';
+import SplitHero from './SplitHero.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Restaurant · Berlin Mitte' : 'Restaurant · Berlin Mitte';
+
+const heroH1 =
+  locale === 'de'
+    ? ['Fünf Gänge.', 'Jeden Mittwoch neu.']
+    : ['Five courses.', 'Rewritten every Wednesday.'];
+
+const body =
+  locale === 'de'
+    ? 'Modernes europäisches Menü, der Jahreszeit folgend. Zweiundzwanzig Plätze, eine Sitzung am Abend.'
+    : 'Modern European tasting menu following the season. Twenty-two seats, one seating per evening.';
+
+const quote = {
+  text:
+    locale === 'de'
+      ? 'Was am Mittwoch nicht im Brandenburger Boden steht, ist Donnerstag nicht auf der Karte.'
+      : "Anything not in the Brandenburg soil on Wednesday is not on the card on Thursday.",
+  attribution: locale === 'de' ? 'Adèle Voss · Chef de Cuisine' : 'Adèle Voss · Chef de Cuisine',
+};
+
+const bookingHref = locale === 'de' ? '/reservieren' : '/en/reserve';
+const menuHref = locale === 'de' ? '/karte' : '/en/menu';
+
+const imageAlt =
+  locale === 'de'
+    ? 'Hauptgang Zander mit Beurre blanc — dunkler Keramikteller, gedimmtes Licht'
+    : 'Pike-perch with beurre blanc — dark ceramic plate, dimmed light';
+---
+
+<SplitHero
+  imageSrc="/img/hero-plated.jpg"
+  imageAlt={imageAlt}
+  eyebrow={eyebrow}
+  titleLines={heroH1}
+  body={body}
+  quote={quote}
+  imageSide="right"
+>
+  <MarqueeCTA
+    slot="cta-primary"
+    href={bookingHref}
+    label={locale === 'de' ? 'Tisch reservieren' : 'Reserve a table'}
+    ariaLabel={locale === 'de' ? 'Tisch reservieren — Reservierungsformular' : 'Reserve a table — booking form'}
+    variant="light-fill"
+    dataSourceSection="hero"
+  />
+  <a
+    slot="cta-secondary"
+    href={menuHref}
+    class="inline-flex items-center justify-center px-7 py-4 min-h-[52px] text-xs font-medium uppercase tracking-[0.18em] text-text border border-text/40 hover:border-text transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+  >
+    {locale === 'de' ? 'Menü ansehen' : 'View menu'}
+  </a>
+</SplitHero>

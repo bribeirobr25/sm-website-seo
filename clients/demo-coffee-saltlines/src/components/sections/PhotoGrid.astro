@@ -1,0 +1,115 @@
+---
+/**
+ * PhotoGrid — Saltlines bento-style image collage.
+ *
+ * Asymmetric 5-image grid that doubles as "what we make + the place."
+ * Replaces a traditional MenuPreview on the home page for Saltlines.
+ *
+ * Built 2026-05-22 to differentiate Saltlines from Bellini's layout shape.
+ * Promotion candidate to docs/design/components/_impl/ after demo proves out.
+ */
+import { type Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const kicker = locale === 'de' ? 'DER LADEN' : 'THE SHOP';
+const h2 =
+  locale === 'de'
+    ? 'Sechs Quadratmeter Spreeufer.'
+    : 'Six metres of riverbank.';
+
+// 5 images in a 4-col desktop grid:
+//   Row 1: [counter-light (wide, 2 cols)] [drink-cold-brew] [drink-matcha]
+//   Row 2: [surfboards (2 cols)] [spree-river (2 cols)]
+const images = [
+  {
+    src: '/img/counter-light.jpg',
+    alt:
+      locale === 'de'
+        ? 'Helle Café-Theke mit Espressomaschine im Morgenlicht'
+        : 'Bright café counter with espresso machine in morning light',
+    span: 'col-span-2 lg:col-span-2',
+    aspect: 'aspect-[16/10]',
+  },
+  {
+    src: '/img/drink-cold-brew.jpg',
+    alt: locale === 'de' ? 'Cold Brew Glas mit Eiswürfeln' : 'Cold brew glass with ice cubes',
+    span: '',
+    aspect: 'aspect-square',
+  },
+  {
+    src: '/img/drink-pour.jpg',
+    alt: locale === 'de' ? 'V60-Filterkaffee wird in eine Tasse gegossen' : 'V60 pour-over coffee being poured into a cup',
+    span: '',
+    aspect: 'aspect-square',
+  },
+  {
+    src: '/img/hero-ocean.jpg',
+    alt:
+      locale === 'de'
+        ? 'Wellen brechen am Strand — der Grund, warum es Saltlines gibt'
+        : 'Waves breaking on the shore — the reason Saltlines exists',
+    span: 'col-span-2 lg:col-span-2',
+    aspect: 'aspect-[16/10]',
+  },
+  {
+    src: '/img/spree-river.jpg',
+    alt:
+      locale === 'de'
+        ? 'Spreeufer in Friedrichshain bei warmem Licht'
+        : 'Spree riverbank in Friedrichshain in warm light',
+    span: 'col-span-2 lg:col-span-2',
+    aspect: 'aspect-[16/10]',
+  },
+];
+---
+
+<section class="bg-bg">
+  <div class="container-page py-16 sm:py-24">
+    <div class="max-w-3xl mb-12">
+      <p class="text-xs uppercase tracking-[0.18em] text-accent-secondary font-semibold">{kicker}</p>
+      <h2 class="mt-3 font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.05]">
+        {h2}
+      </h2>
+      <p class="mt-5 text-lg text-text-muted leading-relaxed max-w-prose">
+        {locale === 'de'
+          ? 'Zwei Räume, eine Theke, ein Espresso, ein altes Surfbrett an der Wand. Drinnen achtzehn Plätze. Bei Sonne sitzt halb Friedrichshain draußen.'
+          : 'Two rooms, one counter, one espresso machine, an old board on the wall. Eighteen seats inside. When the sun is out, half of Friedrichshain sits outside.'}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      {images.map((img) => (
+        <figure class:list={['photogrid-cell relative overflow-hidden rounded-lg border border-border', img.span, img.aspect]}>
+          <img
+            src={img.src}
+            alt={img.alt}
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-[var(--motion-warm)] ease-[var(--ease-quart)]"
+          />
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .photogrid-cell img {
+    will-change: transform;
+  }
+  .photogrid-cell:hover img {
+    transform: scale(1.03);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .photogrid-cell img,
+    .photogrid-cell:hover img {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

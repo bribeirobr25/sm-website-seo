@@ -1,0 +1,33 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import About from '@/components/sections/About.astro';
+import Hero from '@/components/sections/Hero.astro';
+import NewsletterMock from '@/components/sections/NewsletterMock.astro';
+import PhotoGrid from '@/components/sections/PhotoGrid.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import WaveReportTicker from '@/components/sections/WaveReportTicker.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const t = SITE.i18n[locale];
+---
+
+<BaseLayout
+  title={`${SITE.name} — Specialty coffee on the Spree in Friedrichshain`}
+  description={t.tagline}
+  locale={locale}
+  alternateLocaleUrl="/"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    <WaveReportTicker locale={locale} />
+    <About locale={locale} />
+    <PhotoGrid locale={locale} />
+    <NewsletterMock locale={locale} />
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

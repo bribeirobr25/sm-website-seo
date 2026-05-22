@@ -1,0 +1,251 @@
+---
+/**
+ * BookingMock — Adèle reservation form (mockup).
+ *
+ * **MOCK ONLY** — no real submission. Per `docs/clients/demo-restaurant-adele/CLAUDE.md`
+ * Demo discipline: client-side state change to a confirmation message,
+ * nothing sent over the wire. For a real client this would POST to a
+ * booking API (OpenTable / Resy / Bookatable / SevenRooms).
+ *
+ * Visual register: ivory card + oxblood CTA + brass section accent.
+ * Typography: serif H2, mono date input, generous spacing.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const h2 = locale === 'de' ? 'Reservieren.' : 'Reserve.';
+const body =
+  locale === 'de'
+    ? 'Zweiundzwanzig Plätze, eine Sitzung um 18:30. Wir empfehlen sechs bis vierzehn Tage Vorlauf. Für Allergien, Anlässe oder größere Tische bitte direkt anrufen.'
+    : 'Twenty-two seats, one seating at 18:30. We recommend booking six to fourteen days ahead. For allergies, occasions or larger parties please call directly.';
+
+const labels = locale === 'de'
+  ? {
+      date: 'Datum',
+      time: 'Uhrzeit',
+      party: 'Personen',
+      name: 'Name',
+      email: 'E-Mail',
+      notes: 'Anmerkung (optional)',
+      submit: 'Tisch anfragen.',
+      thanks: 'Reservierung erhalten.',
+      thanksBody:
+        'Wir bestätigen jede Anfrage innerhalb von 24 Stunden per E-Mail. Bei Allergien oder Wünschen bitte gerne antworten oder uns anrufen.',
+      placeholderName: 'Vor- und Nachname',
+      placeholderEmail: 'name@example.com',
+      placeholderNotes: 'Allergien, Anlass, Lieblingsweine …',
+      demoNote: '⚠ Mockup — kein echtes Buchungssystem. Diese Demo speichert nichts.',
+    }
+  : {
+      date: 'Date',
+      time: 'Time',
+      party: 'Party',
+      name: 'Name',
+      email: 'Email',
+      notes: 'Notes (optional)',
+      submit: 'Request table.',
+      thanks: 'Reservation received.',
+      thanksBody:
+        "We confirm every request within 24 hours by email. For allergies or special requests, reply or call us directly.",
+      placeholderName: 'First + last name',
+      placeholderEmail: 'name@example.com',
+      placeholderNotes: 'Allergies, occasion, wine preferences …',
+      demoNote: '⚠ Mockup — not a real booking system. This demo stores nothing.',
+    };
+
+const today = new Date();
+const minDate = new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+const partyOptions: number[] = [2, 3, 4, 5, 6, 7, 8];
+const timeOptions = ['18:30', '18:45', '19:00', '19:15', '19:30', '19:45', '20:00'] as const;
+---
+
+<section id="reservation" class="bg-bg border-t border-b border-border">
+  <div class="container-page py-16 sm:py-24">
+    <div class="grid lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-20 items-start">
+      <div class="max-w-prose space-y-6">
+        <p class="text-xs uppercase tracking-[0.2em] text-accent-secondary-deep font-semibold">
+          {locale === 'de' ? 'Reservierung' : 'Reservation'}
+        </p>
+        <h2 class="font-display text-4xl sm:text-5xl text-text">
+          {h2}
+        </h2>
+        <p class="text-lg text-text-muted leading-relaxed">
+          {body}
+        </p>
+        <div class="pt-4 border-t border-border space-y-2">
+          <p class="text-sm text-text-muted">
+            {locale === 'de' ? 'Direkt anrufen:' : 'Or call directly:'}
+          </p>
+          <a
+            href={`tel:${SITE.phone}`}
+            class="font-display text-2xl text-accent tabular hover:text-accent-deep transition-colors"
+          >
+            {SITE.phoneDisplay}
+          </a>
+        </div>
+      </div>
+
+      <form
+        id="booking-form"
+        class="bg-surface rounded-lg p-6 sm:p-8 border border-border shadow-elev space-y-5"
+        novalidate
+      >
+        <div id="booking-fields" class="space-y-5">
+          <div class="grid grid-cols-2 gap-4">
+            <label class="block">
+              <span class="text-sm font-medium text-text">{labels.date}</span>
+              <input
+                type="date"
+                name="date"
+                required
+                min={minDate}
+                class="mt-2 block w-full px-4 py-3 min-h-[48px] text-base rounded-md bg-bg border border-border focus:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-text font-mono"
+              />
+            </label>
+            <label class="block">
+              <span class="text-sm font-medium text-text">{labels.time}</span>
+              <select
+                name="time"
+                required
+                class="mt-2 block w-full px-4 py-3 min-h-[48px] text-base rounded-md bg-bg border border-border focus:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-text font-mono"
+              >
+                {timeOptions.map((t) => (
+                  <option value={t}>{t}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <label class="block">
+            <span class="text-sm font-medium text-text">{labels.party}</span>
+            <select
+              name="party"
+              required
+              class="mt-2 block w-full px-4 py-3 min-h-[48px] text-base rounded-md bg-bg border border-border focus:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-text"
+            >
+              {partyOptions.map((p) => (
+                <option value={p}>{p} {locale === 'de' ? (p === 1 ? 'Person' : 'Personen') : (p === 1 ? 'guest' : 'guests')}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-medium text-text">{labels.name}</span>
+            <input
+              type="text"
+              name="name"
+              required
+              autocomplete="name"
+              placeholder={labels.placeholderName}
+              class="mt-2 block w-full px-4 py-3 min-h-[48px] text-base rounded-md bg-bg border border-border focus:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-text placeholder:text-text-muted/60"
+            />
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-medium text-text">{labels.email}</span>
+            <input
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder={labels.placeholderEmail}
+              class="mt-2 block w-full px-4 py-3 min-h-[48px] text-base rounded-md bg-bg border border-border focus:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-text placeholder:text-text-muted/60"
+            />
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-medium text-text">{labels.notes}</span>
+            <textarea
+              name="notes"
+              rows="3"
+              placeholder={labels.placeholderNotes}
+              class="mt-2 block w-full px-4 py-3 text-base rounded-md bg-bg border border-border focus:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-text placeholder:text-text-muted/60 resize-y"
+            ></textarea>
+          </label>
+
+          <button
+            type="submit"
+            class="w-full inline-flex items-center justify-center px-6 py-4 min-h-[52px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {labels.submit}
+          </button>
+
+          <p class="text-xs text-accent-secondary-deep font-medium pt-1">{labels.demoNote}</p>
+        </div>
+
+        <div id="booking-success" class="hidden space-y-5">
+          <div class="flex items-start gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-accent-secondary shrink-0 mt-0.5"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9 12l2 2 4-4"></path>
+            </svg>
+            <div class="space-y-3">
+              <p class="font-display text-2xl text-text">{labels.thanks}</p>
+              <p class="text-sm text-text-muted leading-relaxed" id="booking-summary"></p>
+              <p class="text-sm text-text-muted leading-relaxed">{labels.thanksBody}</p>
+            </div>
+          </div>
+          <p class="text-xs text-accent-secondary-deep font-medium pt-2 border-t border-border">{labels.demoNote}</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('booking-form') as HTMLFormElement | null;
+  const fields = document.getElementById('booking-fields');
+  const success = document.getElementById('booking-success');
+  const summary = document.getElementById('booking-summary');
+
+  if (form && fields && success && summary) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const date = (data.get('date') as string) ?? '';
+      const time = (data.get('time') as string) ?? '';
+      const party = (data.get('party') as string) ?? '';
+      const name = ((data.get('name') as string) ?? '').trim();
+      const email = ((data.get('email') as string) ?? '').trim();
+
+      if (!date || !time || !party || !name || !email || !email.includes('@')) {
+        const firstInvalid = Array.from(form.elements).find((el) => {
+          const input = el as HTMLInputElement;
+          return input.required && !input.value;
+        }) as HTMLElement | undefined;
+        firstInvalid?.focus();
+        return;
+      }
+
+      const formatter = new Intl.DateTimeFormat(document.documentElement.lang || 'de-DE', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      });
+      const formatted = formatter.format(new Date(date));
+      summary.textContent = `${name} · ${formatted} · ${time} · ${party} ${document.documentElement.lang?.startsWith('de') ? (Number(party) === 1 ? 'Person' : 'Personen') : (Number(party) === 1 ? 'guest' : 'guests')}`;
+      fields.classList.add('hidden');
+      success.classList.remove('hidden');
+      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+</script>

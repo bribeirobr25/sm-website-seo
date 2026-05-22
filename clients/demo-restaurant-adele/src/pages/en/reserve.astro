@@ -1,0 +1,115 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BookingMock from '@/components/sections/BookingMock.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`;
+const dayLabelsEN = {
+  Mon: 'Mon',
+  Tue: 'Tue',
+  Wed: 'Wed',
+  Thu: 'Thu',
+  Fri: 'Fri',
+  Sat: 'Sat',
+  Sun: 'Sun',
+};
+---
+
+<BaseLayout
+  title={`Reserve — ${SITE.name}`}
+  description="Behrenstraße 47, 10117 Berlin Mitte. Tue–Thu 18–23, Fri/Sat 18–24. One seating at 18:30, 22 seats. Please book 6–14 days ahead."
+  locale={locale}
+  alternateLocaleUrl="/reservieren"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <p class="text-xs uppercase tracking-[0.2em] text-accent-secondary-deep font-semibold">Reservation</p>
+        <h1 class="mt-2 font-display text-4xl sm:text-5xl text-text">Reserve a table.</h1>
+        <p class="mt-6 text-lg text-text-muted leading-relaxed max-w-2xl">
+          Behrenstraße 47 — three minutes from Unter den Linden. Twenty-two seats, one seating at 18:30. Please book 6–14 days ahead.
+        </p>
+      </div>
+    </section>
+
+    <BookingMock locale={locale} />
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+          <div class="bg-surface rounded-lg p-8 border border-border space-y-2">
+            <p class="font-display text-2xl text-text">{SITE.name}</p>
+            <p class="text-text-muted">{SITE.address.street}</p>
+            <p class="text-text-muted">{SITE.address.postalCode} {SITE.address.city} — {SITE.address.neighborhood}</p>
+            <div class="pt-4 flex flex-wrap gap-3">
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors">
+                Open in Google Maps.
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-surface rounded-lg p-8 border border-border space-y-5">
+            <p class="text-xs uppercase tracking-[0.2em] text-text-muted">Opening hours</p>
+            <div>
+              <p class="font-display text-xl text-text">{SITE.hours.summer.label.en}</p>
+              <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.summer.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsEN[h.day as keyof typeof dayLabelsEN]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'Closed'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+            <div>
+              <p class="font-display text-xl text-text">{SITE.hours.winter.label.en}</p>
+              <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.winter.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsEN[h.day as keyof typeof dayLabelsEN]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'Closed'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-16">
+        <div class="max-w-2xl space-y-6">
+          <h2 class="font-display text-3xl text-text">Finding us</h2>
+          <ul class="space-y-2 text-text-muted leading-relaxed">
+            <li><strong class="text-text">U-Bahn Französische Straße (U6)</strong> — 3 minutes on foot.</li>
+            <li><strong class="text-text">S-Bahn Brandenburger Tor (S1, S2)</strong> — 5 minutes.</li>
+            <li><strong class="text-text">Bus 100 / 200</strong> — Unter den Linden, one stop.</li>
+            <li><strong class="text-text">Taxi</strong> — pickup possible right at the door.</li>
+            <li><strong class="text-text">Parking</strong> — Behrenstraße garage two doors down.</li>
+          </ul>
+        </div>
+
+        <div class="mt-12 max-w-2xl space-y-6">
+          <h2 class="font-display text-3xl text-text">Contact</h2>
+          <p class="text-text-muted leading-relaxed">
+            For parties of eight or more, allergies, or last-minute changes, please call directly — we answer between 14:00 and 17:00.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors tabular">
+              {SITE.phoneDisplay}
+            </a>
+            <a href={`mailto:${SITE.email}`} class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-surface text-text border border-border hover:bg-surface-elev transition-colors">
+              {SITE.email}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

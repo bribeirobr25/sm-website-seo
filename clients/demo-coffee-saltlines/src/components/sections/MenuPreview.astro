@@ -1,0 +1,58 @@
+---
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import MenuCard from '@/components/ui/MenuCard.astro';
+/**
+ * MenuPreview — Saltlines Home section.
+ * Three signature drink cards.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const intro =
+  locale === 'de'
+    ? 'Was wir dir morgens in die Hand drücken — wenn der Wellenbericht gut ist und wenn nicht. Wechselt mit der Bohne, mit dem Wetter, manchmal mit der Laune.'
+    : "What we put in your hand in the morning — when the wave report is good and when it isn't. Rotates with the bean, the weather, occasionally the mood.";
+
+const ctaText = locale === 'de' ? 'Die ganze Karte ansehen.' : 'See the full menu.';
+const ctaHref = locale === 'de' ? '/drinks' : '/en/drinks';
+---
+
+<section class="bg-surface-elev">
+  <div class="container-page py-16 sm:py-24">
+    <div class="max-w-2xl">
+      <LabelCountHeader label="HEUTE EMPFOHLEN" count={3} countLabel={locale === 'de' ? '3 Drinks' : '3 drinks'} />
+      <p class="mt-4 text-text-muted text-lg leading-relaxed">
+        {intro}
+      </p>
+    </div>
+
+    <ul class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
+      {SITE.featured.map((drink: typeof SITE.featured[number]) => (
+        <li>
+          <MenuCard
+            name={drink.name[locale]}
+            description={drink.description[locale]}
+            imageSrc={drink.imageSrc}
+            imageAlt={drink.imageAlt[locale]}
+            aspectRatio="4/3"
+            loading="lazy"
+          />
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-10">
+      <a
+        href={ctaHref}
+        class="inline-flex items-center font-medium text-accent hover:text-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded"
+      >
+        {ctaText}
+      </a>
+    </div>
+  </div>
+</section>

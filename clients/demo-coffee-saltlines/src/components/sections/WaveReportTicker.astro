@@ -1,0 +1,108 @@
+---
+/**
+ * WaveReportTicker — Saltlines signature element.
+ *
+ * Horizontally scrolling status line. Reads as a surf-report ticker but
+ * contents are coffee-shop-specific (sunrise, today's bean, weather, etc).
+ * Pure CSS marquee — pauses on hover, respects prefers-reduced-motion.
+ *
+ * Built 2026-05-22 to differentiate Saltlines layout from Bellini's
+ * MenuPreview-Stats-Visit shape. NOT a canonical agency component yet —
+ * may be promoted to docs/design/components/_impl/ after this demo proves out.
+ */
+import { type Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+// Today's "report" — in a real client this would come from a tiny API
+// fetched at build-time. For the demo it's static + brand-flavored.
+const items = locale === 'de'
+  ? [
+      '06:32 SONNENAUFGANG',
+      'BONANZA OAXACAN MIX · MITTLERE RÖSTUNG',
+      'SPREE-WASSER 14°C',
+      'WIND 9 KN AUS NW',
+      'STRANDBAR SPREE OFFEN AB 12:00',
+      'COLD BREW LÄUFT SEIT 04:30',
+      'MIA HAT FEIERTAG · JONAS AN DER MASCHINE',
+    ]
+  : [
+      '06:32 SUNRISE',
+      'BONANZA OAXACA · MEDIUM ROAST',
+      'SPREE WATER 14°C',
+      'WIND 9 KT FROM NW',
+      'STRANDBAR SPREE OPEN AT 12:00',
+      'COLD BREW BREWING SINCE 04:30',
+      "MIA IS ON LEAVE · JONAS AT THE BAR",
+    ];
+
+// Repeat items so the loop animation is seamless
+const looped = [...items, ...items];
+---
+
+<section
+  class="wave-ticker bg-accent text-bg border-y border-accent-deep"
+  aria-label={locale === 'de' ? 'Heutiger Wellenbericht' : "Today's wave report"}
+>
+  <div class="wave-ticker__track" aria-hidden="true">
+    {looped.map((entry, i) => (
+      <span class="wave-ticker__item">
+        {entry}
+        {i < looped.length - 1 && <span class="wave-ticker__dot">·</span>}
+      </span>
+    ))}
+  </div>
+  <p class="sr-only">{items.join(' · ')}</p>
+</section>
+
+<style>
+  .wave-ticker {
+    overflow: hidden;
+    padding-block: 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .wave-ticker__track {
+    display: flex;
+    gap: 1.25rem;
+    width: max-content;
+    animation: wave-ticker-scroll 45s linear infinite;
+  }
+
+  .wave-ticker:hover .wave-ticker__track {
+    animation-play-state: paused;
+  }
+
+  .wave-ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.25rem;
+    white-space: nowrap;
+  }
+
+  .wave-ticker__dot {
+    opacity: 0.55;
+  }
+
+  @keyframes wave-ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wave-ticker__track {
+      animation: none;
+      transform: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>

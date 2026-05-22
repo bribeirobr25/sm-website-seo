@@ -1,0 +1,145 @@
+---
+/**
+ * SplitHero — half-and-half hero (Watch House §15 / Starbucks half-bleed pattern).
+ *
+ * Per `docs/design/templates/gastronomy.md` §3 Modern hero variants → Variant 2.
+ * Distinct from FullBleedHero: the image is CONTAINED in a half-column, not
+ * a full-bleed background. Typography gets a clean ivory backdrop; the
+ * photograph gets its full color/exposure without text-overlay compromises.
+ *
+ * Per-vertical fit:
+ *   - Luxury / fine-dining: image is the plated dish, text is the menu rotation
+ *   - Boutique beauty: image is the treatment, text is the booking flow
+ *   - Editorial / magazine register
+ *
+ * NOT a canonical agency component yet. Promotion candidate after this demo.
+ */
+
+interface Props {
+  imageSrc: string;
+  imageAlt: string;
+  eyebrow?: string;
+  titleLines: string[];
+  body?: string;
+  quote?: { text: string; attribution: string };
+  ctaPrimary?: { href: string; label: string; ariaLabel?: string };
+  ctaSecondary?: { href: string; label: string; ariaLabel?: string };
+  /** Which side the image sits on. Default right. */
+  imageSide?: 'left' | 'right';
+}
+
+const {
+  imageSrc,
+  imageAlt,
+  eyebrow,
+  titleLines,
+  body,
+  quote,
+  ctaPrimary,
+  ctaSecondary,
+  imageSide = 'right',
+} = Astro.props;
+
+const textOrder = imageSide === 'right' ? 'lg:order-1' : 'lg:order-2';
+const imageOrder = imageSide === 'right' ? 'lg:order-2' : 'lg:order-1';
+---
+
+<section class="splithero bg-bg" aria-labelledby="splithero-title">
+  <div class="splithero-grid grid lg:grid-cols-2 min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh]">
+    <div class:list={['splithero-text flex items-center justify-center px-6 sm:px-10 lg:px-16 py-16 sm:py-24', textOrder]}>
+      <div class="max-w-md mx-auto space-y-7 text-center lg:text-left">
+        {eyebrow && (
+          <p class="text-[11px] tracking-[0.3em] uppercase text-accent-secondary-deep font-medium">
+            {eyebrow}
+          </p>
+        )}
+
+        <h1 id="splithero-title" class="splithero-h1 font-display text-text">
+          {titleLines.map((line, i) => (
+            <>
+              {i > 0 && <br />}
+              {line}
+            </>
+          ))}
+        </h1>
+
+        {body && (
+          <p class="text-lg text-text-muted leading-relaxed">
+            {body}
+          </p>
+        )}
+
+        {quote && (
+          <blockquote class="splithero-quote pt-4 border-t border-border">
+            <p class="font-display text-xl text-text italic leading-snug">
+              &ldquo;{quote.text}&rdquo;
+            </p>
+            <footer class="mt-3 text-xs uppercase tracking-[0.18em] text-text-muted">
+              — {quote.attribution}
+            </footer>
+          </blockquote>
+        )}
+
+        {(ctaPrimary || ctaSecondary) && (
+          <div class="flex flex-wrap gap-3 justify-center lg:justify-start pt-2">
+            {ctaPrimary && (
+              <slot name="cta-primary">
+                <a
+                  href={ctaPrimary.href}
+                  aria-label={ctaPrimary.ariaLabel ?? ctaPrimary.label}
+                  class="inline-flex items-center justify-center px-7 py-4 min-h-[52px] text-sm font-medium uppercase tracking-[0.15em] rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {ctaPrimary.label}
+                </a>
+              </slot>
+            )}
+            {ctaSecondary && (
+              <slot name="cta-secondary">
+                <a
+                  href={ctaSecondary.href}
+                  aria-label={ctaSecondary.ariaLabel ?? ctaSecondary.label}
+                  class="inline-flex items-center justify-center px-7 py-4 min-h-[52px] text-sm font-medium uppercase tracking-[0.15em] rounded-md text-text border border-border hover:bg-surface-elev transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {ctaSecondary.label}
+                </a>
+              </slot>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <figure class:list={['splithero-figure relative overflow-hidden', imageOrder]}>
+      <img
+        src={imageSrc}
+        alt={imageAlt}
+        width="1200"
+        height="1400"
+        fetchpriority="high"
+        decoding="async"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+    </figure>
+  </div>
+</section>
+
+<style>
+  .splithero-h1 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.018em;
+    font-weight: 500;
+  }
+  .splithero-quote p {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+  }
+  /* Mobile: image collapses to a constrained block above text */
+  .splithero-figure {
+    min-height: 50vh;
+  }
+  @media (min-width: 1024px) {
+    .splithero-figure {
+      min-height: 100%;
+    }
+  }
+</style>

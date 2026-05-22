@@ -1,0 +1,81 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+---
+
+<BaseLayout
+  title={`Drinks — ${SITE.name}`}
+  description="Specialty coffee, sea-salt cold brew, matcha, pour-over filter. Beans from Hamburg, Berlin, Munich roasters."
+  locale={locale}
+  alternateLocaleUrl="/drinks"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-2xl">
+          <p class="text-xs uppercase tracking-[0.2em] text-text-muted">Drinks</p>
+          <h1 class="mt-2 font-display text-4xl sm:text-5xl text-text">What we make.</h1>
+          <p class="mt-6 text-lg text-text-muted leading-relaxed">
+            Three roasteries rotate through. The current bean is always on the chalkboard behind the counter — ask if you do not know what you want.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {(['coffee', 'other'] as const).map((key, idx) => {
+      const section = SITE.menu[key];
+      const bg = idx % 2 === 0 ? 'bg-surface-elev' : 'bg-bg';
+      return (
+        <section class={bg}>
+          <div class="container-page py-16">
+            <LabelCountHeader
+              label={section.label[locale]}
+              count={section.count}
+              countLabel={`${section.count} options`}
+            />
+            <p class="mt-4 max-w-2xl text-text-muted leading-relaxed">
+              {section.intro[locale]}
+            </p>
+            <ul class="mt-10 grid sm:grid-cols-2 gap-x-10 gap-y-6">
+              {section.items.map((item: { de: { name: string; desc: string }; en: { name: string; desc: string } }) => (
+                <li class="border-b border-border pb-4">
+                  <h3 class="font-display text-xl text-text">{item[locale].name}</h3>
+                  <p class="mt-1 text-text-muted text-sm leading-relaxed">{item[locale].desc}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    })}
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16">
+        <LabelCountHeader label="BEANS TO TAKE HOME" count={0} countLabel="whole + ground beans" />
+        <p class="mt-4 max-w-2xl text-text-muted leading-relaxed">
+          Espressohaus Hamburg, Bonanza Berlin, Five Elephant — 250g bags to take home. We grind on request (French Press, V60, AeroPress, Espresso). Call or just come in.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors">
+            Call — {SITE.phoneDisplay}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-12 text-center">
+        <p class="text-sm text-text-muted italic max-w-2xl mx-auto leading-relaxed">
+          The menu changes with the beans, the weather, occasionally the mood. Seasonal: more cold brew + lemonade in summer, filter + chai in winter. The chalkboard inside is always current.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import MenuCard from '@/components/ui/MenuCard.astro';
+/**
+ * MenuPreview — Adèle Home section.
+ * Three featured-course cards from this week's tasting menu.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const intro =
+  locale === 'de'
+    ? 'Drei Gänge aus dem aktuellen Menü. Die vollständige Karte wechselt jeden Mittwoch und ist eine Woche lang gültig — keine zwei Karten sind identisch.'
+    : "Three courses from this week's menu. The full card rotates every Wednesday and runs for seven days — no two cards are the same.";
+
+const ctaText = locale === 'de' ? 'Ganzes Menü ansehen.' : 'See the full menu.';
+const ctaHref = locale === 'de' ? '/karte' : '/en/menu';
+---
+
+<section class="bg-surface-elev">
+  <div class="container-page py-16 sm:py-24">
+    <div class="max-w-2xl">
+      <LabelCountHeader label="DIESE WOCHE" count={5} countLabel={locale === 'de' ? '5 Gänge' : '5 courses'} />
+      <p class="mt-4 text-text-muted text-lg leading-relaxed">
+        {intro}
+      </p>
+    </div>
+
+    <ul class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
+      {SITE.featured.map((course: typeof SITE.featured[number]) => (
+        <li>
+          <MenuCard
+            name={course.name[locale]}
+            description={course.description[locale]}
+            imageSrc={course.imageSrc}
+            imageAlt={course.imageAlt[locale]}
+            aspectRatio="4/3"
+            loading="lazy"
+          />
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-10">
+      <a
+        href={ctaHref}
+        class="inline-flex items-center font-medium text-accent hover:text-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded"
+      >
+        {ctaText}
+      </a>
+    </div>
+  </div>
+</section>

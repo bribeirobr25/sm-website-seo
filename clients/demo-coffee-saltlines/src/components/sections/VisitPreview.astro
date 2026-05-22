@@ -1,0 +1,85 @@
+---
+/**
+ * VisitPreview — Home section.
+ * Address card + hours summary + two CTAs.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const h2 = locale === 'de' ? 'Vorbeikommen.' : 'Come by.';
+
+const body =
+  locale === 'de'
+    ? 'Holzmarktstraße 25, direkt am Spree-Knick. Zwei Minuten zur Strandbar, fünf zum Ostbahnhof. Drinnen achtzehn Plätze, draußen mehr — bei Sonne sitzt halb Friedrichshain hier. Hund willkommen, WLAN-Passwort gibt es bewusst nicht.'
+    : 'Holzmarktstraße 25, right at the Spree bend. Two minutes to Strandbar, five to Ostbahnhof. Eighteen seats inside, more outside — when the sun is out, half of Friedrichshain sits with us. Dogs welcome. We deliberately do not give out the Wi-Fi password.';
+
+const visitHref = locale === 'de' ? '/besuchen' : '/en/visit';
+const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`;
+const callLabel = locale === 'de' ? 'Anrufen' : 'Call us';
+---
+
+<section class="bg-surface-elev">
+  <div class="container-page py-16 sm:py-24">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <div class="space-y-6 max-w-prose">
+        <h2 class="font-display text-3xl sm:text-4xl text-text">{h2}</h2>
+        <p class="text-lg text-text-muted leading-relaxed">{body}</p>
+
+        <div class="bg-surface rounded-lg p-6 border border-border space-y-1">
+          <p class="font-display text-xl text-text">{SITE.name}</p>
+          <p class="text-text-muted">{SITE.address.street}</p>
+          <p class="text-text-muted">{SITE.address.postalCode} {SITE.address.city} — {SITE.address.neighborhood}</p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {t.cta.openMaps}
+          </a>
+          <a
+            href={`tel:${SITE.phone}`}
+            class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-surface text-text border border-border hover:bg-surface-elev transition-colors tabular focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {callLabel} — {SITE.phoneDisplay}
+          </a>
+        </div>
+
+        <div class="pt-2">
+          <a
+            href={visitHref}
+            class="inline-flex items-center gap-2 text-accent hover:text-accent-deep transition-colors font-medium"
+          >
+            {locale === 'de' ? 'Mehr zu Anfahrt + Öffnungszeiten.' : 'More on directions + hours.'}
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-surface rounded-lg p-6 border border-border space-y-4">
+        <p class="text-xs uppercase tracking-[0.2em] text-text-muted">
+          {locale === 'de' ? 'Öffnungszeiten' : 'Opening hours'}
+        </p>
+        <dl class="space-y-3 text-base tabular">
+          <div>
+            <dt class="font-display text-lg text-text">{SITE.hours.summer.label[locale]}</dt>
+            <dd class="text-text-muted">{t.hoursLabel.summer.replace('SOMMER · ', '').replace('SUMMER · ', '')}</dd>
+          </div>
+          <div>
+            <dt class="font-display text-lg text-text">{SITE.hours.winter.label[locale]}</dt>
+            <dd class="text-text-muted">{t.hoursLabel.winter.replace('WINTER · ', '')}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,162 @@
+---
+/**
+ * Header — Adèle.
+ * Vintage-grand-hotel pattern: brand wordmark center, HoursInNav left
+ * (RESTAURANT + BAR dual-service stack per docs/design/components/hours-in-nav.md),
+ * HalfPillCTA right (the "tab sticking in from the edge" reservation entry
+ * per docs/design/components/half-pill-cta.md).
+ * V5 rebuild 2026-05-22 — moved away from the generic "logo / nav / phone"
+ * layout shared with Bellini and Saltlines.
+ */
+import HoursInNav from '@/components/layout/HoursInNav.astro';
+import HalfPillCTA from '@/components/ui/HalfPillCTA.astro';
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const home = locale === 'de' ? '/' : '/en/';
+const menu = locale === 'de' ? '/karte' : '/en/menu';
+const visit = locale === 'de' ? '/reservieren' : '/en/reserve';
+const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
+const otherLocaleUrl =
+  otherLocale === 'de'
+    ? Astro.url.pathname
+        .replace(/^\/en\/?/, '/')
+        .replace('/menu', '/karte')
+        .replace('/reserve', '/reservieren')
+        .replace(/^\/$/, '/')
+    : `/en${Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace('/karte', '/menu').replace('/reservieren', '/reserve')}`;
+
+const menuLabel = locale === 'de' ? 'Menü öffnen' : 'Open menu';
+const closeLabel = locale === 'de' ? 'Menü schließen' : 'Close menu';
+
+const hoursItems =
+  locale === 'de'
+    ? [
+        { label: 'Restaurant', hours: 'Di–Do 18–23', ariaLabel: 'Restaurant Dienstag bis Donnerstag 18 bis 23 Uhr' },
+        { label: 'Wochenende', hours: 'Fr/Sa 18–24', ariaLabel: 'Restaurant Freitag und Samstag 18 bis 24 Uhr' },
+        { label: 'Bar', hours: 'Di–Sa 17–02', ariaLabel: 'Bar Dienstag bis Samstag 17 bis 02 Uhr' },
+      ]
+    : [
+        { label: 'Restaurant', hours: 'Tue–Thu 18–23', ariaLabel: 'Restaurant Tuesday to Thursday 18 to 23' },
+        { label: 'Weekend', hours: 'Fri/Sat 18–24', ariaLabel: 'Restaurant Friday and Saturday 18 to 24' },
+        { label: 'Bar', hours: 'Tue–Sat 17–02', ariaLabel: 'Bar Tuesday to Saturday 17 to 02' },
+      ];
+
+const reserveLabel = locale === 'de' ? 'Reservieren' : 'Reserve';
+const reserveAria =
+  locale === 'de' ? 'Tisch reservieren — Reservierungsformular öffnen' : 'Reserve a table — open the booking form';
+---
+
+<header class="border-b border-border bg-bg/95 sticky top-0 z-30 backdrop-blur-sm">
+  <div class="container-page py-4">
+    <div class="grid grid-cols-[1fr_auto_auto] md:grid-cols-[1fr_2fr_1fr] items-center gap-4">
+      <!-- Left: hours in nav (desktop only) -->
+      <div class="hidden md:block">
+        <HoursInNav items={hoursItems} variant="desktop" />
+      </div>
+
+      <!-- Center: wordmark -->
+      <a
+        href={home}
+        class="text-center group"
+        aria-label={`${SITE.name} — ${locale === 'de' ? 'Startseite' : 'home'}`}
+      >
+        <span class="font-display text-3xl sm:text-4xl text-text leading-none tracking-[0.04em] group-hover:text-accent transition-colors">
+          {SITE.name}
+        </span>
+        <span class="block mt-1 text-[10px] uppercase tracking-[0.3em] text-text-muted">
+          {locale === 'de' ? 'Restaurant · Mitte' : 'Restaurant · Mitte'}
+        </span>
+      </a>
+
+      <!-- Right: language switcher + reserve pill + mobile hamburger -->
+      <div class="flex items-center gap-3 justify-end shrink-0">
+        <a
+          href={otherLocaleUrl}
+          class="text-xs uppercase tracking-wider text-text-muted hover:text-accent transition-colors px-2 py-1 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          aria-label={`${t.languageLabel}: ${otherLocale === 'en' ? 'English' : 'Deutsch'}`}
+        >
+          {otherLocale === 'en' ? 'EN' : 'DE'}
+        </a>
+
+        <div class="hidden md:block">
+          <HalfPillCTA href={visit} label={reserveLabel} ariaLabel={reserveAria} dataSourceSection="header" />
+        </div>
+
+        <button
+          id="hamburger-toggle"
+          type="button"
+          class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-text hover:text-accent transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+          aria-label={menuLabel}
+          data-close-label={closeLabel}
+        >
+          <svg id="hamburger-icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg id="hamburger-icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom sub-nav row (desktop) - primary nav links centered + small phone -->
+    <nav aria-label="Primary" class="hidden md:flex items-center justify-center gap-8 mt-3 pt-3 border-t border-border text-xs uppercase tracking-[0.18em]">
+      <a href={home} class="text-text-muted hover:text-accent transition-colors">{t.nav.home}</a>
+      <a href={menu} class="text-text-muted hover:text-accent transition-colors">{t.nav.menu}</a>
+      <a href={visit} class="text-text-muted hover:text-accent transition-colors">{t.nav.visit}</a>
+      <span class="text-border" aria-hidden="true">·</span>
+      <a href={`tel:${SITE.phone}`} class="text-text-muted hover:text-accent transition-colors tabular">
+        {SITE.phoneDisplay}
+      </a>
+    </nav>
+  </div>
+
+  <nav
+    id="mobile-nav"
+    aria-label="Mobile primary"
+    class="md:hidden hidden border-t border-border bg-bg"
+  >
+    <ul class="container-page flex flex-col py-4 gap-1 text-base">
+      <li><a href={home} class="block py-3 text-text hover:text-accent transition-colors">{t.nav.home}</a></li>
+      <li><a href={menu} class="block py-3 text-text hover:text-accent transition-colors">{t.nav.menu}</a></li>
+      <li><a href={visit} class="block py-3 text-text hover:text-accent transition-colors">{t.nav.visit}</a></li>
+      <li class="pt-2">
+        <HalfPillCTA href={visit} label={reserveLabel} ariaLabel={reserveAria} dataSourceSection="mobile-nav" />
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('hamburger-toggle') as HTMLButtonElement | null;
+  const nav = document.getElementById('mobile-nav');
+  const iconOpen = document.getElementById('hamburger-icon-open');
+  const iconClose = document.getElementById('hamburger-icon-close');
+  const closeLabelAttr = toggle?.dataset.closeLabel;
+
+  if (toggle && nav && iconOpen && iconClose) {
+    const openLabel = toggle.getAttribute('aria-label') ?? 'Open menu';
+
+    toggle.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      const next = !isExpanded;
+      toggle.setAttribute('aria-expanded', String(next));
+      nav.classList.toggle('hidden', !next);
+      iconOpen.classList.toggle('hidden', next);
+      iconClose.classList.toggle('hidden', !next);
+      toggle.setAttribute('aria-label', next ? (closeLabelAttr ?? 'Close menu') : openLabel);
+    });
+  }
+</script>

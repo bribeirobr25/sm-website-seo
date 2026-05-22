@@ -1,7 +1,7 @@
 @import "./tokens.css";
 
-/* Self-hosted fonts (per gastronomy.md §5 — added 2026-05-22 rebuild) */
-@import "@fontsource-variable/cormorant-garamond/index.css";
+/* Self-hosted fonts — Fraunces display (variable serif, gelato-playful) + Inter body */
+@import "@fontsource-variable/fraunces/index.css";
 @import "@fontsource-variable/inter/index.css";
 
 /* Base reset + agency-baseline typography */

@@ -1,0 +1,174 @@
+---
+/**
+ * Marquee-on-hover CTA — luxury polish for ONE exploratory CTA per page.
+ * Spec: docs/design/components/marquee-cta.md
+ *
+ * Three coordinated 500ms transitions on cubic-bezier(0.7, 0, 0.3, 1):
+ *   (1) outer text color rest → hover
+ *   (2) background fill scaleY 0 → 1 from bottom
+ *   (3) inner label column translateY 0 → -100% (duplicate slides in)
+ *
+ * Reserve for exploratory CTAs (EXPLORE / VIEW WORK / OUR STORY) — NOT
+ * for transactional `tel:` / `Call now`. Adds 500ms intent-to-action;
+ * unacceptable on urgent CTAs.
+ *
+ * Visual identity (this scaffold): dark + amber
+ *   variant 'dark-fill': rest = transparent + amber border + amber text,
+ *                        hover = amber bg + dark text (the barber accent
+ *                        slides in)
+ *   variant 'light-fill': rest = amber bg + dark text, hover = cream bg +
+ *                        warm text (the cream slides in)
+ *
+ * Per-vertical token swaps:
+ *   boutique gastronomy:   rest cream-bg + warm-brown border/text →
+ *                          hover warm-brown bg + cream text (Auwa-canonical)
+ *   beauty premium:        same as gastronomy
+ *   agency-self:           rest dark + accent border → hover accent fill
+ */
+
+interface Props {
+  href: string;
+  label: string;
+  ariaLabel: string;
+  variant?: 'dark-fill' | 'light-fill';
+  target?: string;
+  rel?: string;
+  dataEvent?: string;
+  dataSourceSection?: string;
+  class?: string;
+}
+
+const {
+  href,
+  label,
+  ariaLabel,
+  variant = 'dark-fill',
+  target,
+  rel,
+  dataEvent,
+  dataSourceSection,
+  class: extraClass = '',
+} = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={['mqc-cta', `mqc-cta--${variant}`, extraClass]}
+  target={target}
+  rel={target === '_blank' ? (rel ?? 'noopener noreferrer') : rel}
+  aria-label={ariaLabel}
+  data-event={dataEvent}
+  data-source-section={dataSourceSection}
+>
+  <span class="mqc-fill" aria-hidden="true"></span>
+  <span class="mqc-labels">
+    <span class="mqc-label">{label}</span>
+    <span class="mqc-label" aria-hidden="true">{label}</span>
+  </span>
+</a>
+
+<style>
+  .mqc-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 12px 24px;
+    min-height: 44px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.92px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: transparent;
+    transition:
+      color var(--motion-warm) var(--ease-quart),
+      border-color var(--motion-warm) var(--ease-quart);
+  }
+
+  .mqc-cta--dark-fill {
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+  }
+
+  .mqc-cta--light-fill {
+    color: var(--color-bg);
+    background: var(--color-accent);
+    border: 1px solid var(--color-accent);
+  }
+
+  .mqc-fill {
+    position: absolute;
+    inset: 0;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform var(--motion-warm) var(--ease-quart);
+    z-index: 0;
+  }
+
+  .mqc-cta--dark-fill .mqc-fill {
+    background: var(--color-accent);
+  }
+
+  .mqc-cta--light-fill .mqc-fill {
+    background: var(--color-accent-deep);
+  }
+
+  .mqc-labels {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    line-height: 1;
+    transition: transform var(--motion-warm) var(--ease-quart);
+  }
+
+  .mqc-label {
+    display: block;
+    height: 1em;
+  }
+
+  .mqc-cta:hover .mqc-fill {
+    transform: scaleY(1);
+  }
+
+  .mqc-cta:hover .mqc-labels {
+    transform: translateY(-100%);
+  }
+
+  .mqc-cta--dark-fill:hover {
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+  }
+
+  .mqc-cta--light-fill:hover {
+    color: var(--color-bg);
+  }
+
+  .mqc-cta:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mqc-cta,
+    .mqc-fill,
+    .mqc-labels {
+      transition: none;
+    }
+    .mqc-cta:hover .mqc-fill {
+      transform: none;
+    }
+    .mqc-cta:hover .mqc-labels {
+      transform: none;
+    }
+    .mqc-cta--dark-fill:hover {
+      background: var(--color-accent);
+      color: var(--color-bg);
+    }
+    .mqc-cta--light-fill:hover {
+      background: var(--color-accent-deep);
+    }
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import About from '@/components/sections/About.astro';
+import BookingMock from '@/components/sections/BookingMock.astro';
+import CourseList from '@/components/sections/CourseList.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Press from '@/components/sections/Press.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const t = SITE.i18n[locale];
+---
+
+<BaseLayout
+  title={`${SITE.name} — Modern European tasting menu in Berlin Mitte`}
+  description={t.tagline}
+  locale={locale}
+  alternateLocaleUrl="/"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    <CourseList locale={locale} />
+    <About locale={locale} />
+    <Press locale={locale} />
+    <BookingMock locale={locale} />
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

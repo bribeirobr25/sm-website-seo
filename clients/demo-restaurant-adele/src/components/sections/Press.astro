@@ -1,0 +1,90 @@
+---
+/**
+ * Press — Adèle mock award row.
+ *
+ * Three centered press mentions. Editorial / magazine register — fine-dining
+ * convention. **MOCK ONLY** — fictional awards on a demo site. Real client
+ * would list verified press; never invent.
+ *
+ * NEW section type for Adèle V5 (no Bellini or Saltlines equivalent).
+ */
+import { type Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Presse' : 'Press';
+
+const items = locale === 'de'
+  ? [
+      {
+        rating: '★★★★',
+        outlet: 'Der Tagesspiegel',
+        date: 'März 2025',
+        quote: '„Die ruhigste, sicherste Saisonküche der Stadt — ohne ein einziges Wort über sich selbst.“',
+      },
+      {
+        rating: 'Bib Gourmand',
+        outlet: 'Guide Michelin Deutschland',
+        date: '2024 + 2025',
+        quote: '„Adèle Voss kocht das Brandenburger Land — präzise, knapp, ehrlich.“',
+      },
+      {
+        rating: 'Restaurant des Monats',
+        outlet: 'Berliner Morgenpost',
+        date: 'Februar 2025',
+        quote: '„Eine Karte, die jeden Mittwoch neu denkt. Eine Liefer-Linie, die jeder Gast kennt.“',
+      },
+    ]
+  : [
+      {
+        rating: '★★★★',
+        outlet: 'Der Tagesspiegel',
+        date: 'March 2025',
+        quote: '"The quietest, most assured seasonal cooking in the city — without saying a word about itself."',
+      },
+      {
+        rating: 'Bib Gourmand',
+        outlet: 'Michelin Guide Germany',
+        date: '2024 + 2025',
+        quote: '"Adèle Voss cooks the land of Brandenburg — precise, lean, honest."',
+      },
+      {
+        rating: 'Restaurant of the Month',
+        outlet: 'Berliner Morgenpost',
+        date: 'February 2025',
+        quote: '"A menu rewritten every Wednesday. A supply line every guest knows by name."',
+      },
+    ];
+---
+
+<section class="bg-bg border-t border-b border-border">
+  <div class="container-page py-20 sm:py-24">
+    <p class="text-center text-[11px] tracking-[0.35em] uppercase text-accent-secondary-deep font-medium mb-14">
+      {eyebrow}
+    </p>
+
+    <ul class="grid md:grid-cols-3 gap-x-8 gap-y-12 max-w-5xl mx-auto list-none">
+      {items.map((item) => (
+        <li class="text-center space-y-4">
+          <p class="font-display text-2xl text-accent leading-none">
+            {item.rating}
+          </p>
+          <p class="text-[11px] tracking-[0.25em] uppercase text-text-muted">
+            {item.outlet} · {item.date}
+          </p>
+          <blockquote class="text-text-muted leading-relaxed italic font-display text-lg max-w-xs mx-auto">
+            {item.quote}
+          </blockquote>
+        </li>
+      ))}
+    </ul>
+
+    <p class="text-center text-[10px] uppercase tracking-[0.25em] text-accent-secondary-deep mt-12">
+      {locale === 'de' ? '⚠ Mockup — fiktive Auszeichnungen für die Demo' : '⚠ Mockup — fictional awards for the demo'}
+    </p>
+  </div>
+</section>

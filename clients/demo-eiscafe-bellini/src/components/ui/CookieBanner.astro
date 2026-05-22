@@ -6,16 +6,21 @@
  * Renders on first visit if no consent record exists. The banner offers:
  *   - Accept all (functional + analytics + marketing)
  *   - Reject all (essential only) — equal prominence per parity rule
- *   - Cookie policy link → /privacy-policy by default
+ *   - Cookie policy link → SITE.i18n[locale].consent.privacyLinkHref
  *
- * **Per-jurisdiction setup at scaffold time:**
- *   - DE/AT: replace `/privacy-policy` href with `/datenschutz`; update body text + button labels to German
- *   - BR: replace href with `/politica-de-privacidade`; update text + buttons to Portuguese
- *   - PT: replace href with `/politica-de-privacidade`; update for PT-PT
- *
+ * **i18n**: all copy pulled from SITE.i18n[locale].consent — never hardcode
+ * strings here. Per-jurisdiction privacy URL is also locale-keyed.
  * The footer "Manage cookie preferences" link re-opens the banner via the
  * `consent:reopen` custom event.
  */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const c = SITE.i18n[locale].consent;
 ---
 
 <div
@@ -32,17 +37,13 @@
           id="cookie-banner-title"
           class="font-display text-lg text-text"
         >
-          Cookies — wie hättet Ihr es gern?
+          {c.title}
         </h2>
         <p class="text-sm text-text-muted mt-1 leading-relaxed">
-          Wir verwenden essentielle Cookies, um die Seite überhaupt anzuzeigen. Mit eurer Zustimmung
-          auch Analyse-Cookies (anonymisiert), damit wir wissen, was funktioniert. Mehr in unserer{' '}
-          <a
-            href="/datenschutz"
+          {c.bodyBefore}<a
+            href={c.privacyLinkHref}
             class="underline hover:text-accent transition-colors"
-          >
-            Datenschutzerklärung
-          </a>.
+          >{c.privacyLinkLabel}</a>{c.bodyAfter}
         </p>
       </div>
 
@@ -52,14 +53,14 @@
           id="cookie-reject"
           class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-sm font-medium rounded-md bg-surface-elev text-text border border-border hover:bg-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          Alle ablehnen
+          {c.reject}
         </button>
         <button
           type="button"
           id="cookie-accept"
           class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-sm font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          Alle akzeptieren
+          {c.accept}
         </button>
       </div>
     </div>

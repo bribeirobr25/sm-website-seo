@@ -1,0 +1,139 @@
+---
+/**
+ * NewsletterMock — Saltlines Home section.
+ *
+ * **MOCK ONLY** — no real submission. Per `docs/clients/demo-coffee-saltlines/CLAUDE.md`
+ * Demo discipline: client-side state change to a thank-you message, nothing
+ * sent over the wire.
+ *
+ * Brand voice: the "Wellenbericht" — a poetic morning email with the sunrise
+ * time, surf-report, and the day's bean. Sun-gold CTA against sand bg.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const h2 =
+  locale === 'de' ? 'Der Wellenbericht.' : 'The Wave Report.';
+
+const body =
+  locale === 'de'
+    ? 'Einmal pro Woche eine kurze Mail: Sonnenaufgangszeit, welche Bohne diese Woche durchläuft, Wetter am Spreeufer, manchmal ein Rezept. Kein Marketing. Du kannst dich jederzeit abmelden.'
+    : "Once a week, a short email: sunrise time, which bean we're running, the weather on the Spree, sometimes a recipe. No marketing. Unsubscribe anytime.";
+
+const emailLabel = locale === 'de' ? 'E-Mail-Adresse' : 'Email address';
+const placeholder = locale === 'de' ? 'du@example.com' : 'you@example.com';
+const submitLabel = locale === 'de' ? 'Wellenbericht abonnieren.' : 'Subscribe to the wave report.';
+const thanks =
+  locale === 'de'
+    ? 'Danke. Der erste Wellenbericht kommt am nächsten Sonntag um 06:30. Bitte den Bestätigungs-Link in deinem Posteingang anklicken.'
+    : 'Thanks. The first wave report arrives next Sunday at 06:30. Please click the confirmation link in your inbox.';
+const consent =
+  locale === 'de'
+    ? 'Wir verwenden deine E-Mail nur für den Newsletter. Mehr in der Datenschutzerklärung.'
+    : 'We use your email only for the newsletter. See the privacy policy for more.';
+
+const demoNote =
+  locale === 'de'
+    ? '⚠ Mockup — kein echter Versand. Diese Demo speichert nichts.'
+    : '⚠ Mockup — not a real signup. This demo stores nothing.';
+---
+
+<section class="bg-bg border-t border-border">
+  <div class="container-page py-16 sm:py-24">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div class="max-w-prose space-y-6">
+        <p class="text-xs uppercase tracking-[0.2em] text-accent-secondary font-semibold">
+          {locale === 'de' ? 'Newsletter' : 'Newsletter'}
+        </p>
+        <h2 class="font-display text-3xl sm:text-4xl text-text">
+          {h2}
+        </h2>
+        <p class="text-lg text-text-muted leading-relaxed">
+          {body}
+        </p>
+      </div>
+
+      <form
+        id="newsletter-form"
+        class="bg-surface rounded-lg p-6 sm:p-8 border border-border shadow-card"
+        novalidate
+      >
+        <div id="newsletter-fields" class="space-y-4">
+          <label class="block">
+            <span class="text-sm font-medium text-text">{emailLabel}</span>
+            <input
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder={placeholder}
+              class="mt-2 block w-full px-4 py-3 min-h-[48px] text-base rounded-md bg-bg border border-border focus:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-text placeholder:text-text-muted/60"
+            />
+          </label>
+
+          <button
+            type="submit"
+            class="w-full inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent-secondary text-bg hover:bg-accent-secondary-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-secondary"
+          >
+            {submitLabel}
+          </button>
+
+          <p class="text-xs text-text-muted leading-relaxed">{consent}</p>
+          <p class="text-xs text-accent-secondary-deep font-medium">{demoNote}</p>
+        </div>
+
+        <div id="newsletter-success" class="hidden space-y-4">
+          <div class="flex items-start gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-accent shrink-0 mt-0.5"
+              aria-hidden="true"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <div class="space-y-2">
+              <p class="font-display text-xl text-text">
+                {locale === 'de' ? 'Schön, dass du dabei bist.' : 'Glad to have you.'}
+              </p>
+              <p class="text-sm text-text-muted leading-relaxed">{thanks}</p>
+            </div>
+          </div>
+          <p class="text-xs text-accent-secondary-deep font-medium pt-2">{demoNote}</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+  const fields = document.getElementById('newsletter-fields');
+  const success = document.getElementById('newsletter-success');
+
+  if (form && fields && success) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = (form.elements.namedItem('email') as HTMLInputElement | null)?.value?.trim();
+      if (!email || !email.includes('@')) {
+        (form.elements.namedItem('email') as HTMLInputElement | null)?.focus();
+        return;
+      }
+      fields.classList.add('hidden');
+      success.classList.remove('hidden');
+    });
+  }
+</script>

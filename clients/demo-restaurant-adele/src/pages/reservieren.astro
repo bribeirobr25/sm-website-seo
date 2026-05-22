@@ -1,0 +1,107 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BookingMock from '@/components/sections/BookingMock.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`;
+const dayLabelsDE = { Mon: 'Mo', Tue: 'Di', Wed: 'Mi', Thu: 'Do', Fri: 'Fr', Sat: 'Sa', Sun: 'So' };
+---
+
+<BaseLayout
+  title={`Reservieren — ${SITE.name}`}
+  description="Behrenstraße 47, 10117 Berlin Mitte. Di–Do 18–23, Fr/Sa 18–24. Eine Sitzung um 18:30, 22 Plätze. Bitte 6–14 Tage Vorlauf."
+  locale={locale}
+  alternateLocaleUrl="/en/reserve"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <p class="text-xs uppercase tracking-[0.2em] text-accent-secondary-deep font-semibold">Reservierung</p>
+        <h1 class="mt-2 font-display text-4xl sm:text-5xl text-text">Tisch reservieren.</h1>
+        <p class="mt-6 text-lg text-text-muted leading-relaxed max-w-2xl">
+          Behrenstraße 47 — drei Minuten von Unter den Linden. Zweiundzwanzig Plätze, eine Sitzung um 18:30. Bitte 6–14 Tage Vorlauf.
+        </p>
+      </div>
+    </section>
+
+    <BookingMock locale={locale} />
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+          <div class="bg-surface rounded-lg p-8 border border-border space-y-2">
+            <p class="font-display text-2xl text-text">{SITE.name}</p>
+            <p class="text-text-muted">{SITE.address.street}</p>
+            <p class="text-text-muted">{SITE.address.postalCode} {SITE.address.city} — {SITE.address.neighborhood}</p>
+            <div class="pt-4 flex flex-wrap gap-3">
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors">
+                In Google Maps öffnen.
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-surface rounded-lg p-8 border border-border space-y-5">
+            <p class="text-xs uppercase tracking-[0.2em] text-text-muted">Öffnungszeiten</p>
+            <div>
+              <p class="font-display text-xl text-text">{SITE.hours.summer.label.de}</p>
+              <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.summer.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsDE[h.day as keyof typeof dayLabelsDE]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'Ruhetag'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+            <div>
+              <p class="font-display text-xl text-text">{SITE.hours.winter.label.de}</p>
+              <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.winter.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsDE[h.day as keyof typeof dayLabelsDE]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'Ruhetag'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-16">
+        <div class="max-w-2xl space-y-6">
+          <h2 class="font-display text-3xl text-text">Wie Sie uns finden</h2>
+          <ul class="space-y-2 text-text-muted leading-relaxed">
+            <li><strong class="text-text">U-Bahn Französische Straße (U6)</strong> — 3 Minuten zu Fuß.</li>
+            <li><strong class="text-text">S-Bahn Brandenburger Tor (S1, S2)</strong> — 5 Minuten.</li>
+            <li><strong class="text-text">Bus 100 / 200</strong> — Unter den Linden, eine Station.</li>
+            <li><strong class="text-text">Mit dem Taxi</strong> — direkt vor der Tür möglich.</li>
+            <li><strong class="text-text">Parken</strong> — Parkhaus Behrenstraße zwei Häuser weiter.</li>
+          </ul>
+        </div>
+
+        <div class="mt-12 max-w-2xl space-y-6">
+          <h2 class="font-display text-3xl text-text">Kontakt</h2>
+          <p class="text-text-muted leading-relaxed">
+            Für größere Tische ab acht Personen, Allergien, oder kurzfristige Reservierungsänderungen bitte direkt anrufen — wir antworten zwischen 14 und 17 Uhr.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors tabular">
+              {SITE.phoneDisplay}
+            </a>
+            <a href={`mailto:${SITE.email}`} class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-surface text-text border border-border hover:bg-surface-elev transition-colors">
+              {SITE.email}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

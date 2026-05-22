@@ -1,0 +1,46 @@
+---
+/**
+ * Hero — Saltlines.
+ * Clean variant: drops kicker (address belongs in Footer + Visit only) +
+ * tightened subhead per 2026-05-22 feedback.
+ */
+import { type Locale, SITE } from '@/lib/site';
+import FullBleedHero from './FullBleedHero.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const heroH1 =
+  locale === 'de'
+    ? ['Eine Welle Pause.', 'Mitten in Berlin.']
+    : ['One wave of quiet.', 'Right in Berlin.'];
+
+const body =
+  locale === 'de'
+    ? 'Spezialitätenkaffee am Spreeufer. Cold Brew mit Meersalz, Matcha aus Uji, V60 von rotierenden Röstereien.'
+    : 'Specialty coffee on the Spree. Sea-salt cold brew, Uji matcha, V60 from rotating roasters.';
+
+const menuHref = locale === 'de' ? '/drinks' : '/en/drinks';
+const visitHref = locale === 'de' ? '/besuchen' : '/en/visit';
+const visitLabel = locale === 'de' ? 'Vorbeikommen.' : 'Come by.';
+
+const imageAlt =
+  locale === 'de'
+    ? 'Wellen brechen auf einem leeren Strand — Saltlines bringt das Meer in die Stadt'
+    : 'Waves breaking on an empty beach — Saltlines brings the sea into the city';
+---
+
+<FullBleedHero
+  imageSrc="/img/hero-ocean.jpg"
+  imageAlt={imageAlt}
+  titleLines={heroH1}
+  body={body}
+  ctaPrimary={{ href: menuHref, label: t.cta.viewMenu }}
+  ctaSecondary={{ href: visitHref, label: visitLabel }}
+  height="tall"
+  overlay="dual"
+/>

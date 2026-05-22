@@ -1,0 +1,75 @@
+---
+/**
+ * Footer — Adèle.
+ * Address, contact, legal links. DE-only legal pages — EN footer still
+ * shows the same Impressum/Datenschutz links since DE law mandates them.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-surface-elev mt-16">
+  <div class="container-page py-12">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="space-y-3">
+        <p class="font-display text-xl text-text">{SITE.name}</p>
+        <p class="text-sm text-text-muted leading-relaxed max-w-xs">
+          {t.shortTagline}
+        </p>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <p class="uppercase tracking-wider text-text-muted text-xs">{t.footer.visit}</p>
+        <p class="text-text-muted">
+          {SITE.address.street}<br />
+          {SITE.address.postalCode} {SITE.address.city}
+        </p>
+        <p>
+          <a href={`tel:${SITE.phone}`} class="text-text hover:text-accent transition-colors tabular">
+            {SITE.phoneDisplay}
+          </a>
+        </p>
+        <p>
+          <a href={`mailto:${SITE.email}`} class="text-text hover:text-accent transition-colors">
+            {SITE.email}
+          </a>
+        </p>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <p class="uppercase tracking-wider text-text-muted text-xs">{t.footer.legal}</p>
+        <p>
+          <a href="/impressum" class="text-text-muted hover:text-accent transition-colors">
+            {t.footer.impressum}
+          </a>
+        </p>
+        <p>
+          <a href="/datenschutz" class="text-text-muted hover:text-accent transition-colors">
+            {t.footer.privacy}
+          </a>
+        </p>
+        <p>
+          <button
+            type="button"
+            class="text-text-muted hover:text-accent transition-colors text-left cursor-pointer bg-transparent border-0 p-0"
+            onclick="window.dispatchEvent(new CustomEvent('consent:reopen'))"
+          >
+            {t.footer.cookieSettings}
+          </button>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-border text-xs text-text-muted">
+      © {currentYear} {SITE.name}. {t.footer.rights}
+    </div>
+  </div>
+</footer>

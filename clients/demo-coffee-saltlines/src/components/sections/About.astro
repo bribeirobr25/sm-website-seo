@@ -1,0 +1,66 @@
+---
+/**
+ * About — Saltlines Home section.
+ * Story + signature inline image. NO StatCallouts (intentionally
+ * differentiated from Bellini/Adèle's layout shape).
+ */
+import { type Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const kicker = locale === 'de' ? 'STORY' : 'STORY';
+const h2 = locale === 'de' ? 'Lofoten, Sylt, Friedrichshain.' : 'Lofoten, Sylt, Friedrichshain.';
+
+const p1 =
+  locale === 'de'
+    ? 'Mia ist auf den Lofoten aufgewachsen, Jonas an der Sylter Westküste. Beide sind in Berlin gelandet, beide haben das Meer vermisst.'
+    : "Mia grew up on the Lofoten Islands, Jonas on the west coast of Sylt. Both ended up in Berlin, both missed the sea.";
+
+const p2 =
+  locale === 'de'
+    ? '2019 haben sie an der Spree einen Laden eröffnet — mit dem Plan, allen anderen ein bisschen davon zurückzugeben. Surfbrett an der Wand, drei rotierende Röstereien (Espressohaus Hamburg · Bonanza Berlin · Five Elephant), Cold Brew mit Meersalz, kein WLAN-Passwort am Tresen.'
+    : 'In 2019 they opened a shop on the Spree — with the plan of giving a little of it back to everyone else. Surfboard on the wall, three rotating roasteries (Espressohaus Hamburg · Bonanza Berlin · Five Elephant), cold brew with sea salt, no Wi-Fi password on the counter.';
+
+const signature =
+  locale === 'de'
+    ? 'Mia Halvorsen & Jonas Kruse — Gründer'
+    : 'Mia Halvorsen & Jonas Kruse — founders';
+---
+
+<section class="bg-surface-elev">
+  <div class="container-page py-16 sm:py-24">
+    <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+      <div class="space-y-6 max-w-prose">
+        <p class="text-xs uppercase tracking-[0.18em] text-accent-secondary font-semibold">{kicker}</p>
+        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.05]">
+          {h2}
+        </h2>
+        <div class="space-y-4 text-lg text-text-muted leading-relaxed">
+          <p>{p1}</p>
+          <p>{p2}</p>
+        </div>
+        <p class="text-sm text-accent font-medium italic pt-4 border-t border-border">
+          — {signature}
+        </p>
+      </div>
+
+      <figure class="relative aspect-[4/5] rounded-lg overflow-hidden border border-border shadow-elev">
+        <img
+          src="/img/surfboards.jpg"
+          alt={locale === 'de'
+            ? 'Surfer-Silhouette gegen Ozean — der Grund, warum Saltlines existiert'
+            : 'Surfer silhouette against the ocean — the reason Saltlines exists'}
+          width="900"
+          height="1125"
+          loading="lazy"
+          decoding="async"
+          class="w-full h-full object-cover"
+        />
+      </figure>
+    </div>
+  </div>
+</section>
