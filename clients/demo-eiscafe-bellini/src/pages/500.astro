@@ -1,0 +1,39 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+---
+
+<BaseLayout
+  title="Server-Fehler"
+  description="500 — Da ist etwas schiefgegangen."
+  locale={locale}
+  noindex={true}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-24 sm:py-32 max-w-xl mx-auto text-center">
+        <p class="text-xs uppercase tracking-[0.2em] text-text-muted">500</p>
+        <h1 class="mt-4 font-display text-4xl sm:text-5xl text-text">
+          Da ist etwas schiefgegangen.
+        </h1>
+        <p class="mt-6 text-text-muted leading-relaxed">
+          Wir kümmern uns drum. Probier es gleich noch einmal — oder ruf uns an, wenn es nicht klappt.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="/" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors">
+            Erneut versuchen.
+          </a>
+          <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-md bg-surface text-text border border-border hover:bg-surface-elev transition-colors tabular">
+            Anrufen — {SITE.phoneDisplay}
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

@@ -29,6 +29,8 @@ This folder is the agency's **canonical reference for reusable UI components** d
 | 6 | Big-number stat callouts | `stat-callouts.md` | trades · professional-services · agency-self | Horeca-Social §10 |
 | 7 | Alternating-section-background rhythm | `alternating-section-bg.md` | any long-form landing (>5 sections) | Apple iPhone §1 |
 | 8 | Per-character DOM split (letter animation) | `per-character-split.md` | solo / artisan portfolio · agency-self | Really Up There §7, Victor Furuya §21 |
+| 9 | Full-bleed hero with overlay typography | `full-bleed-hero.md` | gastronomy (Heritage / Specialty) · beauty boutique · trades industrial-craft | Espressohouse · The Barn · Watch House (half-bleed variant) |
+| 10 | Menu card with photography | `menu-card.md` | gastronomy ≥6-item categories · beauty services menu · pets product catalog | The Barn · Watch House · Espressohouse |
 
 ## Status
 

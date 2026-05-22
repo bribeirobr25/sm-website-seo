@@ -1,0 +1,106 @@
+---
+/**
+ * MenuCard — single-item menu card with photography.
+ * Spec: docs/design/components/menu-card.md (added 2026-05-22)
+ *
+ * Required when a gastronomy menu category has ≥6 items per
+ * `docs/design/templates/gastronomy.md` §4 menu-photography rule.
+ *
+ * Per-vertical token swaps:
+ *   gastronomy Heritage:    cream card bg + warm-brown text + terracotta accent
+ *   gastronomy Specialty:   dark card bg + light text + warm-tan accent
+ *   beauty (services menu): cream + dusty-rose
+ */
+
+interface Props {
+  /** Item name — H3 */
+  name: string;
+  /** 1-2 line description */
+  description: string;
+  /** Image src — square or 4:3 ratio recommended */
+  imageSrc: string;
+  /** Image alt text */
+  imageAlt: string;
+  /** Optional badge (e.g., "VEGAN", "NEU", "SAISONAL") */
+  badge?: string;
+  /** Optional price label (right-aligned) */
+  price?: string;
+  /** Optional href — wraps the whole card as a link */
+  href?: string;
+  /** Aspect ratio of the image — '1/1' (default square) | '4/3' | '3/4' (portrait) */
+  aspectRatio?: '1/1' | '4/3' | '3/4';
+  /** Image loading — 'lazy' (default for below-fold cards) | 'eager' (only for above-fold) */
+  loading?: 'lazy' | 'eager';
+  class?: string;
+}
+
+const {
+  name,
+  description,
+  imageSrc,
+  imageAlt,
+  badge,
+  price,
+  href,
+  aspectRatio = '1/1',
+  loading = 'lazy',
+  class: extraClass = '',
+} = Astro.props;
+
+const aspectClass = {
+  '1/1': 'aspect-square',
+  '4/3': 'aspect-[4/3]',
+  '3/4': 'aspect-[3/4]',
+}[aspectRatio];
+
+const Tag = href ? 'a' : 'article';
+---
+
+<Tag
+  href={href}
+  class:list={[
+    'mnc-card group block bg-surface rounded-lg overflow-hidden border border-border',
+    href ? 'hover:border-accent transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent' : '',
+    extraClass,
+  ]}
+>
+  <div class:list={['relative w-full overflow-hidden', aspectClass]}>
+    <img
+      src={imageSrc}
+      alt={imageAlt}
+      loading={loading}
+      decoding="async"
+      class={
+        href
+          ? 'w-full h-full object-cover transition-transform duration-[var(--motion-warm)] ease-[var(--ease-quart)] group-hover:scale-[1.03]'
+          : 'w-full h-full object-cover'
+      }
+    />
+    {badge && (
+      <span class="absolute top-3 left-3 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider rounded bg-bg/90 text-text backdrop-blur-sm">
+        {badge}
+      </span>
+    )}
+  </div>
+
+  <div class="p-5 space-y-2">
+    <div class="flex items-baseline justify-between gap-3">
+      <h3 class="font-display text-xl text-text leading-tight">{name}</h3>
+      {price && (
+        <span class="text-base text-text-muted tabular shrink-0">{price}</span>
+      )}
+    </div>
+    <p class="text-sm text-text-muted leading-relaxed">{description}</p>
+  </div>
+</Tag>
+
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    .mnc-card img {
+      transition: none !important;
+    }
+    .mnc-card:hover img {
+      transform: none !important;
+    }
+  }
+</style>

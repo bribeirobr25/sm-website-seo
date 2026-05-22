@@ -1,0 +1,136 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+---
+
+<BaseLayout
+  title={`Datenschutzerklärung — ${SITE.name}`}
+  description="Datenschutzerklärung nach DSGVO."
+  locale={locale}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24 max-w-3xl">
+        <p class="text-xs uppercase tracking-[0.2em] text-text-muted">Rechtliches</p>
+        <h1 class="mt-2 font-display text-4xl sm:text-5xl text-text">Datenschutzerklärung</h1>
+
+        <div class="mt-6 inline-block bg-surface-elev border-l-4 border-accent px-4 py-3 rounded-r">
+          <p class="text-sm text-text">
+            <strong>BEISPIEL-DATENSCHUTZERKLÄRUNG</strong> — Diese Seite ist Teil einer Demo-Website der Agentur sm-website-seo.
+            Eiscafé Bellini ist ein fiktives Geschäft. Die Datenschutzerklärung unten ist eine Mustervorlage und ersetzt
+            nicht die anwaltlich geprüfte Version eines echten Geschäfts.
+          </p>
+        </div>
+
+        <div class="mt-10 space-y-8 text-text leading-relaxed">
+          <div>
+            <h2 class="font-display text-2xl text-text">1. Verantwortlicher</h2>
+            <p class="mt-3">
+              Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
+              {SITE.legal.legalEntity}<br />
+              {SITE.address.street}<br />
+              {SITE.address.postalCode} {SITE.address.city}<br />
+              Telefon: {SITE.phoneDisplay}<br />
+              E-Mail: <a href={`mailto:${SITE.legal.dataControllerEmail}`} class="text-accent hover:text-accent-deep underline">{SITE.legal.dataControllerEmail}</a>
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">2. Allgemeines zur Datenverarbeitung</h2>
+            <p class="mt-3">
+              Wir verarbeiten personenbezogene Daten unserer Nutzer nur, soweit dies zur Bereitstellung einer
+              funktionsfähigen Website sowie unserer Inhalte und Leistungen erforderlich ist. Die Verarbeitung
+              erfolgt nur nach Einwilligung der Nutzer (Art. 6 Abs. 1 lit. a DSGVO) oder soweit eine gesetzliche
+              Erlaubnis vorliegt.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">3. Server-Logfiles</h2>
+            <p class="mt-3">
+              Unser Hosting-Anbieter (siehe §6) erhebt und speichert automatisch Informationen in sogenannten
+              Server-Log-Dateien, die Ihr Browser automatisch übermittelt (Browsertyp, Betriebssystem, Referrer-URL,
+              IP-Adresse, Datum und Uhrzeit). Diese Daten werden nach 14 Tagen automatisch gelöscht.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">4. Cookies und Analyse</h2>
+            <p class="mt-3">
+              Wir verwenden technisch notwendige Cookies, um diese Website funktionsfähig anzubieten. Mit Ihrer
+              Einwilligung verwenden wir zusätzlich anonymisierte Analyse-Cookies, um die Nutzung zu verstehen.
+              Sie können Ihre Cookie-Einstellungen jederzeit über den Link unten in der Fußzeile ändern.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">5. Kontaktaufnahme</h2>
+            <p class="mt-3">
+              Wenn Sie uns per E-Mail oder Telefon kontaktieren, werden Ihre Angaben zwecks Bearbeitung der Anfrage
+              und für den Fall von Anschlussfragen bei uns gespeichert. Rechtsgrundlage ist unser berechtigtes
+              Interesse (Art. 6 Abs. 1 lit. f DSGVO) sowie ggf. Vertragsanbahnung (Art. 6 Abs. 1 lit. b DSGVO).
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">6. Auftragsverarbeiter</h2>
+            <p class="mt-3">
+              Folgende Dienstleister verarbeiten in unserem Auftrag personenbezogene Daten. Mit allen wurden
+              Auftragsverarbeitungsverträge (Art. 28 DSGVO) geschlossen:
+            </p>
+            <ul class="mt-3 space-y-2 list-disc pl-5">
+              {SITE.legal.processors.map((p) => (
+                <li><strong class="text-text">{p.name}</strong> — {p.purpose}. Sitz: {p.location}.</li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">7. Ihre Rechte</h2>
+            <p class="mt-3">
+              Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16 DSGVO), Löschung (Art. 17 DSGVO),
+              Einschränkung der Verarbeitung (Art. 18 DSGVO), Widerspruch (Art. 21 DSGVO) und Datenübertragbarkeit
+              (Art. 20 DSGVO). Zur Geltendmachung wenden Sie sich an
+              <a href={`mailto:${SITE.legal.dataControllerEmail}`} class="text-accent hover:text-accent-deep underline ml-1">{SITE.legal.dataControllerEmail}</a>.
+            </p>
+            <p class="mt-3">
+              Sie haben außerdem das Recht, sich bei einer Aufsichtsbehörde zu beschweren — in Berlin: Berliner
+              Beauftragte für Datenschutz und Informationsfreiheit.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">8. Widerruf Ihrer Einwilligung</h2>
+            <p class="mt-3">
+              Erteilte Einwilligungen (z. B. für Analyse-Cookies) können Sie jederzeit über den Cookie-Banner
+              widerrufen. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt unberührt.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">9. Datensicherheit</h2>
+            <p class="mt-3">
+              Wir verwenden eine SSL- bzw. TLS-Verschlüsselung beim Aufruf der Website und zur Übertragung von
+              Anfragen. Die korrekte Verschlüsselung erkennen Sie am "https://" in der Adresszeile Ihres Browsers.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">10. Aktualität dieser Datenschutzerklärung</h2>
+            <p class="mt-3">
+              Diese Datenschutzerklärung ist aktuell gültig und hat den Stand 2026-05-20. Durch die Weiterentwicklung
+              unserer Website oder aufgrund geänderter gesetzlicher Vorgaben kann es notwendig werden, diese
+              Datenschutzerklärung zu ändern.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

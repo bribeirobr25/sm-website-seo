@@ -1,0 +1,22 @@
+---
+/**
+ * DemoBanner — persistent ribbon across every page.
+ * Per `docs/audit/PORTFOLIO-BUILD-RUNBOOK.md` §1.8: visible, non-dismissible.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const text = SITE.i18n[locale].demoBanner;
+---
+
+<div
+  class="bg-accent-secondary text-bg text-center text-xs sm:text-sm font-medium px-4 py-2 tracking-wide"
+  role="region"
+  aria-label="Demo notice"
+>
+  {text}
+</div>

@@ -116,6 +116,36 @@ Section order:
 - **Below the modal: dark theatrical or pale parchment field.** Headline is a place-statement ("From Bombay with Love" / "Welcome").
 - **No flashy CTA.** Discoverability is rewarded; the user is invited to explore.
 
+### Modern hero variants (added 2026-05-22)
+
+The three archetype heroes above each have a **modern variant** measured from the coffee-vertical sub-study (`docs/audit/gastronomy-coffee-RESEARCH-2026-05-22.md`). Either variant is acceptable per archetype — pick by venue energy + photography assets.
+
+**Variant 1 — Full-bleed photography with overlay typography** (Espressohouse-canonical for Archetype B/C; also Coffee Fellows with the anti-patterns stripped)
+
+- Single hero image at 100vw × ~80-90vh, fills the viewport
+- H1 in display serif (Heritage) or display compressed-sans (Specialty), **60-80px on desktop**, white or cream over the image
+- `letter-spacing: -1.2px` (~-2% at 60px) on the display H1 — measured value
+- Body paragraph below H1, max 22ch width, white/light on overlay
+- One primary CTA, period-terminated, in the brand accent
+- Optional gradient overlay at the image's bottom-third only (NOT a full-image dark overlay that mutes the photography)
+- **Requires** a real venue photograph with deliberate art direction; do NOT use this variant with stock food shots
+- Implementation: see `docs/design/components/_impl/FullBleedHero.astro` (new 2026-05-22)
+
+**Variant 2 — Half-and-half image pair** (Watch House §15 + Starbucks half-bleed)
+
+- Two equal-width images side-by-side at desktop (50/50 split), each ~70-80vh
+- Image left = product/exterior (the "what we are"), image right = interior/atmosphere (the "where we are")
+- Small typography anchored at the bottom of each image (kicker + 1-line caption)
+- Optional H1 above or below the pair, NOT overlaid on the images
+- Mobile: stacks to single-column, images at 4:3 aspect
+- Requires TWO strong photos that read as a paired story (e.g., gelato counter ↔ Husemannstraße facade) — not two random shop interiors
+- Best for premium / boutique / heritage archetypes where the venue is a destination
+
+**When to pick the original archetype heroes (§3.A/B/C above) instead:**
+- Headline-led (Archetype A original) when copy is the brand and photography is weak
+- Photo-led + CTA (Archetype B original) when conversion is the priority and you want CTA above the fold visible at desktop without scroll
+- Editorial poster (Archetype C original) when the brand has a magazine-cover/postcard heritage
+
 ---
 
 ## 4. Photography direction
@@ -135,6 +165,25 @@ Section order:
 | A — Immersive | Interior + atmosphere + people in motion. Wide shots. Cinematic. Lighting is part of the brand. |
 | B — Conversion | Single dish, contextual, top-down or 3/4 angle. Props that reinforce the brand colors. Visually appetizing in 1 second. |
 | C — Heritage | Mixed scales — sepia historical photos, current restaurant interiors, food in classical compositions. The photo grammar of a coffee-table cookbook. |
+
+### Hero photography — bleed treatment is mandatory (added 2026-05-22)
+
+Per the coffee-vertical sub-study (`docs/audit/gastronomy-coffee-RESEARCH-2026-05-22.md`): **4 of 5 reference coffee sites use full-bleed or half-bleed hero photography.** The "grid-with-photo-on-right" pattern (image inside a column-width container) reads as template-y and breaks the immersive register that gastronomy depends on.
+
+- **Required:** hero image is full-bleed (Variant 1 in §3) OR half-and-half image-pair (Variant 2 in §3)
+- **Forbidden:** hero image constrained inside `container-page` next to a text column — that's the AI-template default we're trying to lift past
+- **Exception:** Archetype A (Immersive / headline-led) can omit hero imagery entirely; that's typography-led, not photo-led
+
+### Menu sections — product photography when ≥6 items per category (added 2026-05-22)
+
+Per the same sub-study: **3 of 5 reference sites use product photography in menu/category cards.** Apply this rule to gastronomy menu pages:
+
+- **≥6 items in a category** (e.g., 12 gelato flavors, 8 sorbets, 24 dishes) → use a card grid with one product photograph per card. Text-only lists this long read as a spreadsheet, not a menu.
+- **3-5 items in a category** → text-only acceptable; product photography optional. Common for Spezialitäten / Specials.
+- **1-2 items per category** → text-only preferred — adding photography to a 2-item list feels padded.
+- **Photography requirements:** per-flavor / per-dish shots in matched lighting + matched crop ratios. Inconsistent crops (some square, some landscape) read as cobbled-together.
+
+When the client doesn't have per-item photography yet, scaffold with `<Placeholder>` slots — never use stock food photography as a stand-in (per the universal rule above).
 
 ---
 
@@ -162,9 +211,35 @@ The headline font carries the brand. A characterful display serif lifts a generi
 - **Never default sans-serif as the display font.** Inter as a body is fine; Inter as the h1 is the single biggest "AI-template" tell in this vertical.
 - **Tracked-uppercase eyebrows** (`tracking-[0.16em]`) work universally in gastronomy. They give breathing room around the headline.
 
+### Display H1 scale + tracking (measured 2026-05-22 from coffee sub-study)
+
+Per `docs/audit/gastronomy-coffee-RESEARCH-2026-05-22.md`:
+
+| Sub-archetype | Measured H1 size (desktop) | Measured tracking | Measured weight | Reference |
+|---|---|---|---|---|
+| Heritage Italian Family / Editorial | **60-80px** display serif | **-1.2px (≈ -2% / -0.022em)** negative | 500-700 | Espressohouse 60px / Watch House 60px |
+| Specialty / third-wave coffee | **64-80px** compressed display sans, UPPERCASE | **+0.6px (≈ +0.04em)** positive | 400 (light) | The Barn 64-80px |
+| Mass-market chain | **24-30px** small H1 (not display) | -0.16px subtle negative | 500-600 | Starbucks 24px · Coffee Fellows 30px (but treat both as anti-pattern register for local-business clients) |
+
+Use the agency canonical tokens `--tracking-display-sans: -0.022em` (Heritage path) — measured value matches reference sites. For compressed-display-sans third-wave path, use `letter-spacing: 0.04em` (positive).
+
+### Compressed display sans for Specialty / third-wave (added 2026-05-22)
+
+For the Specialty / third-wave coffee register, the display font is NOT a serif. It's a compressed display sans-serif (Chalet Comprime / Anton / Oswald Condensed / Druk Wide Condensed). The visual register is "specialty / roaster / industrial-craft" rather than "heritage warm restaurant."
+
+- Use **UPPERCASE** for the H1 (otherwise the compressed weight reads cramped)
+- Apply **positive tracking +0.04em** to compensate for the uppercase + condensed combination
+- Body sans stays a normal-proportioned humanist (Inter / Assistant / Söhne)
+- Generous body line-height **1.8** (vs the gastronomy default 1.6) — measured from The Barn
+- Body tracking positive **+0.04em** — matches the display
+
+This is a complete typographic system swap; don't mix the compressed-display-sans H1 with Cormorant body or vice-versa.
+
 ---
 
 ## 6. Color archetypes
+
+> **Cross-doc note (added 2026-05-22):** The recipes below are the *per-vertical defaults*. The cross-cutting rules (60-30-10 proportion, token-count cap, harmony framework picks, color psychology) live in [`docs/design/COLOR.md`](../COLOR.md). When picking a palette for a gastronomy client: pick the archetype below first, then audit it against the 6-point checklist in `COLOR.md §5`. The Bellini worked example in `COLOR.md §8` shows how an analogous-Heritage palette can be evolved into split-complementary "modern gelateria" without breaking the framework.
 
 Each archetype has 2–3 known-good color directions. Per-client `design.md` picks one and modifies the saturation / temperature to match the brand.
 
@@ -208,7 +283,8 @@ Per `DESIGN-BEST-PRACTICES.md` §5 "Sourcing the palette," when the prospect has
 | **Premium editorial / heritage storytelling** (Dishoom-style, signature dish, narrative-driven) | Deep cocoa + parchment + saffron | `--color-bg: #1f1611` (deep cocoa)<br>`--color-text: #efe3cf` (parchment)<br>`--color-accent: #d4a635` (saffron)<br>`--color-border: #3a2c1f` | Dark-mode-by-design, signals "serious, established, atmospheric." Only use when the venue has the actual atmospheric lighting and the food photography is shot in low light to match. Wrong choice for a fluorescent-lit deli. |
 | **Bakery / café / patisserie** (morning trade, product-led, photogenic display case) | Cream + cocoa brown + soft pink | `--color-bg: #fbf6f0`<br>`--color-text: #2c1f17` (cocoa)<br>`--color-accent: #d4a59a` (dusty rose / soft pink)<br>`--color-border: #e8ddd2` | Female-leaning warm, holds up against pastry and viennoiserie photography (golden + cream-on-cream). Avoid the saturated berry-pink trap — that reads bachelorette-party, not bakery. |
 | **Bar / craft cocktail / wine bar** (evening trade, low light, brand-led) | Deep navy / midnight + bone + brass | `--color-bg: #15151c` (midnight)<br>`--color-text: #ebe2d3` (bone)<br>`--color-accent: #c89a4f` (warm brass)<br>`--color-border: #2a2a36` | Reads "evening, intentional, adult." Brass-not-gold avoids the wedding-venue trap. Holds cocktail glassware and low-light interior shots cleanly. |
-| **Coffee shop / specialty roaster** (Blue Bottle / Coffee Lab adjacent — product education, subscription-friendly) | Warm white + espresso brown + single saturated accent | `--color-bg: #f9f4ec`<br>`--color-text: #2a1c14` (espresso)<br>`--color-accent: #1e40af` (deep blue — Blue Bottle reference) OR `#c2410c` (burnt orange)<br>`--color-border: #d8cfc0` | The accent choice signals positioning — blue reads "modernist, third-wave precision"; orange reads "warm, craft, neighborhood." Pick one based on the client's actual stance, not aesthetic preference. |
+| **Coffee shop / specialty roaster — light variant** (Blue Bottle / Coffee Lab adjacent — product education, subscription-friendly) | Warm white + espresso brown + single saturated accent | `--color-bg: #f9f4ec`<br>`--color-text: #2a1c14` (espresso)<br>`--color-accent: #1e40af` (deep blue — Blue Bottle reference) OR `#c2410c` (burnt orange)<br>`--color-border: #d8cfc0` | The accent choice signals positioning — blue reads "modernist, third-wave precision"; orange reads "warm, craft, neighborhood." Pick one based on the client's actual stance, not aesthetic preference. |
+| **Coffee shop / specialty roaster — dark variant** (The Barn-canonical — measured 2026-05-22 · industrial-craft register · roaster + retailer hybrid) | Near-black + warm tan accent · inverse of the light variant | `--color-bg: #0f1115` (near-black, slightly blue-tinted)<br>`--color-text: rgba(230, 234, 242, 0.75)` (light gray @ 75% opacity)<br>`--color-accent: #a67c52` (warm coffee-tan)<br>`--color-accent-deep: #8a6740` (darker tan for hover)<br>`--color-border: #1f2227` | Industrial-roaster register — for clients whose physical space is a roastery / production-visible-from-counter / brutalist-meets-warm material palette. Pairs with compressed display sans typography (per §5 update). Photography must be warm-tan-toned (coffee beans, brown bags, espresso) — don't pair with green/matcha-led product lines. Light gray @ 75% opacity body text passes WCAG AA on this dark bg (verified). |
 
 **How to pick the sub-archetype:** Use the archetype matrix in `templates/gastronomy.md` §1 first (Immersive / Conversion / Heritage). Then ask: what does the *physical space* look like in the GBP photos? A Heritage Storytelling brand in a fluorescent-lit suburban deli is the wrong choice — the venue contradicts the palette. Always match palette to the venue, not the aspiration.
 
@@ -256,6 +332,12 @@ These are AI-template tells *specific to the gastronomy vertical* — beyond the
 | **Reservation form on the homepage** | Adds friction at the wrong moment. Most people will click the booking-platform link anyway. | Use a "Book a table" CTA that opens SevenRooms / OpenTable / TheFork. Build a custom form only for Type 3+ clients with real booking-system requirements. |
 | **Hero CTA "Schedule a consultation" / "Get started"** | SaaS-template language leaking into gastronomy. | Use a hospitality CTA: "Book a table" / "Order now" / "Visit us" / "See the menu." |
 | **Generic "Welcome to [Restaurant Name]" as h1** | Same as above — could be any restaurant. | Replace with a place-rooted opening line. |
+| **Brand name printed on hero photography** (added 2026-05-22 — Coffee Fellows tell) | Reads "promotional poster from the supplier", not "real business". Indicates the photography was provided by a corporate brand kit, not shot at this location. | Real photograph of the actual venue, with no overlaid brand wordmark inside the image. Wordmark in the page chrome (logo top-left) is enough. |
+| **`→` arrow icons attached to every CTA** (added 2026-05-22 — Coffee Fellows + The Barn buttons) | Reads chain-y; the arrow signals "this button leads somewhere" which a properly-styled button already communicates. Visual noise. | Period-terminated CTAs per `DESIGN-BEST-PRACTICES.md` §11 — `Book a table.` not `Book a table →`. Arrow OK on tertiary inline links ("See more →") but not on primary buttons. |
+| **All-uppercase H1 + H2 stack without compressed-display-sans typography** (added 2026-05-22 — Coffee Fellows tell) | All-uppercase is acceptable only in the third-wave compressed-display-sans register (per §5 update). Regular-proportion sans-serif in all-caps reads as "shouty retail chain". | Either (a) commit to compressed display sans for ALL h1/h2 (third-wave register) OR (b) use mixed-case for proper-noun-style headlines. |
+| **Bright retail-orange or coral CTA accents** (added 2026-05-22 — Coffee Fellows `#FF6F61`) | Bright fast-food accent colors signal mass-market chain. Local-business positioning loses credibility. | Use a brand-derived accent or one of the §6 vertical-default palettes. If the brand IS a bright orange, tone the saturation down by ≥15% for web (print orange is often too saturated on screen). |
+| **SaaS-app sign-in / loyalty / cart UI on Type-1 info sites** (added 2026-05-22 — Starbucks · The Barn) | Adds nav weight + auth surface that this product type doesn't need. Confuses prospects about whether they're on the right kind of site. | Type-1 sites have phone + email + maps in the top nav. Loyalty/account only when the client actually runs an ecommerce or membership program (Type 3+). |
+| **Cookie modal that blocks hero content above-the-fold** (added 2026-05-22 — all 5 reference sites tell) | The 5-of-5 coffee references all have this; it's an accepted-but-bad UX pattern. Don't copy it. | Bottom-bar non-blocking cookie banner per `LEGAL.md` §Cookie consent banner — Bellini and all agency builds already follow this; called out here so it doesn't drift back in. |
 
 ---
 
@@ -372,6 +454,64 @@ When you scaffold a new gastronomy client, pick the archetype that matches the b
 - **Half-pill sticky-edge RESERVE** — `border-radius: 30px 0 0 30px`, terracotta fill, white text, **`position: static`** (corrected Phase 1b read — the right-edge-tab feel is *visual only*, no sticky CSS). Component spec lands in `docs/design/components/half-pill-cta.md` (Phase 3a).
 - **Calm hospitality motion** — every transition is `0.5s ease` color (no transform, no scale, no shadow change). Use `--motion-warm` from `TECH.md` §7.
 - **PF DinText Pro substitute:** for clients without budget for licensed DIN-family fonts, use IBM Plex Sans or Sora — same precision-geometric voice, free.
+
+### 9.7 Starbucks — `starbucks.com` (Archetype B with SaaS overlay — added 2026-05-22, source: `docs/audit/gastronomy-coffee-RESEARCH-2026-05-22.md`)
+
+**Why this lands in gastronomy:** the global benchmark every prospect compares against, whether or not it's appropriate. Studied for visual maturity — NOT for IA or feature set.
+
+**What to borrow:**
+- **Pill CTA shape** — `border-radius: 50px` on every primary/secondary button. Padding `7px 16px`, font 14px / weight 600. Already codified in `docs/design/components/_impl/HalfPillCTA.astro` (half-pill variant) and standard Button (full pill via `--radius-full: 9999px`).
+- **Half-bleed hero pattern** — 50/50 split image-left + dark-color-block-right. Variant 1 in §3 above. Useful when the brand has a strong promo block voice.
+- **Alpha-black body text** `rgba(0, 0, 0, 0.87)` rather than pure `#000`. Subtle but the kind of detail that distinguishes a polished site from a beginner one. Apply to non-Heritage palettes (Heritage uses warm-brown `#2B1A12` per `DESIGN-BEST-PRACTICES.md` §5).
+
+**What we won't borrow:**
+- SaaS-app prompts ("Sign in" / "Join now" / Rewards) — local-business clients don't have user accounts (§8 anti-pattern)
+- Cookie-modal-takeover blocking hero (§8 anti-pattern)
+- Sans-serif-only typography (no display serif) — only acceptable on a global brand operating from a custom typeface (SoDoSans); local-business clients fall back to Inter-as-display = AI-template tell per §5
+
+### 9.8 Espresso House — `de.espressohouse.com` (Archetype B — added 2026-05-22)
+
+**Why this lands in gastronomy:** Scandinavian chain operating in DE, premium-retail register. Custom commissioned typeface ("Value" + "Value Serif"). Validates the big-serif-on-full-bleed-photography hero variant for European multi-location coffee.
+
+**What to borrow:**
+- **Full-bleed hero photography** with white display-serif H1 overlaid (Variant 1 in §3). H1 measured 60px / 700 weight / 60px line-height / -1.2px tracking (-2%).
+- **Body text in deep brand color** (`#1E4A30` deep forest green) rather than pure black. Confident — but only when the brand color is dark enough to pass WCAG AA on white bg.
+- **Generous section padding** — first section uses `padding-block: 80px` on desktop. Currently the agency default is `--spacing-section: 6rem (96px)` so we're already aligned.
+- **Custom commissioned typeface** is what gives the brand its "this isn't a template" character. Out of scope for most agency clients; Cormorant Garamond + Inter is the free-license substitute that holds up.
+
+**What we won't borrow:**
+- FIKA Club loyalty surface — irrelevant for single-location clients
+- Brand-color H1 — better for cohesion, but Bellini-style heritage-cream sites should use warm-brown body text per `DESIGN-BEST-PRACTICES.md` §5
+
+### 9.9 The Barn — `thebarn.de` (NEW Specialty / third-wave sub-archetype — added 2026-05-22)
+
+**Why this lands in gastronomy:** Berlin third-wave roaster + retailer. **Most directly Berlin-relevant of the 5 coffee references.** Source for the new dark sub-archetype palette in §6 and the compressed-display-sans typography in §5.
+
+**What to borrow (for Specialty / third-wave clients):**
+- **Dark bg `#0F1115`** with warm-tan accent `#A67C52` — see §6 Coffee shop dark variant
+- **`Chalet Comprime` (or substitute: Anton, Oswald Condensed) UPPERCASE H1 at 64-80px** with `+0.6px tracking` (`+0.04em`). See §5 update.
+- **Body sans at 1.8 line-height with +0.04em positive tracking** — generous, calm reading rhythm. Light-gray-on-dark at `rgba(230, 234, 242, 0.75)` (75% opacity passes WCAG AA on `#0F1115`).
+- **Border-radius 4-6px** on CTAs (not full pill, not square — slightly soft). Measured 5.6px on the consent CTA.
+
+**What we won't borrow:**
+- Ecommerce surface (cart / subscribe / shop tabs) — only for clients with actual product-shipping operations (Type 3+)
+- "Need more help?" floating chat bubble — added complexity without clear conversion gain for local-business clients
+- Multi-modal cart UI — same reason
+
+**Per-vertical fit:** specialty coffee roasters · third-wave cafés where the brand is roaster-led · Berlin Mitte/Friedrichshain register specifically. NOT for Heritage Italian gelateria (Bellini).
+
+### 9.10 Coffee Fellows — `coffee-fellows.com` (Anti-pattern source — added 2026-05-22)
+
+**Why this lands in gastronomy:** DE mass-market chain. Studied as a **counter-example** — the agency rule library now explicitly avoids 6 patterns observed here. See §8 anti-patterns (entries marked "added 2026-05-22").
+
+**What we won't borrow (anti-patterns now codified):**
+- Brand name printed on hero photography (the "COFFEE FELLOWS" wordmark visible IN the gelato/drink image)
+- `→` arrow icons on every CTA
+- All-uppercase H1 + H2 stack in regular-proportion Montserrat (without compressed-display-sans treatment)
+- Bright coral CTA accent `#FF6F61`
+- Loyalty / rebrand teaser in hero scroll
+
+This entry exists primarily to point future agency reviews at the pattern and say "don't do this." A real client's audit md can cite "Coffee Fellows anti-pattern stack" as shorthand.
 
 ---
 

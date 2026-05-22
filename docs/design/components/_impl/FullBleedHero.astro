@@ -1,0 +1,155 @@
+---
+/**
+ * FullBleedHero — full-viewport hero with overlay typography.
+ * Spec: docs/design/components/full-bleed-hero.md (added 2026-05-22)
+ *
+ * Required for gastronomy template per `docs/design/templates/gastronomy.md`
+ * §3 Modern hero variants → Variant 1. Replaces the template-y "grid with
+ * photo on right" hero for any client whose register is Heritage / boutique /
+ * neighborhood-pillar / Specialty third-wave.
+ *
+ * Per-vertical token swaps:
+ *   gastronomy Heritage (Bellini):  bg cream + display serif H1 in cream,
+ *                                   text-shadow optional for legibility on
+ *                                   busy photography
+ *   gastronomy Specialty 3rd-wave:  bg dark + display compressed-sans H1
+ *                                   UPPERCASE + warm-tan accent CTA
+ *   beauty premium:                 cream + dusty-rose accent
+ *   trades:                         charcoal + safety-orange — only if the
+ *                                   image is industrial enough
+ */
+
+interface Props {
+  /** Image src — must be ≥1600px wide for desktop, lazy=false (hero is LCP) */
+  imageSrc: string;
+  /** Alt text — required for accessibility */
+  imageAlt: string;
+  /** Optional small-caps kicker above H1 (e.g., "EISCAFÉ BELLINI · BERLIN") */
+  kicker?: string;
+  /** H1 lines — array allows manual line breaks; each entry becomes a <br>-separated line */
+  titleLines: string[];
+  /** Short body paragraph under H1 */
+  body?: string;
+  /** Primary CTA */
+  ctaPrimary?: { href: string; label: string; target?: string };
+  /** Secondary CTA (optional) */
+  ctaSecondary?: { href: string; label: string; target?: string };
+  /** Overlay gradient strength — 'none' / 'bottom' / 'dual' / 'full'. Default 'bottom' = gradient at the bottom 3/4. 'dual' = combines a soft global tint with a strong bottom gradient — required for busy/high-luminance photography (e.g., bright gelato counter, snow, retail interiors). 'full' = uniform 40% darkening. */
+  overlay?: 'none' | 'bottom' | 'dual' | 'full';
+  /** Image height behavior. Default 'tall' = 80vh on desktop / 70vh on mobile. 'short' = 60vh / 50vh. 'full' = 90vh */
+  height?: 'short' | 'tall' | 'full';
+  class?: string;
+}
+
+const {
+  imageSrc,
+  imageAlt,
+  kicker,
+  titleLines,
+  body,
+  ctaPrimary,
+  ctaSecondary,
+  overlay = 'bottom',
+  height = 'tall',
+  class: extraClass = '',
+} = Astro.props;
+
+const heightClass = {
+  short: 'min-h-[50vh] sm:min-h-[60vh]',
+  tall: 'min-h-[70vh] sm:min-h-[80vh]',
+  full: 'min-h-[80vh] sm:min-h-[90vh]',
+}[height];
+
+const overlayClass = {
+  none: '',
+  bottom:
+    'before:absolute before:inset-x-0 before:bottom-0 before:h-3/4 before:bg-gradient-to-t before:from-black/70 before:to-transparent before:pointer-events-none',
+  dual: 'before:absolute before:inset-0 before:bg-black/40 before:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-full after:bg-gradient-to-t after:from-black/80 after:to-transparent after:pointer-events-none',
+  full: 'before:absolute before:inset-0 before:bg-black/40 before:pointer-events-none',
+}[overlay];
+---
+
+<section
+  class:list={['fbh-hero relative overflow-hidden', heightClass, overlayClass, extraClass]}
+  aria-labelledby="fbh-title"
+>
+  <img
+    src={imageSrc}
+    alt={imageAlt}
+    width="1920"
+    height="1280"
+    fetchpriority="high"
+    decoding="async"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+
+  <div class="relative z-10 h-full flex items-end">
+    <div class="container-page py-16 sm:py-24 lg:py-32 max-w-4xl">
+      {kicker && (
+        <p class="fbh-kicker text-xs sm:text-sm uppercase tracking-[0.2em] text-white/80 mb-4">
+          {kicker}
+        </p>
+      )}
+
+      <h1
+        id="fbh-title"
+        class="fbh-title font-display text-white"
+      >
+        {titleLines.map((line, i) => (
+          <>
+            {i > 0 && <br />}
+            {line}
+          </>
+        ))}
+      </h1>
+
+      {body && (
+        <p class="fbh-body mt-6 max-w-prose text-lg sm:text-xl text-white/90 leading-relaxed">
+          {body}
+        </p>
+      )}
+
+      {(ctaPrimary || ctaSecondary) && (
+        <div class="mt-8 flex flex-wrap gap-3">
+          {ctaPrimary && (
+            <a
+              href={ctaPrimary.href}
+              target={ctaPrimary.target}
+              rel={ctaPrimary.target === '_blank' ? 'noopener noreferrer' : undefined}
+              class="inline-flex items-center justify-center px-7 py-4 min-h-[52px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              {ctaPrimary.label}
+            </a>
+          )}
+          {ctaSecondary && (
+            <a
+              href={ctaSecondary.href}
+              target={ctaSecondary.target}
+              rel={ctaSecondary.target === '_blank' ? 'noopener noreferrer' : undefined}
+              class="inline-flex items-center justify-center px-7 py-4 min-h-[52px] text-base font-medium rounded-md bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              {ctaSecondary.label}
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .fbh-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    font-weight: 500;
+    /* Last-resort legibility insurance for busy photography per spec §2 a11y note */
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  }
+  .fbh-body {
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  }
+  .fbh-kicker {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  }
+</style>

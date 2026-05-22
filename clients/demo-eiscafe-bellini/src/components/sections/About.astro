@@ -1,0 +1,51 @@
+---
+import StatCallouts from '@/components/sections/StatCallouts.astro';
+/**
+ * About — Home section.
+ * Three-generation family story + StatCallouts row.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const h2 = locale === 'de' ? 'Sieben Produzenten. Eine Karte.' : 'Seven producers. One menu.';
+
+const p1 =
+  locale === 'de'
+    ? 'Unsere Pistazien kommen aus Bronte am Ätna — geröstet bei Vincenzo Longo in Catania seit 1998. Die Schokolade ist von Bonajuto in Modica, kalt verarbeitet wie seit 1880. Die Haselnüsse: Tonda Gentile aus Piemont. Die Milch: bio aus Brandenburg, dreißig Kilometer vor unserer Tür. Jeder Lieferant hat einen Namen, und wir nennen ihn.'
+    : 'Our pistachios come from Bronte on Mount Etna — roasted by Vincenzo Longo in Catania since 1998. The chocolate is from Bonajuto in Modica, cold-processed the same way since 1880. The hazelnuts: Tonda Gentile from Piemonte. The milk: organic from Brandenburg, thirty kilometres from our door. Every supplier has a name, and we name them.';
+
+const p2 =
+  locale === 'de'
+    ? 'Die Rezepte sind die, die Rosa Bellini 1987 aus Treviso mitbrachte. Heute führt Giulia, ihre Enkelin, dieselbe Karte — mit ein paar veganen Sorbetti dazu. Sonst ist nichts dazwischen gekommen.'
+    : 'The recipes are the ones Rosa Bellini brought from Treviso in 1987. Today her granddaughter Giulia runs the same menu — with a handful of vegan sorbetti added. Nothing else has been allowed in.';
+
+// Localize stat labels
+const stats = SITE.stats.map((s) => ({
+  number: s.number,
+  label: s.label[locale],
+  ariaLabel: s.ariaLabel[locale],
+}));
+---
+
+<section class="bg-bg">
+  <div class="container-page py-16 sm:py-24">
+    <div class="max-w-3xl">
+      <h2 class="font-display text-3xl sm:text-4xl text-text">
+        {h2}
+      </h2>
+      <div class="mt-6 space-y-4 text-lg text-text-muted leading-relaxed">
+        <p>{p1}</p>
+        <p>{p2}</p>
+      </div>
+    </div>
+
+    <div class="mt-12">
+      <StatCallouts stats={stats} ariaLabel={locale === 'de' ? 'Eckdaten' : 'Statistics'} align="left" />
+    </div>
+  </div>
+</section>

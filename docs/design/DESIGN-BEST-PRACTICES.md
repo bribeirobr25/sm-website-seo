@@ -297,6 +297,8 @@ Desktop increases display sizes by one step. Never reduce below 14px for any use
 
 ## 5. Color system
 
+> **Cross-doc note (added 2026-05-22):** This section owns **sourcing** — *where* the palette comes from (logo → photo → owner pref → vertical default → re-source mid-build). The **proportional + harmony + token-count + audit** rules live in [`docs/design/COLOR.md`](./COLOR.md) — read both. Per-vertical recipes live in `docs/design/templates/[vertical].md §6 Color archetypes`. Three docs, three concerns, no duplication.
+
 ### Per-client tokens
 
 Every client project defines its color tokens in one place (a CSS file or Tailwind config). Hardcoded hex values are forbidden in components and templates.

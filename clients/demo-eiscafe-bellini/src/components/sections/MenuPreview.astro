@@ -1,0 +1,62 @@
+---
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import MenuCard from '@/components/ui/MenuCard.astro';
+/**
+ * MenuPreview — Home section.
+ * Rebuilt 2026-05-22 — replaces text-only cards with image-carrying MenuCard
+ * per `docs/design/templates/gastronomy.md` §4 photography rule (≥6 items)
+ * and the new `docs/design/components/menu-card.md` spec.
+ * LabelCountHeader: `LE CREME (12)`.
+ * Three featured-flavor cards.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const intro =
+  locale === 'de'
+    ? 'Klassische Cremes auf Milchbasis. Frisch täglich, mit Zutaten von kleinen italienischen Produzenten. Hier sind drei, die unsere Stammgäste immer wieder probieren:'
+    : 'Milk-based classics, made fresh every day with ingredients from small Italian producers. Three our regulars come back for:';
+
+const ctaText = locale === 'de' ? 'Die ganze Karte ansehen.' : 'See the full menu.';
+const ctaHref = locale === 'de' ? '/gelato' : '/en/gelato';
+---
+
+<section class="bg-surface-elev">
+  <div class="container-page py-16 sm:py-24">
+    <div class="max-w-2xl">
+      <LabelCountHeader label="LE CREME" count={12} countLabel={locale === 'de' ? '12 Sorten' : '12 flavors'} />
+      <p class="mt-4 text-text-muted text-lg leading-relaxed">
+        {intro}
+      </p>
+    </div>
+
+    <ul class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0">
+      {SITE.featured.map((flavor: typeof SITE.featured[number]) => (
+        <li>
+          <MenuCard
+            name={flavor.name[locale]}
+            description={flavor.description[locale]}
+            imageSrc={flavor.imageSrc}
+            imageAlt={flavor.imageAlt[locale]}
+            aspectRatio="4/3"
+            loading="lazy"
+          />
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-10">
+      <a
+        href={ctaHref}
+        class="inline-flex items-center font-medium text-accent hover:text-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded"
+      >
+        {ctaText}
+      </a>
+    </div>
+  </div>
+</section>

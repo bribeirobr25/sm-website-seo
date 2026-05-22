@@ -1,0 +1,82 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+const t = SITE.i18n[locale];
+---
+
+<BaseLayout
+  title={`Karte — ${SITE.name}`}
+  description="Le Creme, Sorbetti, Spezialitäten. Frisch täglich, mit Bronte-Pistazien und Piemonteser Haselnüssen."
+  locale={locale}
+  alternateLocaleUrl="/en/gelato"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-2xl">
+          <p class="text-xs uppercase tracking-[0.2em] text-text-muted">{t.nav.menu}</p>
+          <h1 class="mt-2 font-display text-4xl sm:text-5xl text-text">Unsere Karte.</h1>
+          <p class="mt-6 text-lg text-text-muted leading-relaxed">
+            Frisch täglich, mit Zutaten von kleinen italienischen Produzenten. Manche Sorten wechseln saisonal — die Tafel im Laden ist immer aktuell.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {(['creme', 'sorbetti', 'spezialitaeten'] as const).map((key, idx) => {
+      const section = SITE.menu[key];
+      const bg = idx % 2 === 0 ? 'bg-surface-elev' : 'bg-bg';
+      return (
+        <section class={bg}>
+          <div class="container-page py-16">
+            <LabelCountHeader
+              label={section.label[locale]}
+              count={section.count}
+              countLabel={`${section.count} ${locale === 'de' ? 'Sorten' : 'flavors'}`}
+            />
+            <p class="mt-4 max-w-2xl text-text-muted leading-relaxed">
+              {section.intro[locale]}
+            </p>
+            <ul class="mt-10 grid sm:grid-cols-2 gap-x-10 gap-y-6">
+              {section.items.map((item: { de: { name: string; desc: string }; en: { name: string; desc: string } }) => (
+                <li class="border-b border-border pb-4">
+                  <h3 class="font-display text-xl text-text">{item[locale].name}</h3>
+                  <p class="mt-1 text-text-muted text-sm leading-relaxed">{item[locale].desc}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    })}
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16">
+        <LabelCountHeader label="EISTORTEN AUF BESTELLUNG" count={0} countLabel="auf Bestellung" />
+        <p class="mt-4 max-w-2xl text-text-muted leading-relaxed">
+          Wir machen Eistorten für Geburtstage, Hochzeiten, und alles dazwischen. Mindestens 5 Tage vorher anrufen oder mailen. Geschmack, Größe, und Anzahl der Geschmäcker sind frei.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors">
+            Anrufen — {SITE.phoneDisplay}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-12 text-center">
+        <p class="text-sm text-text-muted italic max-w-2xl mx-auto leading-relaxed">
+          Die Karte wechselt saisonal. Frische Erdbeeren ab Mai, Feigen ab August, Cassis im Sommer. Im Winter machen wir Pause bei Sorten, deren Frucht es nicht mehr gibt — kein Erdbeer-Eis aus dem Tiefkühler.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

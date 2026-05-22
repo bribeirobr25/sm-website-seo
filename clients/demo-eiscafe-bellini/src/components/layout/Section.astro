@@ -1,0 +1,70 @@
+---
+/**
+ * Section — semantic <section> wrapper with alternating-bg variant.
+ * Spec: docs/design/components/alternating-section-bg.md
+ *
+ * The alternation pattern earns its weight once the page has ≥ 5
+ * sections (otherwise the rhythm doesn't register). Apple's measured
+ * ratio: primary #fff / alt #f5f5f7 — about 1.6% darker. Avoid alts
+ * darker than 5% — visible stripes instead of ambient signal.
+ *
+ * Visual identity (this scaffold): dark + amber
+ *   primary: --color-bg (#1a1612)
+ *   alt:     --color-surface (#252018) — the existing "1-step lighter"
+ *            warm dark surface; provides the rhythm without breaking palette
+ *
+ * Per-vertical token swaps:
+ *   tech / apple-light:        primary white, alt --color-bg-alt (#f5f5f7)
+ *   gastronomy (cream):        primary cream #FBF8F3, alt cream-shaded
+ *                              #F5F0E7 — the cream rhythm is OPTIONAL;
+ *                              cream usually does the warming on its own
+ *   trades (charcoal):         primary --color-bg-charcoal (#1D1D1D),
+ *                              alt #252525
+ *
+ * Wrap with .section inside global.css for the agency-standard padding.
+ */
+
+interface Props {
+  variant?: 'primary' | 'alt';
+  id?: string;
+  ariaLabelledBy?: string;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const { variant = 'primary', id, ariaLabelledBy, ariaLabel, class: extraClass = '' } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={ariaLabelledBy}
+  aria-label={ariaLabel}
+  class:list={['section', `ssn-section--${variant}`, extraClass]}
+>
+  <div class="container-page">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .ssn-section--primary {
+    background-color: var(--color-bg);
+  }
+
+  .ssn-section--alt {
+    /*
+     * Solo-barber identity uses the warm "surface" token as the alt;
+     * tech / apple-light identities should override to --color-bg-alt
+     * via parent CSS or by passing `variant="alt"` after redefining
+     * the token at a higher scope.
+     */
+    background-color: var(--color-surface);
+  }
+
+  /* Stronger alternation for users requesting more contrast */
+  @media (prefers-contrast: more) {
+    .ssn-section--alt {
+      background-color: var(--color-surface-elev);
+    }
+  }
+</style>

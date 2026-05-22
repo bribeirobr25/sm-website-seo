@@ -82,6 +82,7 @@ All standards documents live in `docs/design/`. Read the relevant ones before st
 | Document | What it covers | Read when |
 |----------|---------------|-----------|
 | `docs/design/DESIGN-BEST-PRACTICES.md` | UI/UX, typography, color, layout, components, mobile, anti-slop | Starting any client UI work |
+| `docs/design/COLOR.md` | Cross-cutting palette rules — 60-30-10 proportion · harmony frameworks (analogous / complementary / monochromatic / split-complementary / triadic) · max-5-brand-token cap · color psychology by vertical · 6-point pre-launch palette audit · 10 anti-patterns. Owns the "what proportions / which harmony" rule; `DESIGN-BEST-PRACTICES.md §5` owns *sourcing*; per-vertical templates own per-vertical recipes. | Every client project — at scaffold time + before production cutover |
 | `docs/design/TECH.md` | Stack decisions, code organization, Configuration-as-Code, TypeScript, naming, deployment | Starting any client project |
 | `docs/design/PERFORMANCE.md` | Web performance — budgets, image rules, font self-hosting, LCP diagnostic | Building, debugging slow pages, pre-launch |
 | `docs/design/ACCESSIBILITY.md` | WCAG 2.2 AA — contrast, keyboard nav, focus trap, reduced motion, semantic HTML, touch targets | Any client UI work, pre-launch a11y pass |
