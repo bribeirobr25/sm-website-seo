@@ -1,0 +1,73 @@
+# Course list (Roman-numeral centered tasting menu)
+
+**Source:** Adèle V5 build (2026-05-22). Inspired by Frenchie Paris, NOMA, and Berlin fine-dining tasting cards. Promoted 2026-05-23.
+**Implementation:** `docs/design/components/_impl/CourseList.astro`.
+
+## 1. Purpose + when to use
+
+A centered editorial list with Roman-numeral course markers (I-V or I-VII). Replaces card-grid menu previews when the brand register is fine-dining / tasting-menu / editorial — the linear numbered progression itself signals "this is a sequence, not à la carte."
+
+**Per-vertical surfaces:**
+
+| Vertical | Use | Why |
+|---|---|---|
+| Gastronomy — fine-dining / Michelin-aspirant | ✅ Highly recommended | Tasting-menu structure is the product; numbering reinforces it |
+| Gastronomy — weekly / chef's-menu rotation | ✅ Recommended | Adèle pattern: "5 courses · rotates Wednesday" |
+| Events-hospitality — multi-course dinner events | ✅ Recommended | Single evening = single menu = numbered progression |
+| Gastronomy — casual / à la carte | ❌ Wrong register | Use `MenuCard` grid instead |
+| Beauty — treatment packages with sequence (facial steps) | 🟡 Conditional | Works only if the package IS sequential; otherwise reads pretentious |
+
+**When NOT to use:** sites with more than ~7 items (the Roman numeral gimmick collapses past VII); à la carte menus; sites without a clear progression story.
+
+## 2. HTML / accessibility structure
+
+```html
+<section>
+  <header><p class="eyebrow">…</p><h2>…</h2><p>…</p></header>
+  <ol>
+    <li>
+      <span class="course-numeral" aria-hidden="true">I</span>
+      <div>
+        <h3>Course name</h3>
+        <p>Course description</p>
+      </div>
+    </li>
+    …
+  </ol>
+  <a href="/menu">See the full menu</a>
+</section>
+```
+
+**Accessibility:**
+- Use semantic `<ol>` — the numbering matters; screen reader announces "1, 2, 3…" implicitly.
+- Roman numeral is `aria-hidden="true"` (decorative duplicate of the ordered-list number).
+- `<h3>` semantic level — H2 is the section header.
+- Centered text alignment + generous spacing — works for screen reader linear flow.
+
+## 3. CSS spec
+
+- Container: `max-w-2xl mx-auto` — narrow column reinforces magazine-tasting-card aesthetic
+- Per row: `grid grid-cols-[48px_1fr] gap-6` — fixed numeral gutter
+- Numeral: `font-display text-2xl text-accent` — brand accent color, display serif
+- Course name: `font-display text-xl sm:text-2xl text-text leading-tight`
+- Spacing: `space-y-10` between courses; each row's `<div>` has `pb-8 border-b border-border` (last child overrides)
+
+## 4. Props (frozen)
+
+- `locale: Locale` — for i18n lookup
+- Implicit: reads `SITE.menu.tasting.items` (each `{ de: { name, desc }, en: { name, desc } }`)
+- Could be parameterized to accept `items` directly if used outside a SITE-config-driven client.
+
+## 5. Performance constraints
+
+- Pure text + CSS. No images. No JS. Zero perf cost.
+
+## 6. Reference sites
+
+- Adèle V5 home (`https://demo-restaurant-adele.vercel.app/`)
+- Frenchie Paris menu treatment
+- NOMA / Geranium tasting-menu PDF aesthetic
+
+## 7. Implementation pointer
+
+Used by Adèle Tier-2 home page. For real clients: typically appears once on the home page as a teaser, with the full menu (this + wine pairing + prix-fixe pricing) on `/karte` or `/menu` route.

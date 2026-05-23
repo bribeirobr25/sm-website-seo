@@ -1,0 +1,97 @@
+---
+/**
+ * FAQ — Accordion + FAQPage JSON-LD generator.
+ * Spec: docs/design/components/faq.md (added 2026-05-23)
+ *
+ * Wraps the canonical Accordion and emits FAQPage schema.org JSON-LD from
+ * the same item list — guarantees the structured data matches the rendered
+ * content (Google's rich-result requirement, also AI-extraction signal).
+ *
+ * The rich-result SERP feature was deprecated in 2026-05; FAQPage JSON-LD
+ * remains valuable as an AI-extraction signal (LLM Overviews, ChatGPT,
+ * Perplexity). Per CHECKLIST.md §401 + SEO.md §FAQ schema.
+ */
+import Accordion from './Accordion.astro';
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  /** Section header */
+  heading?: string;
+  /** Section eyebrow (small caps above heading) */
+  eyebrow?: string;
+  /** Section intro paragraph */
+  intro?: string;
+  /** FAQ items — question + answer pairs */
+  items: FAQItem[];
+  /** Accordion behavior — single open vs multi-open */
+  singleOpen?: boolean;
+  /** Accordion visual variant */
+  variant?: 'bordered' | 'flush';
+  /** Whether to render the JSON-LD (skip if another script on the page already emits FAQPage) */
+  emitSchema?: boolean;
+  class?: string;
+}
+
+const {
+  heading,
+  eyebrow,
+  intro,
+  items,
+  singleOpen = false,
+  variant = 'flush',
+  emitSchema = true,
+  class: extraClass = '',
+} = Astro.props;
+
+const accordionItems = items.map((item) => ({
+  summary: item.question,
+  body: `<p>${item.answer}</p>`,
+}));
+
+const schema = emitSchema
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: items.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    }
+  : null;
+---
+
+<section class:list={['ad-faq', extraClass]} aria-labelledby={heading ? 'faq-heading' : undefined}>
+  <div class="container-page py-16 sm:py-20">
+    {(eyebrow || heading || intro) && (
+      <header class="max-w-2xl mb-10 space-y-3">
+        {eyebrow && (
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{eyebrow}</p>
+        )}
+        {heading && (
+          <h2 id="faq-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">
+            {heading}
+          </h2>
+        )}
+        {intro && (
+          <p class="text-lg text-text-muted leading-relaxed">{intro}</p>
+        )}
+      </header>
+    )}
+
+    <div class="max-w-3xl">
+      <Accordion items={accordionItems} singleOpen={singleOpen} variant={variant} />
+    </div>
+  </div>
+
+  {schema && (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+  )}
+</section>

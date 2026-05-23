@@ -70,12 +70,18 @@ const overlayClass = {
   dual: 'before:absolute before:inset-0 before:bg-black/40 before:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-full after:bg-gradient-to-t after:from-black/80 after:to-transparent after:pointer-events-none',
   full: 'before:absolute before:inset-0 before:bg-black/40 before:pointer-events-none',
 }[overlay];
+
+// Derive WebP companion path from the JPEG/PNG src (PERFORMANCE.md: AVIF/WebP for LCP)
+const webpSrc = imageSrc.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+const hasWebp = webpSrc !== imageSrc;
 ---
 
 <section
   class:list={['fbh-hero relative overflow-hidden', heightClass, overlayClass, extraClass]}
   aria-labelledby="fbh-title"
 >
+  <picture class="absolute inset-0 w-full h-full">
+    {hasWebp && <source srcset={webpSrc} type="image/webp" />}
   <img
     src={imageSrc}
     alt={imageAlt}
@@ -85,6 +91,7 @@ const overlayClass = {
     decoding="async"
     class="absolute inset-0 w-full h-full object-cover"
   />
+  </picture>
 
   <div class="relative z-10 h-full flex items-end">
     <div class="container-page py-16 sm:py-24 lg:py-32 max-w-4xl">

@@ -101,6 +101,12 @@ export const SITE = {
         accept: 'Alle akzeptieren',
         reject: 'Alle ablehnen',
       },
+      sections: {
+        roasteries: { eyebrow: 'Bohnen von', heading: 'Drei Röstereien rotieren bei uns durch.' },
+        film: { eyebrow: 'Film', heading: 'Sonntagmorgen 06:30, August 2025.', intro: 'Drei Minuten an der Spree, gefilmt von Mia. Kein Marketing — nur was da war.' },
+        faq: { eyebrow: 'Häufig gefragt', heading: 'Was wir am Tresen immer wieder erklären.' },
+        map: { eyebrow: 'Anfahrt', heading: 'Holzmarktstraße 25 — direkt am Spree-Knick.' },
+      },
       languageLabel: 'Sprache',
     },
     en: {
@@ -135,6 +141,12 @@ export const SITE = {
         bodyAfter: '.',
         accept: 'Accept all',
         reject: 'Reject all',
+      },
+      sections: {
+        roasteries: { eyebrow: 'Beans by', heading: 'Three roasteries rotate through.' },
+        film: { eyebrow: 'Film', heading: 'Sunday morning 06:30, August 2025.', intro: 'Three minutes on the Spree, shot by Mia. No marketing — just what was there.' },
+        faq: { eyebrow: 'Frequently asked', heading: 'What we explain at the counter every day.' },
+        map: { eyebrow: 'Find us', heading: 'Holzmarktstraße 25 — right at the Spree bend.' },
       },
       languageLabel: 'Language',
     },

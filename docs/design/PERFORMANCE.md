@@ -148,6 +148,46 @@ import heroImage from '../assets/images/hero.png';
 />
 ```
 
+### Interim pattern — `<picture>` + WebP companion (when Astro Image migration is deferred)
+
+Added 2026-05-23. For demos / client builds where images live in `public/img/` rather than `src/assets/` (deferring the full Astro Image migration), the canonical components in this agency library render a `<picture>` with a WebP source + JPEG fallback, auto-deriving the `.webp` companion filename:
+
+```astro
+---
+const webpSrc = imageSrc.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+const hasWebp = webpSrc !== imageSrc;
+---
+<picture>
+  {hasWebp && <source srcset={webpSrc} type="image/webp" />}
+  <img src={imageSrc} alt={imageAlt} fetchpriority="high" decoding="async" />
+</picture>
+```
+
+**Auto-applied in:** `FullBleedHero` · `SplitHero` · `MenuCard` · `TeamGrid` · `PhotoGrid`. Caller just passes `imageSrc="/img/hero.jpg"` — the component auto-derives `/img/hero.webp`. If the `.webp` file exists at the derived path, modern browsers fetch the smaller WebP; if it's missing, browsers transparently fall back to the JPEG.
+
+**WebP generation workflow (one-time per image):**
+
+```bash
+# Sharp via npx — Node 22+ (Astro requirement)
+npx --yes sharp-cli@latest -i hero.jpg -o hero.webp -f webp -q 70 resize 1920    # hero
+npx --yes sharp-cli@latest -i card.jpg -o card.webp -f webp -q 75 resize 1600    # card
+npx --yes sharp-cli@latest -i portrait.jpg -o portrait.webp -f webp -q 80 resize 800   # team portrait
+```
+
+**Quality settings — agency canonical:**
+
+| Image type | Source dimension | WebP quality | Target weight |
+|---|---|---|---|
+| Hero (LCP) | 1920w | q55-q70 | ≤ 250 KB (200 KB ideal) |
+| Hero — busy / textured | 1920w | q55-q60 | ≤ 250 KB |
+| Card / gallery | 1600w | q70-q75 | ≤ 120 KB |
+| Team portrait | 800w | q80 | ≤ 40 KB |
+| Decorative | 1200w | q70 | ≤ 100 KB |
+
+**When to migrate to full Astro Image:** when the client has 10+ photographs OR needs responsive `srcset` at multiple breakpoints (real client cutover, not demo). Migration moves images from `public/img/` → `src/assets/` + replaces raw `<img>` with `<Image src={importedImage} />`. The `<picture>` pattern stays as a fallback for clients pre-migration.
+
+**Verification gate:** Each WebP target weight is a `CHECKLIST.md` pre-launch gate. Use `ls -la public/img/*.webp | awk '{print $5, $NF}' | sort -nr | head -5` to spot the heaviest WebP files; flag anything over budget.
+
 ---
 
 ## 6. Font rules

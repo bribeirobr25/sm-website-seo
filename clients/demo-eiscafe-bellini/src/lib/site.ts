@@ -101,6 +101,13 @@ export const SITE = {
         accept: 'Alle akzeptieren',
         reject: 'Alle ablehnen',
       },
+      sections: {
+        timeline: { eyebrow: 'Wie wir machen', heading: 'Vom Brandenburger Hof zur Bronte-Kugel.', intro: 'Vier Schritte, vier Hände, kein Verarbeitungsschritt außer Haus.' },
+        gallery: { eyebrow: 'Vitrine', heading: 'Acht Bilder vom Laden.', intro: 'Klicke auf eines, um es größer zu sehen.' },
+        testimonialEyebrow: 'Stammkundschaft',
+        faq: { eyebrow: 'Häufig gefragt', heading: 'Was wir am Tresen immer wieder erklären.' },
+        map: { eyebrow: 'Anfahrt', heading: 'In Prenzlauer Berg, drei Minuten vom Kollwitzplatz.' },
+      },
       languageLabel: 'Sprache',
     },
     en: {
@@ -134,6 +141,13 @@ export const SITE = {
         bodyAfter: '.',
         accept: 'Accept all',
         reject: 'Reject all',
+      },
+      sections: {
+        timeline: { eyebrow: 'How we work', heading: 'From the Brandenburg farm to the Bronte scoop.', intro: 'Four steps, four hands, no processing step outside the shop.' },
+        gallery: { eyebrow: 'Gallery', heading: 'Eight images from the shop.', intro: 'Click any to enlarge.' },
+        testimonialEyebrow: 'Regulars',
+        faq: { eyebrow: 'Frequently asked', heading: 'What we explain at the counter every day.' },
+        map: { eyebrow: 'Find us', heading: 'In Prenzlauer Berg, three minutes from Kollwitzplatz.' },
       },
       languageLabel: 'Language',
     },

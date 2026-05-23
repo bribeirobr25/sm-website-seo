@@ -1,0 +1,163 @@
+---
+/**
+ * TeamGrid — responsive grid of staff portraits.
+ * Spec: docs/design/components/team-grid.md (added 2026-05-23)
+ *
+ * #2 trust signal for beauty + health verticals after gallery work
+ * (per research). Portrait + name + role + optional specialty tag.
+ *
+ * Default 3-col desktop / 2-col mobile. Override via `columns` prop.
+ *
+ * Pairs with schema.org `Person` markup (itemscope on each card) for
+ * AI-extraction + Knowledge Graph.
+ */
+
+interface TeamMember {
+  /** Person's name */
+  name: string;
+  /** Job title / role */
+  role: string;
+  /** Portrait photo source */
+  photoSrc: string;
+  /** Portrait alt text (defaults to name if omitted) */
+  photoAlt?: string;
+  /** Optional specialty / focus area (e.g., "Color specialist", "Endodontology", "Cuts only") */
+  specialty?: string;
+  /** Optional short bio sentence */
+  bio?: string;
+  /** Optional link to staff profile page */
+  href?: string;
+  /** Optional pronoun line (e.g., "she/her") */
+  pronouns?: string;
+  /** Optional list of credentials (e.g., "Master Hairdresser HWK Berlin") */
+  credentials?: string[];
+}
+
+interface Props {
+  /** Section header */
+  heading?: string;
+  /** Section eyebrow */
+  eyebrow?: string;
+  /** Intro paragraph */
+  intro?: string;
+  /** Team members to display */
+  members: TeamMember[];
+  /** Number of columns on desktop (2 | 3 | 4) — mobile is always 2 */
+  columns?: 2 | 3 | 4;
+  /** Photo aspect ratio — 'portrait' (3:4, default) | 'square' (1:1) | 'editorial' (4:5) */
+  aspect?: 'portrait' | 'square' | 'editorial';
+  class?: string;
+}
+
+const {
+  heading,
+  eyebrow,
+  intro,
+  members,
+  columns = 3,
+  aspect = 'portrait',
+  class: extraClass = '',
+} = Astro.props;
+
+const columnsClass = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-2 lg:grid-cols-4',
+}[columns];
+
+const aspectClass = {
+  portrait: 'aspect-[3/4]',
+  square: 'aspect-square',
+  editorial: 'aspect-[4/5]',
+}[aspect];
+---
+
+<section class:list={['ad-team', extraClass]} aria-labelledby={heading ? 'team-heading' : undefined}>
+  <div class="container-page py-16 sm:py-20">
+    {(eyebrow || heading || intro) && (
+      <header class="max-w-2xl mb-10 space-y-3">
+        {eyebrow && <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{eyebrow}</p>}
+        {heading && (
+          <h2 id="team-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">
+            {heading}
+          </h2>
+        )}
+        {intro && <p class="text-lg text-text-muted leading-relaxed">{intro}</p>}
+      </header>
+    )}
+
+    <ul class:list={['grid gap-x-6 gap-y-10 list-none p-0', columnsClass]}>
+      {members.map((m) => {
+        const photoWebp = m.photoSrc.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+        const hasPhotoWebp = photoWebp !== m.photoSrc;
+        const cardBody = (
+          <>
+            <div class:list={['ad-team-photo-wrap relative overflow-hidden rounded-lg border border-border', aspectClass]}>
+              <picture>
+                {hasPhotoWebp && <source srcset={photoWebp} type="image/webp" />}
+                <img
+                  src={m.photoSrc}
+                  alt={m.photoAlt ?? m.name}
+                  loading="lazy"
+                  decoding="async"
+                  class="ad-team-photo absolute inset-0 w-full h-full object-cover"
+                />
+              </picture>
+            </div>
+            <div class="mt-4 space-y-1" itemscope itemtype="https://schema.org/Person">
+              <p class="font-display text-lg text-text leading-tight" itemprop="name">{m.name}</p>
+              <p class="text-sm text-text-muted" itemprop="jobTitle">{m.role}</p>
+              {m.specialty && (
+                <p class="text-xs uppercase tracking-[0.18em] text-accent font-semibold mt-2">{m.specialty}</p>
+              )}
+              {m.pronouns && (
+                <p class="text-xs text-text-muted/80">{m.pronouns}</p>
+              )}
+              {m.bio && (
+                <p class="text-sm text-text-muted leading-relaxed mt-2">{m.bio}</p>
+              )}
+              {m.credentials && m.credentials.length > 0 && (
+                <ul class="mt-2 space-y-0.5">
+                  {m.credentials.map((c) => (
+                    <li class="text-xs text-text-muted" itemprop="hasCredential">{c}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </>
+        );
+
+        return (
+          <li>
+            {m.href ? (
+              <a
+                href={m.href}
+                class="ad-team-card-link group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-lg"
+              >
+                {cardBody}
+              </a>
+            ) : (
+              <div class="ad-team-card">{cardBody}</div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ad-team-card-link .ad-team-photo {
+    transition: transform var(--motion-warm) var(--ease-quart);
+  }
+  .ad-team-card-link:hover .ad-team-photo {
+    transform: scale(1.03);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ad-team-card-link .ad-team-photo,
+    .ad-team-card-link:hover .ad-team-photo {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

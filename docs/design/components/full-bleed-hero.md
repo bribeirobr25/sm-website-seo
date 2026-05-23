@@ -118,6 +118,7 @@ A hero pattern where a single photograph fills the viewport bottom-anchored, wit
 ## 5. Performance constraints
 
 - **Hero `<img>` is the LCP element.** `fetchpriority="high"` + `decoding="async"` required. Image must be served at appropriate resolution per viewport — agency baseline uses Astro Image which handles this automatically for `public/img/` sources; for `<img>` sources without Astro Image, manually provide responsive `srcset`.
+- **`<picture>` + WebP companion pattern (auto-applied, added 2026-05-23).** The component auto-derives the WebP companion filename from the JPEG/PNG `imageSrc` prop (e.g. `/img/hero.jpg` → `/img/hero.webp`) and renders `<picture><source srcset="…webp" type="image/webp"><img src="…jpg"></picture>`. If the `.webp` file exists at the derived path, modern browsers fetch the smaller WebP; if missing, browsers transparently fall back to the JPEG. Generate the WebP via `npx sharp-cli -i hero.jpg -o hero.webp -f webp -q 55 resize 1920` (q55-q70 per `PERFORMANCE.md §5` Interim pattern table). Saltlines hero: 1.13 MB JPEG → 248 KB WebP (-78%).
 - **Max image weight:** 200KB at 1600px wide for desktop (AVIF/WebP per `PERFORMANCE.md` §5). Original JPEG at 1600px is acceptable up to 350KB.
 - **No scroll-reveal entry animations.** Measured ≤2/5 of coffee benchmarks. Skip for now; re-evaluate in 6-month UI/UX refresh.
 - **No background-attached fixed parallax.** Bad for mobile + bad for `prefers-reduced-motion`.

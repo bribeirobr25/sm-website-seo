@@ -1,0 +1,287 @@
+---
+/**
+ * ConsentGate — privacy-respecting iframe wrapper.
+ * Spec: docs/design/components/consent-gate.md (added 2026-05-23)
+ *
+ * DSGVO / RGPD / LGPD compliant pattern for any third-party iframe (Google
+ * Maps, YouTube/Vimeo, Instagram embed, OpenStreetMap, booking widget,
+ * Calendly, etc.).
+ *
+ * Renders a placeholder + "Load X" button on first paint. On click,
+ * (a) records that consent was granted for this provider,
+ * (b) swaps the placeholder for the actual iframe.
+ *
+ * Pairs with `lib/consent.ts` for persistence — consent record is keyed
+ * per-provider so a visitor can accept the map but reject the YouTube embed.
+ *
+ * Parent of: MapEmbed, VideoFacade, third-party booking widget embeds.
+ */
+
+interface Props {
+  /** Required — provider key for consent persistence (e.g., 'google-maps', 'youtube', 'instagram') */
+  provider: string;
+  /** Human-readable provider name shown in the button + description */
+  providerLabel: string;
+  /** Iframe src loaded on consent. Required. */
+  src: string;
+  /** Iframe title for accessibility */
+  title: string;
+  /** Iframe aspect ratio — '16/9' (default) | '4/3' | '1/1' | 'square' | custom CSS aspect-ratio value */
+  aspect?: string;
+  /** Optional placeholder image src (poster). Recommended for video; helpful for maps. */
+  placeholderSrc?: string;
+  /** Placeholder alt text */
+  placeholderAlt?: string;
+  /** Width × height for iframe attributes (defaults to 16/9 ratio 1280×720) */
+  width?: string | number;
+  height?: string | number;
+  /** Additional iframe sandbox attributes (default: 'allow-scripts allow-same-origin allow-popups allow-forms') */
+  sandbox?: string;
+  /** Allow attribute for iframe (e.g., 'autoplay; clipboard-write; encrypted-media; picture-in-picture' for YouTube) */
+  allow?: string;
+  /** Link to privacy policy for the provider's data handling */
+  privacyHref?: string;
+  /** UI copy (caller-supplied for i18n) */
+  copy: {
+    /** "This X is loaded from {providerLabel}." */
+    bodyTemplate: string;
+    /** "Loading the X means {providerLabel} can set cookies and process your IP address." */
+    consequenceTemplate: string;
+    /** "Load {providerLabel}" button label */
+    loadButtonTemplate: string;
+    /** "Privacy policy" link label */
+    privacyLinkLabel?: string;
+    /** "Always load X from {providerLabel}" checkbox label */
+    rememberLabel?: string;
+  };
+  class?: string;
+}
+
+const {
+  provider,
+  providerLabel,
+  src,
+  title,
+  aspect = '16/9',
+  placeholderSrc,
+  placeholderAlt = '',
+  width = 1280,
+  height = 720,
+  sandbox = 'allow-scripts allow-same-origin allow-popups allow-forms',
+  allow,
+  privacyHref,
+  copy,
+  class: extraClass = '',
+} = Astro.props;
+
+const aspectStyle = `aspect-ratio: ${aspect};`;
+const bodyText = copy.bodyTemplate.replace('{provider}', providerLabel);
+const consequenceText = copy.consequenceTemplate.replace('{provider}', providerLabel);
+const loadLabel = copy.loadButtonTemplate.replace('{provider}', providerLabel);
+const rememberLabel = (copy.rememberLabel ?? 'Always load {provider}').replace('{provider}', providerLabel);
+---
+
+<div
+  class:list={['ad-consent-gate', extraClass]}
+  data-provider={provider}
+  data-src={src}
+  data-title={title}
+  data-sandbox={sandbox}
+  data-allow={allow}
+  data-width={width}
+  data-height={height}
+  style={aspectStyle}
+>
+  <div class="ad-consent-placeholder" data-placeholder>
+    {placeholderSrc ? (
+      <img
+        src={placeholderSrc}
+        alt={placeholderAlt}
+        loading="lazy"
+        decoding="async"
+        class="ad-consent-poster"
+      />
+    ) : (
+      <div class="ad-consent-empty" aria-hidden="true"></div>
+    )}
+    <div class="ad-consent-overlay">
+      <div class="ad-consent-card">
+        <p class="ad-consent-body">{bodyText}</p>
+        <p class="ad-consent-consequence">{consequenceText}</p>
+        {privacyHref && copy.privacyLinkLabel && (
+          <a href={privacyHref} target="_blank" rel="noopener noreferrer" class="ad-consent-link">
+            {copy.privacyLinkLabel} →
+          </a>
+        )}
+        <div class="ad-consent-actions">
+          <button type="button" class="ad-consent-button" data-load>{loadLabel}</button>
+          <label class="ad-consent-remember">
+            <input type="checkbox" data-remember />
+            <span>{rememberLabel}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ad-consent-gate {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-elev);
+  }
+  .ad-consent-placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .ad-consent-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(2px) brightness(0.7);
+  }
+  .ad-consent-empty {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--color-surface-elev) 0%, var(--color-border) 100%);
+  }
+  .ad-consent-overlay {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+  }
+  .ad-consent-card {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    max-width: 28rem;
+    box-shadow: var(--shadow-elev);
+  }
+  .ad-consent-body {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .ad-consent-consequence {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0.5rem 0 0;
+  }
+  .ad-consent-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+  .ad-consent-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-top: 1rem;
+  }
+  .ad-consent-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1rem;
+    min-height: 44px;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--motion-fast) ease;
+  }
+  .ad-consent-button:hover {
+    background: var(--color-accent-deep);
+  }
+  .ad-consent-button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .ad-consent-remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'consent.embeds.v1';
+
+  function readEmbedConsents(): Record<string, boolean> {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function writeEmbedConsent(provider: string, granted: boolean) {
+    const current = readEmbedConsents();
+    current[provider] = granted;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+    } catch {
+      /* storage blocked — proceed in-session only */
+    }
+  }
+
+  function loadEmbed(gate: HTMLElement) {
+    const src = gate.dataset.src ?? '';
+    const title = gate.dataset.title ?? '';
+    const sandbox = gate.dataset.sandbox ?? '';
+    const allow = gate.dataset.allow ?? '';
+    const width = gate.dataset.width ?? '';
+    const height = gate.dataset.height ?? '';
+    const placeholder = gate.querySelector<HTMLElement>('[data-placeholder]');
+    if (placeholder) placeholder.remove();
+    const iframe = document.createElement('iframe');
+    iframe.src = src;
+    iframe.title = title;
+    if (sandbox) iframe.setAttribute('sandbox', sandbox);
+    if (allow) iframe.setAttribute('allow', allow);
+    if (width) iframe.setAttribute('width', String(width));
+    if (height) iframe.setAttribute('height', String(height));
+    iframe.setAttribute('loading', 'lazy');
+    iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;';
+    gate.appendChild(iframe);
+  }
+
+  // Process all gates on page load
+  document.querySelectorAll<HTMLElement>('.ad-consent-gate').forEach((gate) => {
+    const provider = gate.dataset.provider ?? '';
+    const consents = readEmbedConsents();
+    if (consents[provider]) {
+      loadEmbed(gate);
+      return;
+    }
+    const button = gate.querySelector<HTMLButtonElement>('[data-load]');
+    const remember = gate.querySelector<HTMLInputElement>('[data-remember]');
+    button?.addEventListener('click', () => {
+      if (remember?.checked) writeEmbedConsent(provider, true);
+      loadEmbed(gate);
+    });
+  });
+</script>

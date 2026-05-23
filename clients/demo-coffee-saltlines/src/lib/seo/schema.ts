@@ -56,7 +56,7 @@ export function restaurantSchema(): Record<string, unknown> {
     name: SITE.name,
     description: SITE.i18n.de.tagline,
     url: SITE.url,
-    image: `${SITE.url}/img/hero-surf-coffee.jpg`,
+    image: `${SITE.url}/img/hero-ocean.jpg`,
     telephone: SITE.phone,
     priceRange: '€€',
     servesCuisine: ['Coffee', 'Specialty Beverages'],

@@ -1,0 +1,196 @@
+---
+/**
+ * PricingTable — service / treatment / package list with prices.
+ * Spec: docs/design/components/pricing-table.md (added 2026-05-23)
+ *
+ * Hidden pricing kills bookings in beauty + health (per research). This is
+ * the canonical pattern: name + 1-line description + price + optional
+ * duration + optional CTA per row.
+ *
+ * NOT a 3-card "Basic / Pro / Enterprise" SaaS pricing layout. That's a
+ * different pattern (PricingTiers — not built; SMB clients rarely need it).
+ */
+
+interface PricingItem {
+  name: string;
+  description?: string;
+  /** Price string — flexible: "€45", "ab €60", "Auf Anfrage", "from €60" */
+  price: string;
+  /** Optional duration string (e.g., "45 min", "60-90 min") */
+  duration?: string;
+  /** Optional CTA per row */
+  ctaHref?: string;
+  ctaLabel?: string;
+  /** Optional tag/badge (e.g., "Beliebt", "Neu", "Saisonal") */
+  badge?: string;
+}
+
+interface PricingCategory {
+  label: string;
+  /** Optional category intro */
+  intro?: string;
+  items: PricingItem[];
+}
+
+interface Props {
+  /** Section header */
+  heading?: string;
+  /** Section eyebrow */
+  eyebrow?: string;
+  /** Intro paragraph */
+  intro?: string;
+  /** One flat list OR an array of categories (auto-renders sub-headers) */
+  categories: PricingCategory[];
+  /** Optional footer line — usually price disclaimers ("Preise inkl. MwSt", "Cancellation up to 24h before") */
+  footnote?: string;
+  /** Show duration column */
+  showDuration?: boolean;
+  class?: string;
+}
+
+const {
+  heading,
+  eyebrow,
+  intro,
+  categories,
+  footnote,
+  showDuration = true,
+  class: extraClass = '',
+} = Astro.props;
+---
+
+<section class:list={['ad-pricing', extraClass]} aria-labelledby={heading ? 'pricing-heading' : undefined}>
+  <div class="container-page py-16 sm:py-20">
+    {(eyebrow || heading || intro) && (
+      <header class="max-w-2xl mb-10 space-y-3">
+        {eyebrow && <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{eyebrow}</p>}
+        {heading && (
+          <h2 id="pricing-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">
+            {heading}
+          </h2>
+        )}
+        {intro && <p class="text-lg text-text-muted leading-relaxed">{intro}</p>}
+      </header>
+    )}
+
+    <div class="space-y-12 max-w-3xl">
+      {categories.map((cat) => (
+        <div>
+          <h3 class="ad-pricing-category-label">
+            {cat.label}
+          </h3>
+          {cat.intro && (
+            <p class="mt-2 text-sm text-text-muted leading-relaxed">{cat.intro}</p>
+          )}
+          <ul class="mt-5 list-none p-0 space-y-4">
+            {cat.items.map((item) => (
+              <li class="ad-pricing-row">
+                <div class="ad-pricing-main">
+                  <div class="ad-pricing-name-group">
+                    <h4 class="ad-pricing-name">{item.name}</h4>
+                    {item.badge && <span class="ad-pricing-badge">{item.badge}</span>}
+                  </div>
+                  {item.description && (
+                    <p class="ad-pricing-desc">{item.description}</p>
+                  )}
+                  {showDuration && item.duration && (
+                    <p class="ad-pricing-duration">{item.duration}</p>
+                  )}
+                </div>
+                <div class="ad-pricing-aside">
+                  <p class="ad-pricing-price">{item.price}</p>
+                  {item.ctaHref && item.ctaLabel && (
+                    <a href={item.ctaHref} class="ad-pricing-cta">{item.ctaLabel}</a>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    {footnote && (
+      <p class="mt-10 max-w-3xl text-xs italic text-text-muted leading-relaxed">{footnote}</p>
+    )}
+  </div>
+</section>
+
+<style>
+  .ad-pricing-category-label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+  .ad-pricing-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    align-items: start;
+  }
+  .ad-pricing-row:last-child { border-bottom: 0; padding-bottom: 0; }
+  .ad-pricing-name-group {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+  }
+  .ad-pricing-name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+  .ad-pricing-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: var(--radius-sm);
+  }
+  .ad-pricing-desc {
+    margin: 0.375rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+  .ad-pricing-duration {
+    margin: 0.25rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .ad-pricing-aside {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    align-items: flex-end;
+  }
+  .ad-pricing-price {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .ad-pricing-cta {
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .ad-pricing-cta:hover { color: var(--color-accent-deep); }
+</style>

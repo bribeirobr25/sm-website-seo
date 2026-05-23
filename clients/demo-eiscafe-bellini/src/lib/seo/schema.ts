@@ -54,7 +54,7 @@ export function restaurantSchema(): Record<string, unknown> {
     }));
 
   const business: Record<string, unknown> = {
-    '@type': 'Restaurant',
+    '@type': 'IceCreamShop',
     '@id': businessId,
     name: SITE.name,
     description: SITE.i18n.de.tagline,

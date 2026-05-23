@@ -1,0 +1,146 @@
+---
+/**
+ * MapEmbed — OpenStreetMap / MapTiler embed via ConsentGate.
+ * Spec: docs/design/components/map-embed.md (added 2026-05-23)
+ *
+ * Default uses OpenStreetMap's free embed (no consent strictly required —
+ * EU servers, no PII tracking). For commercial use or higher quality
+ * tiles, MapTiler is the agency recommendation (EU region, generous free
+ * tier, no consent prompt needed if you self-host the iframe).
+ *
+ * If using Google Maps, wrap in ConsentGate — Google Maps requires
+ * explicit consent per DSGVO.
+ */
+
+interface Props {
+  /** Latitude */
+  lat: number;
+  /** Longitude */
+  lng: number;
+  /** Zoom level (1-19, default 15 — neighborhood-level) */
+  zoom?: number;
+  /** Marker label */
+  markerLabel?: string;
+  /** Iframe title for a11y */
+  title: string;
+  /** Provider — 'openstreetmap' (default, no consent needed) | 'maptiler' (BYOK) | 'google' (requires ConsentGate) */
+  provider?: 'openstreetmap' | 'maptiler' | 'google';
+  /** MapTiler API key (only used if provider='maptiler') */
+  maptilerKey?: string;
+  /** Google Maps embed URL (only used if provider='google') */
+  googleEmbedUrl?: string;
+  /** Aspect ratio — default 16/9 desktop; component remains responsive */
+  aspect?: string;
+  /** Height override (CSS value, default uses aspect-ratio) */
+  height?: string;
+  class?: string;
+}
+
+const {
+  lat,
+  lng,
+  zoom = 15,
+  markerLabel,
+  title,
+  provider = 'openstreetmap',
+  maptilerKey,
+  googleEmbedUrl,
+  aspect = '16/9',
+  height,
+  class: extraClass = '',
+} = Astro.props;
+
+// Compute bbox for OpenStreetMap embed (small box around lat/lng)
+const bboxPadding = 0.005;
+const bbox = `${lng - bboxPadding},${lat - bboxPadding},${lng + bboxPadding},${lat + bboxPadding}`;
+const marker = `${lat},${lng}`;
+
+const src = (() => {
+  switch (provider) {
+    case 'openstreetmap':
+      return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${marker}`;
+    case 'maptiler':
+      return `https://api.maptiler.com/maps/streets-v2/?key=${maptilerKey}#${zoom}/${lat}/${lng}`;
+    case 'google':
+      return googleEmbedUrl ?? '';
+    default:
+      return '';
+  }
+})();
+
+const externalLink = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=${zoom}/${lat}/${lng}`;
+
+const containerStyle = height
+  ? `height: ${height};`
+  : `aspect-ratio: ${aspect};`;
+---
+
+<figure class:list={['ad-map-embed', extraClass]} style={containerStyle}>
+  {provider === 'google' ? (
+    <div class="ad-map-google-notice">
+      <p>⚠ For Google Maps, wrap this component in <code>ConsentGate</code> — Google Maps requires explicit DSGVO consent. See <code>docs/design/components/map-embed.md §5</code>.</p>
+    </div>
+  ) : (
+    <iframe
+      src={src}
+      title={title}
+      loading="lazy"
+      sandbox="allow-scripts allow-same-origin allow-popups"
+      class="ad-map-iframe"
+    ></iframe>
+  )}
+  {markerLabel && (
+    <figcaption class="ad-map-caption">
+      <a href={externalLink} target="_blank" rel="noopener noreferrer">
+        {markerLabel} ↗
+      </a>
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .ad-map-embed {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+  .ad-map-iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .ad-map-google-notice {
+    padding: 1rem;
+    background: var(--color-surface-elev);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+  .ad-map-google-notice code {
+    font-family: var(--font-mono);
+    background: var(--color-bg);
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--radius-sm);
+  }
+  .ad-map-caption {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(4px);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    color: var(--color-text);
+  }
+  .ad-map-caption a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .ad-map-caption a:hover {
+    color: var(--color-accent);
+  }
+</style>

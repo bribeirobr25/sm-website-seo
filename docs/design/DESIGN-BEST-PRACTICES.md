@@ -172,6 +172,32 @@ For any place-based multi-location client (trades chain, health network, gym cha
 
 Every site must use at least one real photo of the actual business (exterior, interior, product, or team). Stock photos are visible from orbit and destroy trust for local businesses. If the client has no photos, the first deliverable is a photo shoot or at minimum using their Google Maps / Instagram photos.
 
+### Demo / asset data discipline (added 2026-05-23, audit-driven)
+
+When sourcing images programmatically (Unsplash IDs, curl + URL templates, etc.) — for demo builds AND for real clients before final photography arrives — three failure modes have caused real shipped bugs and must be caught at commit time:
+
+1. **Verify the download isn't a 404 saved as `.jpg`.** A typo'd Unsplash photo ID returns a 29-byte HTML error response that `curl -o photo.jpg` happily writes as a "jpg." Verify after every batch:
+   ```bash
+   file public/img/*.jpg | grep -v "JPEG image data"   # any output = a non-JPEG file
+   ```
+   Caught the Adèle V5 `team-chef.jpg` bug — Chef de Cuisine portrait was an HTML 404 saved with a `.jpg` extension; visible as a broken image on production.
+
+2. **Verify distinct files for distinct subjects.** Curling two different Unsplash IDs to two different filenames can silently produce duplicates if both IDs return the same image (Unsplash redirects, hotlinking changes, mid-session migrations). Check md5 sums after a team-photo / staff-portrait batch:
+   ```bash
+   md5 -q public/img/team-*.jpg | sort | uniq -c | sort -rn | head -3   # any count > 1 = dupe
+   ```
+   Caught the Adèle V5 `team-sous.jpg` = `team-sommelier.jpg` bug — same person shown for two different team members.
+
+3. **Cross-check `tagline` / `meta description` / OG against page content.** Editorial copy lives in 3+ places (Hero H1 + page body + `SITE.i18n[locale].tagline` used by meta + OG). Drift between them produces "meta says X, page says Y" — search-result snippet and social preview misrepresent the site. After every menu / copy edit:
+   ```bash
+   grep -E "tagline|shortTagline" src/lib/site.ts
+   grep -E "Gänge|courses|Sorten" src/pages/index.astro | head -5
+   # diff the numerals / signature terms
+   ```
+   Caught the Adèle V5 tagline contradiction — `tagline: 'Drei Gänge'` while every page said "Fünf Gänge."
+
+These three checks now belong in `CHECKLIST.md §1 Static files in public/` (image integrity) and `CHECKLIST.md §HTML structure` (tagline parity) as pre-launch gates.
+
 ### Sourcing photos and favicon from the prospect intake
 
 Every prospect lands with a `docs/audit/[name].md` intake file (see `CHECKLIST.md` §9 for the template). That file lists every reachable image source — Instagram, Google Business Profile, Facebook, existing website, Trinks/Treatwell/Booksy profile pages, TripAdvisor, Yelp. **During scaffold, photos must be pulled from those sources in declared priority order. `<Placeholder>` components are a last-resort fallback, not a default.**

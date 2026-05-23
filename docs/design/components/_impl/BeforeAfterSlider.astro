@@ -1,0 +1,167 @@
+---
+/**
+ * BeforeAfterSlider — two-image overlay with draggable divider.
+ * Spec: docs/design/components/before-after-slider.md (added 2026-05-23)
+ *
+ * Uses native <input type="range"> for the drag handle — keyboard
+ * accessible by default, no custom JS for the slider mechanic.
+ * Image swap is pure CSS clip-path driven by the range value.
+ *
+ * Per research: 72% of salon clients want before/after photos before booking.
+ * Same conversion lift for trades (renovations), home-garden, dental.
+ */
+
+interface Props {
+  beforeSrc: string;
+  beforeAlt: string;
+  beforeLabel?: string;
+  afterSrc: string;
+  afterAlt: string;
+  afterLabel?: string;
+  /** Aspect ratio */
+  aspect?: 'square' | 'landscape' | 'portrait' | string;
+  /** Initial slider position 0-100 (default 50) */
+  initial?: number;
+  class?: string;
+}
+
+const {
+  beforeSrc,
+  beforeAlt,
+  beforeLabel = 'Before',
+  afterSrc,
+  afterAlt,
+  afterLabel = 'After',
+  aspect = 'landscape',
+  initial = 50,
+  class: extraClass = '',
+} = Astro.props;
+
+const aspectValue = ({
+  square: '1/1',
+  landscape: '4/3',
+  portrait: '3/4',
+}[aspect as string] ?? aspect);
+---
+
+<figure
+  class:list={['ad-ba-slider', extraClass]}
+  style={`aspect-ratio: ${aspectValue}; --ba-pos: ${initial}%;`}
+>
+  <img
+    src={beforeSrc}
+    alt={beforeAlt}
+    loading="lazy"
+    decoding="async"
+    class="ad-ba-img ad-ba-before"
+  />
+  <img
+    src={afterSrc}
+    alt={afterAlt}
+    loading="lazy"
+    decoding="async"
+    class="ad-ba-img ad-ba-after"
+  />
+  <span class="ad-ba-label ad-ba-label-before" aria-hidden="true">{beforeLabel}</span>
+  <span class="ad-ba-label ad-ba-label-after" aria-hidden="true">{afterLabel}</span>
+  <div class="ad-ba-divider" aria-hidden="true">
+    <span class="ad-ba-handle"></span>
+  </div>
+  <input
+    type="range"
+    min="0"
+    max="100"
+    value={initial}
+    aria-label={`Drag to compare ${beforeLabel} and ${afterLabel}`}
+    class="ad-ba-range"
+  />
+</figure>
+
+<style>
+  .ad-ba-slider {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    --ba-pos: 50%;
+    user-select: none;
+  }
+  .ad-ba-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .ad-ba-after {
+    clip-path: inset(0 0 0 var(--ba-pos));
+  }
+  .ad-ba-label {
+    position: absolute;
+    top: 0.75rem;
+    padding: 0.25rem 0.625rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(2px);
+  }
+  .ad-ba-label-before { left: 0.75rem; }
+  .ad-ba-label-after { right: 0.75rem; }
+  .ad-ba-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--ba-pos);
+    width: 2px;
+    background: white;
+    transform: translateX(-1px);
+    pointer-events: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+  }
+  .ad-ba-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: white;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ad-ba-handle::before {
+    content: '⇄';
+    color: var(--color-text);
+    font-size: 1.125rem;
+  }
+  .ad-ba-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: ew-resize;
+    margin: 0;
+  }
+  .ad-ba-range:focus-visible + .ad-ba-divider .ad-ba-handle {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.ad-ba-slider').forEach((slider) => {
+    const range = slider.querySelector<HTMLInputElement>('.ad-ba-range');
+    range?.addEventListener('input', () => {
+      slider.style.setProperty('--ba-pos', `${range.value}%`);
+    });
+  });
+</script>

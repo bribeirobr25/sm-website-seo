@@ -143,6 +143,7 @@ a.mnc-card:hover img {
 ## 5. Performance constraints
 
 - **Below-the-fold cards default to `loading="lazy"`** — Above-the-fold (first 3 cards in viewport) should override to `loading="eager"` to keep the LCP candidate clean.
+- **`<picture>` + WebP companion pattern (auto-applied, added 2026-05-23).** Same pattern as `FullBleedHero` — the component auto-derives the `.webp` filename from `imageSrc` and renders `<picture><source srcset="…webp" type="image/webp"><img src="…jpg"></picture>`. Generate WebP via `npx sharp-cli -i card.jpg -o card.webp -f webp -q 75 resize 1600`.
 - **Max image weight per card:** 80KB at 800×800 px (AVIF/WebP). Original JPEG at 800px ≤120KB acceptable.
 - **Crop discipline:** all cards in a category share the same crop ratio AND the same lighting register. Mixing landscape food shots with portrait-cocktail shots is the anti-pattern. The card grid is a product moment, not a photo gallery.
 - **Total card weight per category page:** 12 cards × 80KB = ~1MB. With Astro Image generating responsive `srcset`, mobile delivery drops to ~30KB/card. Acceptable.

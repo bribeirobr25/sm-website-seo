@@ -169,6 +169,30 @@ Drop this in the client's `vercel.json` and tune the CSP per site.
 }
 ```
 
+### Canonical CSP `frame-src` allowlist for third-party embeds (added 2026-05-23)
+
+If the client embeds any third-party iframe (map, video, booking widget, IG embed), expand `frame-src` to include the providers in use. Audit-driven rule: the 3-demo audit caught that maps + videos load via iframe but `frame-src 'self'` only allows same-origin iframes — embeds were silently broken until the policy was widened.
+
+Paste-ready allowlist for the agency's canonical providers:
+
+```
+frame-src 'self' https://www.google.com https://maps.google.com https://www.openstreetmap.org https://*.openstreetmap.org https://www.youtube-nocookie.com https://player.vimeo.com;
+```
+
+Add only the providers actually in use per client — every additional origin widens the attack surface.
+
+| Embed | Allowlist entry | Used by canonical component |
+|---|---|---|
+| Google Maps | `https://www.google.com https://maps.google.com` | `MapEmbed.astro` (Google variant, requires `ConsentGate`) |
+| OpenStreetMap | `https://www.openstreetmap.org https://*.openstreetmap.org` | `MapEmbed.astro` (default, no consent gate needed) |
+| YouTube | `https://www.youtube-nocookie.com` (privacy-preserving subdomain only) | `VideoFacade.astro` |
+| Vimeo | `https://player.vimeo.com` | `VideoFacade.astro` (Vimeo variant) |
+| Instagram | `https://www.instagram.com` | IG embed inside `ConsentGate.astro` |
+| Calendly | `https://calendly.com` | Calendly widget inside `ConsentGate.astro` |
+| OpenTable / Resy / Treatwell / Doctolib | per-provider domain | Booking-system widget inside `ConsentGate.astro` |
+
+**DSGVO note:** widening `frame-src` does NOT exempt third-party embeds from cookie-consent requirements. Google Maps / YouTube / Vimeo / Instagram all set tracking cookies on load — wrap them in the canonical `ConsentGate.astro` (per `LEGAL.md §DE` + the agency's `consent-gate.md` component spec) so the iframe only loads after explicit user opt-in.
+
 After deploy, verify with SecurityHeaders.com and MDN Observatory (Section 9).
 
 > **See also:** `INFRASTRUCTURE.md` §2 packages this `vercel.json` alongside the custom 404/500 + CI workflow + uptime monitoring as a single agency-template scaffold drop-in. Drop the whole scaffold in at project scaffold time rather than wiring each piece independently.

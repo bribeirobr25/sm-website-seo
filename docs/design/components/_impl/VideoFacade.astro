@@ -1,0 +1,154 @@
+---
+/**
+ * VideoFacade — lazy YouTube/Vimeo wrapper.
+ * Spec: docs/design/components/video-facade.md (added 2026-05-23)
+ *
+ * Performance: native YouTube/Vimeo embed = 1.3-2.6 MB on load.
+ * Facade = 15-40 KB (poster + small JS). Iframe loads only on click.
+ *
+ * Privacy: routes through youtube-nocookie.com for YouTube. For full DSGVO
+ * compliance, wrap in ConsentGate instead — this facade is for the
+ * performance win on sites where embed consent has already been granted
+ * (e.g., behind ConsentGate, or in non-EU markets).
+ *
+ * For DSGVO-required consent flow, use ConsentGate.astro directly with the
+ * same iframe src; this facade then becomes redundant.
+ */
+
+interface Props {
+  /** YouTube video ID (e.g., 'dQw4w9WgXcQ') OR full Vimeo URL */
+  videoId: string;
+  /** Provider — 'youtube' (default) | 'vimeo' */
+  provider?: 'youtube' | 'vimeo';
+  /** Custom poster image src — defaults to YouTube's auto-generated maxresdefault */
+  posterSrc?: string;
+  posterAlt: string;
+  /** Video title for iframe a11y */
+  title: string;
+  /** Aspect ratio — '16/9' (default) | '9/16' (shorts/reels) | '1/1' */
+  aspect?: string;
+  /** Autoplay when consent given + clicked. Off by default per UX best practice. */
+  autoplay?: boolean;
+  class?: string;
+}
+
+const {
+  videoId,
+  provider = 'youtube',
+  posterSrc,
+  posterAlt,
+  title,
+  aspect = '16/9',
+  autoplay = false,
+  class: extraClass = '',
+} = Astro.props;
+
+const defaultPoster =
+  provider === 'youtube'
+    ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`
+    : '';
+
+const src =
+  provider === 'youtube'
+    ? `https://www.youtube-nocookie.com/embed/${videoId}?rel=0${autoplay ? '&autoplay=1' : ''}`
+    : `https://player.vimeo.com/video/${videoId}${autoplay ? '?autoplay=1' : ''}`;
+---
+
+<div
+  class:list={['ad-video-facade', extraClass]}
+  style={`aspect-ratio: ${aspect};`}
+  data-video-src={src}
+  data-video-title={title}
+>
+  <button
+    type="button"
+    class="ad-video-poster"
+    data-video-play
+    aria-label={`Play video: ${title}`}
+  >
+    <img
+      src={posterSrc ?? defaultPoster}
+      alt={posterAlt}
+      loading="lazy"
+      decoding="async"
+      class="ad-video-poster-img"
+    />
+    <span class="ad-video-play-icon" aria-hidden="true">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </span>
+  </button>
+</div>
+
+<style>
+  .ad-video-facade {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: #000;
+  }
+  .ad-video-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .ad-video-poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--motion-warm) var(--ease-quart),
+                filter var(--motion-warm) var(--ease-quart);
+  }
+  .ad-video-poster:hover .ad-video-poster-img {
+    transform: scale(1.02);
+    filter: brightness(0.85);
+  }
+  .ad-video-play-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.5));
+    pointer-events: none;
+  }
+  .ad-video-poster:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: -3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ad-video-poster-img,
+    .ad-video-poster:hover .ad-video-poster-img {
+      transition: none;
+      transform: none;
+      filter: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.ad-video-facade').forEach((facade) => {
+    const button = facade.querySelector<HTMLButtonElement>('[data-video-play]');
+    const src = facade.dataset.videoSrc ?? '';
+    const title = facade.dataset.videoTitle ?? '';
+    button?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = title;
+      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;';
+      facade.innerHTML = '';
+      facade.appendChild(iframe);
+    }, { once: true });
+  });
+</script>

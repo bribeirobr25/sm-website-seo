@@ -4,14 +4,81 @@ import Header from '@/components/layout/Header.astro';
 import About from '@/components/sections/About.astro';
 import BookingMock from '@/components/sections/BookingMock.astro';
 import CourseList from '@/components/sections/CourseList.astro';
+import FAQ from '@/components/sections/FAQ.astro';
 import Hero from '@/components/sections/Hero.astro';
+import MapEmbed from '@/components/sections/MapEmbed.astro';
+import PricingTable from '@/components/sections/PricingTable.astro';
 import Press from '@/components/sections/Press.astro';
+import TeamGrid from '@/components/sections/TeamGrid.astro';
 import VisitPreview from '@/components/sections/VisitPreview.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/lib/site';
 
 const locale = 'en' as const;
 const t = SITE.i18n[locale];
+
+const teamMembers = [
+  {
+    name: 'Adèle Voss',
+    role: 'Chef de Cuisine · Owner',
+    photoSrc: '/img/team-chef.jpg',
+    photoAlt: 'Adèle Voss in the open kitchen',
+    specialty: 'Brandenburg season',
+    credentials: ['Tim Raue · Berlin 2010', 'Sylvestre · Paris 2013', 'Geranium · Copenhagen 2015'],
+  },
+  {
+    name: 'Theresa Köhler',
+    role: 'Sommelière',
+    photoSrc: '/img/team-sommelier.jpg',
+    photoAlt: 'Theresa Köhler pouring',
+    specialty: 'German natural wines',
+    credentials: ['IHK Sommelière 2016', 'Court of Master Sommeliers — Level 2'],
+  },
+  {
+    name: 'Lukas Brandt',
+    role: 'Sous-chef',
+    photoSrc: '/img/team-sous.jpg',
+    photoAlt: 'Lukas Brandt at the pass',
+    specialty: 'Fermentation · Sauces',
+    credentials: ['Restaurant Tim Raue · Berlin 2018-2022'],
+  },
+  {
+    name: 'Marlena Hartmann',
+    role: 'Restaurant Manager',
+    photoSrc: '/img/team-host.jpg',
+    photoAlt: 'Marlena Hartmann at the host stand',
+    specialty: 'Service · Reservations',
+    credentials: ['Hotel-Restaurant Vau · 8 years'],
+  },
+];
+
+const pricingCategories = [
+  {
+    label: 'Menu',
+    intro: 'Five courses, one seating per evening.',
+    items: [
+      { name: 'Tasting menu · 5 courses', description: 'Changes every Wednesday. Vegetarian variation on request.', price: '€ 145', duration: '~ 2.5 hours' },
+    ],
+  },
+  {
+    label: 'Pairings',
+    intro: 'Curated by sommelière Theresa Köhler.',
+    items: [
+      { name: 'Classic pairing · 5 glasses', description: 'Four German natural wines, one French bottle, always.', price: '€ 95' },
+      { name: 'Non-alcoholic pairing · 5 glasses', description: 'Fermented teas, verjus soda, sour-cherry shrub.', price: '€ 55', badge: 'New' },
+      { name: 'Champagne apéritif', description: 'Schloss Vaux Brut Nature, Rheingau, before the meal.', price: '+ € 14' },
+    ],
+  },
+];
+
+const faqItems = [
+  { question: 'Is there a dress code?', answer: 'Smart casual. Jackets suggested, not required. Sneakers welcome as long as they are clean.' },
+  { question: 'How far in advance should I book?', answer: 'Six to fourteen days. Friday and Saturday evenings are often booked two to three weeks ahead. We recommend the online form or a call between 14:00 and 17:00.' },
+  { question: 'How do you handle allergies and dietary restrictions?', answer: 'Please note them at least 48 hours before the reservation — via the booking form or by email. We rebuild the card. Gluten-free, lactose-free, vegetarian are straightforward. Vegan on request.' },
+  { question: 'What is the cancellation policy?', answer: 'Free cancellation up to 24 hours before. Late cancellations or no-show: € 75 per person fee. We source the ingredients on Wednesday.' },
+  { question: 'Is there parking?', answer: 'Behrenstraße parking garage two doors down. U-Bahn Französische Straße (U6) is three minutes on foot — the simpler option.' },
+  { question: 'Can the room be booked for a private event?', answer: 'Yes, Monday evenings. Maximum 22 seats. Three-month lead time, flat fee €4,500 (includes tasting menu + wine pairing).' },
+];
 ---
 
 <BaseLayout
@@ -24,9 +91,55 @@ const t = SITE.i18n[locale];
   <main id="main">
     <Hero locale={locale} />
     <CourseList locale={locale} />
+
+    <PricingTable
+      eyebrow={t.sections.pricing.eyebrow}
+      heading={t.sections.pricing.heading}
+      categories={pricingCategories}
+      footnote="Prices incl. VAT. Tip not included and not expected — we pay our team a union-rate-plus wage."
+      showDuration={true}
+    />
+
     <About locale={locale} />
+
+    <TeamGrid
+      eyebrow={t.sections.team.eyebrow}
+      heading={t.sections.team.heading}
+      members={teamMembers}
+      columns={4}
+      aspect="portrait"
+    />
+
     <Press locale={locale} />
+
+    <FAQ
+      eyebrow={t.sections.faq.eyebrow}
+      heading={t.sections.faq.heading}
+      items={faqItems}
+      singleOpen={true}
+      variant="flush"
+    />
+
     <BookingMock locale={locale} />
+
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.3em] uppercase text-accent-secondary-deep font-medium">{t.sections.map.eyebrow}</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.map.heading}</h2>
+        </div>
+        <MapEmbed
+          lat={SITE.geo.lat}
+          lng={SITE.geo.lng}
+          zoom={16}
+          markerLabel="Adèle · Behrenstraße 47"
+          title="Map: Adèle, Behrenstraße 47, 10117 Berlin"
+          provider="openstreetmap"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
     <VisitPreview locale={locale} />
   </main>
   <Footer locale={locale} />

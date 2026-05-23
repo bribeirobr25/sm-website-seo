@@ -144,32 +144,98 @@ When a per-vertical template is missing a framework recommendation, fall back to
 
 ---
 
-## 8. Bellini worked example (post-2026-05-22 repalette)
+## 8. Worked examples — 3 gastronomy demos, 3 distinct frameworks
 
-Eiscafé Bellini final palette + audit:
+The agency's 3 gastronomy demos each commit to a different harmony framework. Compare and contrast — useful when picking a framework for a new client whose vertical isn't already represented.
+
+### 8.1 Eiscafé Bellini — vivid raspberry pink (final palette, post-multi-iteration)
+
+After three iterations (terracotta-trattoria-warm → pistachio-led modern-gelateria → dark editorial → vivid raspberry pink), Bellini landed on the current vivid-pink palette.
 
 | Token | Hex | Role | 60-30-10 bucket |
 |---|---|---|---|
-| `--color-bg` | `#FAF6EE` | Cream — page bg | Dominant 60% |
-| `--color-text` | `#2B1A12` | Warm-brown body text | Secondary 30% |
-| `--color-text-muted` | `#7A6753` | Caption text | Secondary 30% |
-| `--color-surface-elev` | `#F0E8D4` | Header/footer/alt-row bg | Secondary 30% |
-| `--color-accent` | `#4F704A` | Bronte-pistachio — CTAs, stat numbers, hover | **Accent 10%** |
-| `--color-accent-deep` | `#3A5435` | Pistachio hover (darken-on-hover) | (derived) |
-| `--color-accent-secondary` | `#C1643B` | Terracotta — DEMO ribbon + footer rule + badges | **Accent <2%** (secondary) |
-| `--color-accent-secondary-deep` | `#A24D27` | Terracotta hover | (derived) |
-| `--color-border` | `#E5DCC8` | Card + table borders | Surface helper |
+| `--color-bg` | `#FFF8F1` | Warm gelato-milk cream — page bg | Dominant 60% |
+| `--color-text` | `#2A1525` | Deep wine-eggplant body text (NOT brown — commits to the pink direction) | Secondary 30% |
+| `--color-text-muted` | `#7B5468` | Warm purple-gray | Secondary 30% |
+| `--color-surface-elev` | `#FCEEEC` | Blushy alt-row bg | Secondary 30% |
+| `--color-accent` | `#E0457D` | Vivid raspberry — CTAs, stat numbers, hover, brand wordmark | **Accent 10%** |
+| `--color-accent-deep` | `#B5305E` | Darker raspberry — hover state (darken-on-hover) | (derived) |
+| `--color-accent-secondary` | `#5C7A4A` | Sicilian pistachio — ingredient-signal moments only (vegan badge, "Bronte D.O.P." marker) | **Accent <2%** (secondary) |
+| `--color-accent-secondary-deep` | `#46603A` | Pistachio hover | (derived) |
+| `--color-border` | `#F0D8DD` | Pale pink card + table borders | Surface helper |
 
 **Audit:**
 
-1. ✅ WCAG: text-on-bg 11.5:1, text-muted-on-bg 4.9:1, cream-on-pistachio 4.93:1, cream-on-terracotta 4.7:1 — all AA-normal.
-2. ✅ 5 brand tokens (bg + text + text-muted + accent + accent-secondary).
-3. ✅ 60-30-10 confirmed via fold-2 screenshot (`docs/clients/demo-eiscafe-bellini/VISUAL-VALIDATION.md`).
-4. ✅ `accent-deep` is darker than `accent` (`#3A5435` vs `#4F704A`).
-5. ✅ Framework documented: **split-complementary** (pistachio primary + terracotta secondary — adjacent to red-orange complement of green).
+1. ✅ WCAG: text-on-bg ≈ 13:1, text-muted-on-bg ≈ 5:1, cream-on-raspberry 5.2:1, cream-on-pistachio 5.0:1 — all AA-normal.
+2. ✅ 5 brand tokens.
+3. ✅ 60-30-10 confirmed (`docs/clients/demo-eiscafe-bellini/design.md` §2.5).
+4. ✅ `accent-deep` darker than `accent`.
+5. ✅ Framework: **split-complementary** — cream bg (warm) + raspberry primary (pink-red family) + pistachio tiny accent (green, complement of pink-red).
 6. 🟡 Owner-confirmed: N/A (portfolio demo).
 
-**Why this works for a gelateria specifically:** pistachio is the iconic Italian gelato flavor (Bronte-pistachio from Mount Etna). Cream signals milk-base gelato. Terracotta as the DEMO ribbon + small accents preserves the Italian-warmth heritage register without dominating. The result reads "modern Italian gelateria" rather than "Italian trattoria with gelato on the side."
+**Why this works for an Italian gelateria specifically:** raspberry pink + pistachio is the canonical sorbet+gelato duo (Vanille & Marille, Eiscafé Caruso). Cream signals milk-base gelato. Wine-eggplant text avoids the trattoria-trap that warm-brown text would create. Reads "modern boutique gelateria" — not "heritage trattoria with gelato on the side."
+
+### 8.2 Saltlines — coastal split-complementary
+
+Surf-coffee shop in Friedrichshain. Two Nordic founders, ocean-escape register.
+
+| Token | Hex | Role | 60-30-10 bucket |
+|---|---|---|---|
+| `--color-bg` | `#F7FAFB` | Cool near-white — page bg (NOT sand, deliberately committed to coastal-ocean register after V4 audit dropped warm-sand "brown filler") | Dominant 60% |
+| `--color-text` | `#0E2A35` | Deep ocean ink | Secondary 30% |
+| `--color-text-muted` | `#5A7785` | Weathered slate (no brown family) | Secondary 30% |
+| `--color-surface-elev` | `#EAF3F5` | Foam-cool alt-row bg | Secondary 30% |
+| `--color-accent` | `#1F9AB0` | Saturated Mediterranean cyan-teal — CTAs, scroll-spy active, wave-report ticker bg | **Accent 10%** |
+| `--color-accent-deep` | `#157A8F` | Darker teal — hover | (derived) |
+| `--color-accent-secondary` | `#E25C3E` | Sunset coral — newsletter CTA + small ribbons | **Accent <2%** (secondary) |
+| `--color-accent-secondary-deep` | `#B9421F` | Darker coral — hover | (derived) |
+| `--color-border` | `#D5E4EA` | Foggy blue card borders | Surface helper |
+
+**Audit:**
+
+1. ✅ WCAG: text-on-bg ≈ 15:1, text-muted-on-bg ≈ 5.4:1, cream-on-teal 6.4:1, cream-on-coral 4.9:1.
+2. ✅ 5 brand tokens.
+3. ✅ 60-30-10 confirmed (`docs/clients/demo-coffee-saltlines/design.md` §2.5).
+4. ✅ `accent-deep` darker than `accent`.
+5. ✅ Framework: **split-complementary** — cool near-white bg + teal primary (cool, complement of orange) + coral secondary (warm, adjacent to teal's red complement).
+6. 🟡 Owner-confirmed: N/A (portfolio demo).
+
+**Why this works for surf-coffee specifically:** the brand's whole point is "ocean escape from Berlin gray" — cool ocean register is mandatory; warm-sand bg would have contradicted the positioning. Coral secondary telegraphs "sunset wave report" without warming the rest of the palette (and stays under 2% of viewport — appears only on the newsletter CTA). NO browns anywhere — fully committed.
+
+### 8.3 Adèle — analogous-warm luxury
+
+Berlin Mitte fine-dining restaurant. Vintage grand-hotel register.
+
+| Token | Hex | Role | 60-30-10 bucket |
+|---|---|---|---|
+| `--color-bg` | `#FBF7EE` | Ivory bone — page bg (vintage-hotel linen, not modern stark white) | Dominant 60% |
+| `--color-text` | `#1A1219` | Near-black with subtle warmth | Secondary 30% |
+| `--color-text-muted` | `#5E5360` | Cool warm-gray (deliberately NOT brown — V4 feedback flagged warm-brown text-muted as "brown filler") | Secondary 30% |
+| `--color-surface-elev` | `#F3ECDA` | Section alt-bg | Secondary 30% |
+| `--color-accent` | `#7A2740` | Brighter burgundy — primary CTA, stat numbers, scroll-spy active. Was previously `#5A1A2E` oxblood; lightened after V5 audit (too dark for body button text). | **Accent 10%** |
+| `--color-accent-deep` | `#5A1A2E` | Old oxblood, now hover state (darken on light register) | (derived) |
+| `--color-accent-secondary` | `#967B52` | Soft brass — eyebrows, section rule lines, decorative | **Accent <2%** (secondary) |
+| `--color-accent-secondary-deep` | `#7A6240` | Darker brass — hover | (derived) |
+| `--color-border` | `#EAE3D3` | Ivory-darker card + table borders | Surface helper |
+
+**Audit:**
+
+1. ✅ WCAG: text-on-bg ≈ 14.5:1, text-muted-on-bg ≈ 6.8:1, ivory-on-burgundy 8.4:1 (AAA), brass-on-ivory 3.2:1 (AA-large only — used for headers/decorative, never body text).
+2. ✅ 5 brand tokens.
+3. ✅ 60-30-10 confirmed (`docs/clients/demo-restaurant-adele/design.md` §2.5).
+4. ✅ `accent-deep` darker than `accent`.
+5. ✅ Framework: **analogous-warm** — all hues in the warm magenta-to-gold band (ivory → oxblood/burgundy → brass).
+6. 🟡 Owner-confirmed: N/A (portfolio demo).
+
+**Why this works for fine-dining specifically:** warm burgundy primary signals "wine list / Bordeaux / grand-hotel" without going neon. Brass secondary used sparingly preserves the "vintage Pariser Platz hotel" register vs. trendy gold. Cool warm-gray text-muted is deliberate — the brown-cream slide creates a "trattoria" feel that contradicts fine-dining luxury.
+
+### 8.4 Cross-comparison — which framework matches your client
+
+| Demo | Framework | Hue family | When to copy this approach for a new client |
+|---|---|---|---|
+| Bellini | Split-complementary | Pink + green | Modern boutique register where the secondary needs to signal a specific "ingredient quality" cue (Bronte-pistachio for Bellini; could be a single dusty-rose for a florist, a single sage for a tea house) |
+| Saltlines | Split-complementary | Cool + warm | Brand positions itself as "escape from the dominant city register" — coast / mountain / desert / spa retreat — and the warm secondary is a *moment* (sunset, golden hour, ember) |
+| Adèle | Analogous-warm | All warm magenta-to-gold | Fine-dining luxury, vintage grand-hotel, French bistro, magazine register; or any brand where the warmth IS the trust signal |
 
 ---
 

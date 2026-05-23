@@ -2,14 +2,53 @@
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
 import About from '@/components/sections/About.astro';
+import FAQ from '@/components/sections/FAQ.astro';
 import Hero from '@/components/sections/Hero.astro';
+import Lightbox from '@/components/sections/Lightbox.astro';
+import MapEmbed from '@/components/sections/MapEmbed.astro';
 import MenuPreview from '@/components/sections/MenuPreview.astro';
+import Timeline from '@/components/sections/Timeline.astro';
 import VisitPreview from '@/components/sections/VisitPreview.astro';
+import Testimonial from '@/components/ui/Testimonial.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/lib/site';
 
 const locale = 'de' as const;
 const t = SITE.i18n[locale];
+
+const timelineSteps = [
+  { title: 'Bio-Milch aus Brandenburg', description: 'Dreißig Kilometer vor unserer Tür — täglich frische Lieferung.' },
+  { title: 'Italienische Rezepte', description: 'Die handgeschriebene Mappe von Rosa, mitgebracht aus Treviso 1987.' },
+  { title: 'Frisch täglich, 4:30 Uhr', description: 'Giulia steht jeden Morgen an der Maschine. Vor dem ersten Gast ist alles fertig.' },
+  { title: 'Über die Theke', description: 'Bis 22 Uhr im Sommer. Wenn die Schale leer ist, machen wir die nächste — niemals aus dem Tiefkühler.' },
+];
+
+const galleryImages = [
+  { thumbSrc: '/img/category-creme.jpg', fullSrc: '/img/category-creme.jpg', alt: 'Cremiges Vanille-Gelato im Glas mit Erdbeeren' },
+  { thumbSrc: '/img/category-sorbetti.jpg', fullSrc: '/img/category-sorbetti.jpg', alt: 'Bunte Sorbetti in Waffeln — Erdbeere, Mango, Zitrone' },
+  { thumbSrc: '/img/category-spezialitaeten.jpg', fullSrc: '/img/category-spezialitaeten.jpg', alt: 'Affogato mit Vanilleeis und heißem Espresso' },
+  { thumbSrc: '/img/category-eistorten.jpg', fullSrc: '/img/category-eistorten.jpg', alt: 'Eistorte mit Frucht-Topping' },
+  { thumbSrc: '/img/gelato-counter-alt.jpg', fullSrc: '/img/gelato-counter-alt.jpg', alt: 'Vitrine mit handgemachtem grünem Pistazien-Gelato' },
+  { thumbSrc: '/img/gelato-counter-alt2.jpg', fullSrc: '/img/gelato-counter-alt2.jpg', alt: 'Cremige Vanilleeis-Sorte in der Vitrine' },
+  { thumbSrc: '/img/hero-gelato-counter.jpg', fullSrc: '/img/hero-gelato-counter.jpg', alt: 'Eiscafé Bellini — Vitrine mit handgemachtem italienischen Gelato' },
+  { thumbSrc: '/img/berlin-street.jpg', fullSrc: '/img/berlin-street.jpg', alt: 'Husemannstraße im Sommer — Tische vor dem Laden' },
+];
+
+const faqItems = [
+  { question: 'Habt ihr vegane Sorten?', answer: 'Ja. Alle acht Sorbetti sind vegan — auf Wasserbasis mit Fruchtpüree. Bei den Creme-Sorten ist die Bourbon-Vanille mit Hafermilch verfügbar (bitte am Tresen nachfragen).' },
+  { question: 'Welche Allergene sind in eurem Eis?', answer: 'Pistazien, Mandeln, Haselnüsse, Bourbon-Vanille — gekennzeichnet auf jeder Schale. Nüsse, Milch, Soja, Gluten: jede Sorte wird auf der Karte deklariert. Bei Unsicherheit fragt unsere Mitarbeiter — wir kennen jede Rezeptur.' },
+  { question: 'Wie lange vorher müssen wir eine Eistorte bestellen?', answer: 'Mindestens fünf Tage. Bei besonderen Wünschen (Foto-Aufleger, Cassata Siciliana, mehrstöckige Bombe) gerne sieben bis zehn Tage. Anruf oder Mail an hallo@eiscafe-bellini.de.' },
+  { question: 'Sind Hunde willkommen?', answer: 'Drinnen unter dem Tisch immer. Draußen am Husemannstraßen-Eck noch besser. Wasserschüssel steht am Eingang.' },
+  { question: 'Habt ihr im Winter auch frische Sorten?', answer: 'Ja, aber weniger. Wenn die Erdbeere nicht mehr im Spreewald wächst, machen wir kein Erdbeer-Eis — kein Tiefkühlobst. Stattdessen mehr Schokoladen-Variationen, Bratapfel, Marroni-Creme.' },
+];
+
+const testimonial = {
+  quote: 'Wir kommen seit Giulias erstem Tag her. Das Schoko-Piemonte ist genau so wie ich es Sommer 2003 zum ersten Mal gegessen habe. Stabilität in dieser Stadt — selten.',
+  name: 'Beate Westphal',
+  role: 'Stammkundin seit 2003 · Prenzlauer Berg',
+  rating: 5 as const,
+  dateGiven: '2025-09-08',
+};
 ---
 
 <BaseLayout
@@ -22,7 +61,68 @@ const t = SITE.i18n[locale];
   <main id="main">
     <Hero locale={locale} />
     <MenuPreview locale={locale} />
+
+    <Timeline
+      eyebrow={t.sections.timeline.eyebrow}
+      heading={t.sections.timeline.heading}
+      intro={t.sections.timeline.intro}
+      steps={timelineSteps}
+      numbering="arabic"
+    />
+
     <About locale={locale} />
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-10 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{t.sections.gallery.eyebrow}</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.gallery.heading}</h2>
+          <p class="text-lg text-text-muted leading-relaxed">{t.sections.gallery.intro}</p>
+        </div>
+        <Lightbox id="bellini-gallery" images={galleryImages} columns={4} aspect="square" />
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-20 max-w-3xl">
+        <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold mb-4">{t.sections.testimonialEyebrow}</p>
+        <Testimonial
+          quote={testimonial.quote}
+          name={testimonial.name}
+          role={testimonial.role}
+          rating={testimonial.rating}
+          dateGiven={testimonial.dateGiven}
+          variant="card"
+        />
+      </div>
+    </section>
+
+    <FAQ
+      eyebrow={t.sections.faq.eyebrow}
+      heading={t.sections.faq.heading}
+      items={faqItems}
+      singleOpen={true}
+      variant="flush"
+    />
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{t.sections.map.eyebrow}</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.map.heading}</h2>
+        </div>
+        <MapEmbed
+          lat={SITE.geo.lat}
+          lng={SITE.geo.lng}
+          zoom={16}
+          markerLabel="Eiscafé Bellini · Husemannstraße 28"
+          title="Karte: Eiscafé Bellini, Husemannstraße 28, 10435 Berlin"
+          provider="openstreetmap"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
     <VisitPreview locale={locale} />
   </main>
   <Footer locale={locale} />

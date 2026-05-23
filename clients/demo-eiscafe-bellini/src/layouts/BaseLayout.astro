@@ -31,6 +31,38 @@ const schema = JSON.stringify(restaurantSchema());
 const htmlLang = locale === 'de' ? 'de-DE' : 'en-US';
 const ogLocale = htmlLang.replace('-', '_');
 const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
+
+// BreadcrumbList JSON-LD per SEO.md §schema — skip on home (single-segment).
+// Derives from URL path: /en/gelato → [Home → Menu], /datenschutz → [Home → Privacy], etc.
+function deriveBreadcrumbs(pathname: string, pageTitle: string) {
+  const cleanPath = pathname.replace(/\/$/, '');
+  const segments = cleanPath.split('/').filter(Boolean);
+  // Skip if home page (no segments, or just locale prefix like /en)
+  if (segments.length === 0) return null;
+  if (segments.length === 1 && segments[0] === 'en') return null;
+  const items: Array<{ name: string; href: string }> = [
+    { name: locale === 'de' ? 'Startseite' : 'Home', href: locale === 'de' ? '/' : '/en/' },
+  ];
+  // For multi-segment paths after locale, add intermediate crumbs;
+  // for typical single-page-after-home (e.g., /gelato), just add the leaf page.
+  const lastSegment = segments[segments.length - 1];
+  items.push({ name: pageTitle, href: cleanPath });
+  return items;
+}
+
+const breadcrumbItems = deriveBreadcrumbs(Astro.url.pathname, title);
+const breadcrumbSchema = breadcrumbItems
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbItems.map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: b.name,
+        item: new URL(b.href, SITE.url).toString(),
+      })),
+    }
+  : null;
 ---
 
 <!doctype html>
@@ -49,6 +81,8 @@ const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
       <link rel="alternate" hreflang={otherLocale === 'en' ? 'en' : 'de'} href={alternateLocaleUrl} />
     )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
@@ -67,6 +101,9 @@ const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
     <meta name="twitter:image" content={ogImage} />
 
     <script is:inline type="application/ld+json" set:html={schema} />
+    {breadcrumbSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    )}
   </head>
   <body>
     <a

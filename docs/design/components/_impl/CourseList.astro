@@ -1,0 +1,78 @@
+---
+/**
+ * CourseList — Adèle home tasting-menu teaser.
+ * Centered editorial list with Roman numerals (I–V) — magazine tasting-card
+ * aesthetic that replaces a card-grid menu preview. Visually distinct from
+ * Bellini's MenuCard rows and Saltlines's PhotoGrid.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const items = SITE.menu.tasting.items;
+
+const eyebrow = locale === 'de' ? 'Menü dieser Woche' : "This week's menu";
+const h2 = locale === 'de' ? 'Fünf Gänge.' : 'Five courses.';
+const sub =
+  locale === 'de'
+    ? 'Geschrieben am Sonntag, zum ersten Mal gekocht am Mittwoch, sieben Tage lang gültig.'
+    : "Written Sunday, first cooked Wednesday, in service for seven days.";
+
+const ctaLabel = locale === 'de' ? 'Ganzes Menü ansehen' : 'See the full menu';
+const ctaHref = locale === 'de' ? '/karte' : '/en/menu';
+
+const numerals = ['I', 'II', 'III', 'IV', 'V'];
+---
+
+<section class="bg-surface-elev">
+  <div class="container-page py-20 sm:py-28">
+    <header class="text-center max-w-2xl mx-auto mb-14 space-y-4">
+      <p class="text-[11px] tracking-[0.3em] uppercase text-accent-secondary-deep font-medium">
+        {eyebrow}
+      </p>
+      <h2 class="font-display text-4xl sm:text-5xl text-text leading-[1.05]">
+        {h2}
+      </h2>
+      <p class="text-lg text-text-muted leading-relaxed">
+        {sub}
+      </p>
+    </header>
+
+    <ol class="max-w-2xl mx-auto space-y-10 list-none">
+      {items.map((item: { de: { name: string; desc: string }; en: { name: string; desc: string } }, i: number) => (
+        <li class="course-row grid grid-cols-[48px_1fr] gap-6 items-baseline">
+          <span class="course-numeral font-display text-2xl text-accent leading-none">
+            {numerals[i] ?? `${i + 1}`}
+          </span>
+          <div class="space-y-2 pb-8 border-b border-border">
+            <h3 class="font-display text-xl sm:text-2xl text-text leading-tight">
+              {item[locale].name}
+            </h3>
+            <p class="text-text-muted leading-relaxed">
+              {item[locale].desc}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="text-center mt-14">
+      <a
+        href={ctaHref}
+        class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-accent hover:text-accent-deep transition-colors font-medium border-b border-accent/40 hover:border-accent pb-1"
+      >
+        {ctaLabel}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .course-row:last-child > div {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+</style>

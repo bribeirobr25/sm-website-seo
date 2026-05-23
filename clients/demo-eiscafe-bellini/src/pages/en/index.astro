@@ -2,14 +2,53 @@
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
 import About from '@/components/sections/About.astro';
+import FAQ from '@/components/sections/FAQ.astro';
 import Hero from '@/components/sections/Hero.astro';
+import Lightbox from '@/components/sections/Lightbox.astro';
+import MapEmbed from '@/components/sections/MapEmbed.astro';
 import MenuPreview from '@/components/sections/MenuPreview.astro';
+import Timeline from '@/components/sections/Timeline.astro';
 import VisitPreview from '@/components/sections/VisitPreview.astro';
+import Testimonial from '@/components/ui/Testimonial.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/lib/site';
 
 const locale = 'en' as const;
 const t = SITE.i18n[locale];
+
+const timelineSteps = [
+  { title: 'Organic milk from Brandenburg', description: 'Thirty kilometres from our door — delivered fresh daily.' },
+  { title: 'Italian recipes', description: "Rosa's handwritten folder, brought from Treviso in 1987." },
+  { title: 'Fresh daily, 04:30', description: "Giulia at the machine every morning. Everything ready before the first guest." },
+  { title: 'Across the counter', description: 'Until 22:00 in summer. When a tub empties, we make the next one — never from a freezer.' },
+];
+
+const galleryImages = [
+  { thumbSrc: '/img/category-creme.jpg', fullSrc: '/img/category-creme.jpg', alt: 'Creamy vanilla gelato in a glass with strawberries' },
+  { thumbSrc: '/img/category-sorbetti.jpg', fullSrc: '/img/category-sorbetti.jpg', alt: 'Colorful fruit sorbetti in cones — strawberry, mango, lemon' },
+  { thumbSrc: '/img/category-spezialitaeten.jpg', fullSrc: '/img/category-spezialitaeten.jpg', alt: 'Affogato with vanilla gelato and hot espresso' },
+  { thumbSrc: '/img/category-eistorten.jpg', fullSrc: '/img/category-eistorten.jpg', alt: 'Ice-cream cake with fruit topping' },
+  { thumbSrc: '/img/gelato-counter-alt.jpg', fullSrc: '/img/gelato-counter-alt.jpg', alt: 'Display case with handmade pistachio gelato' },
+  { thumbSrc: '/img/gelato-counter-alt2.jpg', fullSrc: '/img/gelato-counter-alt2.jpg', alt: 'Creamy vanilla gelato variety in the display case' },
+  { thumbSrc: '/img/hero-gelato-counter.jpg', fullSrc: '/img/hero-gelato-counter.jpg', alt: 'Eiscafé Bellini — display case of handmade Italian gelato' },
+  { thumbSrc: '/img/berlin-street.jpg', fullSrc: '/img/berlin-street.jpg', alt: 'Husemannstraße in summer — tables out front' },
+];
+
+const faqItems = [
+  { question: 'Do you have vegan flavors?', answer: 'Yes. All eight sorbetti are vegan — water-based with fruit purée. From the milk-based flavors, Bourbon vanilla is available with oat milk on request.' },
+  { question: 'What allergens are in your gelato?', answer: 'Pistachio, almond, hazelnut, Bourbon vanilla — labelled on every tub. Nuts, milk, soy, gluten: every flavor is declared on the menu card. If unsure, ask at the counter — we know every recipe.' },
+  { question: 'How far in advance must we order an ice-cream cake?', answer: 'At least five days. For special requests (photo topper, Cassata Siciliana, multi-tier bombe) seven to ten days. Call or email hallo@eiscafe-bellini.de.' },
+  { question: 'Are dogs welcome?', answer: 'Inside under the table always. Out front on Husemannstraße even better. Water bowl at the entrance.' },
+  { question: 'Do you have fresh flavors in winter?', answer: 'Yes, but fewer. When strawberries are out of season in the Spreewald, we do not make strawberry gelato — no frozen fruit. Instead more chocolate variations, baked apple, chestnut cream.' },
+];
+
+const testimonial = {
+  quote: "We have been coming since Giulia's first day. The Schoko-Piemonte tastes exactly like it did the first time I had it in summer 2003. Stability in this city — rare.",
+  name: 'Beate Westphal',
+  role: 'Regular since 2003 · Prenzlauer Berg',
+  rating: 5 as const,
+  dateGiven: '2025-09-08',
+};
 ---
 
 <BaseLayout
@@ -22,7 +61,68 @@ const t = SITE.i18n[locale];
   <main id="main">
     <Hero locale={locale} />
     <MenuPreview locale={locale} />
+
+    <Timeline
+      eyebrow={t.sections.timeline.eyebrow}
+      heading={t.sections.timeline.heading}
+      intro={t.sections.timeline.intro}
+      steps={timelineSteps}
+      numbering="arabic"
+    />
+
     <About locale={locale} />
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-10 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{t.sections.gallery.eyebrow}</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.gallery.heading}</h2>
+          <p class="text-lg text-text-muted leading-relaxed">{t.sections.gallery.intro}</p>
+        </div>
+        <Lightbox id="bellini-gallery" images={galleryImages} columns={4} aspect="square" />
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-20 max-w-3xl">
+        <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold mb-4">{t.sections.testimonialEyebrow}</p>
+        <Testimonial
+          quote={testimonial.quote}
+          name={testimonial.name}
+          role={testimonial.role}
+          rating={testimonial.rating}
+          dateGiven={testimonial.dateGiven}
+          variant="card"
+        />
+      </div>
+    </section>
+
+    <FAQ
+      eyebrow={t.sections.faq.eyebrow}
+      heading={t.sections.faq.heading}
+      items={faqItems}
+      singleOpen={true}
+      variant="flush"
+    />
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{t.sections.map.eyebrow}</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.map.heading}</h2>
+        </div>
+        <MapEmbed
+          lat={SITE.geo.lat}
+          lng={SITE.geo.lng}
+          zoom={16}
+          markerLabel="Eiscafé Bellini · Husemannstraße 28"
+          title="Map: Eiscafé Bellini, Husemannstraße 28, 10435 Berlin"
+          provider="openstreetmap"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
     <VisitPreview locale={locale} />
   </main>
   <Footer locale={locale} />

@@ -1,0 +1,193 @@
+---
+/**
+ * Testimonial — single named + photographed testimonial card.
+ * Spec: docs/design/components/testimonial.md (added 2026-05-23)
+ *
+ * Per the 2,000-page conversion study cited in the research:
+ *   - +34% conversion lift from a testimonial section vs none
+ *   - Named + photographed beats anonymous wall by 22%
+ *   - First testimonial above the fold > below the fold
+ *   - Verifiable (links to Google review, LinkedIn) > unverifiable
+ *
+ * Single-card variant is the default. For 2-3 cards in a row, use multiple
+ * instances inside a parent grid; the agency explicitly does NOT ship a
+ * carousel variant (carousels register <1% past-slide-1 interaction).
+ */
+
+interface Props {
+  /** The quoted testimonial body */
+  quote: string;
+  /** Person's name — required for "named + photographed" pattern */
+  name: string;
+  /** Role / title / location qualifier (e.g., "Stammkundin seit 2019" or "Marketing Director, Acme GmbH") */
+  role?: string;
+  /** Person's headshot — square recommended. Required for "+22% lift" pattern. */
+  photoSrc?: string;
+  photoAlt?: string;
+  /** Optional source link (Google review, LinkedIn, Trustpilot, etc.) — adds verifiability */
+  sourceHref?: string;
+  sourceLabel?: string;
+  /** Optional rating (1-5 stars rendered) */
+  rating?: 1 | 2 | 3 | 4 | 5;
+  /** Date the testimonial was given */
+  dateGiven?: string;
+  /** Optional star-rating display threshold for low ratings (default true = always show) */
+  showStars?: boolean;
+  /** Visual variant — 'card' (default, bordered + shadow) | 'flush' (no border, magazine-quote) */
+  variant?: 'card' | 'flush';
+  class?: string;
+}
+
+const {
+  quote,
+  name,
+  role,
+  photoSrc,
+  photoAlt,
+  sourceHref,
+  sourceLabel,
+  rating,
+  dateGiven,
+  showStars = true,
+  variant = 'card',
+  class: extraClass = '',
+} = Astro.props;
+
+const starString = rating
+  ? '★'.repeat(rating) + '☆'.repeat(5 - rating)
+  : null;
+---
+
+<figure
+  class:list={['ad-testimonial', `ad-testimonial--${variant}`, extraClass]}
+  itemscope
+  itemtype="https://schema.org/Review"
+>
+  {rating && showStars && (
+    <p
+      class="ad-testimonial-rating"
+      aria-label={`Rating: ${rating} out of 5 stars`}
+      itemprop="reviewRating"
+      itemscope
+      itemtype="https://schema.org/Rating"
+    >
+      <meta itemprop="ratingValue" content={String(rating)} />
+      <meta itemprop="bestRating" content="5" />
+      <span aria-hidden="true">{starString}</span>
+    </p>
+  )}
+
+  <blockquote class="ad-testimonial-quote" itemprop="reviewBody">
+    <p>&ldquo;{quote}&rdquo;</p>
+  </blockquote>
+
+  <figcaption class="ad-testimonial-attribution" itemprop="author" itemscope itemtype="https://schema.org/Person">
+    {photoSrc && (
+      <img
+        src={photoSrc}
+        alt={photoAlt ?? name}
+        loading="lazy"
+        decoding="async"
+        class="ad-testimonial-photo"
+        width="64"
+        height="64"
+      />
+    )}
+    <div class="ad-testimonial-meta">
+      <p class="ad-testimonial-name" itemprop="name">{name}</p>
+      {role && <p class="ad-testimonial-role">{role}</p>}
+      {(dateGiven || sourceHref) && (
+        <p class="ad-testimonial-source">
+          {dateGiven && (
+            <time itemprop="datePublished" datetime={dateGiven}>{dateGiven}</time>
+          )}
+          {dateGiven && sourceHref && ' · '}
+          {sourceHref && (
+            <a href={sourceHref} target="_blank" rel="noopener noreferrer nofollow">
+              {sourceLabel ?? 'Source'} ↗
+            </a>
+          )}
+        </p>
+      )}
+    </div>
+  </figcaption>
+</figure>
+
+<style>
+  .ad-testimonial {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin: 0;
+  }
+  .ad-testimonial--card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+  }
+  @media (min-width: 640px) {
+    .ad-testimonial--card { padding: 2rem; }
+  }
+  .ad-testimonial--flush {
+    padding: 0;
+  }
+  .ad-testimonial-rating {
+    margin: 0;
+    color: var(--color-accent);
+    font-size: 1.125rem;
+    letter-spacing: 0.1em;
+  }
+  .ad-testimonial-quote {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .ad-testimonial-quote p { margin: 0; }
+  .ad-testimonial-attribution {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .ad-testimonial-photo {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+  .ad-testimonial-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .ad-testimonial-name {
+    margin: 0;
+    color: var(--color-text);
+    font-weight: 500;
+  }
+  .ad-testimonial-role {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+  .ad-testimonial-source {
+    margin: 0.25rem 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+  .ad-testimonial-source a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

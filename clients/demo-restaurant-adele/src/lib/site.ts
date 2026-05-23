@@ -69,8 +69,8 @@ export const SITE = {
   // Translations
   i18n: {
     de: {
-      tagline: 'Drei Gänge. Eine Saison. Eine Karte, die jede Woche neu geschrieben wird.',
-      shortTagline: 'Drei Gänge. Eine Saison.',
+      tagline: 'Fünf Gänge. Eine Saison. Eine Karte, die jede Woche neu geschrieben wird.',
+      shortTagline: 'Fünf Gänge. Eine Saison.',
       demoBanner: 'BEISPIEL — Demo-Website von sm-website-seo. Kein echtes Geschäft.',
       hoursLabel: {
         summer: 'RESTAURANT · Di–Do 18–23 · Fr/Sa 18–24',
@@ -100,11 +100,17 @@ export const SITE = {
         accept: 'Alle akzeptieren',
         reject: 'Alle ablehnen',
       },
+      sections: {
+        pricing: { eyebrow: 'Preise', heading: 'Was kostet ein Abend bei uns.' },
+        team: { eyebrow: 'Das Team', heading: 'Vier Personen, eine Karte.' },
+        faq: { eyebrow: 'Häufig gefragt', heading: 'Was Sie wissen sollten, bevor Sie reservieren.' },
+        map: { eyebrow: 'Anfahrt', heading: 'Behrenstraße 47 — drei Minuten von Unter den Linden.' },
+      },
       languageLabel: 'Sprache',
     },
     en: {
-      tagline: 'Three courses. One season. A menu rewritten every week.',
-      shortTagline: 'Three courses. One season.',
+      tagline: 'Five courses. One season. A menu rewritten every week.',
+      shortTagline: 'Five courses. One season.',
       demoBanner: 'DEMO — A portfolio sample by sm-website-seo. Fictional business.',
       hoursLabel: {
         summer: 'RESTAURANT · Tue–Thu 18–23 · Fri/Sat 18–24',
@@ -133,6 +139,12 @@ export const SITE = {
         bodyAfter: '.',
         accept: 'Accept all',
         reject: 'Reject all',
+      },
+      sections: {
+        pricing: { eyebrow: 'Pricing', heading: 'What an evening with us costs.' },
+        team: { eyebrow: 'The team', heading: 'Four people, one menu.' },
+        faq: { eyebrow: 'Frequently asked', heading: 'What to know before you reserve.' },
+        map: { eyebrow: 'Find us', heading: 'Behrenstraße 47 — three minutes from Unter den Linden.' },
       },
       languageLabel: 'Language',
     },

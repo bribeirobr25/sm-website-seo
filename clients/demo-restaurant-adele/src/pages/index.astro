@@ -4,14 +4,81 @@ import Header from '@/components/layout/Header.astro';
 import About from '@/components/sections/About.astro';
 import BookingMock from '@/components/sections/BookingMock.astro';
 import CourseList from '@/components/sections/CourseList.astro';
+import FAQ from '@/components/sections/FAQ.astro';
 import Hero from '@/components/sections/Hero.astro';
+import MapEmbed from '@/components/sections/MapEmbed.astro';
+import PricingTable from '@/components/sections/PricingTable.astro';
 import Press from '@/components/sections/Press.astro';
+import TeamGrid from '@/components/sections/TeamGrid.astro';
 import VisitPreview from '@/components/sections/VisitPreview.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/lib/site';
 
 const locale = 'de' as const;
 const t = SITE.i18n[locale];
+
+const teamMembers = [
+  {
+    name: 'Adèle Voss',
+    role: 'Chef de Cuisine · Geschäftsführerin',
+    photoSrc: '/img/team-chef.jpg',
+    photoAlt: 'Adèle Voss in der offenen Küche',
+    specialty: 'Brandenburg-Saison',
+    credentials: ['Tim Raue · Berlin 2010', 'Sylvestre · Paris 2013', 'Geranium · Kopenhagen 2015'],
+  },
+  {
+    name: 'Theresa Köhler',
+    role: 'Sommelière',
+    photoSrc: '/img/team-sommelier.jpg',
+    photoAlt: 'Theresa Köhler beim Einschenken',
+    specialty: 'Deutsche Naturweine',
+    credentials: ['IHK Sommelière 2016', 'Court of Master Sommeliers — Level 2'],
+  },
+  {
+    name: 'Lukas Brandt',
+    role: 'Sous-chef',
+    photoSrc: '/img/team-sous.jpg',
+    photoAlt: 'Lukas Brandt am Pass',
+    specialty: 'Fermentation · Saucen',
+    credentials: ['Restaurant Tim Raue · Berlin 2018-2022'],
+  },
+  {
+    name: 'Marlena Hartmann',
+    role: 'Restaurant Manager',
+    photoSrc: '/img/team-host.jpg',
+    photoAlt: 'Marlena Hartmann am Empfang',
+    specialty: 'Service · Reservierungen',
+    credentials: ['Hotel-Restaurant Vau · 8 Jahre'],
+  },
+];
+
+const pricingCategories = [
+  {
+    label: 'Menü',
+    intro: 'Fünf Gänge, eine Sitzung pro Abend.',
+    items: [
+      { name: 'Tasting-Menü · 5 Gänge', description: 'Wechselt jeden Mittwoch. Vegetarische Variante auf Wunsch.', price: '€ 145', duration: '~ 2,5 Stunden' },
+    ],
+  },
+  {
+    label: 'Weinbegleitung',
+    intro: 'Von Sommelière Theresa Köhler.',
+    items: [
+      { name: 'Klassische Begleitung · 5 Gläser', description: 'Vier deutsche Naturweine, eine Flasche aus Frankreich, immer.', price: '€ 95' },
+      { name: 'Alkoholfreie Begleitung · 5 Gläser', description: 'Fermentierte Tees, Verjus-Soda, Sauerkirschen-Schale.', price: '€ 55', badge: 'Neu' },
+      { name: 'Champagner-Apéritif', description: 'Schloss Vaux Brut Nature, Rheingau, vor dem Menü.', price: '+ € 14' },
+    ],
+  },
+];
+
+const faqItems = [
+  { question: 'Gibt es einen Dresscode?', answer: 'Smart casual. Sakko empfohlen, nicht erforderlich. Sneakers willkommen, solange sauber.' },
+  { question: 'Wie weit im Voraus muss ich reservieren?', answer: 'Sechs bis vierzehn Tage. Freitag- und Samstagabende sind oft zwei bis drei Wochen vorab ausgebucht. Wir empfehlen das Online-Formular oder Anruf zwischen 14 und 17 Uhr.' },
+  { question: 'Wie geht ihr mit Allergien und diätischen Einschränkungen um?', answer: 'Bitte mindestens 48 Stunden vor dem Termin notieren — entweder im Reservierungsformular oder per E-Mail. Wir bauen die Karte neu. Glutenfrei, laktosefrei, vegetarisch sind unkompliziert. Vegan auf Anfrage.' },
+  { question: 'Was passiert bei einer Absage?', answer: 'Bis 24 Stunden vor dem Termin kostenfrei stornieren. Kürzere Absagen oder No-Show: € 75 pro Person Stornogebühr. Wir kaufen die Zutaten am Mittwoch ein.' },
+  { question: 'Habt ihr eine Parkmöglichkeit?', answer: 'Parkhaus Behrenstraße zwei Häuser weiter. U-Bahn Französische Straße (U6) ist drei Minuten zu Fuß — die einfachere Option.' },
+  { question: 'Können wir den Raum für eine private Veranstaltung mieten?', answer: 'Ja, Montagabends. Maximal 22 Plätze. Drei-Monats-Vorlauf, Pauschalpreis €4.500 (inklusive Tasting-Menü + Weinbegleitung).' },
+];
 ---
 
 <BaseLayout
@@ -24,9 +91,55 @@ const t = SITE.i18n[locale];
   <main id="main">
     <Hero locale={locale} />
     <CourseList locale={locale} />
+
+    <PricingTable
+      eyebrow={t.sections.pricing.eyebrow}
+      heading={t.sections.pricing.heading}
+      categories={pricingCategories}
+      footnote="Preise inkl. MwSt. Trinkgeld ist nicht enthalten und nicht erwartet — wir zahlen unserem Team Tariflohn plus."
+      showDuration={true}
+    />
+
     <About locale={locale} />
+
+    <TeamGrid
+      eyebrow={t.sections.team.eyebrow}
+      heading={t.sections.team.heading}
+      members={teamMembers}
+      columns={4}
+      aspect="portrait"
+    />
+
     <Press locale={locale} />
+
+    <FAQ
+      eyebrow={t.sections.faq.eyebrow}
+      heading={t.sections.faq.heading}
+      items={faqItems}
+      singleOpen={true}
+      variant="flush"
+    />
+
     <BookingMock locale={locale} />
+
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.3em] uppercase text-accent-secondary-deep font-medium">{t.sections.map.eyebrow}</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.map.heading}</h2>
+        </div>
+        <MapEmbed
+          lat={SITE.geo.lat}
+          lng={SITE.geo.lng}
+          zoom={16}
+          markerLabel="Adèle · Behrenstraße 47"
+          title="Karte: Adèle, Behrenstraße 47, 10117 Berlin"
+          provider="openstreetmap"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
     <VisitPreview locale={locale} />
   </main>
   <Footer locale={locale} />

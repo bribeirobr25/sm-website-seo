@@ -1,10 +1,15 @@
 ---
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
+import ScrollSpyNav from '@/components/layout/ScrollSpyNav.astro';
 import About from '@/components/sections/About.astro';
+import FAQ from '@/components/sections/FAQ.astro';
 import Hero from '@/components/sections/Hero.astro';
+import MapEmbed from '@/components/sections/MapEmbed.astro';
 import NewsletterMock from '@/components/sections/NewsletterMock.astro';
 import PhotoGrid from '@/components/sections/PhotoGrid.astro';
+import TrustBadgeRow from '@/components/sections/TrustBadgeRow.astro';
+import VideoFacade from '@/components/sections/VideoFacade.astro';
 import VisitPreview from '@/components/sections/VisitPreview.astro';
 import WaveReportTicker from '@/components/sections/WaveReportTicker.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -12,6 +17,33 @@ import { SITE } from '@/lib/site';
 
 const locale = 'de' as const;
 const t = SITE.i18n[locale];
+
+const navItems = [
+  { targetId: 'story', label: 'Story' },
+  { targetId: 'roesterei', label: 'Röstereien' },
+  { targetId: 'film', label: 'Film' },
+  { targetId: 'shop', label: 'Der Laden' },
+  { targetId: 'newsletter', label: 'Newsletter' },
+  { targetId: 'faq', label: 'FAQ' },
+  { targetId: 'besuchen', label: 'Besuchen' },
+];
+
+const roasteries = [
+  { src: '/img/roastery-espressohaus.svg', alt: 'Espressohaus Hamburg, Spezialitätenkaffee-Rösterei seit 1992', href: 'https://espressohaus.de' },
+  { src: '/img/roastery-bonanza.svg', alt: 'Bonanza Coffee Roasters, Berlin', href: 'https://bonanzacoffee.de' },
+  { src: '/img/roastery-five-elephant.svg', alt: 'Five Elephant Specialty Coffee, Berlin', href: 'https://fiveelephant.com' },
+];
+
+const faqItems = [
+  { question: 'Welche Bohne läuft heute?', answer: 'Wechselt monatlich, manchmal früher. Steht immer an der Tafel hinter der Theke — aktuell ein Bonanza Oaxacan Mix, mittlere Röstung. Frag uns oder schau auf den Wellenbericht im Newsletter.' },
+  { question: 'Wie funktioniert der Cold Brew?', answer: '18 Stunden in kaltem Wasser durch einen Edelstahlfilter gezogen. Vor dem Servieren eine Prise Meersalz — der Salz bringt die Süße in den Vordergrund, klingt komisch, schmeckt nicht.' },
+  { question: 'Habt ihr WLAN?', answer: 'Bewusst nicht. Wir bauen den Raum als Pause, nicht als Co-Working. Mobile Daten funktionieren, die meisten kommen aber auch ohne klar.' },
+  { question: 'Sind Hunde willkommen?', answer: 'Drinnen unter dem Tisch immer. Draußen am Spreeufer noch lieber. Wassernapf am Eingang, Leckerli im Glas auf der Theke.' },
+  { question: 'Macht ihr To-go?', answer: 'Ja. Mehrweg-Pfand-Becher (RECUP) für €1 — oder bring deinen eigenen Becher mit (€0,30 Rabatt). Wir vermeiden Einwegbecher.' },
+  { question: 'Kann ich Bohnen kaufen?', answer: 'Ja, 250g-Tüten zum Mitnehmen von allen drei Röstereien. Wir mahlen vor Ort auf Wunsch — Filter, French Press, V60, AeroPress, Espresso.' },
+];
+
+const ticker = ['06:32 SONNENAUFGANG', 'BONANZA OAXACAN MIX · MITTLERE RÖSTUNG', 'SPREE-WASSER 14°C'];
 ---
 
 <BaseLayout
@@ -21,12 +53,79 @@ const t = SITE.i18n[locale];
   alternateLocaleUrl="/en/"
 >
   <Header locale={locale} />
+  <ScrollSpyNav items={navItems} topOffset="0" variant="underline" />
   <main id="main">
     <Hero locale={locale} />
     <WaveReportTicker locale={locale} />
-    <About locale={locale} />
-    <PhotoGrid locale={locale} />
-    <NewsletterMock locale={locale} />
+
+    <div id="story">
+      <About locale={locale} />
+    </div>
+
+    <section id="roesterei" class="bg-bg">
+      <TrustBadgeRow
+        eyebrow={t.sections.roasteries.eyebrow}
+        heading={t.sections.roasteries.heading}
+        badges={roasteries}
+        maxHeight={60}
+        variant="greyscale"
+        layout="wrap"
+      />
+    </section>
+
+    <section id="film" class="bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent-secondary font-semibold">{t.sections.film.eyebrow}</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.film.heading}</h2>
+          <p class="text-lg text-text-muted leading-relaxed">{t.sections.film.intro}</p>
+        </div>
+        <VideoFacade
+          videoId="aqz-KE-bpKQ"
+          posterSrc="/img/spree-river.jpg"
+          posterAlt="Spreeufer in Friedrichshain bei Sonnenaufgang — Standbild aus dem Film"
+          title="Saltlines · Sonntagmorgen an der Spree (Mockup-Video)"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
+    <div id="shop">
+      <PhotoGrid locale={locale} />
+    </div>
+
+    <div id="newsletter">
+      <NewsletterMock locale={locale} />
+    </div>
+
+    <div id="faq">
+      <FAQ
+        eyebrow={t.sections.faq.eyebrow}
+        heading={t.sections.faq.heading}
+        items={faqItems}
+        singleOpen={true}
+        variant="flush"
+      />
+    </div>
+
+    <section id="besuchen" class="bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{t.sections.map.eyebrow}</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.map.heading}</h2>
+        </div>
+        <MapEmbed
+          lat={SITE.geo.lat}
+          lng={SITE.geo.lng}
+          zoom={16}
+          markerLabel="Saltlines · Holzmarktstraße 25"
+          title="Karte: Saltlines, Holzmarktstraße 25, 10243 Berlin"
+          provider="openstreetmap"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
     <VisitPreview locale={locale} />
   </main>
   <Footer locale={locale} />

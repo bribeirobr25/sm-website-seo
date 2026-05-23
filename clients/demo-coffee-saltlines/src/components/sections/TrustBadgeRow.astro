@@ -1,0 +1,152 @@
+---
+/**
+ * TrustBadgeRow — accreditation / insurance / award / partner logos.
+ * Spec: docs/design/components/trust-badge-row.md (added 2026-05-23)
+ *
+ * Compact strip of greyscale logos that color-up on hover. Universal trust
+ * signal — Innung/Handwerkskammer for trades, brand partners for beauty,
+ * press logos for gastronomy, board certifications for health.
+ *
+ * Distinct from Press.astro (which is critic-quote+rating rich attribution)
+ * and from PartnerLogos (a SaaS pattern not built).
+ */
+
+interface TrustBadge {
+  /** Logo image source (SVG strongly preferred for sharp greyscale) */
+  src: string;
+  alt: string;
+  /** Optional link to the badge's source (Innung directory, certification page, brand site) */
+  href?: string;
+  /** Optional caption rendered below the logo */
+  caption?: string;
+}
+
+interface Props {
+  /** Section eyebrow */
+  eyebrow?: string;
+  /** Optional small heading */
+  heading?: string;
+  /** Badge list — 3-8 items ideal */
+  badges: TrustBadge[];
+  /** Max badge height in px (uniform scale across the row) */
+  maxHeight?: number;
+  /** Variant — 'greyscale' (default, color-on-hover) | 'color' (always color) */
+  variant?: 'greyscale' | 'color';
+  /** Layout — 'wrap' (default, responsive flex-wrap) | 'scroll' (horizontal scroll on overflow) */
+  layout?: 'wrap' | 'scroll';
+  class?: string;
+}
+
+const {
+  eyebrow,
+  heading,
+  badges,
+  maxHeight = 40,
+  variant = 'greyscale',
+  layout = 'wrap',
+  class: extraClass = '',
+} = Astro.props;
+---
+
+<section class:list={['ad-trust-row', `ad-trust-row--${variant}`, `ad-trust-row--${layout}`, extraClass]}>
+  <div class="container-page py-10 sm:py-12">
+    {(eyebrow || heading) && (
+      <div class="text-center mb-6 space-y-1">
+        {eyebrow && <p class="text-[11px] tracking-[0.25em] uppercase text-text-muted font-semibold">{eyebrow}</p>}
+        {heading && <h2 class="font-display text-xl text-text">{heading}</h2>}
+      </div>
+    )}
+
+    <ul class="ad-trust-list list-none p-0">
+      {badges.map((badge) => {
+        const inner = (
+          <>
+            <img
+              src={badge.src}
+              alt={badge.alt}
+              loading="lazy"
+              decoding="async"
+              class="ad-trust-logo"
+              style={`max-height: ${maxHeight}px;`}
+            />
+            {badge.caption && <span class="ad-trust-caption">{badge.caption}</span>}
+          </>
+        );
+        return (
+          <li class="ad-trust-item">
+            {badge.href ? (
+              <a
+                href={badge.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="ad-trust-link"
+                aria-label={badge.alt}
+              >
+                {inner}
+              </a>
+            ) : (
+              inner
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ad-trust-list {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .ad-trust-row--scroll .ad-trust-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.5rem;
+  }
+  .ad-trust-row--scroll .ad-trust-item {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+  .ad-trust-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .ad-trust-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.375rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .ad-trust-logo {
+    width: auto;
+    object-fit: contain;
+    transition: filter var(--motion-base) ease, opacity var(--motion-base) ease;
+  }
+  .ad-trust-row--greyscale .ad-trust-logo {
+    filter: grayscale(1);
+    opacity: 0.65;
+  }
+  .ad-trust-row--greyscale .ad-trust-link:hover .ad-trust-logo,
+  .ad-trust-row--greyscale .ad-trust-item:hover .ad-trust-logo {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+  .ad-trust-caption {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ad-trust-logo { transition: none; }
+  }
+</style>

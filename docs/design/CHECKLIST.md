@@ -64,6 +64,12 @@ Not every gate applies at every phase. Use the legend to triage what's blocking 
 - [ ] **`public/robots.txt`** exists. Production state: `User-agent: *\nAllow: /` + `Sitemap: https://[domain]/sitemap-index.xml`. (Demo state was `Disallow: /` — flip happens at production cutover, paired with `noindex` removal.)
 - [ ] All four files reachable: `curl -I https://[domain]/favicon.svg | grep "200"` and equivalent for the other three
 
+### Schema.org / structured data
+- [ ] `LocalBusiness` `@graph` with most-specific subtype (`IceCreamShop` for gelateria · `CafeOrCoffeeShop` for café · `Restaurant` for full-service · `BarberShop` / `BeautySalon` / `Dentist` etc.). Audit-driven — `Restaurant` was found on a gelateria site; the SEO.md rule says "most-specific Schema.org subtype." Verify: `curl -s [url] | grep -oE '"@type":"[^"]+"' | head -3`.
+- [ ] `BreadcrumbList` JSON-LD emitted on **every inner page** (non-home). The canonical `BaseLayout.astro` auto-derives breadcrumbs from `Astro.url.pathname` + page `title` prop and skips single-segment paths (home). Verify: `curl -s [url]/[inner-page] | grep -c '"@type":"BreadcrumbList"'` returns ≥1.
+- [ ] `FAQPage` JSON-LD emitted whenever the `FAQ` canonical component is on the page (default behavior — `emitSchema={true}`). Schema items MUST match the rendered question + answer text exactly. SERP rich result deprecated 2026-05-07 but markup remains an AI-extraction signal per `SEO.md`.
+- [ ] No `aggregateRating` on own LocalBusiness (Google policy violation; rule per `SEO.md §5.3`)
+
 ### HTML structure
 - [ ] One `<h1>` per page
 - [ ] Heading hierarchy is logical: `h1` → `h2` → `h3`, no levels skipped
@@ -84,8 +90,10 @@ Not every gate applies at every phase. Use the legend to triage what's blocking 
 - [ ] All below-fold images have `loading="lazy"`
 - [ ] All images have explicit `width` and `height` attributes (prevents CLS)
 - [ ] All images converted to **WebP** format
+- [ ] **WebP companion files exist** for every JPEG/PNG used in `FullBleedHero` / `SplitHero` / `MenuCard` / `TeamGrid` / `PhotoGrid` — the canonical components render `<picture><source srcset="image.webp" type="image/webp"><img src="image.jpg"></picture>` by auto-deriving the `.webp` filename from the `.jpg`/`.png` src. If the `.webp` file is missing, browsers fall back to the JPEG (still works, just larger). Verify: `ls public/img/hero-*.webp` returns at least one file per used hero. Added 2026-05-23 from the 3-demo audit batch.
 - [ ] Hero image max 1920px wide; section images max 800px
 - [ ] No unoptimized images above 200KB
+- [ ] **Schema `image` URL returns 200** — every `image` reference inside `lib/seo/schema.ts` (the LocalBusiness `@graph` node, the `Restaurant`/`CafeOrCoffeeShop`/etc. node, OG image fallback in `BaseLayout.astro`) must resolve. Audit-driven gate after the Saltlines `hero-surf-coffee.jpg` broken-reference incident — would have 404'd in Google rich-results. `curl -sI [SITE.url]/img/[schema-image-path].jpg | head -1` must return `HTTP/2 200`.
 - [ ] Image `widths` array has at least one variant within ~25 % of the actual displayed width × DPR (avoids browser over-picking)
 - [ ] Image `quality` set to 75 for photos (default 80 wastes ~10 % bytes for no visible gain)
 - [ ] **Zero `fonts.googleapis.com` or `fonts.gstatic.com` references** in the rendered HTML — all fonts self-hosted via `@fontsource-variable/*` or equivalent
