@@ -52,20 +52,25 @@ const instructors = [
 
 const galleryTiles = [
   {
-    gradient: 'from-accent-secondary/40 via-accent-secondary/20 to-bg',
+    image: '/img/photo/hero.jpg',
     label: 'Room I — Main practice',
+    alt: 'Yoga mats on light wood floor in the main room',
   },
-  { gradient: 'from-accent/30 via-accent/15 to-bg', label: 'Tea corner' },
   {
-    gradient: 'from-accent-secondary-deep/50 via-accent-secondary/30 to-surface-elev',
-    label: 'Reception',
+    image: '/img/photo/studio.jpg',
+    label: 'Room II — Restorative',
+    alt: 'Wide view of the restorative room with tall windows',
   },
-  { gradient: 'from-accent/40 via-accent-deep/20 to-bg', label: 'Room II — Restorative' },
   {
-    gradient: 'from-accent-secondary/35 via-accent-secondary/15 to-bg',
-    label: 'Changing + shower',
+    image: '/img/photo/props.jpg',
+    label: 'Mat basket + plants',
+    alt: 'Rolled yoga mats in a woven basket with plants',
   },
-  { gradient: 'from-accent/25 via-accent/10 to-bg', label: 'Library + bolsters' },
+  {
+    image: '/img/photo/mood.jpg',
+    label: 'Breath + gesture',
+    alt: 'Open palms — a gesture of receiving',
+  },
 ];
 
 const faqItems = [
@@ -163,14 +168,17 @@ const faqItems = [
           <h2 id="gallery-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{t.sections.gallery.heading}</h2>
           <p class="text-text-muted leading-relaxed">{t.sections.gallery.intro}</p>
         </div>
-        <ul class="grid grid-cols-2 lg:grid-cols-4 gap-4 list-none p-0">
+        <ul class="grid grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0">
           {galleryTiles.map((tile, i) => (
-            <li class={`relative ${i === 0 ? 'lg:col-span-2 lg:row-span-2 aspect-square lg:aspect-auto' : 'aspect-square'} rounded-2xl bg-gradient-to-br ${tile.gradient} border border-border flex items-end p-5`}>
-              <p class="text-xs text-text font-medium tracking-wider">{tile.label}</p>
+            <li class={`relative overflow-hidden ${i === 0 ? 'lg:col-span-2 lg:row-span-2 aspect-square lg:aspect-auto' : 'aspect-square'} rounded-2xl border border-border`}>
+              <img src={tile.image} alt={tile.alt} loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
+              <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/55 via-black/15 to-transparent">
+                <p class="text-xs text-white font-medium tracking-wider">{tile.label}</p>
+              </div>
             </li>
           ))}
         </ul>
-        <p class="mt-6 text-xs text-text-muted/70 italic text-center">⚠ Photo placeholders — real studio images to follow with brand material.</p>
+        <p class="mt-6 text-xs text-text-muted/70 italic text-center">⚠ Stock photography (Unsplash CC0) — real studio images to follow with brand material.</p>
       </div>
     </section>
 
@@ -217,7 +225,7 @@ const faqItems = [
               />
               <button
                 type="submit"
-                class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full bg-accent text-text hover:bg-accent-deep hover:text-bg transition-colors"
+                class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full bg-accent-deep text-bg hover:bg-text hover:text-bg transition-colors"
               >
                 Subscribe
               </button>

@@ -13,15 +13,11 @@ const locale = 'de' as const;
 const t = SITE.i18n[locale];
 
 const portfolioTiles = [
-  { gradient: 'from-accent/60 via-accent/30 to-bg', label: 'Skin Fade · Classic Crop' },
-  {
-    gradient: 'from-accent-secondary/50 via-accent-secondary/25 to-bg',
-    label: 'Royal Shave Finish',
-  },
-  { gradient: 'from-accent/40 via-surface-elev to-bg', label: 'Side-Part · Pomadiert' },
-  { gradient: 'from-accent-secondary/40 via-accent/20 to-bg', label: 'Buzz + Beard Sculpt' },
-  { gradient: 'from-accent/55 via-accent-secondary/20 to-bg', label: 'Long Top · Tight Fade' },
-  { gradient: 'from-accent-secondary/30 via-accent-deep/20 to-bg', label: 'Vintage Slick-Back' },
+  { image: '/img/photo/hero.jpg', label: 'Werkstatt-Stuhl I', alt: 'Schwarzer Lederbarbierstuhl vor Ziegelwand' },
+  { image: '/img/photo/service.jpg', label: 'Royal Shave Finish', alt: 'Barbier bei der Klingenrasur' },
+  { image: '/img/photo/interior.jpg', label: 'Vintage Slick-Back', alt: 'Innenraum mit Barbierstuhl im Vintage-Stil' },
+  { image: '/img/photo/tools.jpg', label: 'Werkzeug · Klinge + Becher', alt: 'Klinge, Pinsel und Rasiermesser auf Holz' },
+  { image: '/img/photo/detail.jpg', label: 'Pomade-Vitrine', alt: 'Reihe von Pomade- und Tonika-Gläsern' },
 ];
 
 const barbers = [
@@ -154,12 +150,15 @@ const faqItems = [
         </div>
         <ul class="grid grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0">
           {portfolioTiles.map((tile) => (
-            <li class={`relative aspect-square rounded-sm bg-gradient-to-br ${tile.gradient} border border-border flex items-end p-5`}>
-              <p class="text-[11px] uppercase tracking-wider text-text font-semibold">{tile.label}</p>
+            <li class="relative aspect-square rounded-sm overflow-hidden border border-border">
+              <img src={tile.image} alt={tile.alt} loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
+              <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/65 via-black/20 to-transparent">
+                <p class="text-[11px] uppercase tracking-wider text-white font-semibold">{tile.label}</p>
+              </div>
             </li>
           ))}
         </ul>
-        <p class="mt-6 text-xs text-text-muted/70 italic text-center">⚠ Portfolio-Platzhalter — echte Schnitt-Fotos folgen mit Kunden-Einwilligung.</p>
+        <p class="mt-6 text-xs text-text-muted/70 italic text-center">⚠ Stockfotografie (Unsplash CC0) — echte Schnitt-Fotos folgen mit Kunden-Einwilligung.</p>
       </div>
     </section>
 
@@ -248,7 +247,7 @@ const faqItems = [
                   </div>
                 </label>
               </div>
-              <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 min-h-[56px] text-base font-semibold uppercase tracking-wider rounded-sm bg-accent text-bg hover:bg-accent-deep transition-colors">
+              <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 min-h-[56px] text-base font-semibold uppercase tracking-wider rounded-sm bg-accent text-bg hover:bg-text hover:text-bg transition-colors">
                 Termin anfragen
               </button>
               <p class="text-xs text-text-muted/70 italic">⚠ Mockup — kein echter Buchungsversand. In Produktion über Treatwell-API.</p>

@@ -32,8 +32,10 @@ const {
 const base =
   'inline-flex items-center justify-center font-medium rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none';
 
+// Primary: forest-green bg + white text (14.8:1) → hover brass-deep + white (5.6:1).
+// Both states AA. Never darker-on-darker.
 const variantClass = {
-  primary: 'bg-accent text-bg hover:bg-accent-deep',
+  primary: 'bg-text text-bg hover:bg-accent-deep hover:text-bg',
   secondary: 'bg-surface text-text border border-border hover:bg-surface-elev',
   ghost: 'text-text-muted hover:text-accent',
 }[variant];

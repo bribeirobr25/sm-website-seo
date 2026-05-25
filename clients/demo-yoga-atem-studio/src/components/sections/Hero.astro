@@ -59,7 +59,7 @@ const ctaSecondaryLabel = t.cta.bookTable;
         <div class="mt-10 flex flex-wrap gap-3">
           <a
             href={ctaPrimaryHref}
-            class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full bg-accent text-text hover:bg-accent-deep hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
+            class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full bg-accent-deep text-bg hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
           >
             {ctaPrimaryLabel}
           </a>
@@ -73,21 +73,17 @@ const ctaSecondaryLabel = t.cta.bookTable;
       </div>
 
       <div class="flex items-center">
-        <div
-          class="w-full aspect-[3/4] rounded-3xl bg-accent-secondary/20 border border-accent-secondary/30 flex items-center justify-center relative overflow-hidden"
-          aria-hidden="true"
-        >
-          <!-- Concentric-circle "breath" mandala — lavender-on-lilac -->
-          <svg width="55%" height="55%" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-accent-secondary-deep">
-            <circle cx="100" cy="100" r="92" stroke="currentColor" stroke-width="1" opacity="0.4" />
-            <circle cx="100" cy="100" r="70" stroke="currentColor" stroke-width="1" opacity="0.55" />
-            <circle cx="100" cy="100" r="48" stroke="currentColor" stroke-width="1" opacity="0.7" />
-            <circle cx="100" cy="100" r="26" stroke="currentColor" stroke-width="1" opacity="0.85" />
-            <circle cx="100" cy="100" r="8" fill="currentColor" />
-          </svg>
-          <p class="absolute bottom-6 left-0 right-0 text-center text-xs text-accent-secondary-deep/70 italic px-6">
-            {locale === 'de' ? 'Studio-Foto folgt mit echtem Material.' : 'Studio photo to follow with real material.'}
-          </p>
+        <div class="w-full aspect-[3/4] rounded-3xl overflow-hidden">
+          <img
+            src="/img/photo/practice.jpg"
+            alt={locale === 'de' ? 'Yoga-Praxis im Atem Studio — gegen das Licht' : 'Yoga practice at Atem Studio — backlit'}
+            width="1800"
+            height="2400"
+            class="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
         </div>
       </div>
     </div>

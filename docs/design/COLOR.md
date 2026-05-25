@@ -120,6 +120,8 @@ A `pnpm validate` block does NOT check items 3-6 — those are visual/judgment. 
 | 10 | Inverted hierarchy: muted accent + bright "neutral" | Confuses scanning. Accent should attract, neutral should recede. |
 | 11 | **Cream / bone / off-white background defaulted without per-vertical justification** | Reads "agency template." Cream is valid for SOME verticals (gastronomy heritage / fine-dining / boutique salon editorial) but is NOT a universal-safe default. Lawyer, gym, dental, real estate, automotive, tech, dark-register barber etc. should NOT default to cream. If the per-vertical template does not call out cream/bone, pick a different base. |
 | 12 | **Brown/tan token chain used as primary brand color** without an artisan/heritage/wood-craft justification | Brown is a vertical-specific signal (artisan, leather, wood-trades, coffee). Outside those, it reads "sepia-filter generic." Don't pick `#7B5468`, `#B89968`, `#8E5526` etc. as a default — pick them when the *vertical* asks for them. |
+| 13 | **`bg-accent text-bg hover:bg-accent-deep` (darken-on-hover) for any filled CTA where `--color-accent` is a medium-tone** | Hover state often drops contrast below 4.5:1 ("dark-on-dark muddy" — even when default state passes). Use Pattern A/B/C/D in `DESIGN-BEST-PRACTICES.md §7 CTA contrast — all 4 states`. Affected the lawyer / yoga / barber demos pre-2026-05-25 audit. |
+| 14 | **Light-text on accent-tinted button below 4.5:1 in DEFAULT state** | E.g. lilac text (`#ede7f0`) on terracotta (`#d87c5a`) = 3.0:1. WCAG AA fails for normal body text. Always pair filled-accent buttons with the highest-contrast counterpart token (text + bg pair tested manually before commit). |
 
 ---
 

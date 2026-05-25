@@ -32,8 +32,10 @@ const {
 const base =
   'inline-flex items-center justify-center font-medium rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none';
 
+// Primary: gold bg + near-black text (9.3:1) → hover bone + near-black (16.8:1).
+// Both states AAA. Never darker-on-dark.
 const variantClass = {
-  primary: 'bg-accent text-bg hover:bg-accent-deep',
+  primary: 'bg-accent text-bg hover:bg-text hover:text-bg',
   secondary: 'bg-surface text-text border border-border hover:bg-surface-elev',
   ghost: 'text-text-muted hover:text-accent',
 }[variant];

@@ -44,17 +44,21 @@ const founderCaption =
   <div class="container-page py-20 sm:py-28">
     <div class="grid lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20 items-start">
       <div class="space-y-5">
-        <div class="aspect-[4/5] rounded-sm bg-surface-elev border border-border flex items-center justify-center">
-          <div class="text-center space-y-3">
-            <div class="w-24 h-24 rounded-full bg-text text-bg mx-auto flex items-center justify-center font-display text-3xl">
-              {founderInitials}
-            </div>
-            <p class="text-xs text-text-muted/60 italic px-4">{locale === 'de' ? 'Portraitfoto folgt mit echtem Material.' : 'Portrait to follow with real material.'}</p>
-          </div>
+        <div class="aspect-[4/5] rounded-sm overflow-hidden border border-border bg-surface-elev">
+          <img
+            src="/img/photo/about.jpg"
+            alt={locale === 'de' ? 'Hände am Mandanten-Dokument — Vertrag unterzeichnen' : 'Hands on a client document — signing a contract'}
+            width="1800"
+            height="2400"
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover"
+          />
         </div>
         <p class="text-sm">
           <span class="font-display text-text">{founderName}</span><br />
           <span class="text-text-muted">{founderCaption}</span>
+          <span class="block mt-2 text-xs text-text-muted/70 italic">⚠ {locale === 'de' ? 'Stockfoto (Unsplash CC0) — Portrait folgt mit echtem Material.' : 'Stock photo (Unsplash CC0) — portrait to follow with real material.'}</span>
         </p>
       </div>
 

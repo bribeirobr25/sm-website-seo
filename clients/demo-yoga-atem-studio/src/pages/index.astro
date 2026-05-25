@@ -52,20 +52,25 @@ const instructors = [
 
 const galleryTiles = [
   {
-    gradient: 'from-accent-secondary/40 via-accent-secondary/20 to-bg',
+    image: '/img/photo/hero.jpg',
     label: 'Raum I — Hauptpraxis',
+    alt: 'Yogamatten auf hellem Holzboden im Hauptraum',
   },
-  { gradient: 'from-accent/30 via-accent/15 to-bg', label: 'Tee-Ecke' },
   {
-    gradient: 'from-accent-secondary-deep/50 via-accent-secondary/30 to-surface-elev',
-    label: 'Empfang',
+    image: '/img/photo/studio.jpg',
+    label: 'Raum II — Restorative',
+    alt: 'Weiter Blick in den Restorative-Raum mit hohen Fenstern',
   },
-  { gradient: 'from-accent/40 via-accent-deep/20 to-bg', label: 'Raum II — Restorative' },
   {
-    gradient: 'from-accent-secondary/35 via-accent-secondary/15 to-bg',
-    label: 'Garderobe + Dusche',
+    image: '/img/photo/props.jpg',
+    label: 'Mattenkorb + Pflanzen',
+    alt: 'Aufgerollte Yogamatten in einem geflochtenen Korb mit Pflanzen',
   },
-  { gradient: 'from-accent/25 via-accent/10 to-bg', label: 'Bibliothek + Bolster' },
+  {
+    image: '/img/photo/mood.jpg',
+    label: 'Atem + Geste',
+    alt: 'Geöffnete Hände — Geste der Hingabe',
+  },
 ];
 
 const faqItems = [
@@ -158,7 +163,7 @@ const faqItems = [
 
     <About locale={locale} />
 
-    <!-- Studio gallery — 6-tile bento, CSS-gradient placeholders (no real photos yet) -->
+    <!-- Studio gallery — 4-tile bento with real Unsplash photos -->
     <section class="bg-bg border-t border-border" aria-labelledby="gallery-heading">
       <div class="container-page py-20 sm:py-24">
         <div class="max-w-2xl space-y-3 mb-12">
@@ -166,14 +171,17 @@ const faqItems = [
           <h2 id="gallery-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{t.sections.gallery.heading}</h2>
           <p class="text-text-muted leading-relaxed">{t.sections.gallery.intro}</p>
         </div>
-        <ul class="grid grid-cols-2 lg:grid-cols-4 gap-4 list-none p-0">
+        <ul class="grid grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0">
           {galleryTiles.map((tile, i) => (
-            <li class={`relative ${i === 0 ? 'lg:col-span-2 lg:row-span-2 aspect-square lg:aspect-auto' : 'aspect-square'} rounded-2xl bg-gradient-to-br ${tile.gradient} border border-border flex items-end p-5`}>
-              <p class="text-xs text-text font-medium tracking-wider">{tile.label}</p>
+            <li class={`relative overflow-hidden ${i === 0 ? 'lg:col-span-2 lg:row-span-2 aspect-square lg:aspect-auto' : 'aspect-square'} rounded-2xl border border-border`}>
+              <img src={tile.image} alt={tile.alt} loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
+              <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/55 via-black/15 to-transparent">
+                <p class="text-xs text-white font-medium tracking-wider">{tile.label}</p>
+              </div>
             </li>
           ))}
         </ul>
-        <p class="mt-6 text-xs text-text-muted/70 italic text-center">⚠ Foto-Platzhalter — echte Studio-Bilder folgen mit Brand-Material.</p>
+        <p class="mt-6 text-xs text-text-muted/70 italic text-center">⚠ Stockfotografie (Unsplash CC0) — echte Studio-Bilder folgen mit Brand-Material.</p>
       </div>
     </section>
 
@@ -222,7 +230,7 @@ const faqItems = [
               />
               <button
                 type="submit"
-                class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full bg-accent text-text hover:bg-accent-deep hover:text-bg transition-colors"
+                class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full bg-accent-deep text-bg hover:bg-text hover:text-bg transition-colors"
               >
                 Abonnieren
               </button>

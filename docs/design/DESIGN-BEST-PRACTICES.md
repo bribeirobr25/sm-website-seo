@@ -171,7 +171,21 @@ For any place-based multi-location client (trades chain, health network, gym cha
 
 ### The real-photo rule
 
-Every site must use at least one real photo of the actual business (exterior, interior, product, or team). Stock photos are visible from orbit and destroy trust for local businesses. If the client has no photos, the first deliverable is a photo shoot or at minimum using their Google Maps / Instagram photos.
+**Paying clients:** Every site must use at least one real photo of the actual business (exterior, interior, product, or team). Stock photos are visible from orbit and destroy trust for local businesses. If the client has no photos, the first deliverable is a photo shoot or at minimum using their Google Maps / Instagram photos.
+
+**Portfolio demos (no real business):** Demos must STILL ship with real photographs — not gradient placeholders, not SVG decorations, not "Photo to follow" captioned squares. Use **CC0-licensed stock from Unsplash / Pexels** matched to the vertical aesthetic. The minimum-viable count is **5 photos per demo**: 1 Hero + 4 supporting (gallery / About / location / service / detail). Wire them as `<img src="/img/photo/*.jpg">` under the demo's `public/img/photo/` directory and caption with a small italic "⚠ Stock photography (Unsplash CC0) — real images to follow" so visitors understand the demo register.
+
+**Hard rule** (added 2026-05-25 — agency audit gate): **No demo or paying-client site may ship with zero photographs.** If you have built a Hero + sections and the only `<img>` is `og-default.png`, the build is incomplete. Photography is not a "phase 2" deliverable; it is a phase-1 part of "ship."
+
+**Why this rule exists:** the 3 portfolio demos shipped 2026-05-23 (Sander & Voss / Atem / Bart & Pomade) used SVG mandalas + barber-pole stripe patterns + gradient bento tiles in place of real photography. The user flagged this immediately on first review. Typography-led design is fine for the Hero text block — but a 10-section page with zero photographs reads as a wireframe, not a site. **Real photography is the difference between "design study" and "real site."**
+
+**Sourcing recipe (demos):**
+1. Identify 5 photo roles per demo: Hero · About · Gallery × 2 · Detail/Texture.
+2. Search Unsplash for each role using the demo's vertical + aesthetic register (e.g. "empty yoga studio wood floor" / "vintage barbershop chair" / "law firm boardroom").
+3. Verify each download is a valid JPEG (`file public/img/photo/*.jpg | grep -v JPEG` should output nothing).
+4. Wire with `<img src="/img/photo/X.jpg" alt="..." loading="lazy" decoding="async" class="...object-cover" />`.
+5. Footer or section caption credits "Stock photography · Unsplash CC0" so license provenance is on-record.
+6. Document the 5 photo IDs + photographers in `docs/clients/<demo-slug>/CREDITS.md` for future replacement.
 
 ### Demo / asset data discipline (added 2026-05-23, audit-driven)
 
@@ -587,6 +601,63 @@ The same WhatsApp/call/booking action appearing on the page two or three times i
 - The second appearance (Visit/Contact section, or sticky mobile bubble) must look **different enough to be distinguishable**: a longer label, an icon-only floating button, an inline text link with arrow, or a quieter outline variant. Same destination, different shape.
 
 If you find yourself pasting the exact same `<Button variant="primary">…</Button>` two or three times in a single page, stop and reconsider.
+
+### CTA contrast — all 4 states must pass WCAG 2.2 AA (added 2026-05-25)
+
+Every interactive button — primary, secondary, ghost, custom inline CTA — must maintain WCAG 2.2 AA contrast in **all four states**: default, hover, focus, and active. The single most common production bug surfaced repeatedly across the agency's 6 portfolio demos is **hover states that decrease contrast** by darkening the background without updating the text color, producing a "dark bg + dark text" muddy unreadable state.
+
+**Hard rule:** the text/background contrast ratio at hover state must be **≥ default-state contrast OR ≥ 4.5:1**, whichever is lower. Hover may make the button "feel pressed" but must never reduce readability.
+
+**Forbidden patterns** (audit-gate failures):
+
+```html
+<!-- ❌ Filled accent → darken on hover, text unchanged → muddy dark-on-dark -->
+<a class="bg-accent text-bg hover:bg-accent-deep">…</a>
+<!-- If --color-accent is a medium-tone, bg-accent + text-bg + hover→accent-deep
+     often yields ~5:1 default but ~3:1 hover. WCAG fail. -->
+
+<!-- ❌ Light text on tinted accent that's barely 3:1 in default -->
+<a class="bg-accent text-text">…</a>
+<!-- Yoga V1 bug: terracotta bg + dark aubergine text = 3.2:1 (FAIL AA). -->
+
+<!-- ❌ Hover-only color swap that destroys contrast -->
+<a class="bg-text text-bg hover:bg-accent-deep">…</a>
+<!-- On dark-themed sites: hover swaps from "bone bg + black text" (16:1) to
+     "dark-gold bg + black text" (~5:1). Passes AA mathematically but reads
+     as visually broken because perceived luminance drops sharply. -->
+```
+
+**Approved patterns** (use one of these, then verify contrast in dev with browser tools):
+
+```html
+<!-- ✅ Pattern A: invariant text color across states -->
+<a class="bg-text text-white hover:bg-accent-deep hover:text-white">…</a>
+<!-- White text constant; bg darkens but text stays high-contrast. -->
+
+<!-- ✅ Pattern B: invert on hover (most defensive) -->
+<a class="bg-accent text-bg hover:bg-text hover:text-bg">…</a>
+<!-- Both states use bg=light/text=dark or bg=dark/text=light. No risk. -->
+
+<!-- ✅ Pattern C: brightness/opacity hover (no color shift) -->
+<a class="bg-accent text-bg hover:brightness-110 active:scale-95">…</a>
+<!-- The original example from §7 above. Recommended for filled-accent CTAs. -->
+
+<!-- ✅ Pattern D: outline → fill on hover -->
+<a class="border border-text text-text hover:bg-text hover:text-bg">…</a>
+<!-- Default: outlined text-color, hover: filled. Both states ≥ 7:1. -->
+```
+
+**Pre-launch verification gate** (mandatory before any demo or production deploy):
+
+1. Open every page in the dev server. For every visible CTA / button:
+2. **Default state**: check text vs bg with the browser dev tools color picker. Ratio ≥ 4.5:1 (or ≥ 3:1 if font ≥ 18px / 14px bold).
+3. **Hover state**: hover the cursor, repeat. Ratio must NOT drop below default by more than 1:1 AND must stay ≥ 4.5:1.
+4. **Focus state**: Tab to the button. The focus ring must be visible at ≥ 3:1 contrast against the surrounding background.
+5. **Active state**: click + hold. Usually inherits hover, but verify if customized.
+
+Document the 4 contrast ratios per CTA in `design.md` §2 (Color decisions) for paying clients. For demos, screenshot one Hero CTA at default + hover and store under `/docs/audit/<demo>-cta-contrast.png`.
+
+**Why this rule exists:** an internal audit on 2026-05-25 found 11 broken CTAs across 3 demos (Sander & Voss / Atem / Bart & Pomade) — including the yoga primary Button which failed AA in its DEFAULT state at 3.0:1 (terracotta + lilac). The demos shipped to production, and the bug was only caught by the user during review. The hover-state-darkens-without-text-update pattern is so easy to write that linting alone doesn't catch it; only conscious 4-state verification does.
 
 ### WhatsApp button
 
