@@ -35,7 +35,7 @@ const dayLabelsDE = { Mon: 'Mo', Tue: 'Di', Wed: 'Mi', Thu: 'Do', Fri: 'Fr', Sat
             <p class="text-text-muted">{SITE.address.street}</p>
             <p class="text-text-muted">{SITE.address.postalCode} {SITE.address.city} — {SITE.address.neighborhood}</p>
             <div class="pt-4 flex flex-wrap gap-3">
-              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors">
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-text text-bg hover:bg-accent-deep hover:text-bg transition-colors">
                 In Google Maps öffnen.
               </a>
             </div>
@@ -88,7 +88,7 @@ const dayLabelsDE = { Mon: 'Mo', Tue: 'Di', Wed: 'Mi', Thu: 'Do', Fri: 'Fr', Sat
             Anrufen, mailen, oder einfach kommen. Für Eistorten oder Cassata bitte mindestens fünf Tage vorher Bescheid geben.
           </p>
           <div class="flex flex-wrap gap-3">
-            <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors tabular">
+            <a href={`tel:${SITE.phone}`} class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-text text-bg hover:bg-accent-deep hover:text-bg transition-colors tabular">
               {SITE.phoneDisplay}
             </a>
             <a href={`mailto:${SITE.email}`} class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-md bg-surface text-text border border-border hover:bg-surface-elev transition-colors">

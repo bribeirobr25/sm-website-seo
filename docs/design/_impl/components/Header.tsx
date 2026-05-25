@@ -48,7 +48,7 @@ export function Header() {
           <Link
             href="/trial"
             onClick={handleCtaClick}
-            className="inline-flex items-center justify-center px-5 py-2.5 min-h-[44px] text-sm font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="inline-flex items-center justify-center px-5 py-2.5 min-h-[44px] text-sm font-medium rounded-md bg-accent text-bg hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {SITE.trial.label}
           </Link>
@@ -99,7 +99,7 @@ export function Header() {
             <Link
               href="/trial"
               onClick={handleCtaClick}
-              className="mt-2 inline-flex items-center justify-center px-5 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors"
+              className="mt-2 inline-flex items-center justify-center px-5 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-text hover:text-bg transition-colors"
             >
               {SITE.trial.label}
             </Link>

@@ -77,7 +77,7 @@ export function CookieBanner() {
             <button
               type="button"
               onClick={() => decide(ACCEPT_ALL, true)}
-              className="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-sm font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-sm font-medium rounded-md bg-accent text-bg hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               Alle akzeptieren
             </button>

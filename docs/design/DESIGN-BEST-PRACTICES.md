@@ -659,6 +659,39 @@ Document the 4 contrast ratios per CTA in `design.md` §2 (Color decisions) for 
 
 **Why this rule exists:** an internal audit on 2026-05-25 found 11 broken CTAs across 3 demos (Sander & Voss / Atem / Bart & Pomade) — including the yoga primary Button which failed AA in its DEFAULT state at 3.0:1 (terracotta + lilac). The demos shipped to production, and the bug was only caught by the user during review. The hover-state-darkens-without-text-update pattern is so easy to write that linting alone doesn't catch it; only conscious 4-state verification does.
 
+### CTA contrast — Tailwind v4 @layer base requirement (root cause, added 2026-05-25 after diagnosis)
+
+**Background — the silent bug that hid behind the 2026-05-25 audit:** After fixing the 11 broken CTA classes, browser-inspection re-audit revealed that **every primary CTA across all 6 portfolio demos still rendered with WRONG colors** — for example, the lawyer's "Leistungen ansehen" button (class `bg-text text-white`) computed `color: rgb(11, 42, 31)` (forest green) on a forest-green background — INVISIBLE text. The user reported "dark on dark" was real; the class string was correct, but a deeper CSS cascade issue was silently destroying every color utility.
+
+**Root cause:** All 6 demos had `body { color: var(--color-text); }` declared as an **unlayered** rule in `src/styles/global.css`. Per the CSS @layer cascade rules, **unlayered rules win over any layered rules regardless of specificity** ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer)). Tailwind v4 emits all utility classes inside `@layer utilities`. Inherited `color` from the unlayered body rule cascaded into every descendant and overrode `.text-bg`, `.text-white`, `.text-accent` etc., even when those utilities were direct matches on the element.
+
+Empirical verification (run in production browser):
+```js
+// Lawyer Hero primary CTA (.bg-text.text-white)
+getComputedStyle(button).color === 'rgb(11, 42, 31)';  // FOREST — not white. INVISIBLE on forest bg.
+// Body rule sets inherited color = var(--color-text) = forest, beats .text-white in @layer utilities.
+```
+
+**The fix:** Wrap the body rule + all base typography in `@layer base { ... }`. This places body inside the cascade ABOVE @layer utilities, so utility classes correctly override. Verified across all 6 demos 2026-05-25 — every CTA now computes its expected color.
+
+```css
+/* clients/<demo>/src/styles/global.css */
+@layer base {
+  body {
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    /* ... */
+  }
+  h1, h2, h3, h4 { /* ... */ }
+  a { color: inherit; text-decoration: none; }
+  /* ... */
+}
+```
+
+**Both agency scaffolds (`scaffolds/astro-tier2/src/styles/global.css` + `scaffolds/nextjs-tier3/src/app/globals.css`) ship this fix as of 2026-05-25.** Any new client scaffolded from them inherits the correct behavior. If you ever copy a global.css from a pre-2026-05-25 codebase, double-check that body is INSIDE `@layer base`.
+
+**Pre-launch verification (mandatory — added to CHECKLIST.md):** open every page in a real browser, open dev tools, hover the cursor over a primary CTA, and verify the computed `color` matches the intended hex from `tokens.css`. Do not trust the class string alone — Tailwind v4 cascade bugs are invisible at the class-string level.
+
 ### WhatsApp button
 
 Always open in a new tab. Pre-fill message when possible:

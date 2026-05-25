@@ -353,6 +353,7 @@ Already covered in §Sentry / error tracking subsection.
 - [ ] Text/background contrast ≥ 4.5:1 for body text (checked with a contrast tool)
 - [ ] Large text (≥ 24px bold) contrast ≥ 3:1
 - [ ] CTA buttons contrast ≥ 4.5:1 — **in DEFAULT, HOVER, FOCUS, AND ACTIVE states** (added 2026-05-25 per `DESIGN-BEST-PRACTICES.md` §7 CTA contrast — all 4 states). Hover hover the cursor over each CTA in dev tools; verify text remains readable. The most common bug: `hover:bg-accent-deep` paired with `text-bg` produces dark-on-dark muddy text. Use the approved Patterns A–D in §7.
+- [ ] **Browser-inspected CTA color** — for at least one primary CTA per page, open browser dev tools and verify `getComputedStyle(button).color` matches the intended hex from `tokens.css`. Class strings alone DO NOT GUARANTEE correct rendering — the Tailwind v4 @layer cascade bug (see `DESIGN-BEST-PRACTICES.md §7 CTA contrast — Tailwind v4 @layer base requirement`) silently swaps text colors with inherited body color, producing invisible dark-on-dark CTAs. **Trust the computed color, not the class.** Verify `src/styles/global.css` body rule is INSIDE `@layer base { ... }` — pre-2026-05-25 demos had it unlayered.
 - [ ] All images have descriptive `alt` text; decorative images have `alt=""`
 - [ ] All tap targets ≥ 44×44px on mobile
 - [ ] Tab through the page — every interactive element is reachable without a mouse

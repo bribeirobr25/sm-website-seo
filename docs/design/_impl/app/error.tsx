@@ -37,7 +37,7 @@ export default function ErrorBoundary({
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center justify-center px-5 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-accent-deep transition-colors"
+            className="inline-flex items-center justify-center px-5 py-3 min-h-[48px] text-base font-medium rounded-md bg-accent text-bg hover:bg-text hover:text-bg transition-colors"
           >
             Erneut versuchen
           </button>

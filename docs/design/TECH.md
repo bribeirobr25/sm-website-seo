@@ -724,6 +724,42 @@ Then in templates: `bg-accent`, `text-text`, `border-border`. Never `bg-[#c04a1e
 
 **Migration note:** any `tailwind.config.ts` you find in older scaffolds or copy-paste tutorials is v3-era and should be deleted; move its `theme.extend.colors` block into `@theme {}` in `tokens.css`.
 
+### Tailwind v4 @layer base requirement (CRITICAL — added 2026-05-25 after 6-demo invisible-CTA incident)
+
+**The body rule MUST be wrapped in `@layer base { ... }` in `src/styles/global.css`.** This is non-negotiable. Both agency scaffolds ship the fix.
+
+Per the CSS @layer cascade specification, unlayered rules win over any layered rules regardless of specificity. Tailwind v4 emits ALL utility classes inside `@layer utilities`. If `body { color: var(--color-text) }` is declared unlayered, the body's inherited color cascades into every descendant and silently overrides `.text-bg`, `.text-white`, `.text-accent` — producing dark-on-dark CTAs that are class-string-correct but visually broken.
+
+**Required pattern** (both scaffolds ship this):
+
+```css
+/* src/styles/global.css */
+@import "./tokens.css";
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--color-text);            /* would shadow .text-X utilities if unlayered */
+    background-color: var(--color-bg);
+  }
+  h1, h2, h3, h4 { /* ... */ }
+  a { color: inherit; text-decoration: none; }
+  :where(img, svg) { max-width: 100%; height: auto; display: block; }
+}
+```
+
+**Verify after every new scaffold:**
+
+```bash
+# Should output the rule INSIDE @layer base, not at top level.
+grep -A2 "body {" src/styles/global.css | head -6
+# Then in browser dev tools on a primary CTA:
+# getComputedStyle(button).color   ← MUST match the intended hex from tokens.css
+```
+
+See `DESIGN-BEST-PRACTICES.md` §7 "CTA contrast — Tailwind v4 @layer base requirement" for the full incident report and verification gate.
+
 ---
 
 ## 8. Component standards

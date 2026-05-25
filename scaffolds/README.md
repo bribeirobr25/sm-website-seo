@@ -29,6 +29,17 @@ Then follow the scaffold's own `README.md` for the per-client setup steps (renam
 - **Not reference impls.** The reference impls (deleted 2026-05-19 via the 2026-05-19 restructure) had per-client palette + content baked in. These scaffolds are content-neutral starters. Archived per-client docs at `docs/clients/archived/reference-solo-barber/` and `docs/clients/archived/reference-studio-booking/` retain the canonical worked-example shapes.
 - **Not where you put client code.** `clients/[slug]/` is where your client builds live. `scaffolds/` is where you copy FROM. They are NOT interchangeable.
 
+## What the scaffolds ship (so you don't have to add them)
+
+- **Tailwind v4 + `@layer base` body wrap** (added 2026-05-25 after a 6-demo invisible-CTA incident). The body rule + base typography are wrapped in `@layer base { ... }` so `.text-bg` / `.text-X` utilities aren't shadowed by the body's inherited color. **Do not unwrap** — see `docs/design/DESIGN-BEST-PRACTICES.md` §7 "CTA contrast — Tailwind v4 @layer base requirement" for the incident.
+- **`@fontsource-variable` fonts** — no Google Fonts CDN
+- **`vercel.json` with 6 security headers** + immutable cache (Astro only)
+- **Sentry `sendDefaultPii: false`** (mandatory per LEGAL.md)
+- **Cookie banner + consent layer** (consent-first, "Reject all" parity)
+- **`.github/workflows/ci.yml`** running `pnpm validate`
+- **Required public files** — `favicon.svg` / `favicon.ico` / `apple-touch-icon.png` / `robots.txt Disallow: /` / `og-default.png`
+- **Per-tier integrations** — Astro: Sentry only. Next.js: + Drizzle/Neon/Upstash/Resend/PostHog (all consent-gated, EU regions)
+
 ## Scaffold purity — what must NOT land here
 
 > Per the 2026-05-19 restructure §7 R17:
