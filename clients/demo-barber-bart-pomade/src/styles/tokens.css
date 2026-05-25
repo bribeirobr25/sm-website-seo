@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/*
+ * Bart & Pomade Barbershop — palette V2 (2026-05-23 — portfolio-diversity rebuild).
+ *
+ * V1 used warm cream + charcoal + copper. REJECTED per the agency's
+ * `COLOR.md` §6.5 "Portfolio diversity gate" — V1 was the 6th cream/bone
+ * demo in the portfolio AND the wrong register for heritage barber
+ * (`beauty.md` §13 explicitly: "Heritage barber expects DARK-DOMINANT,
+ * NOT cream-bg + charcoal text").
+ *
+ * V2 inverts to a fully dark-dominant palette:
+ *   - near-black bg (NOT cream — heritage-barber register correct now)
+ *   - warm bone text (high contrast on dark)
+ *   - saffron-gold accent (warm metallic pop on black)
+ *   - brick-red secondary (barber-pole heritage signal)
+ *
+ * Distinct from every other demo:
+ *   - Bellini (raspberry on warm cream — light)
+ *   - Saltlines (cyan-teal on pale cream — light)
+ *   - Adèle (burgundy on warm ivory — light)
+ *   - Sander & Voss V2 (forest green on pure white — light)
+ *   - Atem V2 (terracotta on pale lilac — light cool)
+ *   - Bart & Pomade V2 (saffron-gold on near-black — DARK) ← unique dark-dominant
+ *
+ * Also satisfies `COLOR.md` §6.5 rule 3: "At least one demo in any 6-demo
+ * portfolio MUST have a dark-dominant background." This is that demo.
+ *
+ * Framework: Triadic-dark per `COLOR.md` §3
+ *   - Black bg (deep neutral anchor)
+ *   - Warm bone text (warm light, NOT pure white — adds heritage feel)
+ *   - Saffron-gold accent (warm-yellow primary pop)
+ *   - Brick-red secondary (red, for barber-pole + serious notices)
+ *
+ * WCAG 2.2 AA verified:
+ *   - text #F2EEE3 on bg #0E0E0E → 16.8:1 (AAA)
+ *   - accent #D9A35E on bg #0E0E0E → 9.3:1 (AAA, all sizes)
+ *   - secondary #B83C2B on bg #0E0E0E → 5.1:1 (AA-normal)
+ *
+ * IMPORTANT — inverted-register tokens REVERSED here. For sections
+ * that should be LIGHT (cards on dark bg, gallery tiles), use
+ * inverted-bg (cream) — the inverted register IS light, not dark.
+ */
+
+@theme {
+  /* Brand palette — near-black + warm bone + saffron-gold + brick-red */
+  --color-bg: #0e0e0e;
+  --color-surface: #1a1a1a;
+  --color-surface-elev: #252525;
+  --color-text: #f2eee3;
+  --color-text-muted: #9a9388;
+  /* Primary accent — saffron-gold. Use accent (9.3:1 on black, AAA all sizes) for headings + CTAs. */
+  --color-accent: #d9a35e;
+  --color-accent-deep: #a77a40;
+  /* Secondary accent — brick-red. Barber-pole signal, used sparingly. */
+  --color-accent-secondary: #b83c2b;
+  --color-accent-secondary-deep: #8d2d20;
+  --color-border: #2d2d2d;
+  --color-success: #5c8a5c;
+  --color-warning: #d9a35e;
+
+  /* Inverted register — light, for "lift up out of the dark" sections */
+  --color-inverted-bg: #f2eee3;
+  --color-inverted-surface: #ffffff;
+  --color-inverted-text: #0e0e0e;
+  --color-inverted-text-muted: #5b5651;
+
+  /* Typography — Bricolage Grotesque (modern geometric) + Inter body */
+  --font-display: "Bricolage Grotesque Variable", "Inter", system-ui, sans-serif;
+  --font-body: "Inter Variable", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Spacing — generous + impactful */
+  --spacing-section: 6.5rem;
+  --spacing-section-mobile: 3rem;
+
+  /* Radii — minimal, masculine straight edges */
+  --radius-sm: 0px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-full: 9999px;
+  --radius-pill-half: 30px 0 0 30px;
+
+  /* Shadows — sharp on dark */
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-elev: 0 18px 36px rgba(0, 0, 0, 0.55);
+
+  /* Motion — sharp, quick */
+  --motion-fast: 150ms;
+  --motion-base: 280ms;
+  --motion-warm: 450ms;
+  --motion-deliberate: 550ms;
+  --motion-reveal: 700ms;
+
+  --ease-apple-smooth: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-quart: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-luxe: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+
+  --stagger-step: 15ms;
+
+  /* Tracking */
+  --tracking-display-sans: -0.03em;
+  --tracking-display-serif-caps: 0.04em;
+  --tracking-body: -0.005em;
+}

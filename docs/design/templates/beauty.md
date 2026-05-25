@@ -568,3 +568,112 @@ Berlin example. Swap 8 placeholders per client.
 - **Keyword pattern (BR):** `[serviço] em [bairro]` · `melhor [profissão] em [cidade]`
 - **Keyword pattern (PT):** `[serviço] em [cidade]` · `melhor [profissão] [bairro]`
 - **Example:** "Männerfriseur Mitte" · "Barbearia em Icaraí" · "Cabeleireiro Bairro Alto"
+
+---
+
+## 12. Research signal — 2026-05-23 (5-site WebFetch sweep)
+
+**Sites captured:** Schorem Barbier (NL) · Nomad Barber (Berlin/London/Mumbai) · A Star Barbers (UK) · Taylor Taylor London (salon) · David Mallett (Paris/NY salon).
+
+**10 actionable rules:**
+
+1. **Two-axis register split.** **Heritage barber** (Schorem, A Star) = deep charcoal/black + gold/copper accents + sans uppercase + grit photography. **Editorial salon** (David Mallett, Taylor Taylor) = bone/off-white + soft black + gold micro-accent + serif H1 + minimalist nature-light photography.
+2. **Founder/team story is mandatory.** Every site profiled named individuals with role + specialty + portrait. Schorem: 10 named barbers. A Star: founder origin (Ahmed & Tanya, 2013). Taylor Taylor: stylist credentials (ICG-certified). TeamGrid is non-negotiable.
+3. **Trust signal stack near top of page.** "4.7★ 869 Google reviews" (Schorem) OR "Voted Best Hair Salon in London" (Taylor Taylor) OR press logos (David Mallett: Vogue/GQ/W/Bazaar) — pick one and lead with it.
+4. **Product line as parallel content.** Schorem: Reuzel collab + own pomade line. David Mallett: full product range = 30% of nav. Taylor Taylor: Løre Originals. The product showcase doubles the dwell time. If the client has no product line, replace with a "Care guide" content block.
+5. **PricingTable upfront — barber especially.** Schorem displays service pricing inside the shop description. A Star has a dedicated "Pricing" nav. Hiding prices is an anti-pattern in 2026 barber/salon.
+6. **Multi-location → geographic storytelling.** Nomad Barber characterizes EACH location ("creative and upcoming area" / "blending West and East"). Don't list locations as a uniform grid — give each its own paragraph + photo.
+7. **BeforeAfterSlider for cuts (barber-specific).** Strongest visual conversion for the haircut category. Not used by Schorem/A Star but flagged as a differentiator opportunity.
+8. **Booking button is sticky + repeats every section.** "Book Now" appears in header + after every major content block. Friction must approach zero.
+9. **Soft CTAs for salon editorial register.** David Mallett uses "Découvrir" (Discover), not "Book." Taylor Taylor uses "Explore." Premium salon copy avoids transactional verbs.
+10. **Instagram integration is the social proof layer.** Schorem shows IG feed inline. Taylor Taylor reels embedded as "Hair Obsessions." Consent-gated InstagramEmbed per `SOCIAL-SHARING.md` §Instagram embed.
+
+**Color register confirmed by sub-archetype:**
+- **Heritage barber:** charcoal #1A1A1A + copper #B87333 OR gold #B89968 + warm cream #F4ECD8
+- **Editorial salon (luxury):** bone #F2EDE4 + soft black #1F1B17 + gold micro-accent #C4A24A + sage neutral
+- **Boutique salon (approachable):** ivory + dusty rose OR sage + brass
+
+**Anti-patterns confirmed:** stock-photo women laughing on white (template). Generic "passionate about hair" copy. Hiding prices behind "Request a quote." Cartoon avatars replacing real team photos.
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+**Per CLAUDE.md "Portfolio diversity is a hard gate" + DESIGN-BEST-PRACTICES.md §6.5.** Barber / salon / spa / nail-studio demos MUST avoid the universal-9 composition.
+
+### Beauty swap-ins (use INSTEAD of universal-9 items)
+
+| Universal-9 item to AVOID | Beauty swap-in | Why |
+|---|---|---|
+| MenuPreview (3-card preview) | **PricingTable** (3 columns side-by-side, full price list) | Per `beauty.md §12 rule 5` — hiding prices is a 2026 anti-pattern. Show the catalog with prices upfront. |
+| Timeline (4-step process) | **BeforeAfterSlider** (cut showcase) — per `beauty.md §12 rule 7` | The strongest visual conversion for haircut + treatment categories. |
+| About + StatCallouts | **About (founder story, long-form) + Press/Awards strip** | Beauty trust signal is named founders + recognitions, not "since X" boxes. |
+| Testimonial single card | **TrustBadgeRow** with Google review avg + member-of-Verband + featured-in publications | Diffused trust signal reads more authentic than one celebrity quote. |
+| MapEmbed | **Plain directions block** (transit + parking + WhatsApp button) | Beauty bookings happen by phone/WhatsApp first; map is secondary. |
+| VisitPreview ("Come by") | **BookingMock** (Treatwell/Booksy-style) — per `beauty.md §12 rule 8 sticky booking + repeats every section` | Beauty conversion lever IS the booking flow. Mock the booking UI. |
+
+### Mandatory additions for beauty
+
+| Add this section | Why |
+|---|---|
+| **BeforeAfterSlider** (cut/treatment showcase) | Per `beauty.md §12 rule 7` — strongest visual conversion. |
+| **Lightbox portfolio** (8-15 cut/style/treatment photos) | Per `beauty.md §12` — Instagram-feed-style social proof, but consent-free. |
+| **BookingMock** (Treatwell / Booksy / Fresha-style mock UI) | Per `beauty.md §12 rule 8` — booking button sticky + repeats every section. |
+| **TrustBadgeRow** with Google review avg + Verband membership | Per `beauty.md §12 rule 3` — trust signal stack near top. |
+| **PricingTable** (3-column side-by-side OR full price list with categories) | Per `beauty.md §12 rule 5` — prices upfront, no "request a quote." |
+
+### 3 valid composition orderings
+
+**Ordering A — "Heritage barber"** (dark-dominant, register-led)
+1. FullBleedHero (dark register, large uppercase typography)
+2. PricingTable (3-column side-by-side)
+3. BeforeAfterSlider
+4. Lightbox portfolio
+5. About (founder story)
+6. TeamGrid (horizontal cards with larger portraits)
+7. BookingMock
+8. TrustBadgeRow
+9. FAQ 2-column Accordion
+10. Inverted CTA footer
+
+**Ordering B — "Editorial salon"** (light-bg, sophisticated)
+1. SplitHero (text + lifestyle photo)
+2. About (founder + philosophy)
+3. PricingTable
+4. Lightbox portfolio (gallery as atmosphere)
+5. TeamGrid (2×2 with bios + portraits)
+6. BeforeAfterSlider
+7. Press / awards strip
+8. BookingMock
+9. FAQ
+10. Soft pillTYPE CTA
+
+**Ordering C — "Boutique salon / spa"** (warm, intimate)
+1. SplitHero
+2. Lightbox studio + treatment gallery
+3. About + PricingTable inline
+4. TeamGrid (small chips)
+5. BeforeAfterSlider
+6. BookingMock
+7. NewsletterMock
+8. TrustBadgeRow
+9. FAQ
+10. CTA footer
+
+### Anti-patterns for beauty composition
+
+- ❌ Timeline as a "process" section (use BeforeAfterSlider to communicate craft instead)
+- ❌ MapEmbed in the home composition (footer or omit; bookings happen by phone)
+- ❌ Hiding prices behind "request a quote" / "contact for pricing" (1990s aesthetic)
+- ❌ Stock-photo women laughing on white (template tell)
+- ❌ Cartoon avatars replacing real team photos (kills the trust-signal purpose)
+
+### Palette: do NOT default to cream / brown / charcoal-on-cream
+
+Per `COLOR.md` §6 #11 + §6.5: beauty has two valid register axes. Pick deliberately:
+
+- **Heritage barber → dark-dominant** (`#0E0E0E` / `#1A1A1A` background + warm bone text + saffron-gold or copper or brick-red accent). NOT cream-bg + charcoal text — that's the boutique salon register, not heritage barber.
+- **Editorial salon → bone or off-white** + soft black + gold micro-accent (OR slate-blue + bone + rose for cool register; OR deep teal + bone + brass for sophisticated register).
+- **Boutique salon (approachable)** → soft dusty rose + bone + brass OR sage + bone + amber.
+
+Pick a register axis FIRST, then a token chain. Don't default to charcoal-on-cream regardless of register — the heritage-barber expectation in 2026 is dark-dominant, not "cream with dark text."

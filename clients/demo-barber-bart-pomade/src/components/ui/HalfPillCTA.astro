@@ -1,0 +1,94 @@
+---
+/**
+ * Half-pill sticky-edge CTA — reservation / booking / quote button.
+ * Spec: docs/design/components/half-pill-cta.md
+ *
+ * The "tab sticking in from the right edge" effect is purely visual via
+ * border-radius (30px 0 0 30px). NOT position:fixed. Place this in the
+ * nav row's right cell; the optical illusion comes from the radius alone.
+ *
+ * Visual identity (this scaffold): dark + amber
+ *   --color-accent: #d4894a (Jean Souza Barber)
+ *   text: --color-bg (#1a1612) on amber → ~7:1 AAA
+ *
+ * Per-vertical token swaps:
+ *   gastronomy (Haven-style):  --color-accent: #C1643B terracotta,
+ *                              text: --color-bg-cream → ~4.55:1 AA
+ *   beauty (peach):            --color-accent: #FFBC95,
+ *                              text MUST be --color-text-warm dark
+ *                              (white on peach fails AA)
+ *   trades (navy):             --color-accent: #042940,
+ *                              text: white → ~14:1 AAA
+ *   health: per-client brand — verify per CHECKLIST.md before launch
+ */
+
+interface Props {
+  href: string;
+  label: string;
+  ariaLabel: string;
+  target?: string;
+  rel?: string;
+  dataEvent?: string;
+  dataSourceSection?: string;
+  class?: string;
+}
+
+const {
+  href,
+  label,
+  ariaLabel,
+  target,
+  rel,
+  dataEvent,
+  dataSourceSection,
+  class: extraClass = '',
+} = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={['hpc-cta', extraClass]}
+  target={target}
+  rel={target === '_blank' ? (rel ?? 'noopener noreferrer') : rel}
+  aria-label={ariaLabel}
+  data-event={dataEvent}
+  data-source-section={dataSourceSection}
+>
+  {label}
+</a>
+
+<style>
+  .hpc-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 13.5px 27px;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: var(--radius-pill-half);
+    font-size: 14.4px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    min-height: 44px;
+    transition: background-color var(--motion-warm) ease;
+  }
+
+  .hpc-cta:hover {
+    background-color: var(--color-accent-deep);
+  }
+
+  .hpc-cta:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-pill-half);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hpc-cta {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,140 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+---
+
+<BaseLayout
+  title={`Impressum — ${SITE.name}`}
+  description="Impressum gemäß § 5 TMG."
+  locale={locale}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24 max-w-3xl">
+        <p class="text-xs uppercase tracking-[0.2em] text-text-muted">Rechtliches</p>
+        <h1 class="mt-2 font-display text-4xl sm:text-5xl text-text">Impressum</h1>
+
+        <div class="mt-6 inline-block bg-surface-elev border-l-4 border-accent px-4 py-3 rounded-r">
+          <p class="text-sm text-text">
+            <strong>BEISPIEL-IMPRESSUM</strong> — Diese Seite ist Teil einer Demo-Website der Agentur sm-website-seo.
+            Sander &amp; Voss Rechtsanwälte ist eine fiktive Kanzlei. Die Angaben unten sind erfunden und entsprechen nicht
+            den Vorgaben von § 5 TMG, BRAO oder DL-InfoV für eine echte Kanzlei.
+          </p>
+        </div>
+
+        <div class="mt-10 space-y-8 text-text leading-relaxed">
+          <div>
+            <h2 class="font-display text-2xl text-text">Angaben gemäß § 5 TMG</h2>
+            <p class="mt-3">
+              {SITE.legal.legalEntity}<br />
+              {SITE.address.street}<br />
+              {SITE.address.postalCode} {SITE.address.city}<br />
+              Deutschland
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Vertreten durch</h2>
+            <p class="mt-3">{SITE.legal.representedBy}</p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Kontakt</h2>
+            <p class="mt-3">
+              Telefon: <a href={`tel:${SITE.phone}`} class="text-accent hover:text-accent-deep underline">{SITE.phoneDisplay}</a><br />
+              E-Mail: <a href={`mailto:${SITE.email}`} class="text-accent hover:text-accent-deep underline">{SITE.email}</a>
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Registereintrag</h2>
+            <p class="mt-3">
+              Eintragung im Partnerschaftsregister<br />
+              Registergericht: {SITE.legal.register.court}<br />
+              Registernummer: {SITE.legal.register.number}
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Umsatzsteuer-ID</h2>
+            <p class="mt-3">
+              Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
+              <span class="tabular">{SITE.legal.ustId}</span>
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Berufsbezeichnung + zuständige Kammer</h2>
+            <p class="mt-3">
+              Berufsbezeichnung: Rechtsanwalt / Rechtsanwältin<br />
+              Verliehen in: Bundesrepublik Deutschland<br />
+              Zuständige Kammer: Rechtsanwaltskammer Berlin, Littenstraße 9, 10179 Berlin<br />
+              <a href="https://www.rak-berlin.de" target="_blank" rel="noopener noreferrer" class="text-accent-deep hover:text-text underline">www.rak-berlin.de</a>
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Berufsrechtliche Regelungen</h2>
+            <p class="mt-3">
+              Es gelten insbesondere folgende berufsrechtliche Regelungen:<br />
+              · Bundesrechtsanwaltsordnung (BRAO)<br />
+              · Berufsordnung der Rechtsanwälte (BORA)<br />
+              · Fachanwaltsordnung (FAO)<br />
+              · Rechtsanwaltsvergütungsgesetz (RVG)<br />
+              · Berufsregeln der Rechtsanwälte der Europäischen Union (CCBE)
+            </p>
+            <p class="mt-3">
+              Einsehbar unter <a href="https://www.brak.de" target="_blank" rel="noopener noreferrer" class="text-accent-deep hover:text-text underline">www.brak.de</a> → Berufsrecht.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Berufshaftpflichtversicherung</h2>
+            <p class="mt-3">
+              Versicherer: HDI Versicherung AG, HDI-Platz 1, 30659 Hannover<br />
+              Geltungsbereich: Bundesrepublik Deutschland und Mitgliedstaaten der Europäischen Union<br />
+              Mindestversicherungssumme: 2.500.000 € pro Versicherungsfall (gemäß § 51 BRAO)
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+            <p class="mt-3">
+              {SITE.legal.representedBy}<br />
+              {SITE.address.street}<br />
+              {SITE.address.postalCode} {SITE.address.city}
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">EU-Streitschlichtung</h2>
+            <p class="mt-3">
+              Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
+              <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" class="text-accent hover:text-accent-deep underline ml-1">https://ec.europa.eu/consumers/odr/</a>.
+              Unsere E-Mail-Adresse finden Sie oben im Impressum.
+            </p>
+            <p class="mt-3">
+              Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+              Verbraucherschlichtungsstelle teilzunehmen.
+            </p>
+          </div>
+
+          <div>
+            <h2 class="font-display text-2xl text-text">Haftung für Inhalte</h2>
+            <p class="mt-3">
+              Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den
+              allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht
+              verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

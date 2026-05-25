@@ -1,0 +1,117 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import MapEmbed from '@/components/sections/MapEmbed.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`;
+const dayLabelsDE = { Mon: 'Mo', Tue: 'Di', Wed: 'Mi', Thu: 'Do', Fri: 'Fr', Sat: 'Sa', Sun: 'So' };
+---
+
+<BaseLayout
+  title={`Studio — ${SITE.name}`}
+  description="Atem Studio in der Bergmannstraße 67. Werktags 07:00–21:00, Wochenende 08:30–18:00."
+  locale={locale}
+  alternateLocaleUrl="/en/studio"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-xs uppercase tracking-[0.28em] text-accent-secondary-deep font-semibold">Über das Studio</p>
+          <h1 class="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.1] italic">
+            Zwei Räume, Tee, Stille.
+          </h1>
+          <div class="mt-8 space-y-5 text-lg text-text-muted leading-[1.75]">
+            <p>
+              Atem Studio liegt im ersten Stock eines Altbaus an der Bergmannstraße — drei Minuten vom Marheineke-Markt, fünf vom U-Gneisenaustraße. Zwei Räume: einer mit Holzdielen, hohe Decken, Bibliotheksgeräusche von der Straße. Der zweite ruhiger, mit Linoleum für Restorative und Prenatal.
+            </p>
+            <p>
+              Dazu eine Garderobe, zwei Duschen, eine Tee-Ecke mit drei Sorten (Kamille, Roibos, Genmaicha) und eine kleine Bibliothek mit Yoga-Klassikern (Iyengar, Desikachar, Donna Farhi). Komm fünfzehn Minuten früher — die Anwesenheit zählt zur Praxis.
+            </p>
+            <p>
+              Wir sind 2018 mit Lara und Felix angefangen, heute sind wir zu viert. Mehr soll es bewusst nicht werden — sonst werden die Klassen unpersönlich. Manchmal werden wir gefragt, ob wir eine zweite Filiale eröffnen. Die Antwort: nein, wir bleiben klein.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+          <div class="bg-surface rounded-2xl p-8 border border-border space-y-2">
+            <p class="font-display text-2xl text-text italic">{SITE.name}</p>
+            <p class="text-text-muted">{SITE.address.street}</p>
+            <p class="text-text-muted">{SITE.address.postalCode} {SITE.address.city} — {SITE.address.neighborhood}</p>
+            <p class="text-text-muted pt-2">
+              <a href={`tel:${SITE.phone}`} class="text-accent-deep hover:text-text underline tabular">{SITE.phoneDisplay}</a>
+            </p>
+            <p class="text-text-muted">
+              <a href={`mailto:${SITE.email}`} class="text-accent-deep hover:text-text underline">{SITE.email}</a>
+            </p>
+            <div class="pt-4 flex flex-wrap gap-3">
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-full bg-text text-bg hover:bg-accent-secondary-deep transition-colors">
+                In Google Maps öffnen
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-surface rounded-2xl p-8 border border-border space-y-5">
+            <p class="text-xs uppercase tracking-[0.28em] text-accent-secondary-deep font-semibold">Öffnungszeiten</p>
+            <div>
+              <p class="font-display text-xl text-text italic">{SITE.hours.summer.label.de}</p>
+              <dl class="mt-3 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.summer.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsDE[h.day as keyof typeof dayLabelsDE]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'geschlossen'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+            <div class="pt-3 border-t border-border">
+              <p class="font-display text-xl text-text italic">{SITE.hours.winter.label.de}</p>
+              <dl class="mt-3 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.winter.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsDE[h.day as keyof typeof dayLabelsDE]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'geschlossen'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Anfahrt</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">Mit BVG oder zu Fuß.</h2>
+          <p class="text-text-muted leading-relaxed">
+            U7 Gneisenaustraße (5 Min.), U6 Mehringdamm (8 Min.), S-Bahn Yorckstraße (12 Min.). Wenig Parkplätze in der Bergmannstraße — wir empfehlen den Bus, das Fahrrad oder einfach laufen.
+          </p>
+        </div>
+        <MapEmbed
+          lat={SITE.geo.lat}
+          lng={SITE.geo.lng}
+          zoom={16}
+          markerLabel="Atem Studio · Bergmannstraße 67"
+          title="Karte: Atem Studio, Bergmannstraße 67, 10961 Berlin"
+          provider="openstreetmap"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

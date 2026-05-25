@@ -589,3 +589,99 @@ Berlin example.
 - **Keyword pattern (BR):** `advogado [especialidade] [cidade]` · `[especialidade] advogado [bairro]`
 - **Keyword pattern (PT):** `advogado [especialidade] [cidade]` · `[especialidade] [cidade]`
 - **Example:** "Familienrecht Anwalt Berlin Mitte" · "Advogado tributário em São Paulo" · "Advogado de família em Lisboa"
+
+---
+
+## 12. Research signal — 2026-05-23 (8-site sweep)
+
+**Sites captured:** Latham & Watkins · Sidley Austin · Skadden · Baker McKenzie · Burson · Weber Shandwick · Fleishman-Hillard · (Edelman blocked: Access Denied; Ropes & Gray + White & Case blocked: Cloudflare).
+
+**10 actionable rules:**
+
+1. **Typography-led hero, not full-bleed photo.** All 5 elite law firms (Latham/Sidley/Skadden/Baker/White & Case) lead with serif H1 + sub on a near-empty background. Hero photography is reserved for *behind* the eyebrow, not as the dominant atmosphere. Use `EyebrowDisplayHero` or a custom typography-led variant — NOT `FullBleedHero`.
+2. **Utility nav bar above primary nav.** Languages · Careers · Newsroom · Search · Contact in a thin top bar; primary nav below carries the practice-area / industries / people / insights matrix. Mimics enterprise news sites.
+3. **Practice areas as a multi-column dropdown mega-menu.** Not a single dropdown list — a multi-column grid grouping practice areas + industries + jurisdictions. (Skadden, Baker, Sidley confirmed.)
+4. **Numerics strip near top of page.** "200+ partners · 30 offices · 6 continents · 145 years" — table-bold serif numerals. Builds gravitas in 4 seconds. (Latham, Skadden, Baker confirmed.)
+5. **Insights / Publications block as the third section.** Recent client alerts + thought-leadership pieces — feeds the "expert authority" signal AND keeps SEO content fresh. PR agencies (Burson, Weber) use the same pattern with case-study cards instead.
+6. **Press / awards row using monochrome client + media logos.** Chambers · Legal 500 · The Lawyer · Financial Times — desaturated wall of logos. Always before the team grid.
+7. **TeamGrid filterable by practice area + jurisdiction.** Partner profiles with photo + name + role + practice area pills. Filter UI sits above the grid as button group. (Latham, Sidley confirmed.)
+8. **NO above-fold contact form.** All 5 firms defer contact to either a footer line or a soft end-of-page "Speak with us" CTA. Forces the visitor to read first.
+9. **Soft consultation CTA at end of page.** "Get in touch" or "Discuss your matter" — single CTA, no urgency, no countdown. Premium register.
+10. **Footer is the trust signal.** Offices map · jurisdictions licensed · regulatory disclosures · awards · Impressum/legal-pages section. The footer is 4-8 columns deep — most utility lives here, not in the hero.
+
+**PR agency variants (Burson · Weber · Fleishman):** swap "Practice areas" → "Capabilities," "Insights" → "Case studies," team grid emphasizes industry expertise over jurisdictions. The grid + typography rules carry over.
+
+**Color register confirmed:** deep navy / forest green / oxblood as accent on near-white background. NO bright accents. Avoid Bellini-pink / Saltlines-coral / saturated greens — instantly reads as agency-template not enterprise law.
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+**Per CLAUDE.md "Portfolio diversity is a hard gate" + DESIGN-BEST-PRACTICES.md §6.5.** Lawyer / accountant / consultant / architect demos and client builds MUST avoid the universal-9 composition.
+
+### Pro-services swap-ins (use these INSTEAD of universal-9 items)
+
+| Universal-9 item to AVOID | Pro-services swap-in | Why |
+|---|---|---|
+| MenuPreview (preview cards 3-up) | **2×2 PracticeAreas grid** OR `ScrollSpyNav`-driven jurisdiction list | 3-up cards reads "restaurant menu." Pro-services need hierarchy / depth, not preview teasers. |
+| StatCallouts row | **Numerics strip in Hero** + **Recognitions list** (Chambers ranked, Legal 500 quoted, BFH-cited) | "120+ matters" as a big number reads like a marketing site. Recognitions read like an enterprise law firm. |
+| Timeline (4-step process) | **Accordion** "How we engage" with 4 expandable items | Same info, but more discoverable + scannable. Process steps for lawyers are nuanced; cards hide that. |
+| Testimonial (single 5-star card) | **Pull-quote block** referencing publication (Chambers, Legal 500, JUVE) — NOT 5-star | Client review of a lawyer reads weird (confidentiality). Pull-quote from a directory reads professional. |
+| MapEmbed (Google/OSM iframe) | **Plain-text directions block** in footer or kanzlei page | Pro-services clients don't drop in. They book a meeting first. Map is unnecessary chrome. |
+| VisitPreview ("Come by") | **HalfPillCTA** "Speak with us" — half-pill register, single soft CTA | Pro-services CTA is "discuss your matter," not "visit our showroom." |
+
+### Mandatory additions for pro-services
+
+| Add this section | Why |
+|---|---|
+| **Press / Recognitions logos strip** (Chambers · Legal 500 · Financial Times · The Lawyer · JUVE · WirtschaftsWoche) — monochrome | The single strongest trust signal in enterprise pro-services. Goes near top, before About. |
+| **TrustBadgeRow** — Rechtsanwaltskammer Berlin admission, BRAK membership, IBA membership, ISO certification (for accountants) | Regulatory legitimacy. Lawyers especially need the Kammer + admission shown. |
+| **TeamGrid as 2×2 with full-bio paragraphs** (NOT 4-column small chips) | Pro-services trust signals are individual-driven — partners are the product. Big cards with bios, not small chips. |
+
+### 3 valid composition orderings (pick one, don't invent the universal-9)
+
+**Ordering A — "Recognition-led" (default for established firms)**
+1. Hero (typography-led)
+2. Press/Recognitions strip
+3. TrustBadgeRow (admissions)
+4. PracticeAreas 2×2
+5. About + firm philosophy
+6. TeamGrid 2×2 (full bios)
+7. Accordion "How we engage"
+8. Pull-quote block (Chambers / Legal 500)
+9. FAQ 2-column
+10. HalfPillCTA
+
+**Ordering B — "Practice-led" (default for boutique firms with clear specialization)**
+1. Hero (typography-led)
+2. PracticeAreas 2×2 (lead with what you do)
+3. TrustBadgeRow
+4. Accordion "How we engage"
+5. About + StatCallouts-as-text (no big-number boxes)
+6. TeamGrid 2×2
+7. Press/Recognitions strip
+8. FAQ 2-column
+9. HalfPillCTA
+
+**Ordering C — "People-led" (default for solo practitioners / partner-driven firms)**
+1. Hero (typography-led, partner name + photo placeholder)
+2. About (founder story, long-form)
+3. TeamGrid 2×2 (full bios, including founder)
+4. PracticeAreas inline list (not grid)
+5. Accordion "How we engage"
+6. TrustBadgeRow
+7. Press/Recognitions strip
+8. FAQ 2-column
+9. HalfPillCTA
+
+### Anti-patterns for pro-services composition
+
+- ❌ MapEmbed in the home composition (move to footer or omit entirely)
+- ❌ StatCallouts row with "12.345 matters · 47 partners · 6 continents" boxes (this is consultancy-template aesthetic; real enterprise law uses Press + TrustBadgeRow instead)
+- ❌ Testimonial as a single client-name + 5-star card (confidentiality concerns + reads weird for pro-services)
+- ❌ Timeline as the only process-explanation (use Accordion for depth)
+- ❌ Photo-led hero (the research signal in §12 rule 1 is unambiguous on this)
+
+### Palette: do NOT default to cream
+
+Per `COLOR.md` §6 #11 + §6.5: pro-services should pick from `white #FFFFFF / pale cool #F4F5F8 / forest green #0B2A1F / deep navy #131E33` as the primary identity. Cream is allowed only when the firm has a literary/heritage register that justifies it (e.g., long-established notary publics in historic buildings). Default to white-or-cool — not cream.

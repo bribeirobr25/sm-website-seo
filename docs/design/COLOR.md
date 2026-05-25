@@ -118,6 +118,36 @@ A `pnpm validate` block does NOT check items 3-6 — those are visual/judgment. 
 | 8 | Trend-driven palette (Gen-Z gradient, Y2K chrome) with no business reason | Six-month half-life. Will look dated. Only use if the *brand* is the trend. |
 | 9 | Stock-photo color (Memphis pastels, Fiverr-gradient purple-pink) without owner sign-off | Reads "we used a free template." |
 | 10 | Inverted hierarchy: muted accent + bright "neutral" | Confuses scanning. Accent should attract, neutral should recede. |
+| 11 | **Cream / bone / off-white background defaulted without per-vertical justification** | Reads "agency template." Cream is valid for SOME verticals (gastronomy heritage / fine-dining / boutique salon editorial) but is NOT a universal-safe default. Lawyer, gym, dental, real estate, automotive, tech, dark-register barber etc. should NOT default to cream. If the per-vertical template does not call out cream/bone, pick a different base. |
+| 12 | **Brown/tan token chain used as primary brand color** without an artisan/heritage/wood-craft justification | Brown is a vertical-specific signal (artisan, leather, wood-trades, coffee). Outside those, it reads "sepia-filter generic." Don't pick `#7B5468`, `#B89968`, `#8E5526` etc. as a default — pick them when the *vertical* asks for them. |
+
+---
+
+## 6.5. Portfolio diversity gate (agency-mandatory before any scaffold)
+
+**Rule:** Before committing the `tokens.css` palette for a new client or demo, the responsible Claude session MUST audit the agency's current portfolio (`clients/*/src/styles/tokens.css` + the agency landing page if present) and confirm:
+
+1. **No two adjacent or homepage-grid-adjacent demos share the same dominant background hue.** Specifically: if any *existing* `--color-bg` falls within ΔE76 ≤ 10 of the proposed new `--color-bg`, the proposed palette MUST be reworked. Pure-white (`#FFFFFF` / `#FBFBF9` / similar paper-whites) counts as ONE hue family — only one site in the portfolio may use it.
+2. **No two demos share the same dominant *accent* hue.** The accent is what the eye picks up first in the viewport. If two demos both lean "warm gold + cream" or "cool blue + grey," they read as the same studio.
+3. **At least one demo in any 6-demo portfolio MUST have a dark-dominant background (`--color-bg` lightness ≤ 25%).** If all 6 are light-bg, the homepage grid reads monotone regardless of accent variation.
+4. **At least one demo MUST have a saturated-pop hue (vivid pink / cyan / saffron / etc.) as its accent.** If all accents are muted-earth tokens, the grid loses energy.
+5. **A demo's palette is documented in `design.md §2` with the explicit "differentiates from {list of existing demo bg/accent hex codes}" justification line.**
+
+How to run the audit (one-shot Bash):
+
+```bash
+# From repo root — list current portfolio palettes for comparison.
+for d in clients/demo-*/src/styles/tokens.css; do
+  client=$(basename $(dirname $(dirname $(dirname $d))))
+  bg=$(grep -E '^\s*--color-bg:' $d | head -1 | awk '{print $2}' | tr -d ';')
+  accent=$(grep -E '^\s*--color-accent:' $d | head -1 | awk '{print $2}' | tr -d ';')
+  echo "$client → bg=$bg · accent=$accent"
+done
+```
+
+Pin the result of this audit into the per-client `design.md §2.5 Palette audit` block alongside the existing 6-point pre-launch palette audit.
+
+**Why this rule exists:** the 2026-05-23 portfolio review surfaced that 5 of 6 demos had defaulted to warm-cream / bone / ivory backgrounds. The cream-defaulting was treated as a "safe choice" but was actually a *single* choice repeated 5 times — the agency portfolio looked monochromatic on a homepage grid. Cream is valid for *some* verticals but is not a universal default.
 
 ---
 

@@ -1,0 +1,194 @@
+---
+/**
+ * Lightbox — image gallery using native <dialog>.
+ * Spec: docs/design/components/lightbox.md (added 2026-05-23)
+ *
+ * Grid of thumbnails → opens native <dialog> overlay with full-resolution
+ * image + prev/next/ESC/keyboard navigation. Built on the Dialog primitive.
+ *
+ * Pure HTML/CSS rendering; ~2KB JS for keyboard nav + image swap.
+ */
+
+interface LightboxImage {
+  thumbSrc: string;
+  fullSrc: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+}
+
+interface Props {
+  /** Unique id for the lightbox dialog (used by openers) */
+  id: string;
+  /** Images to display */
+  images: LightboxImage[];
+  /** Grid columns on desktop (2 | 3 | 4) */
+  columns?: 2 | 3 | 4;
+  /** Thumbnail aspect ratio */
+  aspect?: 'square' | 'portrait' | 'landscape' | 'auto';
+  class?: string;
+}
+
+const { id, images, columns = 3, aspect = 'square', class: extraClass = '' } = Astro.props;
+
+const columnsClass = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-2 sm:grid-cols-3',
+  4: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+}[columns];
+
+const aspectClass = {
+  square: 'aspect-square',
+  portrait: 'aspect-[3/4]',
+  landscape: 'aspect-[4/3]',
+  auto: '',
+}[aspect];
+---
+
+<div class:list={['ad-lightbox', extraClass]} data-lightbox-id={id}>
+  <ul class:list={['grid gap-3 list-none p-0', columnsClass]}>
+    {images.map((img, i) => (
+      <li>
+        <button
+          type="button"
+          class:list={['ad-lightbox-thumb relative w-full overflow-hidden rounded-md border border-border', aspectClass]}
+          data-lightbox-open={id}
+          data-lightbox-index={i}
+          aria-label={`Open image ${i + 1}: ${img.alt}`}
+        >
+          <img
+            src={img.thumbSrc}
+            alt={img.alt}
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+        </button>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<dialog
+  id={id}
+  class="ad-lightbox-dialog"
+  aria-label="Image viewer"
+>
+  <button type="button" class="ad-lightbox-close" data-dialog-close aria-label="Close">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <button type="button" class="ad-lightbox-prev" data-lightbox-prev aria-label="Previous image">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <figure class="ad-lightbox-figure">
+    <img class="ad-lightbox-img" src="" alt="" />
+    <figcaption class="ad-lightbox-caption"></figcaption>
+  </figure>
+  <button type="button" class="ad-lightbox-next" data-lightbox-next aria-label="Next image">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <p class="ad-lightbox-counter" aria-live="polite"></p>
+</dialog>
+
+<script define:vars={{ id, images }}>
+  const dialog = document.getElementById(id);
+  if (dialog && dialog instanceof HTMLDialogElement) {
+    let currentIndex = 0;
+    const imgEl = dialog.querySelector('.ad-lightbox-img');
+    const captionEl = dialog.querySelector('.ad-lightbox-caption');
+    const counterEl = dialog.querySelector('.ad-lightbox-counter');
+
+    function render(i) {
+      currentIndex = (i + images.length) % images.length;
+      const data = images[currentIndex];
+      if (imgEl) {
+        imgEl.src = data.fullSrc;
+        imgEl.alt = data.alt;
+      }
+      if (captionEl) captionEl.textContent = data.caption || '';
+      if (counterEl) counterEl.textContent = `${currentIndex + 1} / ${images.length}`;
+    }
+
+    document.querySelectorAll(`[data-lightbox-open="${id}"]`).forEach((opener) => {
+      opener.addEventListener('click', () => {
+        const idx = Number(opener.dataset.lightboxIndex || 0);
+        render(idx);
+        dialog.showModal();
+      });
+    });
+
+    dialog.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => render(currentIndex - 1));
+    dialog.querySelector('[data-lightbox-next]')?.addEventListener('click', () => render(currentIndex + 1));
+
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') render(currentIndex - 1);
+      else if (e.key === 'ArrowRight') render(currentIndex + 1);
+    });
+  }
+</script>
+
+<style>
+  .ad-lightbox-thumb {
+    padding: 0;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-elev);
+    cursor: zoom-in;
+  }
+  .ad-lightbox-thumb img {
+    transition: transform var(--motion-warm) var(--ease-quart);
+  }
+  .ad-lightbox-thumb:hover img { transform: scale(1.04); }
+  .ad-lightbox-thumb:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .ad-lightbox-dialog {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgba(0, 0, 0, 0.94);
+    color: white;
+  }
+  /* Only apply grid layout when dialog is open — without this, the [display:grid] would override
+     the native <dialog>'s [display:none] and the dialog would render in page flow. */
+  .ad-lightbox-dialog[open] {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    justify-items: center;
+  }
+  .ad-lightbox-dialog::backdrop { background: rgba(0, 0, 0, 0.94); }
+  .ad-lightbox-figure { margin: 0; max-width: 90vw; max-height: 80vh; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+  .ad-lightbox-img { max-width: 100%; max-height: 80vh; object-fit: contain; }
+  .ad-lightbox-caption { color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; text-align: center; }
+  .ad-lightbox-counter { position: absolute; top: 1rem; left: 1rem; color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; }
+
+  .ad-lightbox-close,
+  .ad-lightbox-prev,
+  .ad-lightbox-next {
+    background: rgba(255, 255, 255, 0.08);
+    border: 0;
+    color: white;
+    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: var(--radius-full);
+    transition: background var(--motion-fast) ease;
+  }
+  .ad-lightbox-close { position: absolute; top: 1rem; right: 1rem; }
+  .ad-lightbox-prev,
+  .ad-lightbox-next { margin: 0 1rem; }
+  .ad-lightbox-close:hover,
+  .ad-lightbox-prev:hover,
+  .ad-lightbox-next:hover { background: rgba(255, 255, 255, 0.18); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ad-lightbox-thumb img,
+    .ad-lightbox-thumb:hover img { transition: none; transform: none; }
+  }
+</style>

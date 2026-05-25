@@ -1,0 +1,230 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import About from '@/components/sections/About.astro';
+import Accordion from '@/components/sections/Accordion.astro';
+import FAQ from '@/components/sections/FAQ.astro';
+import Hero from '@/components/sections/Hero.astro';
+import MenuPreview from '@/components/sections/MenuPreview.astro';
+import Press from '@/components/sections/Press.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const t = SITE.i18n[locale];
+
+const partners = [
+  {
+    initials: 'KS',
+    name: 'Dr. Katrin Sander',
+    role: 'Managing Partner',
+    specialty: 'Tax · Corporate',
+    bio: 'Specialist tax lawyer (Fachanwältin Steuerrecht). Before founding the firm in 2014, eight years at Linklaters Berlin (Tax + M&A-Tax). Doctorate on group-tax restructuring. Lecturer at Bucerius Law School. Negotiates tax audits without the usual escalation reflex.',
+  },
+  {
+    initials: 'LV',
+    name: 'Lukas Voss',
+    role: 'Partner',
+    specialty: 'Corporate · M&A',
+    bio: "Twelve years at Hengeler Mueller (Corporate + M&A) before the firm. LL.M. Stanford 2010, focus on Venture Capital. Advises Berlin start-ups across the full financing ladder — from pre-seed SAFE to Series C. Berlin's cap-table specialist.",
+  },
+  {
+    initials: 'AE',
+    name: 'Dr. Aisha El-Hamid',
+    role: 'Partner',
+    specialty: 'Employment · Works councils',
+    bio: 'Specialist employment lawyer, with Sander & Voss since 2017. Dr. iur. HU Berlin 2013 on EU citizenship in employment law. Advises employers on unfair dismissal, framework agreements, and mass redundancy — in German, English, French, and Arabic.',
+  },
+  {
+    initials: 'MS',
+    name: 'Maximilian Schreier',
+    role: 'Partner',
+    specialty: 'Data protection · GDPR · AI regulation',
+    bio: "CIPP/E certified, four years at the German Federal DPA (BfDI) before 2019, focus on international data transfers. Advises Berlin SaaS companies on GDPR compliance and beginning AI-Act implementation. Frequently cited in c't and Heise.",
+  },
+];
+
+const engagementItems = [
+  {
+    summary: 'First conversation — 30 minutes, no commitment',
+    body: "Phone or office. You describe the situation, we assess whether we're the right counsel. If not, we recommend a colleague. No sales pitch, no charge — the first conversation is free.",
+  },
+  {
+    summary: 'Engagement letter — written, transparent',
+    body: 'Three fee models: statutory RVG (court proceedings), hourly (€320–450/h depending on partner), or flat fee for clearly scoped matters. We recommend the model that fits your situation — and confirm it in writing before starting.',
+  },
+  {
+    summary: 'Handled by the same partner, end-to-end',
+    body: 'No hand-offs, no referrals to colleagues. The partner who accepted the matter remains your contact through to completion. Routine matters discussed within 5 business days, urgent matters same or next business day.',
+  },
+  {
+    summary: 'Closing + after-care — six months of follow-up',
+    body: 'For six months after closing you can call with follow-up questions at no additional cost. That is our standard, not a premium add-on. Larger follow-on matters are agreed separately; clarification questions are included.',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'How much is the first consultation?',
+    answer:
+      'The first conversation (30 minutes by phone or in the office) is free and without obligation. If we conclude that we are not the right counsel, we recommend a colleague — at no cost either.',
+  },
+  {
+    question: 'How do you bill?',
+    answer:
+      'Three options: statutory RVG fees (for court matters), hourly (€320–450/h depending on partner), or a flat fee for clearly scoped matters (e.g. GmbH formation from €1,800 net). We agree on the model during the first conversation.',
+  },
+  {
+    question: 'Do you take small matters?',
+    answer:
+      'Yes. Our client base ranges from solo founders with a GDPR question to mid-size operators with a holding restructure. The firm size lets us give every matter careful attention — including the seemingly small ones.',
+  },
+  {
+    question: 'In which languages do you advise?',
+    answer:
+      'German and English — in writing and orally, including contract drafting. French (Dr. El-Hamid), Arabic (Dr. El-Hamid), and Turkish are read; advice given in German or English.',
+  },
+  {
+    question: 'How quickly can I get an appointment?',
+    answer:
+      'Routine matters: within 5 business days. Urgent matters (termination with deadline, injunctive relief, tax audit starting): same or next business day — please flag the urgency on the phone.',
+  },
+  {
+    question: 'Are client conversations confidential?',
+    answer:
+      'Of course — attorney-client privilege per § 43a Abs. 2 BRAO. This applies from the first conversation, even if no engagement follows. Written communication runs over encrypted channels (S/MIME, ProtonMail-compatible).',
+  },
+  {
+    question: 'Will I work with the partner or an associate?',
+    answer:
+      'The partner who accepted the matter remains responsible end-to-end. Associates assist with research and drafting, but the partner negotiates, calls, and signs. This is the central difference from large-firm structures.',
+  },
+  {
+    question: 'Where can I find your standard terms?',
+    answer:
+      'Our engagement terms come with the engagement letter — they are not public because they are negotiated per matter. In the first conversation we explain the standard clauses (liability, fees, dispute resolution).',
+  },
+];
+
+const admissions = [
+  { label: 'Rechtsanwaltskammer Berlin', sub: 'All partners admitted 2014–2019' },
+  { label: 'BRAK Member', sub: 'Federal Bar Association' },
+  { label: 'DAV Berlin', sub: 'German Lawyer Association, Berlin Chapter' },
+  { label: 'ECIJA Lex Mundi Affiliate', sub: 'International correspondence' },
+  { label: 'IBA', sub: 'International Bar Association — Tax + Tech Committees' },
+];
+
+const pullQuote = {
+  text: '"Sander & Voss delivers pragmatic tax counsel with measurably better outcomes in audit proceedings — without the usual escalation reflex of a Magic Circle firm."',
+  source: 'Chambers Europe 2025 · Tax — Highly Regarded',
+};
+---
+
+<BaseLayout
+  title={`${SITE.name} — Commercial law in Berlin Mitte`}
+  description={t.tagline}
+  locale={locale}
+  alternateLocaleUrl="/"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+
+    <Press locale={locale} />
+
+    <section class="bg-surface border-t border-border" aria-labelledby="admissions-heading">
+      <div class="container-page py-12 sm:py-14">
+        <p id="admissions-heading" class="text-center text-[10px] tracking-[0.35em] uppercase text-text-muted font-semibold mb-8">
+          Admissions + memberships
+        </p>
+        <ul class="flex flex-wrap justify-center items-center gap-x-10 gap-y-6 list-none p-0 max-w-5xl mx-auto">
+          {admissions.map((a) => (
+            <li class="text-center">
+              <p class="font-display text-sm sm:text-base text-text leading-tight">{a.label}</p>
+              <p class="text-[11px] text-text-muted mt-1">{a.sub}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <MenuPreview locale={locale} />
+
+    <About locale={locale} />
+
+    <section class="bg-surface" aria-labelledby="partners-heading">
+      <div class="container-page py-20 sm:py-28">
+        <div class="max-w-2xl space-y-4 mb-14">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold">Partners</p>
+          <h2 id="partners-heading" class="font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.1]">
+            Who you will work with.
+          </h2>
+          <p class="text-lg text-text-muted leading-relaxed">
+            Four partners with Magic Circle backgrounds and independent specialties. At Sander &amp; Voss the partner you began with is the partner who sees the matter through.
+          </p>
+        </div>
+
+        <ul class="grid lg:grid-cols-2 gap-8 list-none p-0">
+          {partners.map((p) => (
+            <li class="bg-bg border border-border p-8 sm:p-10 flex gap-6">
+              <div class="shrink-0">
+                <div class="w-20 h-20 rounded-full bg-text text-bg flex items-center justify-center font-display text-2xl tracking-wider">
+                  {p.initials}
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display text-2xl text-text leading-tight">{p.name}</h3>
+                <p class="mt-1 text-sm text-accent-deep font-medium">{p.role} · <span class="text-text-muted">{p.specialty}</span></p>
+                <p class="mt-4 text-base text-text-muted leading-relaxed">{p.bio}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-bg border-t border-border">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-4 mb-12">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold">Engagement process</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">
+            From first call to signed agreement.
+          </h2>
+        </div>
+        <div class="max-w-3xl">
+          <Accordion items={engagementItems} variant="bordered" />
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-[var(--color-inverted-bg)] text-[var(--color-inverted-text)]">
+      <div class="container-page py-24 sm:py-32">
+        <blockquote class="max-w-4xl mx-auto text-center">
+          <p class="font-display text-2xl sm:text-3xl lg:text-4xl leading-[1.3] italic">
+            {pullQuote.text}
+          </p>
+          <footer class="mt-10 text-[11px] tracking-[0.32em] uppercase text-accent">
+            {pullQuote.source}
+          </footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="bg-bg border-t border-border" aria-labelledby="faq-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl mb-12 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold">{t.sections.faq.eyebrow}</p>
+          <h2 id="faq-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.faq.heading}</h2>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-x-10 list-none">
+          <FAQ items={faqItems.slice(0, 4)} singleOpen={false} variant="flush" />
+          <FAQ items={faqItems.slice(4, 8)} singleOpen={false} variant="flush" />
+        </div>
+      </div>
+    </section>
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

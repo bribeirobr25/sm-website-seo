@@ -1,0 +1,179 @@
+---
+/**
+ * Dialog — native <dialog> modal primitive.
+ * Spec: docs/design/components/dialog.md (added 2026-05-23)
+ *
+ * Baseline 97% in 2026 — zero polyfill. Use as the base for Lightbox,
+ * VideoFacade, booking confirmation, etc. Handles ESC, focus trap, focus
+ * restore, backdrop close — all native.
+ *
+ * Per-vertical: brand-neutral primitive. Visual styling via tokens only.
+ *
+ * Usage:
+ *   <Dialog id="my-dialog" labelledById="my-dialog-title">
+ *     <h2 id="my-dialog-title">…</h2>
+ *     <p>…</p>
+ *     <button data-dialog-close>Close</button>
+ *   </Dialog>
+ *
+ *   To open from elsewhere:
+ *     <button data-dialog-open="my-dialog">Open</button>
+ */
+
+interface Props {
+  /** Required — the <dialog> element id, used by openers + the labelledByID prop */
+  id: string;
+  /** Required for a11y — id of the element inside the dialog that names it (usually the h2) */
+  labelledById: string;
+  /** Optional — id of the element that describes the dialog */
+  describedById?: string;
+  /** Width preset — 'sm' (max-w-md) | 'md' (max-w-2xl) | 'lg' (max-w-4xl) | 'xl' (max-w-6xl) | 'full' (no max-width) */
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  /** Close button: 'icon' (default — X in top-right) | 'none' (caller provides via data-dialog-close) */
+  closeButton?: 'icon' | 'none';
+  class?: string;
+}
+
+const {
+  id,
+  labelledById,
+  describedById,
+  size = 'md',
+  closeButton = 'icon',
+  class: extraClass = '',
+} = Astro.props;
+
+const sizeClass = {
+  sm: 'max-w-md',
+  md: 'max-w-2xl',
+  lg: 'max-w-4xl',
+  xl: 'max-w-6xl',
+  full: '',
+}[size];
+
+const closeLabel = 'Close';
+---
+
+<dialog
+  id={id}
+  aria-labelledby={labelledById}
+  aria-describedby={describedById}
+  class:list={['ad-dialog', sizeClass, extraClass]}
+>
+  {closeButton === 'icon' && (
+    <button
+      type="button"
+      class="ad-dialog-close"
+      data-dialog-close
+      aria-label={closeLabel}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  )}
+  <div class="ad-dialog-content">
+    <slot />
+  </div>
+</dialog>
+
+<style>
+  .ad-dialog {
+    position: relative;
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    color: var(--color-text);
+    width: calc(100% - 2rem);
+    max-height: calc(100vh - 4rem);
+    overflow: visible;
+  }
+  .ad-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+  }
+  .ad-dialog[open] {
+    animation: ad-dialog-in var(--motion-base) var(--ease-quart);
+  }
+  .ad-dialog-content {
+    padding: 1.5rem;
+    overflow: auto;
+    max-height: calc(100vh - 4rem);
+  }
+  @media (min-width: 640px) {
+    .ad-dialog-content {
+      padding: 2rem;
+    }
+  }
+  .ad-dialog-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--motion-fast) ease, border-color var(--motion-fast) ease;
+  }
+  .ad-dialog-close:hover {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+  .ad-dialog-close:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  @keyframes ad-dialog-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ad-dialog[open] { animation: none; }
+  }
+</style>
+
+<script>
+  // Generic opener: any element with data-dialog-open="some-id" opens that <dialog>
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const opener = target.closest<HTMLElement>('[data-dialog-open]');
+    if (opener) {
+      const dialogId = opener.dataset.dialogOpen;
+      const dialog = dialogId ? document.getElementById(dialogId) : null;
+      if (dialog && dialog instanceof HTMLDialogElement) {
+        dialog.showModal();
+      }
+      return;
+    }
+    const closer = target.closest<HTMLElement>('[data-dialog-close]');
+    if (closer) {
+      const dialog = closer.closest('dialog');
+      if (dialog instanceof HTMLDialogElement) dialog.close();
+      return;
+    }
+  });
+
+  // Backdrop click closes — native <dialog> doesn't do this by default
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'DIALOG' && target instanceof HTMLDialogElement && target.open) {
+      const rect = target.getBoundingClientRect();
+      const clickedInside =
+        rect.top <= (e as MouseEvent).clientY &&
+        (e as MouseEvent).clientY <= rect.bottom &&
+        rect.left <= (e as MouseEvent).clientX &&
+        (e as MouseEvent).clientX <= rect.right;
+      if (!clickedInside) target.close();
+    }
+  });
+</script>

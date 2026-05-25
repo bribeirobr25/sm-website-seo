@@ -63,6 +63,18 @@ Not every gate applies at every phase. Use the legend to triage what's blocking 
 - [ ] **`public/apple-touch-icon.png`** exists (180×180 — same generation command at 180×180)
 - [ ] **`public/robots.txt`** exists. Production state: `User-agent: *\nAllow: /` + `Sitemap: https://[domain]/sitemap-index.xml`. (Demo state was `Disallow: /` — flip happens at production cutover, paired with `noindex` removal.)
 - [ ] All four files reachable: `curl -I https://[domain]/favicon.svg | grep "200"` and equivalent for the other three
+- [ ] **`public/img/og-default.png`** (or `.jpg`) exists + is vertical-specific (NOT a generic scaffold placeholder, NOT a photo from another client). 1200×630 minimum. `BaseLayout.astro`'s `og:image` default points to this file. Verify: `curl -sI [domain]/img/og-default.png` returns HTTP 200 AND opening it in a browser shows the *correct vertical's branding*.
+- [ ] **Post-scaffold sanity check** (added 2026-05-23 after the 3-new-demos favicon+OG bug — both files silently 404 broke social-card previews on the first 6-demo portfolio sweep). Run before first deploy of any new client:
+  ```bash
+  for f in favicon.svg favicon.ico apple-touch-icon.png; do
+    test -f public/$f || echo "MISSING: public/$f"
+  done
+  test -f public/img/og-default.png || test -f public/img/og-default.jpg || echo "MISSING: og-default image"
+  # Also check SITE.url in src/lib/site.ts matches the actual production hostname
+  grep -E "^\s*url:" src/lib/site.ts
+  grep -E "^\s*site:" astro.config.ts
+  ```
+  The 2026-05-23 incident: `SITE.url` was set to a shortened hostname (`demo-lawyer.vercel.app`) that didn't resolve to the actual project alias (`demo-lawyer-sander-voss.vercel.app`), so og:image links 401/404'd on social shares. This sanity check catches both the favicon/OG missing-file trap AND the URL-mismatch trap.
 
 ### Schema.org / structured data
 - [ ] `LocalBusiness` `@graph` with most-specific subtype (`IceCreamShop` for gelateria · `CafeOrCoffeeShop` for café · `Restaurant` for full-service · `BarberShop` / `BeautySalon` / `Dentist` etc.). Audit-driven — `Restaurant` was found on a gelateria site; the SEO.md rule says "most-specific Schema.org subtype." Verify: `curl -s [url] | grep -oE '"@type":"[^"]+"' | head -3`.

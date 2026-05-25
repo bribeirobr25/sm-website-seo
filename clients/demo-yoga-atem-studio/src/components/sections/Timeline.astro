@@ -1,0 +1,138 @@
+---
+/**
+ * Timeline — numbered process steps ("how it works").
+ * Spec: docs/design/components/timeline.md (added 2026-05-23)
+ *
+ * 3-5 step row (icon or number + label + 1-sentence desc). Horizontal on
+ * desktop, vertical on mobile. Answers the "what happens when I book"
+ * objection on service-business landing pages.
+ */
+
+interface TimelineStep {
+  /** Step number — auto-rendered if absent (1-indexed) */
+  number?: string | number;
+  /** Step title */
+  title: string;
+  /** 1-sentence description */
+  description: string;
+  /** Optional icon — emoji or SVG string */
+  icon?: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  /** Steps (3-5 recommended) */
+  steps: TimelineStep[];
+  /** Orientation — 'horizontal' (default desktop) | 'vertical' */
+  orientation?: 'horizontal' | 'vertical';
+  /** Numbering style — 'arabic' (1, 2, 3) | 'roman' (I, II, III) | 'icon' (use step.icon) */
+  numbering?: 'arabic' | 'roman' | 'icon';
+  class?: string;
+}
+
+const {
+  eyebrow,
+  heading,
+  intro,
+  steps,
+  orientation = 'horizontal',
+  numbering = 'arabic',
+  class: extraClass = '',
+} = Astro.props;
+
+const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+function getMarker(i: number, step: TimelineStep): string {
+  if (step.number !== undefined) return String(step.number);
+  if (numbering === 'roman') return romanNumerals[i] ?? String(i + 1);
+  if (numbering === 'icon') return step.icon ?? String(i + 1);
+  return String(i + 1).padStart(2, '0');
+}
+---
+
+<section class:list={['ad-timeline', `ad-timeline--${orientation}`, extraClass]} aria-labelledby={heading ? 'timeline-heading' : undefined}>
+  <div class="container-page py-16 sm:py-20">
+    {(eyebrow || heading || intro) && (
+      <header class="max-w-2xl mb-12 space-y-3">
+        {eyebrow && <p class="text-[11px] tracking-[0.25em] uppercase text-accent font-semibold">{eyebrow}</p>}
+        {heading && (
+          <h2 id="timeline-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">
+            {heading}
+          </h2>
+        )}
+        {intro && <p class="text-lg text-text-muted leading-relaxed">{intro}</p>}
+      </header>
+    )}
+
+    <ol class:list={['ad-timeline-list list-none p-0', orientation === 'horizontal' ? 'grid md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-10' : 'space-y-8 max-w-2xl']}>
+      {steps.map((step, i) => (
+        <li class="ad-timeline-step">
+          <div class="ad-timeline-marker" aria-hidden="true">
+            {getMarker(i, step)}
+          </div>
+          <div class="ad-timeline-content">
+            <h3 class="ad-timeline-title">{step.title}</h3>
+            <p class="ad-timeline-desc">{step.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ad-timeline-step {
+    position: relative;
+  }
+  .ad-timeline--horizontal .ad-timeline-step {
+    text-align: left;
+  }
+  .ad-timeline-marker {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--color-accent);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-full);
+    margin-bottom: 1rem;
+  }
+  .ad-timeline--vertical .ad-timeline-step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .ad-timeline--vertical .ad-timeline-marker {
+    margin-bottom: 0;
+  }
+  .ad-timeline--vertical .ad-timeline-step:not(:last-child) .ad-timeline-marker::after {
+    content: '';
+    position: absolute;
+    top: 48px;
+    left: 23px;
+    bottom: calc(-2rem - 24px);
+    width: 1px;
+    background: var(--color-border);
+  }
+  .ad-timeline-title {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    color: var(--color-text);
+    margin: 0 0 0.5rem;
+    line-height: 1.3;
+  }
+  .ad-timeline-desc {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+</style>

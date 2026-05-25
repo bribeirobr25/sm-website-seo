@@ -1,0 +1,125 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import MapEmbed from '@/components/sections/MapEmbed.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`;
+const dayLabelsEN = {
+  Mon: 'Mon',
+  Tue: 'Tue',
+  Wed: 'Wed',
+  Thu: 'Thu',
+  Fri: 'Fri',
+  Sat: 'Sat',
+  Sun: 'Sun',
+};
+---
+
+<BaseLayout
+  title={`Shop — ${SITE.name}`}
+  description="Bart & Pomade Barbershop, Boxhagener Straße 73, Friedrichshain. Tue–Fri 10–21, Sat 09–18."
+  locale={locale}
+  alternateLocaleUrl="/werkstatt"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-xs uppercase tracking-[0.32em] text-accent-deep font-bold">About the shop</p>
+          <h1 class="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05] uppercase tracking-tight font-bold">
+            Five chairs, four barbers, one black-water basin.
+          </h1>
+          <div class="mt-8 space-y-5 text-lg text-text-muted leading-relaxed">
+            <p>
+              Bart &amp; Pomade sits on Boxhagener Straße, two doors from the market — Friedrichshain the way it was ten years ago, with the corner shop opposite and the baker around the corner. Entrance is the black glass door, no sign — you recognise us by the barber pole.
+            </p>
+            <p>
+              Inside: five chairs in mahogany-imitation (they are not real, but they look it), a black-water basin for blade work, a black-and-white Boxhagener Platz photo on the wall. Up front the pomade case, in the back a counter with whisky and filter coffee.
+            </p>
+            <p>
+              We do classic men's barber craft — no blow-outs, no highlights, no brow threading. If that is what you want, there are three other salons on Boxhagener. If you want scissors, blade, and pomade, you are in the right place.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface-elev border-y border-border">
+      <div class="container-page py-16 sm:py-20">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+          <div class="bg-bg rounded-sm p-8 border border-border space-y-2">
+            <p class="font-display text-2xl text-text uppercase tracking-tight font-bold">{SITE.name}</p>
+            <p class="text-text-muted">{SITE.address.street}</p>
+            <p class="text-text-muted">{SITE.address.postalCode} {SITE.address.city} — {SITE.address.neighborhood}</p>
+            <p class="text-text-muted pt-2">
+              <a href={`tel:${SITE.phone}`} class="text-accent-deep hover:text-text underline tabular">{SITE.phoneDisplay}</a>
+            </p>
+            <p class="text-text-muted">
+              <a href={`mailto:${SITE.email}`} class="text-accent-deep hover:text-text underline">{SITE.email}</a>
+            </p>
+            <div class="pt-4 flex flex-wrap gap-3">
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-sm font-semibold uppercase tracking-wider rounded-sm bg-text text-bg hover:bg-accent-deep hover:text-bg transition-colors">
+                Open in Google Maps
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-bg rounded-sm p-8 border border-border space-y-5">
+            <p class="text-xs uppercase tracking-[0.32em] text-accent-deep font-bold">Opening hours</p>
+            <div>
+              <p class="font-display text-xl text-text uppercase tracking-tight font-bold">{SITE.hours.summer.label.en}</p>
+              <dl class="mt-3 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.summer.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsEN[h.day as keyof typeof dayLabelsEN]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'closed'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+            <div class="pt-3 border-t border-border">
+              <p class="font-display text-xl text-text uppercase tracking-tight font-bold">{SITE.hours.winter.label.en}</p>
+              <dl class="mt-3 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.winter.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsEN[h.day as keyof typeof dayLabelsEN]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'closed'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent-deep font-bold">Getting there</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.05] uppercase tracking-tight font-bold">U-Bahn, S-Bahn, or bike.</h2>
+          <p class="text-text-muted leading-relaxed">
+            U5 Frankfurter Tor (8 min), S-Bahn Ostkreuz (12 min), Bus M13 Boxhagener Straße (1 min). Parking is tight — lock your bike to the railing in front of the corner shop, do not forget the helmet lock.
+          </p>
+        </div>
+        <MapEmbed
+          lat={SITE.geo.lat}
+          lng={SITE.geo.lng}
+          zoom={16}
+          markerLabel="Bart & Pomade · Boxhagener Straße 73"
+          title="Map: Bart & Pomade, Boxhagener Straße 73, 10245 Berlin"
+          provider="openstreetmap"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

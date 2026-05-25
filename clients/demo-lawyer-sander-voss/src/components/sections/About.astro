@@ -1,0 +1,73 @@
+---
+/**
+ * About — Sander & Voss home section.
+ * V2 (2026-05-23 portfolio rebuild): firm philosophy paragraphs only —
+ * StatCallouts row REMOVED per `professional-services.md` §13 anti-pattern
+ * ("StatCallouts with 120+ matters / 47 partners boxes" reads consultancy-
+ * template aesthetic; real enterprise law uses Press + TrustBadgeRow instead).
+ *
+ * Two-column layout: founder portrait placeholder left, firm narrative right.
+ */
+import type { Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Über die Kanzlei' : 'About the firm';
+const h2 =
+  locale === 'de'
+    ? 'Vier Partner. Vier Schwerpunkte. Eine Adresse.'
+    : 'Four partners. Four specialties. One address.';
+
+const p1 =
+  locale === 'de'
+    ? 'Dr. Katrin Sander (Steuerrecht, vorher Linklaters) und Lukas Voss (Gesellschaftsrecht, vorher Hengeler Mueller) haben 2014 die Friedrichstraße 95 bezogen. Die Idee: eine kleine, voll integrierte Wirtschaftskanzlei für Berliner Mittelstand und Start-ups — keine Großkanzlei-Stundensätze, keine Übergaben zwischen Abteilungen, kein "wir verweisen Sie an einen Kollegen".'
+    : 'Dr. Katrin Sander (tax, previously Linklaters) and Lukas Voss (corporate, previously Hengeler Mueller) opened Friedrichstraße 95 in 2014. The idea: a small, fully integrated commercial firm for Berlin SMBs and start-ups — without the big-firm hourly rates, the inter-department hand-offs, or the "we will refer you to a colleague."';
+
+const p2 =
+  locale === 'de'
+    ? 'Vier Partner, zwei Associates, eine Assistentin. Mandate werden vom selben Team durchgehend betreut — vom Gründungsgespräch bis zur Betriebsprüfung zehn Jahre später. Wer bei uns anruft, bekommt einen Partner ans Telefon, nicht eine Vermittlungsstelle.'
+    : 'Four partners, two associates, one assistant. Matters are handled by the same team end-to-end — from the founding conversation to the tax audit ten years later. When you call us, a partner picks up, not a switchboard.';
+
+const founderInitials = 'KS';
+const founderName = 'Dr. Katrin Sander';
+const founderCaption =
+  locale === 'de'
+    ? 'Geschäftsführende Partnerin · Fachanwältin für Steuerrecht'
+    : 'Managing Partner · Specialist in tax law';
+---
+
+<section class="bg-bg border-t border-border">
+  <div class="container-page py-20 sm:py-28">
+    <div class="grid lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20 items-start">
+      <div class="space-y-5">
+        <div class="aspect-[4/5] rounded-sm bg-surface-elev border border-border flex items-center justify-center">
+          <div class="text-center space-y-3">
+            <div class="w-24 h-24 rounded-full bg-text text-bg mx-auto flex items-center justify-center font-display text-3xl">
+              {founderInitials}
+            </div>
+            <p class="text-xs text-text-muted/60 italic px-4">{locale === 'de' ? 'Portraitfoto folgt mit echtem Material.' : 'Portrait to follow with real material.'}</p>
+          </div>
+        </div>
+        <p class="text-sm">
+          <span class="font-display text-text">{founderName}</span><br />
+          <span class="text-text-muted">{founderCaption}</span>
+        </p>
+      </div>
+
+      <div>
+        <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold mb-4">{eyebrow}</p>
+        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.1]">
+          {h2}
+        </h2>
+        <div class="mt-8 space-y-5 text-lg text-text-muted leading-relaxed">
+          <p>{p1}</p>
+          <p>{p2}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

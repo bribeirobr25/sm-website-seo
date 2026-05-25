@@ -1,0 +1,62 @@
+---
+/**
+ * Button — primary + secondary variants.
+ * Per DESIGN-BEST-PRACTICES.md §Hover state contrast: accent button hover
+ * is darken-on-hover (--color-accent-deep), not lighten — WCAG-compliant.
+ */
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  target?: string;
+  rel?: string;
+  ariaLabel?: string;
+  dataEvent?: string;
+  dataSourceSection?: string;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  target,
+  rel,
+  ariaLabel,
+  dataEvent,
+  dataSourceSection,
+  class: extraClass = '',
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center font-medium rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none';
+
+const variantClass = {
+  primary: 'bg-accent text-bg hover:bg-accent-deep',
+  secondary: 'bg-surface text-text border border-border hover:bg-surface-elev',
+  ghost: 'text-text-muted hover:text-accent',
+}[variant];
+
+const sizeClass = {
+  sm: 'px-3 py-2 text-sm min-h-[44px]',
+  md: 'px-5 py-3 text-base min-h-[48px]',
+  lg: 'px-7 py-4 text-lg min-h-[52px]',
+}[size];
+
+const cls = `${base} ${variantClass} ${sizeClass} ${extraClass}`;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  href={href}
+  target={target}
+  rel={target === '_blank' ? rel ?? 'noopener noreferrer' : rel}
+  class={cls}
+  aria-label={ariaLabel}
+  data-event={dataEvent}
+  data-source-section={dataSourceSection}
+>
+  <slot />
+</Tag>

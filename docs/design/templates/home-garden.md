@@ -589,3 +589,32 @@ Berlin example.
 - **Keyword pattern (BR):** `floricultura em [bairro]` · `entrega de flores [cidade]` · `paisagista [cidade]`
 - **Keyword pattern (PT):** `florista em [cidade]` · `entrega de flores [cidade]` · `jardinagem [bairro]`
 - **Example:** "Blumenladen Mitte mit Lieferung" · "Floricultura entrega São Paulo" · "Florista Lisboa entrega ao domicílio"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+Per CLAUDE.md + `DESIGN-BEST-PRACTICES.md` §6.5. Landscape / florist / nursery / gardening demos MUST avoid the universal-9 composition.
+
+### Home-garden swap-ins
+
+| Universal-9 to AVOID | Home-garden swap-in |
+|---|---|
+| MenuPreview | **`PhotoGrid`** asymmetric (before-after garden transformations) OR **`Lightbox`** portfolio of past projects (12+) |
+| StatCallouts | **TrustBadgeRow** (Gartenbauverband · BdLA · Innung · ISA-zertifiziert für Baumpflege) |
+| Timeline | **Seasonal-rhythm strip** (Spring planting / Summer maintenance / Autumn cleanup / Winter pruning) for landscape · OR **`BeforeAfterSlider`** for transformations |
+| Testimonial | **Project pull-quote with client + project name + location** (Hochheim garden · Lichtenrade hedge cut · etc.) |
+
+### Mandatory additions
+
+- **`BeforeAfterSlider` OR Lightbox portfolio** — visual transformation is THE conversion signal for landscaping.
+- **`ServiceArea`** with radius — landscapers/florists work within a delivery/travel radius.
+- **Seasonal-availability calendar** (florist: peak wedding season May–Sep) OR seasonal-services strip (landscaper: snow-clearing for winter).
+
+### Reference orderings
+
+Landscape: Hero · BeforeAfterSlider · PhotoGrid portfolio · About · Seasonal-rhythm · PricingTable services · ServiceArea · BookingMock site-visit · FAQ · CTA. Florist: Hero · PhotoGrid arrangements · About · PricingTable (occasions) · BookingMock (delivery slot) · FAQ · CTA.
+
+### Palette
+
+Home-garden naturally registers earth + foliage. Acceptable browns/greens IF material-justified (raw cedar mulch + terracotta pot photography). Modern florist may go cool minimal (white + sage + soft coral). Avoid the brown-sepia "rustic" default per `COLOR.md` §6 #12 — pick deliberately.

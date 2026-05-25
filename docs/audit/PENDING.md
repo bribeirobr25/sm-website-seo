@@ -1,6 +1,6 @@
 # PENDING.md — agency-level backlog aggregator
 
-**Last updated:** 2026-05-19 (the 2026-05-19 restructure complete — `clients/reference-*` deleted; canonical assets at `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/`) · 2026-05-19 (UI/UX Integration Plan — Phases 1a/1b/1c/2/3a/3b/4 complete, Phase 1d trigger-gated · 2026-05-18 (SEO-DEPTH-EXPANSION-PLAN **Batch 3 MVP complete** — all 6 MVP slices shipped: canonical `@graph` pattern docs in SEO.md §5 · 12 paste-ready default-archetype JSON-LD blocks (one per vertical) in templates §11.8 · SEO.md §5 cross-reference + CHECKLIST.md §3 schema pre-launch expanded · reference impl schemas upgraded to `@graph`+Person+WebSite pattern · CHECKLIST.md Guard 8 added. **29 archetype-specific blocks (non-default archetypes A/B/C across all 12 verticals) deferred as trigger-gated work** — see below. the 2026-05-18 SEO depth expansion is now **functionally complete at MVP scope**.)
+**Last updated:** 2026-05-23 (6-demo portfolio shipped — V1 → V2 rebuild → final-pass closure: 3 new portfolio demos live on Vercel — `demo-{lawyer-sander-voss,yoga-atem-studio,barber-bart-pomade}.vercel.app` — with per-vertical favicons + OG images + full per-client docs · 5 net-new agency rules codified: COLOR.md §6.5 portfolio diversity gate + §6 anti-patterns #11+#12 (cream/brown defaulting) + DESIGN-BEST-PRACTICES.md §6.5 section composition variation + CLAUDE.md 2 working principles + 3 vertical-template §13 composition/palette guidance · comprehensive audit at `docs/audit/2026-05-23-portfolio-rebuild-audit.md` (354 lines)) · 2026-05-19 (the 2026-05-19 restructure complete — `clients/reference-*` deleted; canonical assets at `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/`) · 2026-05-19 (UI/UX Integration Plan — Phases 1a/1b/1c/2/3a/3b/4 complete, Phase 1d trigger-gated · 2026-05-18 (SEO-DEPTH-EXPANSION-PLAN **Batch 3 MVP complete** — all 6 MVP slices shipped: canonical `@graph` pattern docs in SEO.md §5 · 12 paste-ready default-archetype JSON-LD blocks (one per vertical) in templates §11.8 · SEO.md §5 cross-reference + CHECKLIST.md §3 schema pre-launch expanded · reference impl schemas upgraded to `@graph`+Person+WebSite pattern · CHECKLIST.md Guard 8 added. **29 archetype-specific blocks (non-default archetypes A/B/C across all 12 verticals) deferred as trigger-gated work** — see below. the 2026-05-18 SEO depth expansion is now **functionally complete at MVP scope**.)
 
 Single source of truth for unresolved items across **all clients + active prospects + open agency-template work**. Replaces the need to grep individual `BRIEF.md` files when you need a portfolio-wide view of "what's owner-pending, what's user-pending, what's Claude-pending."
 
@@ -10,13 +10,17 @@ Single source of truth for unresolved items across **all clients + active prospe
 
 ## Agency state at a glance
 
-- **Active client builds:** none paying. Two **install-ready scaffolds** at `scaffolds/` are the canonical starting points (post-the 2026-05-19 restructure):
-  - `scaffolds/astro-tier2/` (Tier 2 / Astro 6 / Tailwind v4 / Sentry) — for Type 1 + Type 2 client builds
-  - `scaffolds/nextjs-tier3/` (Tier 3 / Next.js 16 / Tailwind v4 / Drizzle + Neon + Upstash + Resend + Sentry + PostHog) — for Type 3+ client builds
-- Per-client doc archives at `docs/clients/archived/reference-{solo-barber,studio-booking}/` retain the canonical `CLAUDE.md` / `BRIEF.md` / `design.md` worked-example shapes (BR-LGPD + DE-DSGVO).
-- Canonical components at `docs/design/components/_impl/` (8 + 5 universal primitives); canonical non-component working code at `docs/design/_impl/`.
-- **Current pipeline:** docs-expansion **complete** — Batches 0, 1, 2, 3 all shipped 2026-05-16. New rules library + 2 reference impls ready to seed paying-client work.
-- **Prospects:** 2 intake-only (Café Del Corso, Laudam) — clearance to scaffold from reference impls when ready.
+- **Active client builds:** none paying. **6 portfolio demos live** on Vercel (all noindex per demo discipline, never to be flipped):
+  - Gastronomy (3): `demo-eiscafe-bellini` · `demo-coffee-saltlines` · `demo-restaurant-adele` (Tier 2 Astro · Type 1)
+  - Professional Services (1): `demo-lawyer-sander-voss` — fictional Berlin Mitte boutique commercial-law firm (Tier 2 · Type 1)
+  - Studio (1): `demo-yoga-atem-studio` — fictional Kreuzberg boutique yoga (Tier 2 · Type 2 newsletter mock)
+  - Beauty (1): `demo-barber-bart-pomade` — fictional Friedrichshain heritage barber (Tier 2 · Type 1)
+- Two **install-ready scaffolds** at `scaffolds/` are the canonical starting points: `scaffolds/astro-tier2/` (Tier 2 / Astro 6 / Tailwind v4 / Sentry — Type 1 + Type 2) · `scaffolds/nextjs-tier3/` (Tier 3 / Next.js 16 — Type 3+).
+- Per-client doc archives at `docs/clients/archived/reference-{solo-barber,studio-booking}/` retain the canonical doc shapes (BR-LGPD + DE-DSGVO).
+- **Active per-client doc dirs (new 2026-05-23):** `docs/clients/demo-{eiscafe-bellini,coffee-saltlines,restaurant-adele,lawyer-sander-voss,yoga-atem-studio,barber-bart-pomade}/` each with `CLAUDE.md` + `design.md` + `BRIEF.md` per `TECH.md` §20 + `DESIGN-BEST-PRACTICES.md` §17 + `KPI.md` §KPI contract templates.
+- Canonical components at `docs/design/components/_impl/` (32 + 6 universal primitives); canonical non-component working code at `docs/design/_impl/`.
+- **Current pipeline:** docs-expansion **complete** (Batches 0/1/2/3 shipped 2026-05-16) · portfolio expansion **complete** (3 new vertical demos shipped 2026-05-23, palette + composition diversity rules codified). Next phase: convert one demo to a real friend-and-family build OR pursue Café Del Corso / Laudam.
+- **Prospects:** 2 intake-only (Café Del Corso, Laudam) — clearance to scaffold from any of the 6 demos as appropriate template-fit.
 
 ---
 
@@ -118,3 +122,43 @@ Single source of truth for unresolved items across **all clients + active prospe
 **When a new item surfaces in a session:** append to the appropriate section. Note the date in the resolution column if it was discovered today.
 
 **When an item resolves:** move to "Recently resolved" with date. Keep "Recently resolved" to the last ~30 entries; archive older ones to a quarterly summary if needed.
+
+---
+
+## 2026-05-23 portfolio-rebuild backlog (3 new demos)
+
+**Audit document:** `docs/audit/2026-05-23-portfolio-rebuild-audit.md` (354 lines, 7 sections + scorecard).
+
+### ✅ Recently resolved (2026-05-23)
+
+- ✅ **3 new portfolio demos live** — `demo-lawyer-sander-voss.vercel.app` (cream V1 rejected → pure white + forest green + brass V2) · `demo-yoga-atem-studio.vercel.app` (bone+sage V1 rejected → pale lilac + aubergine + terracotta V2) · `demo-barber-bart-pomade.vercel.app` (cream V1 rejected → dark-dominant black + saffron-gold + brick-red V2). All build clean (`pnpm validate` 0 errors), pass WCAG AAA on all primary text-on-bg combos, satisfy `COLOR.md` §6.5 portfolio diversity gate (5/5 rules).
+- ✅ **5 net-new agency rules codified** — `COLOR.md` §6.5 Portfolio Diversity Gate (5 rules + one-shot bash audit recipe) + §6 anti-patterns #11 (cream-defaulting) + #12 (brown-defaulting) · `DESIGN-BEST-PRACTICES.md` §6.5 Section Composition Variation (universal-9 anti-pattern + 4-axis variation check) · `CLAUDE.md` 2 working principles ("portfolio diversity is a hard gate" + "cream is NOT a default base color") · 3 vertical-template §13 blocks (`professional-services.md` + `studio.md` + `beauty.md`) with swap-in tables + 3 valid composition orderings per vertical + palette guidance.
+- ✅ **Favicon gap closed** — 3 new demos were silently serving 404s for `/favicon.svg` + `/favicon.ico` + `/apple-touch-icon.png` (V1 + V2 scaffold-strip bug). Hand-authored vertical-specific SVG marks per V2 brand colors; generated `.ico` + 180×180 `.png` via `rsvg-convert`. All 9 files HTTP 200 in production.
+- ✅ **OG image gap closed** — 3 new demos were serving the Bellini gelato counter as `og:image` (carried over from scaffold). Generated 1200×630 per-vertical OG images via `rsvg-convert` from `/tmp/og-{lawyer,yoga,barber}.svg`: forest-green-on-white "Klare Beratung. Verbindliche Ergebnisse." (lawyer); pale-lilac with breath-mandala + "Yoga, wie er sich eigentlich anfühlen sollte." (yoga); black + barber-pole stripe + "SCHERE. KLINGE. POMADE." (barber). Saved as `public/img/og-default.png` + deleted old `og-default.jpg` + updated BaseLayout + schema.ts reference in all 3 demos.
+- ✅ **Per-client `docs/clients/[slug]/` directories written** — 3 demos × 3 files = 9 files: `CLAUDE.md` (stack + imported components + composition + gotchas) · `design.md` (palette + §2.5 palette audit + typography + copy voice + anti-slop checklist + per-section design notes) · `BRIEF.md` (business identity + contact + hours + services/pricing + team + KPI contract + NAP canonical + open questions + citation priority). Closes audit gap #1.
+- ✅ **Audit document published** — `docs/audit/2026-05-23-portfolio-rebuild-audit.md` (354 lines) covering color/composition/architecture/a11y/security/perf/legal/SEO/i18n/tech-stack/quality compliance across all 6 demos + tool-use audit + visual validation (9 production screenshots) + favicon fix addendum (§7.1) + cross-rule audit table (§7.2) + scorecard (§7.4).
+- ✅ **9 production screenshots captured** — 3 demos × 1280/768/375 viewports via Docker MCP browser — confirmed no layout breaks, no contrast issues, touch targets ≥ 48px, mobile-first stacking correct, intentional schedule horizontal scroll in yoga.
+
+### 🟡 Remaining open items (gap-by-gap)
+
+| # | Gap | Severity | Where | Trigger to resolve |
+|---|---|---|---|---|
+| 1 | **Real photography** — 3 new demos use SVG/CSS-gradient placeholders captioned `⚠ Foto-Platzhalter`. Audit §3 gap #4. | 🟡 acceptable for portfolio demo · 🔴 blocks any paying-client launch | All 3 demo `public/img/` dirs + Hero/Gallery/TeamGrid sections | When a real client (lawyer / yoga / barber) signs and provides brand photography. Per `DESIGN-BEST-PRACTICES.md` §3 sourcing hierarchy. |
+| 2 | **Canonical components in `_impl/` carry hard-coded demo content** — `Press.astro` (Adèle items) · `BookingMock.astro` (Adèle reservation) · `NewsletterMock.astro` (Saltlines wave-report) · `CourseList.astro` (Adèle tasting menu) · `PhotoGrid.astro` (Saltlines image paths) · `MenuCard.astro` (Bellini gelato) — defeats reuse. Audit §2 + §3 gap #3. | 🟡 architectural improvement | `docs/design/components/_impl/` | Next time a client needs one of these 6 components — refactor to take `items`/`images`/`quotes` as props with no hard-coded fallback. Update each component's spec sheet `§3 Props` to match. |
+| 3 | **Section count not varied** — all 3 new demos at exactly 10 sections. `DESIGN-BEST-PRACTICES.md` §6.5 axis-1 specifically warns against this. Audit §2 + §3 gap #5. | 🟡 cosmetic polish | `clients/demo-{lawyer,yoga,barber}/src/pages/index.astro` | Optional. Drop 1 section from lawyer (pull-quote — already covered by Press) → 9; drop 1 from yoga (merge VideoFacade into gallery) → 9; barber stays at 10. Yields 9/9/10. |
+| 4 | **Linter auto-fix on V2 modified 35 files** — formatting + `import type` conversions across 3 demos. Verified `pnpm validate` 0-error after; redeployed lawyer + yoga + barber 2026-05-23 21:32 CET. No further action. | ✅ resolved | — | — |
+| 5 | **`og-default.jpg` files DELETED from `public/img/`** — replaced by per-vertical `og-default.png`. If anyone has cached the old URL, it 404s. Acceptable since demo `noindex` + no SERP cache. | ✅ resolved | — | — |
+| 6 | **Owner sign-off DRAFT items** per demo `BRIEF.md` §8 — real palette approval, real photos, real KPI dashboards, real Treatwell/Resend/booking API decisions. | 🟡 demo-stage acceptable | `docs/clients/demo-*/BRIEF.md` §8 | Each demo's own §8 lists 8-12 DRAFT items. Resolve at conversion-to-real-client time. |
+
+### Operational rule to encode (recommended new entry in `CHECKLIST.md`)
+
+After scaffolding from `scaffolds/astro-tier2/` (or stripping a Bellini-copy), run before first deploy:
+
+```bash
+for f in favicon.svg favicon.ico apple-touch-icon.png; do
+  test -f public/$f || echo "MISSING: public/$f"
+done
+test -f public/img/og-default.png || test -f public/img/og-default.jpg || echo "MISSING: og-default image"
+```
+
+Catches the favicon + OG silent-404 trap that bit V1 + V2 of all 3 new demos.

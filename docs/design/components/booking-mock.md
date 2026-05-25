@@ -95,3 +95,16 @@ When promoting from `Mock` to real (in-house, not third-party):
 ## 7. Implementation pointer
 
 Used by Adèle home as a demo. For real bookings, embed a third-party widget inside `ConsentGate` (per `consent-gate.md`).
+
+---
+
+## Hardcoded content warning (2026-05-23 portfolio audit)
+
+The canonical implementation at `_impl/booking-mock.astro` (matching CamelCase filename) carries hard-coded content from the demo where this component was first promoted — specifically: Adèle restaurant — reservation form (date / time / party / name / email / notes).
+
+**When using this component in a new demo or client build, do one of two paths:**
+
+1. **Copy + customize** — `cp _impl/[Component].astro clients/[slug]/src/components/sections/` then edit the items/quotes/images array inline per the client's vertical. This is what the 2026-05-23 3-new-demos rebuild did for the Press component (lawyer Chambers/JUVE/WirtschaftsWoche items replaced Adèle's restaurant items). See `docs/audit/2026-05-23-portfolio-rebuild-audit.md` §2 architecture gap.
+2. **Parameterize the canonical (recommended next time anyone touches this file)** — accept `items` / `quotes` / `images` as a required prop with no hard-coded fallback. Update `§3 Props` above to match. Closes audit backlog item #2 in `docs/audit/PENDING.md` §2026-05-23 portfolio-rebuild backlog.
+
+**Why this matters:** the audit found that 6 of the 32 canonical `_impl/` components carry single-demo content (Press · BookingMock · NewsletterMock · CourseList · PhotoGrid · MenuCard). The 2026-05-23 yoga + barber demos had to *delete* most of these copies + inline equivalent markup because the hard-coded content was vertical-wrong. Parameterizing avoids that inline-rewrite cost for the next client.

@@ -603,3 +603,33 @@ Berlin example. Swap 8 placeholders per client + 3 service-area neighborhoods.
 - **Keyword pattern (BR):** `[ofício] urgente em [cidade]` · `[ofício] 24 horas [bairro]`
 - **Keyword pattern (PT):** `[ofício] urgência [cidade]` · `[ofício] [bairro] [cidade]`
 - **Example:** "Klempner Notdienst Berlin" · "Eletricista 24h em São Paulo" · "Canalizador em Lisboa"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+Per CLAUDE.md + `DESIGN-BEST-PRACTICES.md` §6.5. Elektriker / Klempner / Heizungsbauer / Handwerker demos MUST avoid the universal-9 composition.
+
+### Trades swap-ins
+
+| Universal-9 to AVOID | Trades swap-in |
+|---|---|
+| MenuPreview | **`PricingTable`** (Stundensatz + Anfahrtspauschale + häufige Leistungen — transparent pricing IS the differentiator for trades trust) OR **service-categories grid** |
+| StatCallouts | **TrustBadgeRow** (Innung · Handwerkskammer · Meisterbetrieb · MyHammer-Top-Bewertung · evtl. Eintragung in die Handwerksrolle) — Innung-membership is critical for German trades trust |
+| Timeline | **HowItsMade strip** (Anfrage → Termin → Vor-Ort-Aufnahme → Angebot → Ausführung → Rechnung) OR **`BeforeAfterSlider`** for renovations |
+| Testimonial | **Project pull-quote with photo** (Kunde X in Y, [Job] erledigt in [Zeit]) OR **MyHammer rating + count** |
+
+### Mandatory additions
+
+- **`TrustBadgeRow`** with Innung + Handwerkskammer + Meisterbetrieb — trade trust is regulatory-driven per `templates/trades.md` §1.
+- **`ServiceArea`** with radius — trades work local, customers want "do you come to [PLZ]?"
+- **Emergency-line CTA** for plumbers / electricians / heating engineers (24h Notdienst).
+- **Transparent pricing** prominent — trades customers comparison-shop, hidden prices kill conversion.
+
+### Reference orderings
+
+Werkstatt / Handwerker: Hero · TrustBadgeRow · PricingTable services · BeforeAfterSlider · About · ServiceArea · BookingMock · FAQ · MapEmbed · Notdienst CTA. Specialist (Elektriker / Klempner): Hero · TrustBadgeRow · About (Meister-Geschichte) · ServiceArea · PricingTable · 24h Notdienst CTA · FAQ.
+
+### Palette
+
+Trades register: industrial-trust. Charcoal + safety-yellow / navy + brushed-aluminium / forest-green + safety-orange — pick by sub-trade (electrician: yellow accent; plumber: blue accent; carpenter: warm wood + brass). Cream defaulting REJECTED per `COLOR.md` §6 #11 — trades demand competence-signaling color, not "warm safe cream."

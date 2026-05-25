@@ -1,0 +1,57 @@
+---
+/**
+ * Light booking CTA (formerly VisitPreview) — Bart & Pomade V2.
+ *
+ * V2 inverts to use the LIGHT inverted-bg (cream) as a contrasting "lift
+ * up out of the dark" block at the end. Distinct from V1 which kept the
+ * page dark throughout. Now provides visual rhythm: dark → dark → dark →
+ * LIGHT (CTA) → dark footer.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const eyebrow = locale === 'de' ? 'TERMIN BUCHEN' : 'BOOK AN APPOINTMENT';
+const h2 = locale === 'de' ? 'Anrufen ist am schnellsten.' : 'A phone call is the fastest.';
+
+const body =
+  locale === 'de'
+    ? 'Termine vergeben wir am Telefon, per WhatsApp oder am Tresen. Mo + So Ruhetag, sonst sieben Stunden am Stuhl. Online-Buchung haben wir bewusst nicht.'
+    : 'We book by phone, WhatsApp, or at the counter. Mon + Sun closed, otherwise seven hours at the chair. We deliberately do not have online booking.';
+---
+
+<section class="bg-[var(--color-inverted-bg)] text-[var(--color-inverted-text)] border-t-4 border-accent">
+  <div class="container-page py-20 sm:py-28">
+    <div class="max-w-3xl">
+      <p class="text-[11px] tracking-[0.32em] uppercase text-accent-secondary font-bold mb-4">{eyebrow}</p>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl leading-[1.05] uppercase tracking-tight font-bold text-[var(--color-inverted-text)]">
+        {h2}
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-[var(--color-inverted-text-muted)] max-w-2xl">
+        {body}
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a
+          href={`tel:${SITE.phone}`}
+          class="inline-flex items-center justify-center px-7 py-4 min-h-[56px] text-base font-semibold uppercase tracking-wider rounded-sm bg-[var(--color-inverted-text)] text-[var(--color-inverted-bg)] hover:bg-accent-secondary transition-colors tabular focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-secondary"
+        >
+          {t.cta.callUs} — {SITE.phoneDisplay}
+        </a>
+        <a
+          href={`https://wa.me/${SITE.whatsapp}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center px-7 py-4 min-h-[56px] text-base font-semibold uppercase tracking-wider rounded-sm border border-[var(--color-inverted-text)]/30 text-[var(--color-inverted-text)] hover:border-accent-secondary hover:text-accent-secondary transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-secondary"
+        >
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

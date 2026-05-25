@@ -22,6 +22,7 @@
 4. [Typography system](#4-typography-system)
 5. [Color system](#5-color-system)
 6. [Layout and spacing](#6-layout-and-spacing)
+6.5. [Section composition variation (portfolio-diversity gate)](#65-section-composition-variation-portfolio-diversity-gate) — *added 2026-05-23*
 7. [Component patterns](#7-component-patterns)
 8. [Motion and interaction](#8-motion-and-interaction)
 9. [Icons](#9-icons)
@@ -472,6 +473,60 @@ Always check the headline at 768 px before declaring a hero done. If it wraps in
 - Hierarchy via typography and spacing first, colored boxes second.
 - No nested cards.
 - Progressive disclosure for secondary info (hours, FAQ) via `<details>` or accordions.
+
+---
+
+## 6.5. Section composition variation (portfolio-diversity gate)
+
+**Rule (mandatory for every demo + every client landing page):** A page's section composition (which canonical components, in which order) MUST NOT match any prior client/demo in the agency portfolio 1:1. The agency component library has 32 components in 6 tiers (`docs/design/components/README.md`) precisely so each project picks a *different* subset.
+
+### Why the rule exists
+
+The 2026-05-23 portfolio review found that all 3 new demos (Sander & Voss, Atem Studio, Bart & Pomade) used the same 9-section composition: `Hero → preview cards → About + StatCallouts → Team grid → Timeline → Testimonial → FAQ → MapEmbed → CTA footer`. Vertical differentiation showed up only in copy + typography — the page *architecture* was identical. On a homepage demo grid this reads "one studio built six sites with one template."
+
+### Audit before scaffolding
+
+Run this before writing `index.astro`:
+
+```bash
+# From repo root — list every demo's section composition for comparison.
+for d in clients/demo-*/src/pages/index.astro; do
+  client=$(basename $(dirname $(dirname $(dirname $d))))
+  echo "=== $client ==="
+  grep -oE "^import (\w+) from '@/components/sections/" $d | awk '{print $2}' | sort | uniq
+done
+```
+
+If your proposed composition uses ≥ 6 components in the same order as any existing demo, REWORK it before writing the page.
+
+### Per-demo composition rule (3-axis variation)
+
+For every new demo, vary on at least **3 of 4 axes** relative to the most-similar existing demo:
+
+1. **Section count** — does this demo have 6 sections, 10, or 14? Avoid every demo at exactly 9.
+2. **Section identity** — pick from the 32-component library, NOT just the universal 9 (Hero/preview/About/team/timeline/testimonial/FAQ/map/CTA). Per-vertical templates §13 list the *recommended* swap-ins (e.g., yoga = CourseList + VideoFacade + Lightbox; barber = BeforeAfterSlider + PricingTable + BookingMock; lawyer = Press + TrustBadgeRow + Accordion-process).
+3. **Section order** — Hero comes first by definition, but everything else is fluid. Don't always go About → Team → Timeline. A barber demo can lead with services + pricing; a yoga demo can lead with the schedule + video; a lawyer demo can lead with recognitions + press.
+4. **Section visual treatment** — same canonical component, different visual register. TeamGrid as 2×2 large bio cards (lawyer) ≠ TeamGrid as 4-column small chips (yoga) ≠ TeamGrid as horizontal scroll with full portraits (barber).
+
+### Universal-9 anti-pattern (don't ship this composition)
+
+| # | Section | Why it became default |
+|---|---|---|
+| 1 | Hero | Mandatory |
+| 2 | MenuPreview / services preview | First "what we sell" beat |
+| 3 | About + StatCallouts | First "who we are" beat |
+| 4 | TeamGrid (4-column) | First "trust" beat |
+| 5 | Timeline (4 steps) | Process explanation |
+| 6 | Testimonial (single card) | Social proof |
+| 7 | FAQ (single accordion) | Objection handling |
+| 8 | MapEmbed | Address proof |
+| 9 | CTA footer | Conversion |
+
+**If you write this exact 9-section composition, you have violated this rule.** At minimum: change the order, drop 2 sections, add 2 vertical-specific sections from the library. Better: change the count entirely (some demos should have 6 sections, others 12).
+
+### Per-vertical recommended swap-ins
+
+See per-vertical template `§13 Composition variation` for the canonical alternatives per vertical (added 2026-05-23). Each template lists 3 valid orderings and the vertical-specific components that should DISPLACE universal-9 items (not add to them).
 
 ---
 

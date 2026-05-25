@@ -71,3 +71,16 @@ A centered editorial list with Roman-numeral course markers (I-V or I-VII). Repl
 ## 7. Implementation pointer
 
 Used by Adèle Tier-2 home page. For real clients: typically appears once on the home page as a teaser, with the full menu (this + wine pairing + prix-fixe pricing) on `/karte` or `/menu` route.
+
+---
+
+## Hardcoded content warning (2026-05-23 portfolio audit)
+
+The canonical implementation at `_impl/course-list.astro` (matching CamelCase filename) carries hard-coded content from the demo where this component was first promoted — specifically: Adèle restaurant — 5-course Roman-numeral tasting menu reading from SITE.menu.tasting.
+
+**When using this component in a new demo or client build, do one of two paths:**
+
+1. **Copy + customize** — `cp _impl/[Component].astro clients/[slug]/src/components/sections/` then edit the items/quotes/images array inline per the client's vertical. This is what the 2026-05-23 3-new-demos rebuild did for the Press component (lawyer Chambers/JUVE/WirtschaftsWoche items replaced Adèle's restaurant items). See `docs/audit/2026-05-23-portfolio-rebuild-audit.md` §2 architecture gap.
+2. **Parameterize the canonical (recommended next time anyone touches this file)** — accept `items` / `quotes` / `images` as a required prop with no hard-coded fallback. Update `§3 Props` above to match. Closes audit backlog item #2 in `docs/audit/PENDING.md` §2026-05-23 portfolio-rebuild backlog.
+
+**Why this matters:** the audit found that 6 of the 32 canonical `_impl/` components carry single-demo content (Press · BookingMock · NewsletterMock · CourseList · PhotoGrid · MenuCard). The 2026-05-23 yoga + barber demos had to *delete* most of these copies + inline equivalent markup because the hard-coded content was vertical-wrong. Parameterizing avoids that inline-rewrite cost for the next client.

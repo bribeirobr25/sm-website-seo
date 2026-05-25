@@ -567,3 +567,32 @@ Berlin example.
 - **Keyword pattern (BR):** `oficina [marca] em [cidade]` · `[serviço] carro [bairro]`
 - **Keyword pattern (PT):** `oficina [marca] em [cidade]` · `[serviço] automóvel [bairro]`
 - **Example:** "BMW Werkstatt Mitte" · "Oficina Volkswagen em São Paulo" · "Mecânico em Lisboa"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+Per CLAUDE.md "Portfolio diversity is a hard gate" + `DESIGN-BEST-PRACTICES.md` §6.5. Dealership / mechanic / detailing demos MUST avoid the universal-9 composition.
+
+### Automotive swap-ins
+
+| Universal-9 to AVOID | Automotive swap-in |
+|---|---|
+| MenuPreview | **PricingTable** for services (TÜV / oil change / brake service tiers) OR **Inventory grid** for dealerships |
+| StatCallouts | **TrustBadgeRow** (Meisterbetrieb · KFZ-Innung · Bosch Service · ATU-Partner · TÜV-zertifiziert) — required trust signals for German automotive |
+| Testimonial single card | **Google reviews avg + count** (most-mentioned trust signal for mechanics) |
+| Timeline | **BookingMock** (TÜV appointment / Werkstatt-Termin) OR **`MapEmbed` + transit** for dealership lot |
+
+### Mandatory additions
+
+- **`TrustBadgeRow`** with Meisterbetrieb / KFZ-Innung / brand-partner badges — critical for German automotive trust per `templates/automotive.md` §1.
+- **Service-area `ServiceArea`** with radius + cities served — automotive customers comparison-shop locally.
+- **Real-time availability** for booking (when Type 3+) OR phone CTA prominent (when Type 1).
+
+### Reference orderings
+
+Mechanic / Werkstatt: Hero · TrustBadgeRow · PricingTable services · BookingMock · MapEmbed · Reviews · FAQ. Dealership: Hero · Inventory grid · About · TrustBadgeRow · TeamGrid · CTA.
+
+### Palette
+
+NO cream-defaulting. Automotive registers: industrial (charcoal + safety-yellow), premium-dealership (navy + brushed-aluminium-silver), workshop (raw-concrete grey + safety-orange). NO brown defaulting per `COLOR.md` §6 #12.

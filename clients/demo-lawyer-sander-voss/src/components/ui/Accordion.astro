@@ -1,0 +1,157 @@
+---
+/**
+ * Accordion — styled <details> group.
+ * Spec: docs/design/components/accordion.md (added 2026-05-23)
+ *
+ * Zero JS by default — uses native <details>/<summary>. Tokens applied via
+ * CSS. Chevron rotates via CSS transform on [open] state. Works perfectly
+ * without JS; progressive enhancement (single-open mode) optional via the
+ * `singleOpen` prop.
+ *
+ * For FAQ usage with JSON-LD, pair with the FAQ.astro wrapper which generates
+ * FAQPage schema from the same item list.
+ */
+
+interface Item {
+  /** Summary / question text */
+  summary: string;
+  /** Body / answer — supports rich HTML via slot if needed; this is the simple-string variant */
+  body: string;
+  /** Optional unique id (auto-generated if omitted) — useful for deep-linking + analytics */
+  id?: string;
+  /** Whether this item is open on load */
+  defaultOpen?: boolean;
+}
+
+interface Props {
+  items: Item[];
+  /** Single-open mode: opening one item closes the others. Requires JS (degrades gracefully) */
+  singleOpen?: boolean;
+  /** Visual variant — 'bordered' (default, each item bordered) | 'flush' (only dividers between items) */
+  variant?: 'bordered' | 'flush';
+  /** Section data-group attribute — used by the single-open JS to scope */
+  groupId?: string;
+  class?: string;
+}
+
+const {
+  items,
+  singleOpen = false,
+  variant = 'flush',
+  groupId = `accordion-${Math.random().toString(36).slice(2, 8)}`,
+  class: extraClass = '',
+} = Astro.props;
+---
+
+<div
+  class:list={['ad-accordion', `ad-accordion--${variant}`, extraClass]}
+  data-accordion-group={groupId}
+  data-single-open={singleOpen ? 'true' : 'false'}
+>
+  {items.map((item, i) => {
+    const itemId = item.id ?? `${groupId}-item-${i}`;
+    return (
+      <details
+        class="ad-accordion-item"
+        id={itemId}
+        open={item.defaultOpen}
+      >
+        <summary class="ad-accordion-summary">
+          <span class="ad-accordion-summary-text">{item.summary}</span>
+          <span class="ad-accordion-chevron" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </summary>
+        <div class="ad-accordion-body" set:html={item.body} />
+      </details>
+    );
+  })}
+</div>
+
+<style>
+  .ad-accordion {
+    display: flex;
+    flex-direction: column;
+  }
+  .ad-accordion--bordered .ad-accordion-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    margin-block-end: 0.5rem;
+  }
+  .ad-accordion--bordered .ad-accordion-item:last-child {
+    margin-block-end: 0;
+  }
+  .ad-accordion--flush .ad-accordion-item {
+    border-block-end: 1px solid var(--color-border);
+  }
+  .ad-accordion--flush .ad-accordion-item:last-child {
+    border-block-end: 0;
+  }
+
+  .ad-accordion-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-text);
+    min-height: 48px;
+  }
+  .ad-accordion--bordered .ad-accordion-summary {
+    padding: 1rem 1.25rem;
+  }
+  .ad-accordion-summary::-webkit-details-marker {
+    display: none;
+  }
+  .ad-accordion-summary:hover {
+    color: var(--color-accent);
+  }
+  .ad-accordion-summary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  .ad-accordion-chevron {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform var(--motion-base) var(--ease-quart);
+  }
+  .ad-accordion-item[open] > .ad-accordion-summary .ad-accordion-chevron {
+    transform: rotate(180deg);
+  }
+
+  .ad-accordion-body {
+    padding: 0 0 1.25rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+  .ad-accordion--bordered .ad-accordion-body {
+    padding: 0 1.25rem 1.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ad-accordion-chevron { transition: none; }
+  }
+</style>
+
+<script>
+  // Single-open mode: close siblings when one item is opened.
+  // Pure progressive enhancement — accordion works fully without this.
+  document.querySelectorAll<HTMLElement>('[data-accordion-group][data-single-open="true"]').forEach((group) => {
+    group.addEventListener('toggle', (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLDetailsElement) || !target.open) return;
+      group.querySelectorAll<HTMLDetailsElement>('details').forEach((d) => {
+        if (d !== target) d.open = false;
+      });
+    }, true);
+  });
+</script>

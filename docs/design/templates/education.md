@@ -596,3 +596,32 @@ Berlin example.
 - **Keyword pattern (BR):** `aula de [matéria] em [bairro]` · `professor de [matéria] [cidade]`
 - **Keyword pattern (PT):** `aulas de [matéria] em [cidade]` · `explicações [matéria] [cidade]`
 - **Example:** "Mathe Nachhilfe Mitte" · "Aula de violão em Copacabana" · "Explicações matemática Lisboa"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+Per CLAUDE.md + `DESIGN-BEST-PRACTICES.md` §6.5. Tutoring / language school / Volkshochschule / academy demos MUST avoid the universal-9 composition.
+
+### Education swap-ins
+
+| Universal-9 to AVOID | Education swap-in |
+|---|---|
+| MenuPreview | **CourseList** (Roman-numeral or grid — curriculum/syllabus) OR **PricingTable** (per-term tuition tiers) |
+| Timeline | **Progression-path strip** (A1 → A2 → B1 → B2 for language schools; Grades 5 → 6 → 7 for tutoring) |
+| StatCallouts | **Outcomes pull-quotes** ("90% pass rate at Goethe B2" — verifiable) OR **NewsletterMock** for parent updates |
+| Testimonial | **Parent + student dual-quote block** (different trust signals for purchaser vs user) |
+
+### Mandatory additions
+
+- **`TeamGrid`** with teacher credentials (degrees, certifications) — education-trust = teacher-credentials per `templates/education.md` §1.
+- **Class schedule** (`CourseList` weekly grid for language schools).
+- **Try-class CTA** (Probestunde / first-trial-class) — conversion lever for education.
+
+### Reference orderings
+
+Language school: Hero · CourseList syllabus · TeamGrid · PricingTable · NewsletterMock · FAQ · Probestunde CTA. Tutoring: Hero · About · TeamGrid (tutors) · Progression strip · PricingTable · BookingMock first-session · FAQ · CTA.
+
+### Palette
+
+Education skews approachable + trustworthy. Avoid the dusty-blue + cream defaulting that reads "1990s textbook." Modern alternatives: warm coral + cream (kids tutoring) · deep teal + bone (language schools) · bottle green + warm white (academy). Cream OK for academy/heritage register only.

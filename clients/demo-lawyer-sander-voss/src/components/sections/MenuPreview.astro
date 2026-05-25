@@ -1,0 +1,143 @@
+---
+/**
+ * PracticeAreas (formerly MenuPreview) — Sander & Voss home section.
+ *
+ * V2 (2026-05-23): rebuilt as 2×2 grid (not 3-up cards) per
+ * `professional-services.md` §13 swap-in rule: "3-up cards reads
+ * 'restaurant menu.' Pro-services need hierarchy / depth."
+ *
+ * Each card: number tag + practice name + 3-line description + list of
+ * 3-4 sub-services + link to detail page. Larger, more substantive than
+ * the 3-up preview cards.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Leistungen' : 'Practice';
+const heading =
+  locale === 'de' ? 'Vier Rechtsgebiete unter einem Dach.' : 'Four practice areas under one roof.';
+const intro =
+  locale === 'de'
+    ? 'Vom Gesellschaftervertrag über die Betriebsprüfung bis zur Aufsichtsbehörden-Antwort — alles aus derselben Hand, mit demselben Partner als Ansprechpartner.'
+    : 'From shareholder agreements through tax audits to regulator responses — all from the same team, with the same partner as your point of contact.';
+
+const ctaHref = locale === 'de' ? '/leistungen' : '/en/practice';
+const cardCtaLabel = locale === 'de' ? 'Details ansehen' : 'View details';
+
+const areas = [
+  {
+    name: locale === 'de' ? 'Gesellschaftsrecht' : 'Corporate',
+    desc:
+      locale === 'de'
+        ? 'Gründung, Beteiligungen, Gesellschaftervereinbarungen, M&A — von der UG bis zur Holding.'
+        : 'Formation, equity, shareholder agreements, M&A — from UG to holding.',
+    items:
+      locale === 'de'
+        ? [
+            'Gründung GmbH / UG',
+            'Cap-Table + ESOP',
+            'M&A · Verkauf + Erwerb',
+            'Gesellschafterstreit',
+          ]
+        : [
+            'GmbH / UG formation',
+            'Cap-table + ESOP',
+            'M&A · sale + acquisition',
+            'Shareholder disputes',
+          ],
+  },
+  {
+    name: locale === 'de' ? 'Steuerrecht' : 'Tax',
+    desc:
+      locale === 'de'
+        ? 'Steuerliche Gestaltung, Betriebsprüfungen, Einspruch + Klage — bis zum Bundesfinanzhof.'
+        : 'Tax planning, audits, appeals — up to the BFH (Federal Tax Court).',
+    items:
+      locale === 'de'
+        ? [
+            'Holding-Struktur',
+            'Betriebsprüfung',
+            'Einspruch + Finanzgericht',
+            'Erbschaft + Schenkung',
+          ]
+        : ['Holding setup', 'Tax audit defense', 'Appeals + fiscal court', 'Estate + gift tax'],
+  },
+  {
+    name: locale === 'de' ? 'Arbeitsrecht' : 'Employment',
+    desc:
+      locale === 'de'
+        ? 'Arbeitsrecht für Arbeitgeber — Kündigungsschutz, Sozialplan, Verhandlungen mit Betriebsrat.'
+        : 'Employment law for employers — termination defense, social plans, works-council negotiations.',
+    items:
+      locale === 'de'
+        ? [
+            'Arbeitsverträge + AGB',
+            'Kündigung + Aufhebung',
+            'Betriebsverfassung',
+            'Massenentlassung',
+          ]
+        : [
+            'Employment contracts',
+            'Termination + settlement',
+            'Works-council relations',
+            'Mass redundancy',
+          ],
+  },
+  {
+    name: locale === 'de' ? 'Datenschutz · DSGVO' : 'Data protection · GDPR',
+    desc:
+      locale === 'de'
+        ? 'DSGVO-Compliance, AV-Verträge, DSFA, Aufsichtsbehörden-Verfahren — von der Datenschutzbeauftragten.'
+        : 'GDPR compliance, processor agreements, DPIAs, regulator proceedings — by a former Federal DPA member.',
+    items:
+      locale === 'de'
+        ? ['DSGVO-Compliance', 'AV + TOMs', 'DSFA + KI-Systeme', 'Bußgeldbescheide']
+        : ['GDPR compliance', 'DPAs + TOMs', 'DPIAs + AI systems', 'Fine notices'],
+  },
+];
+---
+
+<section class="bg-surface">
+  <div class="container-page py-20 sm:py-24">
+    <div class="max-w-2xl space-y-4 mb-14">
+      <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold">{eyebrow}</p>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.1]">{heading}</h2>
+      <p class="text-lg text-text-muted leading-relaxed">{intro}</p>
+    </div>
+
+    <ul class="grid sm:grid-cols-2 gap-px bg-border list-none p-0 border border-border">
+      {areas.map((area, i) => (
+        <li class="bg-bg p-8 sm:p-10 flex flex-col gap-5 group">
+          <div class="flex items-baseline gap-4">
+            <span class="text-[11px] tracking-[0.32em] uppercase text-accent-deep font-semibold tabular">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="h-px flex-1 bg-border"></span>
+          </div>
+          <h3 class="font-display text-2xl sm:text-3xl text-text leading-tight">{area.name}</h3>
+          <p class="text-base text-text-muted leading-relaxed">{area.desc}</p>
+          <ul class="mt-1 space-y-1.5 text-sm text-text-muted list-none p-0">
+            {area.items.map((item) => (
+              <li class="flex items-start gap-2">
+                <span class="text-accent mt-1" aria-hidden="true">·</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a
+            href={ctaHref}
+            class="mt-2 inline-flex items-center gap-2 text-sm font-medium text-accent-deep hover:text-text transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {cardCtaLabel}
+            <span aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

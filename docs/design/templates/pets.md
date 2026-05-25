@@ -541,3 +541,32 @@ For groomers / daycares, use `LocalBusiness` with `priceRange` + service offerin
 - **Keyword pattern (BR):** `veterinário em [bairro]` · `petshop [bairro]` · `banho e tosa em [cidade]`
 - **Keyword pattern (PT):** `veterinário em [cidade]` · `banho e tosquia [bairro] [cidade]`
 - **Example:** "Tierarzt Notdienst Berlin Mitte" · "Veterinário em Botafogo" · "Veterinário em Cascais"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+Per CLAUDE.md + `DESIGN-BEST-PRACTICES.md` §6.5. Vet / grooming / pet shop / training / dog-walking demos MUST avoid the universal-9 composition.
+
+### Pets swap-ins
+
+| Universal-9 to AVOID | Pets swap-in |
+|---|---|
+| MenuPreview | **`PricingTable`** (per-species pricing — small/medium/large dog grooming tiers · vet consultation tiers · pet-shop categories) OR **`CourseList`** for training |
+| StatCallouts | **TrustBadgeRow** (Tierärztekammer · BTK · Hundeschule-Zertifizierung · Royal-Canin-Partner · OFA-zertifiziert) |
+| Timeline | **Treatment / training-step Accordion** OR **`BeforeAfterSlider`** for grooming makeovers |
+| Testimonial | **Pet-owner pull-quote with pet name + breed** (Owner of Mila, 4-jähriger Mischling, Charlottenburg) |
+
+### Mandatory additions
+
+- **`TeamGrid` with vet/groomer credentials** + breed/species specialties (Hunde + Katzen + Kleintiere; Tierarzt vs Tierheilpraktiker).
+- **Lightbox portfolio** for grooming (before-after cuts) OR pet-of-the-week feature.
+- **Emergency-contact info prominent** for vets (24h Notdienst).
+
+### Reference orderings
+
+Vet: Hero · About (Praxis-Philosophie) · TeamGrid (Tierärzte) · Treatments PricingTable · BookingMock OR Doctolib-style · TrustBadgeRow · FAQ · MapEmbed · 24h Notdienst CTA. Groomer: Hero · BeforeAfterSlider · PricingTable per Größe · TeamGrid · Lightbox portfolio · BookingMock · FAQ · CTA.
+
+### Palette
+
+Pets register warm + friendly. Vet skews clinical-warm (sage + cream + soft coral). Groomer skews playful (pastel coral + bone + sage). Pet shop skews colorful + product-led. NO cream-defaulting per `COLOR.md` §6 #11 — pick the warmth-vs-clinical register deliberately.

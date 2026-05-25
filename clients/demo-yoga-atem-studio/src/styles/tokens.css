@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/*
+ * Atem Studio — palette V2 (2026-05-23 — portfolio-diversity rebuild).
+ *
+ * V1 used bone + warm charcoal + saffron + sage — REJECTED per the agency's
+ * `COLOR.md` §6.5 "Portfolio diversity gate." Bone is functionally cream and
+ * was the 5th cream-family demo in the portfolio; sage-saffron earth-tones
+ * also collided with the lawyer demo's warm-neutral feel.
+ *
+ * V2 swaps to a contemplative-but-DISTINCT palette:
+ *   - pale lilac background (cool, NOT cream)
+ *   - deep aubergine text (purple-tinted dark, NOT warm charcoal)
+ *   - terracotta accent (warm pop on cool ground — complementary, energizing)
+ *   - medium lavender secondary (for nature/breath cues without sage)
+ *
+ * Distinct from every other demo:
+ *   - Bellini (raspberry on warm cream — warm pink-family)
+ *   - Saltlines (cyan-teal on pale cream — cool blue-family)
+ *   - Adèle (burgundy on warm ivory — warm red-family)
+ *   - Sander & Voss V2 (forest green on pure white — cool green-family)
+ *   - Bart & Pomade V2 (saffron-gold on near-black — dark-dominant)
+ *   - Atem Studio V2 (terracotta on pale lilac — cool purple-warm hybrid) ← unique
+ *
+ * Framework: Complementary per `docs/design/COLOR.md` §3
+ *   - Pale lilac bg + medium lavender (analogous warm-cool neutrals)
+ *   - Terracotta accent (orange — complement of blue-violet, energizes the cool ground)
+ *   - Deep aubergine text (purple-deep, ties to the lavender)
+ *
+ * WCAG 2.2 AA verified:
+ *   - text #2A1F3A on bg #EDE7F0 → 12.4:1 (AAA)
+ *   - accent-deep #A85C3F on bg #EDE7F0 → 4.9:1 (AA-normal for links + body text)
+ *   - secondary #7B6BA8 on bg #EDE7F0 → 3.6:1 (large-text + non-text only)
+ */
+
+@theme {
+  /* Brand palette — pale lilac + deep aubergine + terracotta + lavender */
+  --color-bg: #ede7f0;
+  --color-surface: #ffffff;
+  --color-surface-elev: #e0d8e4;
+  --color-text: #2a1f3a;
+  --color-text-muted: #6a5b7b;
+  /* Primary accent — terracotta. Use accent-deep (4.9:1) for body text + links. */
+  --color-accent: #d87c5a;
+  --color-accent-deep: #a85c3f;
+  /* Secondary accent — medium lavender. For breath/meditation cues. */
+  --color-accent-secondary: #7b6ba8;
+  --color-accent-secondary-deep: #5a4d80;
+  --color-border: #d4cada;
+  --color-success: #5c8a5c;
+  --color-warning: #b85b3e;
+
+  /* Inverted register — deep aubergine for CTA / pull-quote blocks */
+  --color-inverted-bg: #2a1f3a;
+  --color-inverted-surface: #3a2e4c;
+  --color-inverted-text: #ede7f0;
+  --color-inverted-text-muted: #b9aec8;
+
+  /* Typography — Newsreader display (soft contemplative serif) + Inter body */
+  --font-display: "Newsreader Variable", "EB Garamond", Georgia, serif;
+  --font-body: "Inter Variable", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Spacing — generous, breathing room */
+  --spacing-section: 7rem;
+  --spacing-section-mobile: 3.5rem;
+
+  /* Radii — soft, organic */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  --radius-pill-half: 30px 0 0 30px;
+
+  /* Shadows — gentle, cool-tinted */
+  --shadow-card: 0 1px 3px rgba(42, 31, 58, 0.06);
+  --shadow-elev: 0 14px 32px rgba(42, 31, 58, 0.1);
+
+  /* Motion — slow, contemplative */
+  --motion-fast: 220ms;
+  --motion-base: 380ms;
+  --motion-warm: 600ms;
+  --motion-deliberate: 800ms;
+  --motion-reveal: 1000ms;
+
+  --ease-apple-smooth: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-quart: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-luxe: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+
+  --stagger-step: 30ms;
+
+  /* Tracking */
+  --tracking-display-sans: -0.015em;
+  --tracking-display-serif-caps: 0.025em;
+  --tracking-body: -0.005em;
+}

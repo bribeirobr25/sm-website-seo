@@ -1,0 +1,80 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const t = SITE.i18n[locale];
+
+const categories = [
+  { key: 'creme' as const, lead: 'Structures, contracts, and disputes around companies.' },
+  {
+    key: 'sorbetti' as const,
+    lead: 'Tax planning and dispute avoidance — from formation to the BFH.',
+  },
+  {
+    key: 'spezialitaeten' as const,
+    lead: 'Employment law for employers + data protection for everyone.',
+  },
+];
+---
+
+<BaseLayout
+  title={`Practice — ${SITE.name}`}
+  description="Corporate, tax, employment, and data protection law. Four areas, one team, transparent fees."
+  locale={locale}
+  alternateLocaleUrl="/leistungen"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-xs uppercase tracking-[0.25em] text-accent-deep font-semibold">{t.nav.menu}</p>
+          <h1 class="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05]">Our practice areas.</h1>
+          <p class="mt-8 text-lg sm:text-xl text-text-muted leading-relaxed">
+            Four practice areas that overlap constantly in real life: forming a GmbH means thinking about tax immediately. Solving a data-protection question often needs employment-law clarification too. At Sander &amp; Voss there are no hand-offs in between.
+          </p>
+          <p class="mt-6 text-base text-text-muted leading-relaxed">
+            Fees: statutory RVG (court matters), flat fee (clearly scoped), or hourly (€320–450). We agree on the model during the first conversation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {categories.map((cat, idx) => {
+      const section = SITE.menu[cat.key];
+      const bg = idx % 2 === 0 ? 'bg-surface-elev' : 'bg-bg';
+      return (
+        <section class={bg}>
+          <div class="container-page py-16 sm:py-20">
+            <div class="max-w-3xl mb-10">
+              <LabelCountHeader
+                label={section.label.en}
+                count={section.count}
+                countLabel={`${section.count} services`}
+              />
+              <p class="mt-4 text-lg text-text-muted leading-relaxed">{cat.lead}</p>
+              <p class="mt-3 text-base text-text-muted leading-relaxed">{section.intro.en}</p>
+            </div>
+
+            <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-8 list-none p-0">
+              {section.items.map((item) => (
+                <li class="border-l-2 border-accent pl-5 py-1">
+                  <p class="font-display text-xl text-text leading-tight">{item.en.name}</p>
+                  <p class="mt-2 text-text-muted leading-relaxed">{item.en.desc}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    })}
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

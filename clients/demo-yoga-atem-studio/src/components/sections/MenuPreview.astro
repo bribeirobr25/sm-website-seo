@@ -1,0 +1,122 @@
+---
+/**
+ * CourseList weekly schedule (formerly MenuPreview) — Atem Studio V2.
+ *
+ * Per `studio.md` §13 swap-in: yoga = CourseList weekly schedule grid
+ * (Mon–Sun × time-slot matrix) — class schedule is #1 visited content.
+ *
+ * Renders a horizontally-scrollable 7-column weekly grid (one column per
+ * day), with morning/midday/evening row groups. Distinct from V1's
+ * 4-tier PricingTable.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Kursplan' : 'Schedule';
+const heading = locale === 'de' ? 'Diese Woche im Studio.' : 'This week in the studio.';
+const intro =
+  locale === 'de'
+    ? 'Vier Klassen pro Tag im Wechsel — morgens, mittags, früher Abend, später Abend. Der Plan wechselt saisonal; aktueller Stand per Newsletter.'
+    : 'Four classes a day in rotation — morning, midday, early evening, late evening. The schedule shifts seasonally; current state in the newsletter.';
+
+const days =
+  locale === 'de'
+    ? ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
+    : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+const slots = [
+  {
+    timeLabel: locale === 'de' ? 'Morgens · 07:00' : 'Morning · 07:00',
+    classes: [
+      'Vinyasa',
+      'Power Vinyasa',
+      'Hatha',
+      'Power Vinyasa',
+      'Vinyasa',
+      'Slow Flow',
+      'Hatha',
+    ],
+  },
+  {
+    timeLabel: locale === 'de' ? 'Mittag · 12:00' : 'Midday · 12:00',
+    classes: ['Slow Flow', 'Slow Flow', 'Slow Flow', 'Slow Flow', 'Slow Flow', '—', '—'],
+  },
+  {
+    timeLabel: locale === 'de' ? 'Früher Abend · 18:30' : 'Early evening · 18:30',
+    classes: ['Yin', 'Vinyasa', 'Yin', 'Vinyasa', 'Restorative', 'Workshop', '—'],
+  },
+  {
+    timeLabel: locale === 'de' ? 'Später Abend · 19:30' : 'Late evening · 19:30',
+    classes: [
+      'Meditation',
+      'Meditation',
+      'Meditation',
+      'Meditation',
+      'Meditation',
+      'Meditation',
+      'Yin',
+    ],
+  },
+];
+
+const fullScheduleHref = locale === 'de' ? '/kurse' : '/en/classes';
+const fullScheduleLabel =
+  locale === 'de' ? 'Vollständigen Kursplan + Anmeldung' : 'Full schedule + registration';
+---
+
+<section class="bg-surface-elev">
+  <div class="container-page py-20 sm:py-28">
+    <div class="max-w-2xl mb-12">
+      <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">{eyebrow}</p>
+      <h2 class="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.15] italic">{heading}</h2>
+      <p class="mt-5 text-lg text-text-muted leading-[1.75]">{intro}</p>
+    </div>
+
+    <div class="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+      <table class="w-full min-w-[700px] border-collapse">
+        <thead>
+          <tr>
+            <th class="text-left p-3 text-[11px] tracking-[0.2em] uppercase text-text-muted font-semibold border-b border-border w-[150px]">
+              {locale === 'de' ? 'Zeit' : 'Time'}
+            </th>
+            {days.map((day, i) => (
+              <th class={`text-center p-3 text-[11px] tracking-[0.2em] uppercase font-semibold border-b border-border ${i >= 5 ? 'text-accent-deep' : 'text-text-muted'}`}>
+                {day}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {slots.map((slot) => (
+            <tr class="border-b border-border/50">
+              <td class="p-3 font-display text-sm text-text leading-tight">{slot.timeLabel}</td>
+              {slot.classes.map((cls) => (
+                <td class={`p-3 text-center text-sm tabular ${cls === '—' ? 'text-text-muted/40' : 'text-text'}`}>
+                  {cls === '—' ? '—' : <span class="inline-block px-2 py-1 rounded-md bg-bg border border-border italic">{cls}</span>}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-10 flex flex-wrap items-center justify-between gap-6">
+      <p class="text-sm text-text-muted">
+        {locale === 'de' ? 'Probestunde gratis · Drop-in € 20 · 10er Karte € 180 · Monat unbegrenzt € 95' : 'First class free · Drop-in €20 · 10-class card €180 · Unlimited monthly €95'}
+      </p>
+      <a
+        href={fullScheduleHref}
+        class="inline-flex items-center gap-2 font-medium text-accent-deep hover:text-text transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded"
+      >
+        {fullScheduleLabel}
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>

@@ -615,3 +615,106 @@ Berlin example.
 - **Keyword pattern (BR):** `[modalidade] em [bairro]` · `aula experimental [modalidade] [cidade]`
 - **Keyword pattern (PT):** `[modalidade] em [cidade]` · `[modalidade] aula experimental [bairro]`
 - **Example:** "Yoga Mitte" · "Pilates Probestunde Charlottenburg" · "Yoga em Copacabana"
+
+---
+
+## 12. Research signal — 2026-05-23 (8-site agent sweep)
+
+**⚠️ Coverage caveat:** The 2026-05-23 agent sweep encountered a browser-proxy issue that hijacked many live fetches (e.g. equinox.com → unrelated targets). The synthesis below is therefore **training-era** for gym/yoga sites (Gold's, Powerhouse, Equinox, Planet Fitness, Anytime Fitness, John Reed, McFit, Smart Fit, Copenhagen Yoga, YogaWorks, peaceyoga.de, Yoga International) and should be **re-verified via WebFetch** before being committed to a client project. Marked as training-era, not measured.
+
+**10 actionable rules (unverified, training-era):**
+
+1. **Gyms split into two registers.** Premium (Equinox, John Reed) → editorial photography + serif headlines + deep saturated tones (oxblood, gold). Mass-market (McFit, Smart Fit, Planet Fitness) → bold sans + saturated brand color (yellow/purple/orange) + utilitarian icon grid.
+2. **Yoga studios always lean editorial.** Muted earth palette (sage, terracotta, cream, soft saffron) + serif H1 + portrait studio photography (instructor with hands-on adjustment, not posed). NO bright neons.
+3. **Class schedule as the most-visited page.** Either weekly grid (Mon-Sun columns × time rows) OR per-day filter chips with class cards. The schedule earns its own primary-nav entry; don't bury under "Classes."
+4. **PricingTable with 3-4 tiers.** Drop-in · 10er Karte · Monatskarte · Yearly. Always show prices upfront — yoga audiences research before walking in.
+5. **TeamGrid for instructors with discipline-specialty pills.** "Vinyasa · Yin · Prenatal." Visitors match a specific teacher before they pick a class.
+6. **VideoFacade for a single class clip on the home page.** 30-60 sec class teaser (always self-hosted or YouTube-nocookie). Builds atmosphere faster than another photo grid.
+7. **Probestunde / free-trial CTA above fold.** Yoga-specific conversion lever — "Erste Stunde gratis" or "First class free" drives 4-8× the conversion of a generic Book Now.
+8. **FAQ block addresses beginner anxiety.** "Bin ich flexibel genug? · Was bringe ich mit? · Was ziehe ich an?" — pure objection handling.
+9. **Lightbox studio gallery — not a hero carousel.** Studio interior + props (blocks, bolsters, mats) + class-in-progress (with release) + post-class quiet. 8-12 photos.
+10. **Newsletter signup with class-update angle.** Yoga audience subscribes for schedule changes + workshop announcements. Convert better than gastronomy newsletters.
+
+**Color register confirmed for yoga sub-vertical:** sage / terracotta / cream / saffron / charcoal-as-near-black. NO bright cyan, NO raspberry. Premium boutique gyms can use oxblood + gold. Mass-market gyms use saturated brand color (treat as a single-color-led design, not multi-token).
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+**Per CLAUDE.md "Portfolio diversity is a hard gate" + DESIGN-BEST-PRACTICES.md §6.5.** Yoga / pilates / gym / dance / barre studio demos MUST avoid the universal-9 composition.
+
+### Studio swap-ins (use INSTEAD of universal-9 items)
+
+| Universal-9 item to AVOID | Studio swap-in | Why |
+|---|---|---|
+| MenuPreview (3-card preview) | **CourseList** weekly schedule grid (Mon–Sun × time-slot matrix) | Class schedule is the #1 visited content on yoga sites. Skip the preview teaser; show the schedule. |
+| Timeline (4-step process) | **Daily rhythm strip** (07:00 morning / 12:00 lunch / 18:30 evening / 19:30 stillness) OR drop entirely | Studio doesn't have a "process." It has a *rhythm*. If you cannot make the rhythm a distinct visual, omit. |
+| StatCallouts row | **Inline pull-quote** ("kein BPM-Soundtrack, kein Wettbewerb, kein Wellness-Theater") OR drop | Numbers don't sell yoga. Atmosphere does. |
+| Testimonial (single card) | **Two inline pull-quotes** (one above the team grid, one above the FAQ) | Diffused social proof reads more authentic for studio. |
+| MapEmbed | **Plain address card + transit notes** | Yoga visitors check transit on Google Maps before booking; embedded map is redundant. |
+| VisitPreview ("Come by") | **MarqueeCTA** "Probestunde buchen" scrolling text | Yoga conversion lever is the free first class — make it visually prominent with motion. |
+
+### Mandatory additions for studio
+
+| Add this section | Why |
+|---|---|
+| **CourseList weekly schedule** (per `docs/design/components/_impl/CourseList.astro`) | #1 visited content. Either as a grid or filter chips. |
+| **VideoFacade** — single 30-60sec class teaser (self-hosted or YouTube-nocookie) | Atmosphere > another photo grid. Per `studio.md §12 rule 6`. |
+| **Lightbox studio gallery** (8-12 photos: interior, props, class-in-progress with release, post-class quiet) | Visual register matters more than copy for yoga. Per `studio.md §12 rule 9`. |
+| **NewsletterMock** — class-update + workshop announcement signup | Yoga audiences subscribe for schedule changes. Convert better than gastronomy newsletters. Per `studio.md §12 rule 10`. |
+| **PricingTable** with 3-4 tiers (Probestunde €0 highlighted) — per `studio.md §12 rule 4` | Yoga audiences research before walking in. |
+
+### 3 valid composition orderings
+
+**Ordering A — "Schedule-led"** (recommended for studios with a strong, structured rhythm)
+1. SplitHero (text + studio photo)
+2. CourseList weekly schedule
+3. PricingTable (4 tiers, Probestunde highlighted)
+4. VideoFacade
+5. About (philosophy)
+6. Lightbox studio gallery
+7. TeamGrid (4-column small chips, NOT 2×2 bios)
+8. NewsletterMock
+9. FAQ
+10. MarqueeCTA
+
+**Ordering B — "Atmosphere-led"** (recommended for boutique studios where photos do the heavy lifting)
+1. SplitHero
+2. Lightbox studio gallery (move up — atmosphere first)
+3. About (philosophy)
+4. CourseList
+5. PricingTable
+6. TeamGrid
+7. VideoFacade
+8. NewsletterMock
+9. FAQ
+10. MarqueeCTA
+
+**Ordering C — "Teacher-led"** (recommended for studios where instructor profiles drive booking)
+1. SplitHero
+2. TeamGrid (2×2 with bios, including founder)
+3. About (founder story)
+4. CourseList
+5. PricingTable
+6. Lightbox studio gallery
+7. VideoFacade
+8. NewsletterMock
+9. FAQ
+10. MarqueeCTA
+
+### Anti-patterns for studio composition
+
+- ❌ Timeline as a "process" section (studios have rhythm, not process)
+- ❌ MapEmbed in the home composition (use plain address card or footer)
+- ❌ 5-star Testimonial cards (yoga register is contemplative; pull-quote feels more authentic)
+- ❌ StatCallouts with "1000+ classes / 5 styles / kostenlos" — minor stat boxes feel marketing-y for boutique studios
+
+### Palette: do NOT default to bone / sage / earth-only
+
+Per `COLOR.md` §6 #11 + §6.5: studio palettes can lean editorial but must NOT default to bone/sage/cream every time. Valid alternatives:
+- **Pale lilac + deep aubergine + terracotta** (contemplative, modern, cool-warm)
+- **Soft slate blue + off-white + dusty rose** (calming, modern)
+- **Deep forest green + cream + brass** (only if the studio has a Japanese / forest-bathing register that justifies it)
+- **Charcoal + warm cream + amber** (only for power-vinyasa / hot-yoga where the register is energetic)
+
+Bone + sage + saffron is valid for ONE studio in any portfolio, not the default. Per portfolio diversity gate, check existing `clients/demo-*` before picking.

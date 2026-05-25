@@ -1,0 +1,26 @@
+---
+/**
+ * DemoBanner — subtle, sophisticated.
+ * Updated 2026-05-22 per user feedback: previous heavy terracotta strip was
+ * too loud. Replaced with a low-contrast informational bar.
+ *
+ * Per `docs/audit/PORTFOLIO-BUILD-RUNBOOK.md` §1.8: visible, non-dismissible.
+ * The "visible" requirement is satisfied with a thin border-bottom + muted text.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const text = SITE.i18n[locale].demoBanner;
+---
+
+<div
+  class="bg-surface-elev/70 border-b border-border text-[11px] sm:text-xs tracking-wide text-text-muted text-center px-4 py-1.5 font-light"
+  role="region"
+  aria-label="Demo notice"
+>
+  {text}
+</div>

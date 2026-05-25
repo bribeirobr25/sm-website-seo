@@ -1,0 +1,245 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import About from '@/components/sections/About.astro';
+import FAQ from '@/components/sections/FAQ.astro';
+import Hero from '@/components/sections/Hero.astro';
+import MenuPreview from '@/components/sections/MenuPreview.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const t = SITE.i18n[locale];
+
+const pricing = [
+  {
+    name: 'First class',
+    price: '€ 0',
+    cadence: 'one-time',
+    highlight: true,
+    body: 'Any class you like, no contract, no card.',
+  },
+  {
+    name: 'Drop-in',
+    price: '€ 20',
+    cadence: 'per class',
+    highlight: false,
+    body: 'Walk-in, no commitment. Valid for workshops too.',
+  },
+  {
+    name: '10-class card',
+    price: '€ 180',
+    cadence: '3 months valid',
+    highlight: false,
+    body: 'Transferable to friends, around €18 per class.',
+  },
+  {
+    name: 'Monthly unlimited',
+    price: '€ 95',
+    cadence: 'per month',
+    highlight: false,
+    body: 'All classes, all styles, cancel any month.',
+  },
+];
+
+const instructors = [
+  { initials: 'LB', name: 'Lara Brückner', styles: 'Vinyasa · Meditation' },
+  { initials: 'FH', name: 'Felix Holm', styles: 'Yin · Prenatal' },
+  { initials: 'EK', name: 'Esra Kaplan', styles: 'Hatha · Restorative' },
+  { initials: 'JM', name: 'Jonas Möller', styles: 'Power Vinyasa' },
+];
+
+const galleryTiles = [
+  {
+    gradient: 'from-accent-secondary/40 via-accent-secondary/20 to-bg',
+    label: 'Room I — Main practice',
+  },
+  { gradient: 'from-accent/30 via-accent/15 to-bg', label: 'Tea corner' },
+  {
+    gradient: 'from-accent-secondary-deep/50 via-accent-secondary/30 to-surface-elev',
+    label: 'Reception',
+  },
+  { gradient: 'from-accent/40 via-accent-deep/20 to-bg', label: 'Room II — Restorative' },
+  {
+    gradient: 'from-accent-secondary/35 via-accent-secondary/15 to-bg',
+    label: 'Changing + shower',
+  },
+  { gradient: 'from-accent/25 via-accent/10 to-bg', label: 'Library + bolsters' },
+];
+
+const faqItems = [
+  {
+    question: "I've never done yoga — can I come?",
+    answer:
+      'Yes, absolutely. Slow Flow Saturday mornings and Hatha Wednesdays are built explicitly for newcomers. Come fifteen minutes early and we will walk you through the mat, block, bolster, and what the sequence means for you.',
+  },
+  {
+    question: 'What should I bring?',
+    answer:
+      'Comfortable clothes. Mat, blocks, blankets, and bolsters are ours. Own mat welcome. Water bottle. That is all.',
+  },
+  {
+    question: 'Am I flexible enough?',
+    answer:
+      'Yoga does not require flexibility, yoga creates it. If you can sit, stand, and breathe, you can do yoga.',
+  },
+  {
+    question: 'How does the first free class work?',
+    answer:
+      'Send us an email with a time that fits. We hold a mat and send a confirmation. Come fifteen minutes early. No contract, no card, no sales conversation after.',
+  },
+  {
+    question: 'Does German health insurance cover the cost?',
+    answer:
+      'Many public insurers reimburse 80–100% of prevention courses under § 20 SGB V. We run three certified prevention courses (Hatha, Yin, Prenatal). List of participating insurers available at the reception.',
+  },
+];
+---
+
+<BaseLayout
+  title={`${SITE.name} — Boutique yoga in Bergmannkiez`}
+  description={t.tagline}
+  locale={locale}
+  alternateLocaleUrl="/"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    <MenuPreview locale={locale} />
+
+    <section class="bg-bg" aria-labelledby="pricing-heading">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl space-y-3 mb-10">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Membership</p>
+          <h2 id="pricing-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">Four ways to start.</h2>
+        </div>
+        <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 list-none p-0">
+          {pricing.map((tier) => (
+            <li class={`bg-surface border rounded-2xl p-6 flex flex-col ${tier.highlight ? 'border-accent shadow-elev' : 'border-border'}`}>
+              {tier.highlight && (
+                <p class="text-[10px] tracking-[0.28em] uppercase text-accent-deep font-semibold mb-2">Recommended</p>
+              )}
+              <h3 class="font-display text-lg text-text italic">{tier.name}</h3>
+              <p class="mt-3 font-display text-3xl text-text tabular leading-none">{tier.price}</p>
+              <p class="mt-1 text-xs text-text-muted uppercase tracking-wider">{tier.cadence}</p>
+              <p class="mt-4 text-sm text-text-muted leading-relaxed flex-1">{tier.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-surface-elev" aria-labelledby="video-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-3xl mx-auto text-center mb-10 space-y-3">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Atmosphere</p>
+          <h2 id="video-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">A moment to watch.</h2>
+          <p class="text-text-muted leading-relaxed">A 45-second excerpt from a Vinyasa class — no words.</p>
+        </div>
+        <div class="max-w-4xl mx-auto">
+          <div class="aspect-video rounded-3xl bg-[var(--color-inverted-bg)] relative flex items-center justify-center group cursor-pointer overflow-hidden" role="button" tabindex="0" aria-label="Start video (mock)">
+            <div class="absolute inset-0 bg-gradient-to-br from-accent-secondary/30 via-transparent to-accent/20"></div>
+            <div class="relative z-10 flex flex-col items-center gap-4">
+              <div class="w-20 h-20 rounded-full bg-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-elev">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" class="text-[var(--color-inverted-bg)] ml-1.5" aria-hidden="true">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+              <p class="text-[var(--color-inverted-text)] text-sm font-medium tracking-wider uppercase">Play video — 0:45</p>
+            </div>
+            <p class="absolute bottom-4 left-0 right-0 text-center text-xs text-[var(--color-inverted-text-muted)] italic">⚠ Mockup — not a real video player. Demo only.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <About locale={locale} />
+
+    <section class="bg-bg border-t border-border" aria-labelledby="gallery-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-3 mb-12">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">{t.sections.gallery.eyebrow}</p>
+          <h2 id="gallery-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{t.sections.gallery.heading}</h2>
+          <p class="text-text-muted leading-relaxed">{t.sections.gallery.intro}</p>
+        </div>
+        <ul class="grid grid-cols-2 lg:grid-cols-4 gap-4 list-none p-0">
+          {galleryTiles.map((tile, i) => (
+            <li class={`relative ${i === 0 ? 'lg:col-span-2 lg:row-span-2 aspect-square lg:aspect-auto' : 'aspect-square'} rounded-2xl bg-gradient-to-br ${tile.gradient} border border-border flex items-end p-5`}>
+              <p class="text-xs text-text font-medium tracking-wider">{tile.label}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-xs text-text-muted/70 italic text-center">⚠ Photo placeholders — real studio images to follow with brand material.</p>
+      </div>
+    </section>
+
+    <section class="bg-surface-elev" aria-labelledby="instructors-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-3 mb-12">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Teachers</p>
+          <h2 id="instructors-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">Four teachers — each with their own signature.</h2>
+        </div>
+        <ul class="flex flex-wrap gap-3 list-none p-0">
+          {instructors.map((i) => (
+            <li class="flex items-center gap-4 bg-bg border border-border rounded-full pl-2 pr-6 py-2">
+              <span class="w-12 h-12 rounded-full bg-accent-secondary text-bg flex items-center justify-center font-display text-base italic" aria-hidden="true">
+                {i.initials}
+              </span>
+              <span>
+                <span class="block font-display text-base text-text leading-tight">{i.name}</span>
+                <span class="block text-xs text-text-muted">{i.styles}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-bg border-t border-border" aria-labelledby="newsletter-heading">
+      <div class="container-page py-16 sm:py-20">
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-5xl mx-auto">
+          <div>
+            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold mb-4">Newsletter</p>
+            <h2 id="newsletter-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">Schedule updates by email.</h2>
+            <p class="mt-5 text-lg text-text-muted leading-relaxed">
+              Once a week, a short email: schedule changes, workshop dates, library recommendations. No marketing, unsubscribe anytime.
+            </p>
+          </div>
+          <form class="space-y-4" onsubmit="event.preventDefault(); this.querySelector('[data-thanks]').classList.remove('hidden'); this.querySelector('[data-form-row]').classList.add('hidden');">
+            <div class="flex flex-col sm:flex-row gap-3" data-form-row>
+              <input
+                type="email"
+                required
+                placeholder="you@example.com"
+                aria-label="Email address"
+                class="flex-1 px-5 py-3 min-h-[52px] rounded-full bg-surface border border-border text-text placeholder:text-text-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+              />
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full bg-accent text-text hover:bg-accent-deep hover:text-bg transition-colors"
+              >
+                Subscribe
+              </button>
+            </div>
+            <p data-thanks class="hidden text-sm text-accent-secondary-deep italic">
+              ✦ Thanks. Please click the confirmation link in your inbox.
+            </p>
+            <p class="text-xs text-text-muted/70 italic">⚠ Mockup — not a real signup. This demo stores nothing.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <FAQ
+      eyebrow={t.sections.faq.eyebrow}
+      heading={t.sections.faq.heading}
+      items={faqItems}
+      singleOpen={true}
+      variant="flush"
+    />
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

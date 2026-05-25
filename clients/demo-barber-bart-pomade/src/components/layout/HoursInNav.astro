@@ -1,0 +1,122 @@
+---
+/**
+ * Hours-in-nav — two-line stack of label + opening hours.
+ * Spec: docs/design/components/hours-in-nav.md
+ *
+ * Opening hours are the single most-checked piece of information for
+ * hospitality / beauty / health businesses. Putting them IN the nav
+ * (not the footer) surfaces them above the fold. Pair with the
+ * OpeningHoursSpecification schema in lib/seo/schema.ts.
+ *
+ * Visual identity (this scaffold): dark + amber
+ *   text inherits from parent (--color-text on the dark bg)
+ *
+ * Per-vertical token swaps:
+ *   gastronomy (cream Haven):  parent should set color: var(--color-text-warm)
+ *                              and the hover color: var(--color-accent)
+ *   beauty (light salon):      same — warm-brown text on cream
+ *   health (clinical):         consider weight 400 instead of 300; the
+ *                              clinical register reads "competent," not "soft"
+ */
+
+interface HoursItem {
+  label: string;
+  hours: string;
+  ariaLabel: string;
+  href?: string;
+}
+
+interface Props {
+  items: HoursItem[];
+  variant?: 'desktop' | 'mobile-list';
+  class?: string;
+}
+
+const { items, variant = 'desktop', class: extraClass = '' } = Astro.props;
+---
+
+<nav aria-label="Primary" class:list={[`hin-nav hin-nav--${variant}`, extraClass]}>
+  <ul class="hin-list">
+    {
+      items.map((item) => {
+        const inner = (
+          <>
+            <span class="hin-label">{item.label}</span>
+            <span class="hin-hours" aria-label={item.ariaLabel}>
+              {item.hours}
+            </span>
+          </>
+        );
+        return (
+          <li class="hin-item">
+            {item.href ? <a href={item.href}>{inner}</a> : <div class="hin-static">{inner}</div>}
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>
+
+<style>
+  .hin-nav {
+    display: block;
+  }
+
+  .hin-list {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+  }
+
+  .hin-nav--mobile-list .hin-list {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hin-item a,
+  .hin-item .hin-static {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--motion-warm) ease;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .hin-item a:hover {
+    color: var(--color-accent);
+  }
+
+  .hin-item a:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .hin-label {
+    font-size: 14.4px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .hin-hours {
+    font-size: 12px;
+    font-weight: 300;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+    margin-top: 2px;
+    opacity: 0.75;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hin-item a {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const t = SITE.i18n[locale];
+
+const categories = [
+  { key: 'creme' as const, lead: 'Scissors first, clippers second. No appointment under 30 min.' },
+  { key: 'sorbetti' as const, lead: "Pavel's blade work — Black-Sea tradition." },
+  { key: 'spezialitaeten' as const, lead: 'Add-ons and package slots.' },
+];
+---
+
+<BaseLayout
+  title={`Prices — ${SITE.name}`}
+  description="Classic men's cut from €22, hot-towel shave from €32, beard care from €26. Full price list."
+  locale={locale}
+  alternateLocaleUrl="/preise"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-xs uppercase tracking-[0.32em] text-accent-deep font-bold">{t.nav.menu}</p>
+          <h1 class="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05] uppercase tracking-tight font-bold">
+            All prices at a glance.
+          </h1>
+          <p class="mt-8 text-lg sm:text-xl text-text-muted leading-relaxed">
+            We do not hide prices behind enquiry forms. Here is the full menu — three categories, twelve services. Booking by phone or WhatsApp.
+          </p>
+          <p class="mt-6 text-base text-text-muted leading-relaxed">
+            Payment: cash or card (including contactless, Apple/Google Pay). Tip optional, €5–10 is typical.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {categories.map((cat, idx) => {
+      const section = SITE.menu[cat.key];
+      const bg = idx % 2 === 0 ? 'bg-surface-elev border-y border-border' : 'bg-bg';
+      return (
+        <section class={bg}>
+          <div class="container-page py-16 sm:py-20">
+            <div class="max-w-3xl mb-10">
+              <LabelCountHeader
+                label={section.label.en}
+                count={section.count}
+                countLabel={`${section.count} services`}
+              />
+              <p class="mt-4 text-lg text-text-muted leading-relaxed">{cat.lead}</p>
+              <p class="mt-3 text-base text-text-muted leading-relaxed">{section.intro.en}</p>
+            </div>
+
+            <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-8 list-none p-0">
+              {section.items.map((item) => (
+                <li class="border-l-4 border-accent pl-5 py-1">
+                  <p class="font-display text-xl text-text leading-tight uppercase tracking-tight font-bold">{item.en.name}</p>
+                  <p class="mt-2 text-text-muted leading-relaxed">{item.en.desc}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    })}
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

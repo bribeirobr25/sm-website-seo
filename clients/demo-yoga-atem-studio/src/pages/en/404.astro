@@ -1,0 +1,40 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+const locale = 'en' as const;
+---
+
+<BaseLayout
+  title="Page not found"
+  description="404 — We can't find that page."
+  locale={locale}
+  noindex={true}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-24 sm:py-32 max-w-xl mx-auto text-center">
+        <p class="text-xs uppercase tracking-[0.28em] text-text-muted">404</p>
+        <h1 class="mt-4 font-display text-4xl sm:text-5xl text-text italic">
+          We can&rsquo;t find that page.
+        </h1>
+        <p class="mt-6 text-text-muted leading-relaxed">
+          Maybe you meant the class schedule? Or the studio page? Here are a few ways back:
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="/en/" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-full bg-text text-bg hover:bg-accent-secondary-deep transition-colors">
+            Back to home
+          </a>
+          <a href="/en/classes" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-full bg-surface text-text border border-border hover:bg-surface-elev transition-colors">
+            Class schedule
+          </a>
+          <a href="/en/studio" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-base font-medium rounded-full bg-surface text-text border border-border hover:bg-surface-elev transition-colors">
+            About studio
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

@@ -1,0 +1,79 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+const t = SITE.i18n[locale];
+
+const categories = [
+  {
+    key: 'creme' as const,
+    lead: 'Schere zuerst, Maschine zweitens. Kein Termin unter 30 Minuten.',
+  },
+  { key: 'sorbetti' as const, lead: 'Klingenarbeit von Pavel — Schwarzmeer-Tradition.' },
+  { key: 'spezialitaeten' as const, lead: 'Add-ons + Paket-Termine.' },
+];
+---
+
+<BaseLayout
+  title={`Preise — ${SITE.name}`}
+  description="Klassischer Männerschnitt ab 22 €, Heißhandtuch-Rasur ab 32 €, Bartpflege ab 26 €. Komplette Preisliste."
+  locale={locale}
+  alternateLocaleUrl="/en/services"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-xs uppercase tracking-[0.32em] text-accent-deep font-bold">{t.nav.menu}</p>
+          <h1 class="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05] uppercase tracking-tight font-bold">
+            Alle Preise auf einen Blick.
+          </h1>
+          <p class="mt-8 text-lg sm:text-xl text-text-muted leading-relaxed">
+            Wir verstecken keine Preise hinter Anfrage-Formularen. Hier ist die komplette Karte — drei Kategorien, zwölf Leistungen. Termine per Telefon oder WhatsApp.
+          </p>
+          <p class="mt-6 text-base text-text-muted leading-relaxed">
+            Bezahlung: Bar oder Karte (auch kontaktlos, Apple/Google Pay). Trinkgeld optional, üblich sind 5–10 €.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {categories.map((cat, idx) => {
+      const section = SITE.menu[cat.key];
+      const bg = idx % 2 === 0 ? 'bg-surface-elev border-y border-border' : 'bg-bg';
+      return (
+        <section class={bg}>
+          <div class="container-page py-16 sm:py-20">
+            <div class="max-w-3xl mb-10">
+              <LabelCountHeader
+                label={section.label.de}
+                count={section.count}
+                countLabel={`${section.count} Leistungen`}
+              />
+              <p class="mt-4 text-lg text-text-muted leading-relaxed">{cat.lead}</p>
+              <p class="mt-3 text-base text-text-muted leading-relaxed">{section.intro.de}</p>
+            </div>
+
+            <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-8 list-none p-0">
+              {section.items.map((item) => (
+                <li class="border-l-4 border-accent pl-5 py-1">
+                  <p class="font-display text-xl text-text leading-tight uppercase tracking-tight font-bold">{item.de.name}</p>
+                  <p class="mt-2 text-text-muted leading-relaxed">{item.de.desc}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    })}
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

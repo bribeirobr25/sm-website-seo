@@ -1,0 +1,95 @@
+---
+/**
+ * SplitHero — Atem Studio V2 (2026-05-23).
+ *
+ * Text left + decorative panel right. Editorial yoga register per
+ * `studio.md` §12 rule 2 + §13 "Schedule-led ordering" recommended Hero.
+ *
+ * Differentiates from V1 (centered single-column hero) — splits attention
+ * across two columns so the visual identity is the LAYOUT, not just the
+ * typography.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const eyebrow = locale === 'de' ? 'ATEM · BEWEGUNG · STILLE' : 'BREATH · MOVEMENT · STILLNESS';
+
+const titleLines =
+  locale === 'de'
+    ? ['Yoga, wie er sich', 'eigentlich anfühlen sollte.']
+    : ['Yoga, the way it', 'is meant to feel.'];
+
+const body =
+  locale === 'de'
+    ? 'Kleine Klassen, langsame Übergänge, gute Lehrer:innen. Boutique-Studio am Bergmannkiez — Hatha, Vinyasa, Yin, Prenatal. Sieben Tage die Woche, erste Stunde ist auf uns.'
+    : 'Small classes, slow transitions, good teachers. Boutique studio in Bergmannkiez — Hatha, Vinyasa, Yin, prenatal. Seven days a week, first class on us.';
+
+const ctaPrimaryHref = locale === 'de' ? '/kurse' : '/en/classes';
+const ctaPrimaryLabel = locale === 'de' ? 'Kursplan ansehen' : 'See the schedule';
+const ctaSecondaryLabel = t.cta.bookTable;
+---
+
+<section class="bg-bg border-b border-border" aria-labelledby="hero-title">
+  <div class="container-page py-16 sm:py-24 lg:py-32">
+    <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-20 items-stretch">
+      <div class="flex flex-col justify-center">
+        <p class="text-[11px] sm:text-xs tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-8">
+          {eyebrow}
+        </p>
+
+        <h1
+          id="hero-title"
+          class="font-display text-[clamp(2.5rem,6vw,5.5rem)] leading-[1.05] tracking-[-0.015em] text-text font-medium italic"
+        >
+          {titleLines.map((line) => (
+            <span class="block">{line}</span>
+          ))}
+        </h1>
+
+        <p class="mt-8 max-w-xl text-lg sm:text-xl text-text-muted leading-[1.7]">
+          {body}
+        </p>
+
+        <div class="mt-10 flex flex-wrap gap-3">
+          <a
+            href={ctaPrimaryHref}
+            class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full bg-accent text-text hover:bg-accent-deep hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
+          >
+            {ctaPrimaryLabel}
+          </a>
+          <a
+            href={`tel:${SITE.phone}`}
+            class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-full border border-text text-text hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep"
+          >
+            {ctaSecondaryLabel} →
+          </a>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div
+          class="w-full aspect-[3/4] rounded-3xl bg-accent-secondary/20 border border-accent-secondary/30 flex items-center justify-center relative overflow-hidden"
+          aria-hidden="true"
+        >
+          <!-- Concentric-circle "breath" mandala — lavender-on-lilac -->
+          <svg width="55%" height="55%" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-accent-secondary-deep">
+            <circle cx="100" cy="100" r="92" stroke="currentColor" stroke-width="1" opacity="0.4" />
+            <circle cx="100" cy="100" r="70" stroke="currentColor" stroke-width="1" opacity="0.55" />
+            <circle cx="100" cy="100" r="48" stroke="currentColor" stroke-width="1" opacity="0.7" />
+            <circle cx="100" cy="100" r="26" stroke="currentColor" stroke-width="1" opacity="0.85" />
+            <circle cx="100" cy="100" r="8" fill="currentColor" />
+          </svg>
+          <p class="absolute bottom-6 left-0 right-0 text-center text-xs text-accent-secondary-deep/70 italic px-6">
+            {locale === 'de' ? 'Studio-Foto folgt mit echtem Material.' : 'Studio photo to follow with real material.'}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

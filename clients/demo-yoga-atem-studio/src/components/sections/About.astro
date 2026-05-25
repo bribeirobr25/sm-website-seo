@@ -1,0 +1,60 @@
+---
+/**
+ * About — Atem Studio V2 (2026-05-23 portfolio rebuild).
+ *
+ * Drops the V1 StatCallouts row per `studio.md` §13 anti-pattern. Pure
+ * narrative + a single inline pull-quote callout.
+ */
+import type { Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Über das Studio' : 'About the studio';
+const h2 =
+  locale === 'de'
+    ? 'Zwei Räume. Fünf Stilrichtungen. Eine Atmosphäre.'
+    : 'Two rooms. Five styles. One atmosphere.';
+
+const p1 =
+  locale === 'de'
+    ? 'Lara Brückner (E-RYT 500, vorher zehn Jahre in einer Berliner Wirtschaftskanzlei) und Felix Holm (Yin- und Prenatal-Spezialist, ausgebildet in Mysore) haben Atem Studio 2018 in der Bergmannstraße eröffnet. Die Idee: ein Ort, an dem Yoga nicht wie Fitness behandelt wird.'
+    : 'Lara Brückner (E-RYT 500, ten years previously in a Berlin commercial law firm) and Felix Holm (Yin and prenatal specialist, trained in Mysore) opened Atem Studio in Bergmannstraße in 2018. The idea: a place where yoga is not treated like fitness.';
+
+const pullQuote =
+  locale === 'de'
+    ? 'Kein BPM-Soundtrack. Kein Wettbewerb. Kein Wellness-Theater.'
+    : 'No BPM soundtrack. No competition. No wellness theatre.';
+
+const p2 =
+  locale === 'de'
+    ? 'Klassen sind klein — maximal zwölf Matten pro Raum, oft weniger. Jede Lehrerin korrigiert mit der Hand, nicht mit dem Mikrofon. Die Tee-Ecke ist Teil der Praxis: vor der Klasse aufwärmen, nach der Klasse zur Ruhe kommen. Es ist kein Studio, es ist eine Pause.'
+    : "Classes are small — max twelve mats per room, often fewer. Every teacher adjusts with their hands, not with a microphone. The tea corner is part of the practice: arrive early to warm up, stay afterwards to come back to yourself. It's not a studio, it's a pause.";
+---
+
+<section class="bg-bg">
+  <div class="container-page py-20 sm:py-28">
+    <div class="max-w-3xl">
+      <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold mb-4">{eyebrow}</p>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.15] italic">
+        {h2}
+      </h2>
+      <div class="mt-8 space-y-5 text-lg text-text-muted leading-[1.75]">
+        <p>{p1}</p>
+      </div>
+
+      <blockquote class="my-10 pl-6 border-l-4 border-accent">
+        <p class="font-display text-2xl sm:text-3xl text-text leading-[1.3] italic">
+          {pullQuote}
+        </p>
+      </blockquote>
+
+      <div class="space-y-5 text-lg text-text-muted leading-[1.75]">
+        <p>{p2}</p>
+      </div>
+    </div>
+  </div>
+</section>

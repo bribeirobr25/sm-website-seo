@@ -623,3 +623,32 @@ Berlin example.
 - **Keyword pattern (BR):** `[produto] artesanal em [cidade]` · `[ofício] em [bairro]`
 - **Keyword pattern (PT):** `[produto] artesanal [cidade]` · `[ofício] em [cidade]`
 - **Example:** "Keramik handgemacht Berlin" · "Cerâmica artesanal em São Paulo" · "Olaria artesanal Lisboa"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+Per CLAUDE.md "Portfolio diversity is a hard gate" + `DESIGN-BEST-PRACTICES.md` §6.5. Artisan / workshop / craft demos MUST avoid the universal-9 composition.
+
+### Artisan swap-ins (use INSTEAD of universal-9 items)
+
+| Universal-9 to AVOID | Artisan swap-in | Why |
+|---|---|---|
+| MenuPreview (3-up cards) | **PhotoGrid** asymmetric (tools + process + finished pieces) OR **Lightbox** portfolio of past work | Artisan is process + craft + tactile material — needs imagery, not text cards. |
+| Timeline (4-step) | **HowItsMade strip** with hero-shot of each step (chisel → joinery → finish → install) | Process IS the product story for artisan. Show the hands. |
+| Testimonial single card | **Press / "as-featured-in" strip** (Hand/Eye magazine · local craft mag) OR client commission pull-quote with project name | Artisan trust = peer + critic recognition. |
+| MapEmbed | **`ServiceArea`** (radius the workshop ships/installs to) | Workshop is destination + delivery — service area matters more than map. |
+
+### Mandatory additions for artisan
+
+- **`Lightbox` portfolio** with project name + material list per image — minimum 12 images.
+- **Process video / VideoFacade** — single clip of hands working the material.
+- **Material sourcing block** — named lumber yards / leather tanneries / clay suppliers.
+
+### Reference orderings
+
+Same 3-axis variation pattern as `professional-services.md` §13 / `studio.md` §13 / `beauty.md` §13 — see those for full ordering examples. Artisan-specific Ordering A "Craft-led": Hero (full-bleed workshop shot) · PhotoGrid (tools/process/pieces) · About (founder story + training lineage) · Lightbox portfolio · HowItsMade strip · VideoFacade · TrustBadgeRow (Innung / peer recognition) · FAQ · CTA.
+
+### Palette
+
+Per `COLOR.md` §6 #12 — brown IS acceptable for artisan when material-justified (leather, walnut, copper, oak). NOT acceptable as a "warm safe default" without material connection. Cool register also valid for modern-artisan (Bauhaus, ceramics) — match the material register, not a defaulting habit.

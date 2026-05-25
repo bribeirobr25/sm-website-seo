@@ -1,0 +1,106 @@
+---
+/**
+ * Hero — Bart & Pomade Barbershop V2 (2026-05-23, dark-dominant rebuild).
+ *
+ * Heritage barber register per `beauty.md` §12 rule 1 + §13: "Heritage
+ * barber: dark/black bg + gold/copper accents + sans uppercase + grit
+ * photography. NOT cream-bg + charcoal text — that's the boutique salon
+ * register, not heritage barber."
+ *
+ * V2: full dark background using regular `bg-bg` (now near-black) instead
+ * of inverted-bg trick. Saffron-gold accent + warm bone text. Bricolage
+ * Grotesque uppercase at clamp(3rem, 9vw, 8rem). Distinct from V1's
+ * warm-cream page that wrapped a single dark hero block.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const eyebrow =
+  locale === 'de' ? 'BERLIN · FRIEDRICHSHAIN · SEIT 2016' : 'BERLIN · FRIEDRICHSHAIN · SINCE 2016';
+
+const titleLines =
+  locale === 'de' ? ['SCHERE.', 'KLINGE.', 'POMADE.'] : ['SCISSORS.', 'BLADE.', 'POMADE.'];
+
+const body =
+  locale === 'de'
+    ? 'Klassischer Männerschnitt mit Schere und Kamm. Heißhandtuch-Rasur mit Klinge. Bartpflege und eigene Pomade. Vier Barber, fünf Stühle, kein Stress.'
+    : "Classic men's cut with scissors and comb. Hot-towel shave with a blade. Beard care and our own pomade. Four barbers, five chairs, no rush.";
+
+const ctaPrimaryLabel = t.cta.bookTable;
+const ctaPrimaryHref = locale === 'de' ? '/preise' : '/en/services';
+const ctaSecondaryLabel = locale === 'de' ? 'Preise ansehen' : 'See prices';
+---
+
+<section class="bg-bg text-text border-b border-border relative overflow-hidden" aria-labelledby="hero-title">
+  <!-- Subtle barber-pole stripe SVG decoration in top-right -->
+  <div class="absolute top-0 right-0 w-1/3 h-full opacity-[0.06] pointer-events-none" aria-hidden="true">
+    <svg viewBox="0 0 200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
+      <defs>
+        <pattern id="bp" patternUnits="userSpaceOnUse" width="40" height="100" patternTransform="rotate(15)">
+          <rect width="40" height="100" fill="currentColor" />
+          <rect x="0" y="0" width="40" height="33" fill="#D9A35E" />
+          <rect x="0" y="33" width="40" height="33" fill="#B83C2B" />
+          <rect x="0" y="66" width="40" height="34" fill="#F2EEE3" />
+        </pattern>
+      </defs>
+      <rect width="200" height="600" fill="url(#bp)" />
+    </svg>
+  </div>
+
+  <div class="container-page py-20 sm:py-28 lg:py-36 relative">
+    <div class="max-w-5xl">
+      <p class="text-[11px] sm:text-xs tracking-[0.35em] uppercase text-accent font-semibold mb-10">
+        {eyebrow}
+      </p>
+
+      <h1
+        id="hero-title"
+        class="font-display text-[clamp(3rem,9vw,8rem)] leading-[0.92] tracking-[-0.03em] font-extrabold uppercase text-text"
+      >
+        {titleLines.map((line) => (
+          <span class="block">{line}</span>
+        ))}
+      </h1>
+
+      <p class="mt-10 max-w-2xl text-lg sm:text-xl text-text-muted leading-relaxed">
+        {body}
+      </p>
+
+      <div class="mt-12 flex flex-wrap gap-3">
+        <a
+          href={`tel:${SITE.phone}`}
+          class="inline-flex items-center justify-center px-7 py-4 min-h-[56px] text-base font-semibold uppercase tracking-wider rounded-sm bg-accent text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {ctaPrimaryLabel}
+        </a>
+        <a
+          href={ctaPrimaryHref}
+          class="inline-flex items-center justify-center px-7 py-4 min-h-[56px] text-base font-semibold uppercase tracking-wider rounded-sm border border-text/30 text-text hover:border-accent hover:text-accent transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {ctaSecondaryLabel} →
+        </a>
+      </div>
+
+      <div class="mt-16 pt-10 border-t border-border flex flex-wrap gap-x-10 gap-y-3 text-sm">
+        <span class="flex items-center gap-2 text-text-muted">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {locale === 'de' ? 'Klassische Schnitte ab 22 €' : 'Classic cuts from €22'}
+        </span>
+        <span class="flex items-center gap-2 text-text-muted">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent-secondary" aria-hidden="true"></span>
+          {locale === 'de' ? 'Heißhandtuch-Rasur ab 32 €' : 'Hot-towel shave from €32'}
+        </span>
+        <span class="flex items-center gap-2 text-text-muted">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {locale === 'de' ? 'Di–Sa geöffnet' : 'Tue–Sat open'}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

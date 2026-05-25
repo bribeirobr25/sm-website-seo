@@ -1,0 +1,120 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import MapEmbed from '@/components/sections/MapEmbed.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`;
+const dayLabelsEN = {
+  Mon: 'Mon',
+  Tue: 'Tue',
+  Wed: 'Wed',
+  Thu: 'Thu',
+  Fri: 'Fri',
+  Sat: 'Sat',
+  Sun: 'Sun',
+};
+---
+
+<BaseLayout
+  title={`Firm — ${SITE.name}`}
+  description="Sander & Voss Rechtsanwälte in Berlin Mitte. Friedrichstraße 95. Consultation Mon–Fri, by appointment outside those hours."
+  locale={locale}
+  alternateLocaleUrl="/kanzlei"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-xs uppercase tracking-[0.25em] text-accent-deep font-semibold">About the firm</p>
+          <h1 class="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05]">
+            Four partners. One desk. One invoice.
+          </h1>
+          <div class="mt-8 space-y-5 text-lg text-text-muted leading-relaxed">
+            <p>
+              Sander &amp; Voss was founded in 2014 by Dr. Katrin Sander (previously Linklaters, specialist tax lawyer) and Lukas Voss (previously Hengeler Mueller, M&amp;A). Friedrichstraße 95 — between Stadtmitte and Französische Straße — has been the address from day one.
+            </p>
+            <p>
+              Two further partners joined since: Dr. Aisha El-Hamid (2017, employment law + works councils) and Maximilian Schreier (2019, data protection, previously at the German Federal DPA). Four partners, two associates, one assistant. We aim to stay that size — when you call us, a partner picks up, not a switchboard.
+            </p>
+            <p>
+              Clients are mostly Berlin SMBs and start-ups: SaaS companies in growth mode, family-owned businesses in transition, professional individuals with tax questions, employers facing unfair-dismissal claims. We advise nationally too, though most matters need a Berlin presence.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+          <div class="bg-surface rounded-sm p-8 border border-border space-y-2">
+            <p class="font-display text-2xl text-text">{SITE.name}</p>
+            <p class="text-text-muted">{SITE.address.street}</p>
+            <p class="text-text-muted">{SITE.address.postalCode} {SITE.address.city} — {SITE.address.neighborhood}</p>
+            <p class="text-text-muted pt-2">
+              <a href={`tel:${SITE.phone}`} class="text-accent-deep hover:text-text underline tabular">{SITE.phoneDisplay}</a>
+            </p>
+            <p class="text-text-muted">
+              <a href={`mailto:${SITE.email}`} class="text-accent-deep hover:text-text underline">{SITE.email}</a>
+            </p>
+            <div class="pt-4 flex flex-wrap gap-3">
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-base font-medium rounded-sm bg-text text-bg hover:bg-accent-deep transition-colors">
+                Open in Google Maps
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-surface rounded-sm p-8 border border-border space-y-5">
+            <p class="text-xs uppercase tracking-[0.25em] text-accent-deep font-semibold">Availability</p>
+            <div>
+              <p class="font-display text-xl text-text">{SITE.hours.summer.label.en}</p>
+              <dl class="mt-3 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+                {SITE.hours.summer.days.map((h) => (
+                  <>
+                    <dt class="text-text-muted">{dayLabelsEN[h.day as keyof typeof dayLabelsEN]}</dt>
+                    <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'closed'}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+            <div class="pt-3 border-t border-border">
+              <p class="font-display text-xl text-text">{SITE.hours.winter.label.en}</p>
+              <p class="mt-2 text-text-muted leading-relaxed">
+                Appointments outside the regular consultation hours by arrangement — weekdays 8–20 and Saturdays 10–14. Please call to schedule.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-8 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold">Directions</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">By car, BVG, or on foot.</h2>
+          <p class="text-text-muted leading-relaxed">
+            U2 / U6 Stadtmitte (3 min), U2 Hausvogteiplatz (5 min), S-Bahn Friedrichstraße (8 min). Underground parking at Markgrafenstraße 100 metres away, day rate €16.
+          </p>
+        </div>
+        <MapEmbed
+          lat={SITE.geo.lat}
+          lng={SITE.geo.lng}
+          zoom={16}
+          markerLabel="Sander & Voss · Friedrichstraße 95"
+          title="Map: Sander & Voss, Friedrichstraße 95, 10117 Berlin"
+          provider="openstreetmap"
+          aspect="16/9"
+        />
+      </div>
+    </section>
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

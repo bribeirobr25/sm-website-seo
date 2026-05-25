@@ -1,0 +1,92 @@
+---
+/**
+ * Hero — Sander & Voss Rechtsanwälte.
+ *
+ * Typography-led variant per `docs/design/templates/professional-services.md`
+ * §12 rule 1: "All 5 elite law firms (Latham/Sidley/Skadden/Baker/White & Case)
+ * lead with serif H1 + sub on a near-empty background. Hero photography is
+ * reserved for *behind* the eyebrow, not as the dominant atmosphere."
+ *
+ * NO full-bleed photo. NO Bellini-style splash. Cream background + serif H1
+ * + sub + utility metadata (case-count + jurisdiction) + soft CTA pair.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const eyebrow =
+  locale === 'de' ? 'Wirtschaftsrecht · Berlin Mitte' : 'Commercial law · Berlin Mitte';
+
+const titleLines =
+  locale === 'de'
+    ? ['Klare Beratung.', 'Verbindliche Ergebnisse.']
+    : ['Clear counsel.', 'Binding outcomes.'];
+
+const sub =
+  locale === 'de'
+    ? 'Wir beraten Berliner Mittelstand, Start-ups und Familienunternehmen in Gesellschafts-, Steuer-, Arbeits- und Datenschutzrecht — seit 2014, an der Friedrichstraße 95.'
+    : 'We advise Berlin SMBs, start-ups, and family-owned businesses on corporate, tax, employment, and data-protection law — since 2014, at Friedrichstraße 95.';
+
+const meta =
+  locale === 'de'
+    ? ['Zugelassen in Deutschland', '4 Rechtsgebiete', '120+ laufende Mandate']
+    : ['Admitted in Germany', '4 practice areas', '120+ active matters'];
+
+const ctaPrimaryHref = locale === 'de' ? '/leistungen' : '/en/practice';
+const ctaPrimaryLabel = locale === 'de' ? 'Leistungen ansehen' : 'View practice areas';
+const ctaSecondaryHref = locale === 'de' ? '/kanzlei' : '/en/firm';
+const ctaSecondaryLabel = locale === 'de' ? 'Erstgespräch vereinbaren' : 'Book first consultation';
+---
+
+<section
+  class="border-b border-border bg-bg"
+  aria-labelledby="hero-title"
+>
+  <div class="container-page py-20 sm:py-28 lg:py-36 max-w-5xl">
+    <p class="text-[11px] sm:text-xs tracking-[0.28em] uppercase text-accent-deep font-semibold mb-8">
+      {eyebrow}
+    </p>
+
+    <h1
+      id="hero-title"
+      class="font-display text-[clamp(2.5rem,6vw,5rem)] leading-[1.05] tracking-[-0.022em] text-text font-medium"
+    >
+      {titleLines.map((line, i) => (
+        <span class="block">{line}</span>
+      ))}
+    </h1>
+
+    <p class="mt-8 max-w-2xl text-lg sm:text-xl text-text-muted leading-relaxed">
+      {sub}
+    </p>
+
+    <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-text-muted tabular border-t border-border pt-6">
+      {meta.map((item) => (
+        <li class="flex items-center gap-3">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          {item}
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a
+        href={ctaPrimaryHref}
+        class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-sm bg-text text-bg hover:bg-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        {ctaPrimaryLabel}
+      </a>
+      <a
+        href={ctaSecondaryHref}
+        class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-sm border border-text text-text hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        {ctaSecondaryLabel} →
+      </a>
+    </div>
+  </div>
+</section>

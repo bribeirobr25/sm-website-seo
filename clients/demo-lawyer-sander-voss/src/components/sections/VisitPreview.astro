@@ -1,0 +1,67 @@
+---
+/**
+ * Soft "Speak with us" CTA (formerly VisitPreview) — Sander & Voss home section.
+ *
+ * V2 (2026-05-23): swapped from inverted-bg full block to a soft, on-light
+ * CTA section per `professional-services.md` §13 swap-in rule. Half-pill
+ * register, single CTA, no urgency — pro-services convention.
+ *
+ * Distinct from V1 (full deep-navy inverted block) — same page, different
+ * visual register, lighter footprint.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Erstgespräch' : 'First conversation';
+const h2 =
+  locale === 'de'
+    ? 'Erstes Gespräch unverbindlich. 30 Minuten am Telefon oder in der Kanzlei.'
+    : 'First conversation, no commitment. 30 minutes by phone or in the office.';
+
+const sub =
+  locale === 'de'
+    ? 'Wir hören zu, prüfen die Lage und sagen Ihnen ehrlich, ob wir der richtige Ansprechpartner sind — wenn nicht, empfehlen wir eine Kollegin oder einen Kollegen.'
+    : "We listen, assess the situation, and tell you honestly whether we're the right counsel — if not, we recommend a colleague.";
+
+const callLabel = locale === 'de' ? 'Anrufen' : 'Call';
+const emailLabel = locale === 'de' ? 'E-Mail schreiben' : 'Email us';
+---
+
+<section class="bg-bg border-t border-border">
+  <div class="container-page py-20 sm:py-28">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-[11px] tracking-[0.28em] uppercase text-accent-deep font-semibold mb-6">{eyebrow}</p>
+      <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.15] max-w-3xl mx-auto">
+        {h2}
+      </h2>
+      <p class="mt-6 text-lg text-text-muted leading-relaxed max-w-2xl mx-auto">{sub}</p>
+
+      <div class="mt-12 flex flex-wrap justify-center gap-3">
+        <a
+          href={`tel:${SITE.phone}`}
+          class="inline-flex items-center gap-3 pl-6 pr-7 py-3.5 min-h-[52px] text-base font-medium rounded-[var(--radius-pill-half)] bg-text text-bg hover:bg-accent-deep transition-colors tabular focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+          {callLabel} — {SITE.phoneDisplay}
+        </a>
+        <a
+          href={`mailto:${SITE.email}`}
+          class="inline-flex items-center justify-center px-6 py-3.5 min-h-[52px] text-base font-medium rounded-sm border border-text text-text hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {emailLabel}
+        </a>
+      </div>
+
+      <p class="mt-8 text-xs text-text-muted tabular">
+        {locale === 'de' ? 'Sprechzeiten Mo–Do 09:00–18:30 · Fr 09:00–17:00' : 'Consultation hours Mon–Thu 09:00–18:30 · Fri 09:00–17:00'}
+      </p>
+    </div>
+  </div>
+</section>

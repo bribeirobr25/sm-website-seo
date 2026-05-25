@@ -1,0 +1,80 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import LabelCountHeader from '@/components/sections/LabelCountHeader.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+const t = SITE.i18n[locale];
+
+const categories = [
+  {
+    key: 'creme' as const,
+    lead: 'Strukturen, Verträge und Auseinandersetzungen rund um Gesellschaften.',
+  },
+  {
+    key: 'sorbetti' as const,
+    lead: 'Steuerliche Gestaltung und Streitvermeidung — von der Gründung bis zum BFH.',
+  },
+  { key: 'spezialitaeten' as const, lead: 'Arbeitsrecht für Arbeitgeber + Datenschutz für alle.' },
+];
+---
+
+<BaseLayout
+  title={`Leistungen — ${SITE.name}`}
+  description="Gesellschaftsrecht, Steuerrecht, Arbeitsrecht und Datenschutz. Vier Rechtsgebiete, ein Team, klare Honorarmodelle."
+  locale={locale}
+  alternateLocaleUrl="/en/practice"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-xs uppercase tracking-[0.25em] text-accent-deep font-semibold">{t.nav.menu}</p>
+          <h1 class="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05]">Unsere Leistungen.</h1>
+          <p class="mt-8 text-lg sm:text-xl text-text-muted leading-relaxed">
+            Vier Rechtsgebiete, die in der Praxis ständig ineinandergreifen: Wer eine GmbH gründet, denkt sofort an Steuer. Wer eine Datenschutzfrage löst, braucht oft auch arbeitsrechtliche Klärung. Bei uns gibt es dafür keine Übergaben.
+          </p>
+          <p class="mt-6 text-base text-text-muted leading-relaxed">
+            Honorar: RVG (gerichtlich), Pauschale (klar umrissen), Stunde (320–450 €). Beim Erstgespräch klären wir, welches Modell zu Ihrem Anliegen passt.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {categories.map((cat, idx) => {
+      const section = SITE.menu[cat.key];
+      const bg = idx % 2 === 0 ? 'bg-surface-elev' : 'bg-bg';
+      return (
+        <section class={bg}>
+          <div class="container-page py-16 sm:py-20">
+            <div class="max-w-3xl mb-10">
+              <LabelCountHeader
+                label={section.label.de}
+                count={section.count}
+                countLabel={`${section.count} Leistungen`}
+              />
+              <p class="mt-4 text-lg text-text-muted leading-relaxed">{cat.lead}</p>
+              <p class="mt-3 text-base text-text-muted leading-relaxed">{section.intro.de}</p>
+            </div>
+
+            <ul class="grid sm:grid-cols-2 gap-x-10 gap-y-8 list-none p-0">
+              {section.items.map((item) => (
+                <li class="border-l-2 border-accent pl-5 py-1">
+                  <p class="font-display text-xl text-text leading-tight">{item.de.name}</p>
+                  <p class="mt-2 text-text-muted leading-relaxed">{item.de.desc}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    })}
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

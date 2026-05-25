@@ -617,3 +617,35 @@ Berlin example. Swap 8 placeholders per client + verify medical credentials.
 - **Keyword pattern (BR):** `[especialidade] em [bairro]` · `[especialidade] [cidade] convênio`
 - **Keyword pattern (PT):** `[especialidade] em [cidade]` · `[especialidade] [bairro] consulta`
 - **Example:** "Kardiologe in Mitte" · "Cardiologista em Copacabana" · "Cardiologista em Lisboa"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+Per CLAUDE.md + `DESIGN-BEST-PRACTICES.md` §6.5. Clinic / dental / dermatology / chiro / physio demos MUST avoid the universal-9 composition.
+
+### Health swap-ins
+
+| Universal-9 to AVOID | Health swap-in |
+|---|---|
+| MenuPreview (3-up) | **`PricingTable`** (Selbstzahler-Preisliste — typical IGeL services for Kassenpatienten + Privatpatienten split) OR **`ScrollSpyNav`** through treatment categories |
+| StatCallouts | **TrustBadgeRow** (Approbation · Fachgebiet · Hochschule · ÄK-Mitgliedschaft · evtl. Empfehlung Top-Mediziner Focus) — credentials are THE health trust signal |
+| Timeline | **Process steps as Accordion** (Anamnese → Untersuchung → Diagnose → Therapie) — depth + scannable |
+| Testimonial | **Pull-quote attributing to publication or peer** (NOT patient name — patient testimonials are restricted by HWG §11) |
+| BookingMock | **Doctolib / Jameda embed** (when client uses one) OR phone-first CTA — health bookings happen through clinical-grade platforms |
+
+### Mandatory additions
+
+- **`TrustBadgeRow`** with Approbation + Fachgebiet + ÄK + DEGAM/DGZMK (specialty Innung). Critical per `templates/health.md` §1.
+- **`TeamGrid` with full credentials** (Dr. med. · Promotion · Hochschule · Spezialgebiete). Health = provider-as-product.
+- **Privacy + DSGVO emphasis** in `/datenschutz` — health data is special-category per Art. 9 DSGVO.
+
+### Reference orderings
+
+Clinic: Hero · About (Praxis-Philosophie) · TeamGrid (Ärzte mit Credentials) · TrustBadgeRow · Treatments (ScrollSpyNav or grid) · BookingMock / Doctolib · FAQ · MapEmbed. Specialist (Derma / Kardio): Hero · TrustBadgeRow · About · Treatments PricingTable · TeamGrid · BookingMock · FAQ · CTA.
+
+### Palette
+
+Health register: clinical-trust. Cool palette (white + medical-blue + sage) OR warm-clinical (cream + sage + soft coral for family practices). Avoid clinical white-on-white sterility — needs human warmth. NO cream-defaulting per `COLOR.md` §6 #11 unless register justifies (family GP / Hausarzt may use warm cream; specialist surgeon should NOT).
+
+**Critical:** Health is the one vertical where HWG §11 + Heilmittelwerberecht restrict promotional copy. Run any copy past the practice's lawyer or RAK Kammer before launch.

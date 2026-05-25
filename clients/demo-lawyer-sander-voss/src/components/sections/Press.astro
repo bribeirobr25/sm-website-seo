@@ -1,0 +1,103 @@
+---
+/**
+ * Press / Recognitions strip — Sander & Voss home section.
+ *
+ * 2026-05-23: customized for legal vertical (replaces the gastronomy
+ * Tagesspiegel / Michelin items from the canonical Press.astro).
+ *
+ * Three centered press mentions from legal-industry directories per
+ * `professional-services.md` §13 mandatory addition: "Press / Recognitions
+ * logos strip (Chambers · Legal 500 · Financial Times · The Lawyer · JUVE
+ * · WirtschaftsWoche) — the single strongest trust signal in enterprise
+ * pro-services."
+ *
+ * **MOCK** — fictional rankings on a demo site. Real client would list
+ * verified recognitions; never invent.
+ */
+import type { Locale } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'Auszeichnungen' : 'Recognition';
+
+const items =
+  locale === 'de'
+    ? [
+        {
+          rating: 'Highly Regarded',
+          outlet: 'Chambers Europe',
+          date: '2024 + 2025',
+          quote:
+            '"Sander & Voss bietet pragmatische Steuerberatung mit messbar besseren Ergebnissen bei Betriebsprüfungen."',
+        },
+        {
+          rating: 'Empfohlen',
+          outlet: 'JUVE Handbuch Wirtschaftskanzleien',
+          date: '2024',
+          quote:
+            '"Dr. Sander wird für ihre ruhige, präzise Verhandlungsführung bei Steuerstreitigkeiten besonders geschätzt."',
+        },
+        {
+          rating: 'Top-Kanzlei',
+          outlet: 'WirtschaftsWoche Anwalts-Ranking',
+          date: 'Februar 2025',
+          quote:
+            '"Kleine Kanzlei mit Großkanzlei-Erfahrung — Mittelstand-Mandanten profitieren von der ungewöhnlichen Kombination."',
+        },
+      ]
+    : [
+        {
+          rating: 'Highly Regarded',
+          outlet: 'Chambers Europe',
+          date: '2024 + 2025',
+          quote:
+            '"Sander & Voss delivers pragmatic tax counsel with measurably better outcomes in audit proceedings."',
+        },
+        {
+          rating: 'Recommended',
+          outlet: 'JUVE Commercial Law Handbook',
+          date: '2024',
+          quote:
+            '"Dr. Sander is particularly valued for her quiet, precise negotiation style in tax disputes."',
+        },
+        {
+          rating: 'Top Firm',
+          outlet: 'WirtschaftsWoche Lawyer Ranking',
+          date: 'February 2025',
+          quote:
+            '"A boutique firm with Magic Circle experience — SMB clients benefit from the unusual combination."',
+        },
+      ];
+---
+
+<section class="bg-bg border-t border-b border-border">
+  <div class="container-page py-16 sm:py-20">
+    <p class="text-center text-[11px] tracking-[0.35em] uppercase text-accent-deep font-semibold mb-12">
+      {eyebrow}
+    </p>
+
+    <ul class="grid md:grid-cols-3 gap-x-8 gap-y-12 max-w-5xl mx-auto list-none p-0">
+      {items.map((item) => (
+        <li class="text-center space-y-3">
+          <p class="font-display text-xl text-accent-deep leading-tight">
+            {item.rating}
+          </p>
+          <p class="text-[11px] tracking-[0.25em] uppercase text-text-muted">
+            {item.outlet} · {item.date}
+          </p>
+          <blockquote class="text-text-muted leading-relaxed italic font-display text-base max-w-xs mx-auto pt-2">
+            {item.quote}
+          </blockquote>
+        </li>
+      ))}
+    </ul>
+
+    <p class="text-center text-[10px] uppercase tracking-[0.25em] text-text-muted/60 mt-10">
+      {locale === 'de' ? '⚠ Mockup — fiktive Auszeichnungen für die Demo' : '⚠ Mockup — fictional recognitions for the demo'}
+    </p>
+  </div>
+</section>

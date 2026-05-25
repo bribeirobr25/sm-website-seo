@@ -595,3 +595,32 @@ Berlin example.
 - **Keyword pattern (BR):** `local para casamento em [cidade]` · `fotógrafo de casamento [cidade]`
 - **Keyword pattern (PT):** `quinta para casamento em [cidade]` · `fotógrafo casamento [cidade]`
 - **Example:** "Hochzeitslocation Mitte" · "Local para casamento em São Paulo" · "Quinta para casamento perto de Lisboa"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+Per CLAUDE.md + `DESIGN-BEST-PRACTICES.md` §6.5. Venue / catering / DJ / wedding-planner demos MUST avoid the universal-9 composition.
+
+### Events-hospitality swap-ins
+
+| Universal-9 to AVOID | Events swap-in |
+|---|---|
+| MenuPreview | **`Lightbox` portfolio** of past events (16+ images with event name + date metadata) — visual-led vertical |
+| StatCallouts | **TrustBadgeRow** (wedding magazines featured · venue-network member · Hochzeitsmesse exhibitor) |
+| Timeline | **HowItsMade-style timeline** for the booking journey (initial meeting → tasting → walkthrough → event day) |
+| Testimonial | **Couple-quote block** with event date + venue + photographer credit OR **CourseList** of past events with photo |
+
+### Mandatory additions
+
+- **`Lightbox` portfolio** is mandatory — events sell on visual proof.
+- **Date-availability calendar** (when Type 3+) OR phone-first booking CTA.
+- **TrustBadgeRow** with magazine features (Hochzeit & Trauung · Bridebook · Junebug) + venue networks.
+
+### Reference orderings
+
+Venue: SplitHero · Lightbox portfolio · About · TrustBadgeRow · PricingTable packages · CalendarMock availability · BookingMock initial-meeting · FAQ · CTA. Wedding planner: Hero · About + couple-quote · Lightbox · TeamGrid · PricingTable packages · BookingMock consult · FAQ · CTA.
+
+### Palette
+
+Events register splits wedding-romantic (blush + ivory + brass — cream OK here) vs corporate-event (navy + gold + bone) vs intimate-venue (deep forest + cream + brass). Cream IS allowed for wedding subverticals — but justify in `design.md §2.5`.

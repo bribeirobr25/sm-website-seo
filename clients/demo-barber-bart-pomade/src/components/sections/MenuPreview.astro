@@ -1,0 +1,87 @@
+---
+/**
+ * PricingTable (3-column side-by-side) — Bart & Pomade V2 (2026-05-23).
+ *
+ * Per `beauty.md` §13 swap-in: full PricingTable replaces 3-up service
+ * tiles. Three categories side-by-side: SCHNITTE · BART + RASUR · EXTRAS.
+ * All prices visible per §12 rule 5 ("Hiding prices is a 2026 anti-pattern").
+ *
+ * Dark register: cards lift OUT of black bg using surface (#1A1A1A) +
+ * gold borders on hover.
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const eyebrow = locale === 'de' ? 'PREISLISTE' : 'PRICE LIST';
+const heading =
+  locale === 'de' ? 'Alle Preise. Keine Anfrage-Formulare.' : 'All prices. No request forms.';
+const intro =
+  locale === 'de'
+    ? 'Bar oder Karte (auch kontaktlos + Apple/Google Pay). Trinkgeld optional, üblich 5–10 €. Walk-ins willkommen wenn ein Stuhl frei ist — Termin sicherer.'
+    : 'Cash or card (including contactless + Apple/Google Pay). Tip optional, €5–10 typical. Walk-ins welcome when a chair is free — booking safer.';
+
+const fullListHref = locale === 'de' ? '/preise' : '/en/services';
+const fullListLabel = locale === 'de' ? 'Komplette Preisliste' : 'Full price list';
+---
+
+<section class="bg-surface border-t border-b border-border">
+  <div class="container-page py-20 sm:py-24">
+    <div class="max-w-2xl space-y-4 mb-14">
+      <p class="text-[11px] tracking-[0.32em] uppercase text-accent font-bold">{eyebrow}</p>
+      <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.05] uppercase tracking-tight font-bold">{heading}</h2>
+      <p class="text-lg text-text-muted leading-relaxed">{intro}</p>
+    </div>
+
+    <ul class="grid lg:grid-cols-3 gap-px bg-border list-none p-0 border border-border">
+      {(['creme', 'sorbetti', 'spezialitaeten'] as const).map((catKey) => {
+        const cat = SITE.menu[catKey];
+        return (
+          <li class="bg-bg p-7 sm:p-8 flex flex-col">
+            <div class="flex items-baseline justify-between mb-6">
+              <h3 class="font-display text-xl text-accent uppercase tracking-tight font-bold">
+                {cat.label.de}
+              </h3>
+              <span class="text-[10px] uppercase tracking-[0.3em] text-text-muted">{cat.count} {locale === 'de' ? 'Posten' : 'items'}</span>
+            </div>
+            <ul class="space-y-4 list-none p-0 flex-1">
+              {cat.items.map((item) => {
+                const [head, ...descRest] = item.de.name.split(' — ');
+                const price = descRest.length ? descRest.join(' — ') : '';
+                const headEN = item.en.name.split(' — ')[0];
+                const priceEN = item.en.name.split(' — ')[1] ?? '';
+                return (
+                  <li class="border-b border-border/60 pb-3 last:border-0">
+                    <div class="flex items-baseline justify-between gap-3">
+                      <p class="text-sm text-text font-medium leading-tight">
+                        {locale === 'de' ? head : headEN}
+                      </p>
+                      <p class="text-sm text-accent tabular font-semibold shrink-0">
+                        {locale === 'de' ? price : priceEN}
+                      </p>
+                    </div>
+                    <p class="mt-1 text-xs text-text-muted leading-relaxed">{item[locale].desc}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+        );
+      })}
+    </ul>
+
+    <div class="mt-10">
+      <a
+        href={fullListHref}
+        class="inline-flex items-center gap-2 font-semibold uppercase tracking-wider text-sm text-accent hover:text-text transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded"
+      >
+        {fullListLabel}
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>

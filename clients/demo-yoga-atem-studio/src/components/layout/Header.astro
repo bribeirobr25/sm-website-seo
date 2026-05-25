@@ -1,0 +1,138 @@
+---
+/**
+ * Header — generic, content reads from SITE.* (per-client agnostic).
+ * Sticky, cream backdrop, language switcher, phone CTA.
+ * Mobile hamburger added 2026-05-22 (per gastronomy.md rebuild — Watch House + Starbucks observed pattern).
+ */
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = SITE.i18n[locale];
+
+const home = locale === 'de' ? '/' : '/en/';
+const menu = locale === 'de' ? '/kurse' : '/en/classes';
+const visit = locale === 'de' ? '/studio' : '/en/studio';
+const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
+const otherLocaleUrl =
+  otherLocale === 'de'
+    ? Astro.url.pathname
+        .replace(/^\/en\/?/, '/')
+        .replace('/classes', '/kurse')
+        .replace(/^\/$/, '/')
+    : `/en${Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace('/kurse', '/classes')}`;
+
+const menuLabel = locale === 'de' ? 'Menü öffnen' : 'Open menu';
+const closeLabel = locale === 'de' ? 'Menü schließen' : 'Close menu';
+---
+
+<header class="border-b border-border bg-bg/95 sticky top-0 z-30 backdrop-blur-sm">
+  <div class="container-page flex items-center justify-between py-4 gap-4">
+    <a
+      href={home}
+      class="flex items-center gap-2 group shrink-0"
+      aria-label={`${SITE.name} — ${locale === 'de' ? 'Startseite' : 'home'}`}
+    >
+      <span class="font-display text-xl sm:text-2xl text-text group-hover:text-accent transition-colors leading-none">
+        {SITE.name}
+      </span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-6 text-sm">
+        <li><a href={home} class="text-text hover:text-accent transition-colors">{t.nav.home}</a></li>
+        <li><a href={menu} class="text-text hover:text-accent transition-colors">{t.nav.menu}</a></li>
+        <li><a href={visit} class="text-text hover:text-accent transition-colors">{t.nav.visit}</a></li>
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3 shrink-0">
+      <a
+        href={`tel:${SITE.phone}`}
+        class="inline-flex items-center gap-2 text-sm text-text-muted hover:text-accent transition-colors tabular focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm px-2 py-1"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+          ></path>
+        </svg>
+        <span class="hidden sm:inline">{SITE.phoneDisplay}</span>
+      </a>
+
+      <a
+        href={otherLocaleUrl}
+        class="text-xs uppercase tracking-wider text-text-muted hover:text-accent transition-colors px-2 py-1 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        aria-label={`${t.languageLabel}: ${otherLocale === 'en' ? 'English' : 'Deutsch'}`}
+      >
+        {otherLocale === 'en' ? 'EN' : 'DE'}
+      </a>
+
+      <button
+        id="hamburger-toggle"
+        type="button"
+        class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-text hover:text-accent transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+        aria-label={menuLabel}
+        data-close-label={closeLabel}
+      >
+        <svg id="hamburger-icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg id="hamburger-icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav
+    id="mobile-nav"
+    aria-label="Mobile primary"
+    class="md:hidden hidden border-t border-border bg-bg"
+  >
+    <ul class="container-page flex flex-col py-4 gap-1 text-base">
+      <li><a href={home} class="block py-3 text-text hover:text-accent transition-colors">{t.nav.home}</a></li>
+      <li><a href={menu} class="block py-3 text-text hover:text-accent transition-colors">{t.nav.menu}</a></li>
+      <li><a href={visit} class="block py-3 text-text hover:text-accent transition-colors">{t.nav.visit}</a></li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('hamburger-toggle') as HTMLButtonElement | null;
+  const nav = document.getElementById('mobile-nav');
+  const iconOpen = document.getElementById('hamburger-icon-open');
+  const iconClose = document.getElementById('hamburger-icon-close');
+  const closeLabelAttr = toggle?.dataset.closeLabel;
+
+  if (toggle && nav && iconOpen && iconClose) {
+    const openLabel = toggle.getAttribute('aria-label') ?? 'Open menu';
+
+    toggle.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      const next = !isExpanded;
+      toggle.setAttribute('aria-expanded', String(next));
+      nav.classList.toggle('hidden', !next);
+      iconOpen.classList.toggle('hidden', next);
+      iconClose.classList.toggle('hidden', !next);
+      toggle.setAttribute('aria-label', next ? (closeLabelAttr ?? 'Close menu') : openLabel);
+    });
+  }
+</script>

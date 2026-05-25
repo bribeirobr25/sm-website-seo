@@ -1,0 +1,235 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import About from '@/components/sections/About.astro';
+import Accordion from '@/components/sections/Accordion.astro';
+import FAQ from '@/components/sections/FAQ.astro';
+import Hero from '@/components/sections/Hero.astro';
+import MenuPreview from '@/components/sections/MenuPreview.astro';
+import Press from '@/components/sections/Press.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+const t = SITE.i18n[locale];
+
+const partners = [
+  {
+    initials: 'KS',
+    name: 'Dr. Katrin Sander',
+    role: 'Geschäftsführende Partnerin',
+    specialty: 'Steuerrecht · Gesellschaftsrecht',
+    bio: 'Fachanwältin für Steuerrecht. Vor der Kanzlei-Gründung 2014 acht Jahre bei Linklaters Berlin (Tax + M&A-Tax). Promotion zur Konzernsteuer-Restrukturierung. Lehrauftrag an der Bucerius Law School. Verhandelt Betriebsprüfungen ohne den üblichen Eskalations-Reflex.',
+  },
+  {
+    initials: 'LV',
+    name: 'Lukas Voss',
+    role: 'Partner',
+    specialty: 'Gesellschaftsrecht · M&A',
+    bio: 'Vor der Kanzlei zwölf Jahre bei Hengeler Mueller (Corporate + M&A). LL.M. Stanford 2010, dort Schwerpunkt Venture Capital. Berät Berliner Start-ups bei der gesamten Finanzierungsleiter — von Pre-Seed-SAFE bis Series C. Berliner Cap-Table-Spezialist.',
+  },
+  {
+    initials: 'AE',
+    name: 'Dr. Aisha El-Hamid',
+    role: 'Partnerin',
+    specialty: 'Arbeitsrecht · Betriebsverfassung',
+    bio: 'Fachanwältin für Arbeitsrecht, seit 2017 bei Sander & Voss. Promotion HU Berlin 2013 zur Unionsbürgerschaft im Arbeitsrecht. Berät Arbeitgeber bei Kündigungsschutz, Betriebsvereinbarungen und Massenentlassungen — auf Deutsch, Englisch, Französisch und Arabisch.',
+  },
+  {
+    initials: 'MS',
+    name: 'Maximilian Schreier',
+    role: 'Partner',
+    specialty: 'Datenschutz · DSGVO · KI-Regulierung',
+    bio: "CIPP/E zertifiziert, vor 2019 vier Jahre beim Bundesdatenschutzbeauftragten (BfDI), Schwerpunkt internationale Datentransfers. Berät Berliner SaaS-Unternehmen bei DSGVO-Compliance und beginnend bei AI-Act-Implementierung. Häufig zitiert in c't und Heise.",
+  },
+];
+
+const engagementItems = [
+  {
+    summary: 'Erstgespräch — 30 Minuten unverbindlich',
+    body: 'Telefon oder Kanzlei. Sie schildern die Lage, wir prüfen mit, ob wir der richtige Ansprechpartner sind. Wenn nicht, empfehlen wir eine Kollegin oder einen Kollegen. Kein Verkaufsgespräch, keine Berechnung — das Erstgespräch ist kostenfrei.',
+  },
+  {
+    summary: 'Mandatsvereinbarung — schriftlich, transparent',
+    body: 'Drei Honorarmodelle: RVG (gesetzlich, bei gerichtlichen Verfahren), Stundenhonorar (320–450 €/h je nach Partner), oder Pauschale für klar umrissene Mandate. Wir empfehlen das Modell, das zu Ihrer Situation passt — und legen es vor Beginn schriftlich fest.',
+  },
+  {
+    summary: 'Bearbeitung — derselbe Partner, durchgehend',
+    body: 'Keine Übergaben, keine "wir verweisen Sie an einen Kollegen". Der Partner, der das Mandat angenommen hat, bleibt Ihr Ansprechpartner bis zum Abschluss. Routine-Mandate sind in 5 Werktagen besprochen, Eilfälle am selben oder folgenden Werktag.',
+  },
+  {
+    summary: 'Abschluss + Nachsorge — sechs Monate Erreichbarkeit',
+    body: 'Sechs Monate nach Mandatsabschluss können Sie zu Rückfragen anrufen ohne Zusatzkosten. Das ist Standard bei uns, nicht Premium-Add-on. Größere Folgemandate werden separat vereinbart, Klärungsfragen sind dabei.',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'Was kostet ein Erstgespräch?',
+    answer:
+      'Das erste Gespräch (30 Minuten am Telefon oder in der Kanzlei) ist unverbindlich und kostenfrei. Wenn wir feststellen, dass wir nicht der richtige Ansprechpartner sind, empfehlen wir Ihnen eine Kollegin oder einen Kollegen — auch das kostet nichts.',
+  },
+  {
+    question: 'Nach welchem Honorarmodell arbeiten Sie?',
+    answer:
+      'Drei Optionen: RVG-Vergütung (gesetzlich, bei gerichtlichen Verfahren), Stundenhonorar (320–450 €/h je nach Partner) oder Pauschale für klar umrissene Mandate (z. B. GmbH-Gründung ab 1.800 € netto). Im Erstgespräch klären wir, welches Modell zu Ihrer Situation passt.',
+  },
+  {
+    question: 'Übernehmen Sie auch kleine Mandate?',
+    answer:
+      'Ja. Unsere Mandantenstruktur reicht vom Einzelunternehmer mit DSGVO-Frage bis zum Mittelständler mit Holding-Umstrukturierung. Die Kanzleigröße erlaubt uns, jedes Mandat aufmerksam zu betreuen — auch das vermeintlich kleine.',
+  },
+  {
+    question: 'In welchen Sprachen beraten Sie?',
+    answer:
+      'Deutsch und Englisch — schriftlich und mündlich, einschließlich Vertragsentwurf. Französisch (Dr. El-Hamid), Arabisch (Dr. El-Hamid) und Türkisch lesen wir; beraten auf Deutsch oder Englisch.',
+  },
+  {
+    question: 'Wie schnell bekomme ich einen Termin?',
+    answer:
+      'In Routinefällen innerhalb von 5 Werktagen. Bei eilbedürftigen Sachen (Kündigung mit Frist, einstweilige Verfügung, Steuerprüfung beginnt) am selben oder folgenden Werktag — bitte am Telefon ausdrücklich darauf hinweisen.',
+  },
+  {
+    question: 'Sind Mandanten-Gespräche vertraulich?',
+    answer:
+      'Selbstverständlich — anwaltliche Schweigepflicht gemäß § 43a Abs. 2 BRAO. Das gilt ab dem Erstgespräch, auch wenn daraus kein Mandat entsteht. Schriftliche Kommunikation läuft über verschlüsselte Kanäle (S/MIME, ProtonMail-kompatibel).',
+  },
+  {
+    question: 'Wer ist mein Ansprechpartner — der Partner oder ein Associate?',
+    answer:
+      'Der Partner, der das Mandat angenommen hat, bleibt durchgehend zuständig. Associates assistieren bei Recherche und Drafting, aber der Partner verhandelt, telefoniert und unterschreibt. Das ist der zentrale Unterschied zu Großkanzlei-Strukturen.',
+  },
+  {
+    question: 'Wo finde ich Ihre AGB?',
+    answer:
+      'Unsere Mandatsbedingungen werden mit der Mandatsvereinbarung übermittelt — sie sind nicht öffentlich, weil sie pro Mandat individuell verhandelt werden. Im Erstgespräch erläutern wir die Standard-Klauseln (Haftung, Vergütung, Schlichtung).',
+  },
+];
+
+const admissions = [
+  { label: 'Rechtsanwaltskammer Berlin', sub: 'Alle Partner zugelassen seit 2014–2019' },
+  { label: 'BRAK Mitglied', sub: 'Bundesrechtsanwaltskammer' },
+  { label: 'DAV Berlin', sub: 'Deutscher Anwaltverein, Landesverband Berlin' },
+  { label: 'ECIJA Lex Mundi Affiliate', sub: 'Internationale Korrespondenz' },
+  { label: 'IBA', sub: 'International Bar Association — Tax + Tech Committees' },
+];
+
+const pullQuote = {
+  text: '„Sander & Voss bietet pragmatische Steuerberatung mit messbar besseren Ergebnissen bei Betriebsprüfungen — ohne den üblichen Eskalations-Reflex einer Großkanzlei."',
+  source: 'Chambers Europe 2025 · Tax — Highly Regarded',
+};
+---
+
+<BaseLayout
+  title={`${SITE.name} — Wirtschaftsrecht in Berlin Mitte`}
+  description={t.tagline}
+  locale={locale}
+  alternateLocaleUrl="/en/"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+
+    <Press locale={locale} />
+
+    <!-- TrustBadgeRow — admissions strip per professional-services.md §13 -->
+    <section class="bg-surface border-t border-border" aria-labelledby="admissions-heading">
+      <div class="container-page py-12 sm:py-14">
+        <p id="admissions-heading" class="text-center text-[10px] tracking-[0.35em] uppercase text-text-muted font-semibold mb-8">
+          Zulassungen + Mitgliedschaften
+        </p>
+        <ul class="flex flex-wrap justify-center items-center gap-x-10 gap-y-6 list-none p-0 max-w-5xl mx-auto">
+          {admissions.map((a) => (
+            <li class="text-center">
+              <p class="font-display text-sm sm:text-base text-text leading-tight">{a.label}</p>
+              <p class="text-[11px] text-text-muted mt-1">{a.sub}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <MenuPreview locale={locale} />
+
+    <About locale={locale} />
+
+    <!-- TeamGrid 2x2 with full bios per professional-services.md §13 -->
+    <section class="bg-surface" aria-labelledby="partners-heading">
+      <div class="container-page py-20 sm:py-28">
+        <div class="max-w-2xl space-y-4 mb-14">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold">Partnerinnen + Partner</p>
+          <h2 id="partners-heading" class="font-display text-3xl sm:text-4xl lg:text-5xl text-text leading-[1.1]">
+            Wer Sie berät.
+          </h2>
+          <p class="text-lg text-text-muted leading-relaxed">
+            Vier Partner mit Großkanzlei-Hintergrund und unabhängigem Schwerpunkt. Bei uns berät der Partner, mit dem Sie das Mandat begonnen haben — von Anfang bis Ende.
+          </p>
+        </div>
+
+        <ul class="grid lg:grid-cols-2 gap-8 list-none p-0">
+          {partners.map((p) => (
+            <li class="bg-bg border border-border p-8 sm:p-10 flex gap-6">
+              <div class="shrink-0">
+                <div class="w-20 h-20 rounded-full bg-text text-bg flex items-center justify-center font-display text-2xl tracking-wider">
+                  {p.initials}
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-display text-2xl text-text leading-tight">{p.name}</h3>
+                <p class="mt-1 text-sm text-accent-deep font-medium">{p.role} · <span class="text-text-muted">{p.specialty}</span></p>
+                <p class="mt-4 text-base text-text-muted leading-relaxed">{p.bio}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Accordion "How we engage" — replaces Timeline per professional-services.md §13 -->
+    <section class="bg-bg border-t border-border">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-4 mb-12">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold">Mandatsablauf</p>
+          <h2 class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">
+            Vom ersten Gespräch bis zum unterschriebenen Vertrag.
+          </h2>
+        </div>
+        <div class="max-w-3xl">
+          <Accordion items={engagementItems} variant="bordered" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Pull-quote block — replaces Testimonial card per professional-services.md §13 -->
+    <section class="bg-[var(--color-inverted-bg)] text-[var(--color-inverted-text)]">
+      <div class="container-page py-24 sm:py-32">
+        <blockquote class="max-w-4xl mx-auto text-center">
+          <p class="font-display text-2xl sm:text-3xl lg:text-4xl leading-[1.3] italic">
+            {pullQuote.text}
+          </p>
+          <footer class="mt-10 text-[11px] tracking-[0.32em] uppercase text-accent">
+            {pullQuote.source}
+          </footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- FAQ 2-column (custom grid, drops singleOpen for parallel reading) -->
+    <section class="bg-bg border-t border-border" aria-labelledby="faq-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl mb-12 space-y-3">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-accent-deep font-semibold">{t.sections.faq.eyebrow}</p>
+          <h2 id="faq-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.1]">{t.sections.faq.heading}</h2>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-x-10 list-none">
+          <FAQ items={faqItems.slice(0, 4)} singleOpen={false} variant="flush" />
+          <FAQ items={faqItems.slice(4, 8)} singleOpen={false} variant="flush" />
+        </div>
+      </div>
+    </section>
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

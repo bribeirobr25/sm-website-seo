@@ -1,0 +1,40 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+const locale = 'en' as const;
+---
+
+<BaseLayout
+  title="Page not found"
+  description="404 — We can't find that page."
+  locale={locale}
+  noindex={true}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-24 sm:py-32 max-w-xl mx-auto text-center">
+        <p class="text-xs uppercase tracking-[0.32em] text-text-muted font-bold">404</p>
+        <h1 class="mt-4 font-display text-4xl sm:text-5xl text-text uppercase tracking-tight font-bold">
+          We can&rsquo;t find that page.
+        </h1>
+        <p class="mt-6 text-text-muted leading-relaxed">
+          Maybe you meant the price list? Or the shop page? Here are a few ways back:
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="/en/" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-sm font-semibold uppercase tracking-wider rounded-sm bg-text text-bg hover:bg-accent-deep transition-colors">
+            Back to home
+          </a>
+          <a href="/en/services" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-sm font-semibold uppercase tracking-wider rounded-sm bg-surface text-text border border-border hover:bg-surface-elev transition-colors">
+            Prices
+          </a>
+          <a href="/en/shop" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] text-sm font-semibold uppercase tracking-wider rounded-sm bg-surface text-text border border-border hover:bg-surface-elev transition-colors">
+            About shop
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

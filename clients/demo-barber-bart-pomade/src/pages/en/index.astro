@@ -1,0 +1,295 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import About from '@/components/sections/About.astro';
+import Accordion from '@/components/sections/Accordion.astro';
+import Hero from '@/components/sections/Hero.astro';
+import MenuPreview from '@/components/sections/MenuPreview.astro';
+import VisitPreview from '@/components/sections/VisitPreview.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const t = SITE.i18n[locale];
+
+const portfolioTiles = [
+  { gradient: 'from-accent/60 via-accent/30 to-bg', label: 'Skin Fade · Classic Crop' },
+  {
+    gradient: 'from-accent-secondary/50 via-accent-secondary/25 to-bg',
+    label: 'Royal Shave Finish',
+  },
+  { gradient: 'from-accent/40 via-surface-elev to-bg', label: 'Side-Part · Pomaded' },
+  { gradient: 'from-accent-secondary/40 via-accent/20 to-bg', label: 'Buzz + Beard Sculpt' },
+  { gradient: 'from-accent/55 via-accent-secondary/20 to-bg', label: 'Long Top · Tight Fade' },
+  { gradient: 'from-accent-secondary/30 via-accent-deep/20 to-bg', label: 'Vintage Slick-Back' },
+];
+
+const barbers = [
+  {
+    initials: 'EL',
+    name: 'Erik Lundström',
+    role: 'Owner · Master Barber',
+    specialty: 'Classic cuts · Skin fade',
+    training: 'Stockholm Barber School 2008',
+    years: '17 yrs',
+  },
+  {
+    initials: 'PM',
+    name: 'Pavel Markovic',
+    role: 'Partner · Blade master',
+    specialty: 'Hot-towel shave · Royal shave',
+    training: 'Sofia · Black-Sea tradition',
+    years: '15 yrs',
+  },
+  {
+    initials: 'TK',
+    name: 'Tomi Köhler',
+    role: 'Barber',
+    specialty: 'Modern crops · Beard colouring',
+    training: 'Berlin Hair Academy 2019',
+    years: '6 yrs',
+  },
+  {
+    initials: 'NS',
+    name: 'Noah Stadtmüller',
+    role: 'Junior barber',
+    specialty: 'Buzz cuts · Kids cuts',
+    training: 'Trained with us 2022–2025',
+    years: '3 yrs',
+  },
+];
+
+const badges = [
+  { label: '4.8★ Google', sub: '312 reviews' },
+  { label: 'Reuzel Partner', sub: 'Authorized stockist' },
+  { label: 'Berlin Guild', sub: 'Friseur-Innung member' },
+  { label: 'BARTalist Magazine', sub: 'Featured Shop 2024' },
+];
+
+const faqItems = [
+  {
+    summary: 'Do I need an appointment or can I walk in?',
+    body: 'Walk-ins welcome when a chair is free — chances higher before 14:00. Thursday and Friday evenings usually busy. Booking safer: phone, WhatsApp, or at the counter. We deliberately do not have online booking.',
+  },
+  {
+    summary: 'How do I pay?',
+    body: 'Cash or card (including contactless + Apple/Google Pay). Tip optional, €5–10 typical. Bachelor packages + gift vouchers cash only.',
+  },
+  {
+    summary: 'Do you cut kids?',
+    body: 'Yes, up to 12 — patiently, with a toy box beside the chair. Please book ahead: we hold a slower slot. From 13 the regular cut price applies.',
+  },
+  {
+    summary: 'What does a hot-towel shave look like?',
+    body: 'Pre-shave oil, hot towel two minutes, brush-applied lather, blade with the grain. The Royal Shave adds a double pass (with + against), face mask + eye compress.',
+  },
+  {
+    summary: 'What pomade do you use?',
+    body: 'Our own "Boxhagener Pomade" — made in Berlin, with beeswax + castor oil + sandalwood scent. Water-soluble, high hold, medium shine. Sold at counter or in the online shop (60g / €12).',
+  },
+  {
+    summary: 'Where are you?',
+    body: 'Boxhagener Straße 73, 10245 Berlin Friedrichshain — right on Boxhagener Platz. U5 Frankfurter Tor (8 min), S-Bahn Ostkreuz (12 min). Black glass door, no sign — barber pole on the wall.',
+  },
+];
+---
+
+<BaseLayout
+  title={`${SITE.name} — Men's cut + shave in Friedrichshain`}
+  description={t.tagline}
+  locale={locale}
+  alternateLocaleUrl="/"
+>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    <MenuPreview locale={locale} />
+
+    <section class="bg-bg border-t border-border" aria-labelledby="before-after-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-3 mb-12">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent font-bold">BEFORE · AFTER</p>
+          <h2 id="before-after-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.05] uppercase tracking-tight font-bold">
+            See the difference.
+          </h2>
+          <p class="text-text-muted leading-relaxed">
+            Two images, one cut — drag the slider to see the difference. Six weeks of growth, forty minutes in the chair.
+          </p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map((n) => (
+            <div class="relative aspect-[4/5] rounded-sm overflow-hidden border border-border group">
+              <div class="absolute inset-0 bg-gradient-to-br from-surface-elev to-surface"></div>
+              <div class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-accent-secondary/30 to-accent-secondary/15 flex items-end p-4">
+                <span class="text-[10px] uppercase tracking-[0.3em] text-text font-semibold">BEFORE {n}</span>
+              </div>
+              <div class="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-accent/40 to-accent/20 flex items-end justify-end p-4">
+                <span class="text-[10px] uppercase tracking-[0.3em] text-bg font-semibold">AFTER</span>
+              </div>
+              <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1 bg-accent shadow-elev"></div>
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-accent flex items-center justify-center cursor-ew-resize" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-bg" aria-hidden="true">
+                  <path d="M8 12h8M9 8l-4 4 4 4M15 8l4 4-4 4"/>
+                </svg>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="mt-6 text-xs text-text-muted/70 italic">⚠ Before-after slider mockup. Real photo examples to follow with client consent.</p>
+      </div>
+    </section>
+
+    <About locale={locale} />
+
+    <section class="bg-surface border-t border-b border-border" aria-labelledby="portfolio-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-3 mb-12">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent font-bold">WORK</p>
+          <h2 id="portfolio-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.05] uppercase tracking-tight font-bold">
+            Cuts from the chair.
+          </h2>
+        </div>
+        <ul class="grid grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0">
+          {portfolioTiles.map((tile) => (
+            <li class={`relative aspect-square rounded-sm bg-gradient-to-br ${tile.gradient} border border-border flex items-end p-5`}>
+              <p class="text-[11px] uppercase tracking-wider text-text font-semibold">{tile.label}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-xs text-text-muted/70 italic text-center">⚠ Portfolio placeholders — real cut photos to follow with client consent.</p>
+      </div>
+    </section>
+
+    <section class="bg-bg" aria-labelledby="team-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-3 mb-12">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent font-bold">THE TEAM</p>
+          <h2 id="team-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.05] uppercase tracking-tight font-bold">
+            Four barbers. Five chairs.
+          </h2>
+        </div>
+
+        <ul class="space-y-4 list-none p-0">
+          {barbers.map((b) => (
+            <li class="bg-surface border border-border p-6 sm:p-7 flex flex-col sm:flex-row gap-6 items-start sm:items-center group hover:border-accent transition-colors">
+              <div class="w-20 h-24 sm:w-24 sm:h-28 rounded-sm bg-accent text-bg flex items-center justify-center font-display text-3xl font-bold uppercase shrink-0">
+                {b.initials}
+              </div>
+              <div class="flex-1 min-w-0 grid sm:grid-cols-[1fr_auto] gap-4 items-center w-full">
+                <div>
+                  <h3 class="font-display text-xl text-text uppercase tracking-tight font-bold leading-tight">{b.name}</h3>
+                  <p class="mt-1 text-xs text-accent font-semibold uppercase tracking-wider">{b.role}</p>
+                  <p class="mt-2 text-sm text-text-muted">{b.specialty}</p>
+                  <p class="mt-1 text-xs text-text-muted italic">{b.training}</p>
+                </div>
+                <p class="text-right">
+                  <span class="block font-display text-2xl text-accent tabular font-bold">{b.years}</span>
+                  <span class="text-[10px] uppercase tracking-wider text-text-muted">Experience</span>
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-surface border-y border-border" aria-labelledby="booking-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-3 mb-12">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent font-bold">BOOK AN APPOINTMENT</p>
+          <h2 id="booking-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.05] uppercase tracking-tight font-bold">
+            Pick service, day, time.
+          </h2>
+        </div>
+        <div class="max-w-3xl">
+          <form class="bg-bg border border-border p-6 sm:p-8 space-y-5" onsubmit="event.preventDefault(); this.querySelector('[data-booking-thanks]').classList.remove('hidden'); this.querySelector('[data-booking-form]').classList.add('hidden');">
+            <div data-booking-form class="space-y-5">
+              <div class="grid sm:grid-cols-2 gap-4">
+                <label class="block">
+                  <span class="block text-[11px] uppercase tracking-wider text-text-muted mb-2 font-semibold">Service</span>
+                  <select class="w-full px-4 py-3 min-h-[48px] bg-surface border border-border text-text rounded-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
+                    <option>Classic cut — €38 · 45 min</option>
+                    <option>Skin fade — €42 · 50 min</option>
+                    <option>Cut + beard — €60 · 75 min</option>
+                    <option>Hot-towel shave — €32 · 30 min</option>
+                    <option>Royal shave — €55 · 60 min</option>
+                  </select>
+                </label>
+                <label class="block">
+                  <span class="block text-[11px] uppercase tracking-wider text-text-muted mb-2 font-semibold">Barber</span>
+                  <select class="w-full px-4 py-3 min-h-[48px] bg-surface border border-border text-text rounded-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
+                    <option>Any — next available</option>
+                    <option>Erik Lundström</option>
+                    <option>Pavel Markovic</option>
+                    <option>Tomi Köhler</option>
+                    <option>Noah Stadtmüller</option>
+                  </select>
+                </label>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <label class="block">
+                  <span class="block text-[11px] uppercase tracking-wider text-text-muted mb-2 font-semibold">Day</span>
+                  <input type="date" class="w-full px-4 py-3 min-h-[48px] bg-surface border border-border text-text rounded-sm tabular focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent" />
+                </label>
+                <label class="block">
+                  <span class="block text-[11px] uppercase tracking-wider text-text-muted mb-2 font-semibold">Time</span>
+                  <div class="grid grid-cols-4 gap-2">
+                    {['10:30', '12:15', '14:00', '17:45'].map((slot) => (
+                      <label class="cursor-pointer">
+                        <input type="radio" name="slot" value={slot} class="sr-only peer" />
+                        <span class="block text-center px-2 py-3 min-h-[48px] flex items-center justify-center text-sm tabular border border-border rounded-sm peer-checked:bg-accent peer-checked:text-bg peer-checked:border-accent transition-colors">{slot}</span>
+                      </label>
+                    ))}
+                  </div>
+                </label>
+              </div>
+              <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 min-h-[56px] text-base font-semibold uppercase tracking-wider rounded-sm bg-accent text-bg hover:bg-accent-deep transition-colors">
+                Request appointment
+              </button>
+              <p class="text-xs text-text-muted/70 italic">⚠ Mockup — not a real booking. In production via Treatwell API.</p>
+            </div>
+            <div data-booking-thanks class="hidden text-center py-8 space-y-3">
+              <p class="text-2xl font-display text-accent uppercase font-bold">✓ Request received</p>
+              <p class="text-text-muted">We confirm within 2 hours by WhatsApp.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg border-t border-border" aria-labelledby="trust-heading">
+      <div class="container-page py-12 sm:py-14">
+        <p id="trust-heading" class="text-center text-[10px] tracking-[0.32em] uppercase text-text-muted font-bold mb-8">
+          Memberships + partners
+        </p>
+        <ul class="flex flex-wrap justify-center items-center gap-x-10 gap-y-6 list-none p-0 max-w-4xl mx-auto">
+          {badges.map((b) => (
+            <li class="text-center">
+              <p class="font-display text-sm sm:text-base text-text uppercase tracking-tight font-bold leading-tight">{b.label}</p>
+              <p class="text-[10px] text-text-muted mt-1 uppercase tracking-wider">{b.sub}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-bg border-t border-border" aria-labelledby="faq-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="max-w-2xl space-y-3 mb-12">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent font-bold">{t.sections.faq.eyebrow}</p>
+          <h2 id="faq-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.05] uppercase tracking-tight font-bold">
+            {t.sections.faq.heading}
+          </h2>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-x-10 gap-y-0">
+          <Accordion items={faqItems.slice(0, 3)} variant="bordered" />
+          <Accordion items={faqItems.slice(3, 6)} variant="bordered" />
+        </div>
+      </div>
+    </section>
+
+    <VisitPreview locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

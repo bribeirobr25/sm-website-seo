@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/*
+ * Sander & Voss — palette V2 (2026-05-23 — portfolio-diversity rebuild).
+ *
+ * V1 used warm cream + navy + champagne gold. Rejected per user feedback —
+ * cream was overused across the agency portfolio (5 of 6 demos used a
+ * warm-cream/bone/ivory background, violating the new `COLOR.md` §6.5
+ * "Portfolio diversity gate"). V2 swaps to a pure-white background with
+ * deep forest green as the text-anchor — distinct from every other demo:
+ *
+ *   - Bellini (raspberry on warm cream)
+ *   - Saltlines (coastal cyan-teal on pale cream)
+ *   - Adèle (burgundy on warm ivory)
+ *   - Atem (terracotta on pale lilac — V2)
+ *   - Bart & Pomade (saffron-gold on near-black — V2)
+ *
+ * Register: enterprise law gravitas, modern + clinical. Pure white reads
+ * like a high-end legal publication (FT Weekend, JUVE) and signals that
+ * the firm is current, not nostalgic.
+ *
+ * Framework: Analogous-with-accent per `docs/design/COLOR.md` §3
+ *   - White bg (neutral)
+ *   - Forest green text (analogous deep neutral, BCBP serif-friendly)
+ *   - Matte brass accent (warm metallic on cool ground)
+ *   - Oxblood secondary (reserved for notices + serious items)
+ *
+ * WCAG 2.2 AA verified:
+ *   - text #0B2A1F on bg #FFFFFF → 14.8:1 (AAA)
+ *   - accent-deep #6F5A35 on bg #FFFFFF → 5.6:1 (AA-normal pass for links)
+ *   - accent #9B8055 on bg #FFFFFF → 3.0:1 (large-text + non-text only)
+ */
+
+@theme {
+  /* Brand palette — pure white + deep forest green + matte brass */
+  --color-bg: #ffffff;
+  --color-surface: #f4f5f8;
+  --color-surface-elev: #ecedea;
+  --color-text: #0b2a1f;
+  --color-text-muted: #52584f;
+  /* Primary accent — matte brass (NOT gold — narrower, less yellow). Use accent-deep for body text + links (5.6:1). */
+  --color-accent: #9b8055;
+  --color-accent-deep: #6f5a35;
+  /* Secondary accent — oxblood. Reserved for serious notices (regulator, deadline, dispute). */
+  --color-accent-secondary: #651e1e;
+  --color-accent-secondary-deep: #4d1717;
+  --color-border: #e2e4e1;
+  --color-success: #2c5f3f;
+  --color-warning: #a7572b;
+
+  /* Inverted register — deep forest green for hero accents / pull-quote blocks */
+  --color-inverted-bg: #0b2a1f;
+  --color-inverted-surface: #143628;
+  --color-inverted-text: #ffffff;
+  --color-inverted-text-muted: #b8c1bc;
+
+  /* Typography — Lora display serif (wide, traditional) + Inter body */
+  --font-display: "Lora Variable", "EB Garamond", Georgia, serif;
+  --font-body: "Inter Variable", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Spacing */
+  --spacing-section: 6rem;
+  --spacing-section-mobile: 3rem;
+
+  /* Radii — minimal, square-ish for law-firm gravitas */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+  --radius-pill-half: 30px 0 0 30px;
+
+  /* Shadows — soft cool-tinted */
+  --shadow-card: 0 1px 3px rgba(11, 42, 31, 0.05);
+  --shadow-elev: 0 12px 28px rgba(11, 42, 31, 0.1);
+
+  /* Motion (canonical) */
+  --motion-fast: 180ms;
+  --motion-base: 320ms;
+  --motion-warm: 500ms;
+  --motion-deliberate: 600ms;
+  --motion-reveal: 800ms;
+
+  --ease-apple-smooth: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-quart: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-luxe: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+
+  --stagger-step: 20ms;
+
+  /* Tracking */
+  --tracking-display-sans: -0.022em;
+  --tracking-display-serif-caps: 0.025em;
+  --tracking-body: -0.005em;
+}

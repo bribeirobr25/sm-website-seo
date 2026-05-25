@@ -713,3 +713,38 @@ For non-Italian / non-Berlin clients, swap `servesCuisine`, `addressCountry`, cu
 - **Keyword pattern (BR):** `restaurante [cozinha] em [bairro]` · `[prato característico] [cidade]`
 - **Keyword pattern (PT):** `restaurante [cozinha] em [cidade]` · `onde comer [prato] [cidade]`
 - **Example:** "Restaurante brasileiro em Mitte" · "Onde comer pastel de Belém em Porto"
+
+---
+
+## 13. Composition variation (added 2026-05-23, gate-mandatory)
+
+**Per CLAUDE.md "Portfolio diversity is a hard gate" + `DESIGN-BEST-PRACTICES.md` §6.5.** Gastronomy demos + client builds MUST avoid the universal-9 composition (Hero → preview → About+Stats → Team → Timeline → Testimonial → FAQ → Map → CTA).
+
+### Gastronomy swap-ins (use INSTEAD of universal-9 items)
+
+| Universal-9 to AVOID | Gastronomy swap-in | Why |
+|---|---|---|
+| MenuPreview (3-up cards) | **MenuCard grid** (image-led, ≥6 items) OR **CourseList** (tasting-menu Roman numerals for fine-dining) OR **PhotoGrid** asymmetric bento (atmospheric, for cafés) | 3-up text-only cards read template-y. Gastronomy is visual-first. |
+| StatCallouts row | **Ingredient-sourcing block** (named producers) OR drop entirely | "10k+ meals served" feels chain-y. Specific named producers build trust. |
+| Timeline | **HowItsMade strip** (4 process beats: source → ferment → bake → serve) OR drop | Gastronomy process is story, not steps. |
+| Testimonial single card | **Press recognitions strip** (Tagesspiegel / Michelin / Berliner Morgenpost) for editorial register | Press > customer reviews for fine-dining + heritage. |
+
+### Mandatory additions for gastronomy
+
+| Add this | Why |
+|---|---|
+| **`FullBleedHero`** (heritage / boutique) OR **`SplitHero`** (editorial fine-dining) | Photography-first vertical. Per `full-bleed-hero.md` §1 + `gastronomy.md` §3. |
+| **Hours + address visible above the fold** OR via `HoursInNav` | Gastronomy conversion = walk-in. Hours must be findable in < 3 seconds. |
+| **Allergen + dietary info on the menu page** | Required for regulatory + customer-trust. |
+
+### 3 valid composition orderings
+
+**Ordering A — "Heritage" (Bellini canonical example)** — FullBleedHero · MenuPreview (MenuCard grid) · About+stats · Timeline (4-step craft) · Lightbox gallery · Testimonial · FAQ · MapEmbed · VisitPreview.
+
+**Ordering B — "Specialty / third-wave" (Saltlines canonical example)** — FullBleedHero · PhotoGrid asymmetric bento · About · Timeline (wave-report ticker variant) · Lightbox · FAQ · NewsletterMock · MapEmbed.
+
+**Ordering C — "Editorial fine-dining" (Adèle canonical example)** — SplitHero · About+stats · Press (recognitions) · MarqueeCTA · CourseList tasting menu · PricingTable (menu + pairing tiers) · TeamGrid (chef + sommelière) · BookingMock · FAQ · MapEmbed.
+
+### Palette: cream/ivory IS acceptable for gastronomy heritage + fine-dining
+
+Per `COLOR.md` §6 anti-pattern #11 — cream-defaulting is invalid for OTHER verticals but IS valid for gastronomy heritage/fine-dining when the *vertical brand* calls for it (Bellini ivory · Adèle warm-cream-tinted). Coffee shops + specialty third-wave should go cool (Saltlines cool near-white) to differentiate from the heritage cream-family. NO brown defaulting per anti-pattern #12 — committed-color register beats sepia-filter generic.
