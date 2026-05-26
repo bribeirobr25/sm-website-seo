@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /*
  * Kodama Bonsai — palette (2026-05-26).
@@ -31,11 +31,11 @@
 
 @theme {
   /* Brand palette — sage-grey + deep moss + persimmon + matcha */
-  --color-bg: #dde2d8;                 /* soft sage-grey — stoneware studio */
-  --color-surface: #e8ece4;             /* slightly lighter card surface */
-  --color-surface-elev: #ced5c7;        /* darker chip / footer */
-  --color-text: #1d2a23;                /* deep moss-black — wet bark */
-  --color-text-muted: #5d6b5c;          /* sage-grey-deep — secondary copy */
+  --color-bg: #dde2d8; /* soft sage-grey — stoneware studio */
+  --color-surface: #e8ece4; /* slightly lighter card surface */
+  --color-surface-elev: #ced5c7; /* darker chip / footer */
+  --color-text: #1d2a23; /* deep moss-black — wet bark */
+  --color-text-muted: #5d6b5c; /* sage-grey-deep — secondary copy */
   /* Primary accent — persimmon (warm clay-glazed pottery). Use accent-deep (6.4:1) for body links + body text. */
   --color-accent: #b85534;
   --color-accent-deep: #8c3e25;
@@ -53,10 +53,10 @@
   --color-inverted-text-muted: #98a499;
 
   /* Typography — Cormorant Garamond display serif (elegant classic) + Inter body */
-  --font-display: 'Cormorant Garamond Variable', 'EB Garamond', Georgia, serif;
-  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-display: "Cormorant Garamond Variable", "EB Garamond", Georgia, serif;
+  --font-body: "Inter Variable", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Spacing — contemplative, generous */
   --spacing-section: 6.5rem;

@@ -5,7 +5,7 @@ import '@fontsource-variable/inter';
 import DemoBanner from '@/components/layout/DemoBanner.astro';
 import CookieBanner from '@/components/ui/CookieBanner.astro';
 import { businessSchema } from '@/lib/seo/schema';
-import { type Locale, SITE } from '@/lib/site';
+import { LOCALES, LOCALE_LANG, LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
 
 interface Props {
   title?: string;
@@ -13,7 +13,8 @@ interface Props {
   ogImage?: string;
   noindex?: boolean;
   locale?: Locale;
-  alternateLocaleUrl?: string;
+  /** Path WITHOUT the locale prefix, e.g. '/trees/ficus-retusa'. Used to emit per-locale hreflang alternates. */
+  localePath?: string;
   extraSchema?: Record<string, unknown> | null;
 }
 
@@ -23,30 +24,37 @@ const {
   ogImage = `${SITE.url}/img/og-default.png`,
   noindex = true,
   locale = 'de',
-  alternateLocaleUrl,
+  localePath,
   extraSchema = null,
 } = Astro.props;
 
 const t = SITE.i18n[locale];
-const localizedDescription = description ?? (locale === 'de' ? SITE.tagline : SITE.taglineEn);
+const localizedDescription = description ?? t.tagline;
 const canonical = new URL(Astro.url.pathname, SITE.url).toString();
 const schema = JSON.stringify(businessSchema());
-const htmlLang = locale === 'de' ? 'de-DE' : 'en-US';
+const htmlLang = LOCALE_LANG[locale];
 const ogLocale = htmlLang.replace('-', '_');
-const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
+
+// Build per-locale alternate URLs when the page declared its locale-neutral path.
+const alternates = localePath
+  ? LOCALES.map((l) => ({
+      hreflang: LOCALE_LANG[l],
+      href: new URL(`${LOCALE_PREFIX[l]}${localePath}`, SITE.url).toString(),
+    }))
+  : [];
 
 // BreadcrumbList JSON-LD per SEO.md §schema — skip on home (single-segment).
 function deriveBreadcrumbs(pathname: string, pageTitle: string) {
   const cleanPath = pathname.replace(/\/$/, '');
-  const segments = cleanPath.split('/').filter(Boolean);
+  let segments = cleanPath.split('/').filter(Boolean);
+  // Strip leading locale prefix so breadcrumbs don't show "en" / "es" / "pt-br" as a crumb.
+  if (segments.length > 0 && ['en', 'es', 'pt-br'].includes(segments[0]))
+    segments = segments.slice(1);
   if (segments.length === 0) return null;
-  if (segments.length === 1 && segments[0] === 'en') return null;
-  const items: Array<{ name: string; href: string }> = [
-    { name: locale === 'de' ? 'Startseite' : 'Home', href: locale === 'de' ? '/' : '/en/' },
-  ];
-  // For deep paths like /trees/ficus-retusa, add intermediate Trees crumb
+  const homeHref = `${LOCALE_PREFIX[locale]}/`;
+  const items: Array<{ name: string; href: string }> = [{ name: t.nav.home, href: homeHref }];
   if (segments.length >= 2 && segments[0] === 'trees') {
-    items.push({ name: locale === 'de' ? '24 Bäume' : '24 trees', href: '/trees' });
+    items.push({ name: t.nav.trees, href: `${LOCALE_PREFIX[locale]}/trees` });
   }
   items.push({ name: pageTitle, href: cleanPath });
   return items;
@@ -77,8 +85,11 @@ const breadcrumbSchema = breadcrumbItems
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="canonical" href={canonical} />
-    {alternateLocaleUrl && (
-      <link rel="alternate" hreflang={otherLocale === 'en' ? 'en' : 'de'} href={alternateLocaleUrl} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.hreflang} href={a.href} />
+    ))}
+    {alternates.length > 0 && (
+      <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
     )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
@@ -90,7 +101,7 @@ const breadcrumbSchema = breadcrumbItems
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE.name} — ${locale === 'de' ? SITE.tagline : SITE.taglineEn}`} />
+    <meta property="og:image:alt" content={`${SITE.name} — ${t.tagline}`} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={ogLocale} />
@@ -113,7 +124,7 @@ const breadcrumbSchema = breadcrumbItems
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-accent-deep focus:text-bg focus:px-4 focus:py-2 focus:z-50"
     >
-      {locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}
+      {t.chrome.skipToContent}
     </a>
 
     <DemoBanner locale={locale} />

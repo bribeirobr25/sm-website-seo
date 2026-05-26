@@ -1,0 +1,49 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import TreeCard from '@/components/sections/TreeCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import type { Locale } from '@/lib/site';
+import { getBeginnerTrees } from '@/lib/trees';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'en' }, props: { locale: 'en' as const } },
+    { params: { locale: 'es' }, props: { locale: 'es' as const } },
+    { params: { locale: 'pt-br' }, props: { locale: 'pt-br' as const } },
+  ];
+}
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const p = PAGE_STRINGS[locale].beginners;
+const trees = getBeginnerTrees();
+---
+
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/beginners">
+  <Header locale={locale} localePath="/beginners" />
+  <main id="main">
+    <section class="bg-bg border-b border-border">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-6">{p.heroEyebrow}</p>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05] italic">{p.heroTitle}</h1>
+          <p class="mt-8 text-lg text-text-muted leading-[1.7]">{p.heroBody}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg pb-24">
+      <div class="container-page py-12">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {trees.map((tree) => <TreeCard tree={tree} locale={locale} />)}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

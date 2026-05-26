@@ -1,5 +1,5 @@
 ---
-import { type Locale, SITE } from '@/lib/site';
+import { LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
 
 interface Props {
   locale: Locale;
@@ -8,30 +8,21 @@ interface Props {
 const { locale } = Astro.props;
 const currentYear = new Date().getFullYear();
 const t = SITE.i18n[locale];
+const prefix = LOCALE_PREFIX[locale];
 
-const links = locale === 'de'
-  ? [
-      { href: '/trees', label: '24 Bäume' },
-      { href: '/einsteiger', label: 'Für Einsteiger' },
-      { href: '/indoor', label: 'Indoor-Bonsai' },
-      { href: '/outdoor', label: 'Outdoor-Bonsai' },
-      { href: '/suche', label: 'Suche' },
-      { href: '/werkstatt', label: 'Werkstatt' },
-    ]
-  : [
-      { href: '/en/trees', label: '24 trees' },
-      { href: '/en/beginners', label: 'For beginners' },
-      { href: '/en/indoor', label: 'Indoor bonsai' },
-      { href: '/en/outdoor', label: 'Outdoor bonsai' },
-      { href: '/en/search', label: 'Search' },
-      { href: '/en/workshop', label: 'Workshop' },
-    ];
+const links = [
+  { href: `${prefix}/trees`, label: t.nav.trees },
+  { href: `${prefix}/beginners`, label: t.nav.beginners },
+  { href: `${prefix}/indoor`, label: t.chrome.indoorBonsai },
+  { href: `${prefix}/outdoor`, label: t.chrome.outdoorBonsai },
+  { href: `${prefix}/search`, label: t.nav.search },
+  { href: `${prefix}/workshop`, label: t.nav.about },
+];
 
 const legalLinks = [
-  { href: '/impressum', label: locale === 'de' ? 'Impressum' : 'Imprint' },
-  { href: '/datenschutz', label: locale === 'de' ? 'Datenschutzerklärung' : 'Privacy' },
+  { href: `${prefix}/imprint`, label: t.chrome.imprintLabel },
+  { href: `${prefix}/privacy`, label: t.chrome.privacyLabel },
 ];
-const manageLabel = locale === 'de' ? 'Cookie-Einstellungen verwalten' : 'Manage cookie preferences';
 ---
 
 <footer class="border-t border-border bg-surface-elev mt-24">
@@ -39,11 +30,11 @@ const manageLabel = locale === 'de' ? 'Cookie-Einstellungen verwalten' : 'Manage
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
       <div class="space-y-3 lg:col-span-1">
         <p class="font-display text-2xl text-text">{SITE.name}</p>
-        <p class="text-sm text-text-muted leading-relaxed italic">{locale === 'de' ? SITE.tagline : SITE.taglineEn}</p>
+        <p class="text-sm text-text-muted leading-relaxed italic">{t.tagline}</p>
       </div>
 
       <div class="space-y-3 text-sm">
-        <p class="uppercase tracking-[0.15em] text-text-muted text-xs font-semibold">{locale === 'de' ? 'Werkstatt' : 'Workshop'}</p>
+        <p class="uppercase tracking-[0.15em] text-text-muted text-xs font-semibold">{t.nav.about}</p>
         <p class="text-text">{SITE.address.street}<br />{SITE.address.postalCode} {SITE.address.city}</p>
         <p>
           <a href={`tel:${SITE.phone}`} class="text-accent-deep hover:text-text underline tabular">{SITE.phoneDisplay}</a>
@@ -54,7 +45,7 @@ const manageLabel = locale === 'de' ? 'Cookie-Einstellungen verwalten' : 'Manage
       </div>
 
       <div class="space-y-3 text-sm">
-        <p class="uppercase tracking-[0.15em] text-text-muted text-xs font-semibold">{locale === 'de' ? 'Navigation' : 'Navigation'}</p>
+        <p class="uppercase tracking-[0.15em] text-text-muted text-xs font-semibold">{t.chrome.navHeading}</p>
         <ul class="space-y-2 list-none p-0">
           {links.map((l) => (
             <li><a href={l.href} class="text-text hover:text-accent-deep transition-colors">{l.label}</a></li>
@@ -63,7 +54,7 @@ const manageLabel = locale === 'de' ? 'Cookie-Einstellungen verwalten' : 'Manage
       </div>
 
       <div class="space-y-3 text-sm">
-        <p class="uppercase tracking-[0.15em] text-text-muted text-xs font-semibold">{locale === 'de' ? 'Rechtliches' : 'Legal'}</p>
+        <p class="uppercase tracking-[0.15em] text-text-muted text-xs font-semibold">{t.chrome.legalHeading}</p>
         <ul class="space-y-2 list-none p-0">
           {legalLinks.map((l) => (
             <li><a href={l.href} class="text-text hover:text-accent-deep transition-colors">{l.label}</a></li>
@@ -74,21 +65,17 @@ const manageLabel = locale === 'de' ? 'Cookie-Einstellungen verwalten' : 'Manage
               id="footer-manage-cookies"
               class="text-text hover:text-accent-deep transition-colors text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
             >
-              {manageLabel}
+              {t.consent.manage}
             </button>
           </li>
         </ul>
-        <p class="text-text-muted text-xs pt-3 italic">
-          {locale === 'de'
-            ? 'Stockfotografie aus dem Unsplash-Pool — arten-spezifische Fotos folgen mit echtem Material.'
-            : 'Stock photography from the Unsplash pool — species-specific photos to follow with real material.'}
-        </p>
+        <p class="text-text-muted text-xs pt-3 italic">{t.chrome.photoNote}</p>
       </div>
     </div>
 
     <div class="mt-12 pt-6 border-t border-border flex flex-wrap items-center justify-between gap-4 text-xs text-text-muted">
       <p>© {currentYear} {SITE.legal.legalEntity} · {SITE.address.city}</p>
-      <p>{locale === 'de' ? 'Eine Werkstatt mit 24 Bäumen.' : 'A workshop with 24 trees.'}</p>
+      <p>{t.chrome.closingNote}</p>
     </div>
   </div>
 </footer>

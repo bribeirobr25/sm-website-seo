@@ -1127,7 +1127,7 @@ Most Berlin client sites need at minimum **German + English**. German serves the
 <link rel="alternate" hreflang="pt-BR" href="https://client.de/pt-br/" />
 ```
 
-**Tier 2 (Astro):** Use Astro's built-in i18n routing (`/de/`, `/en/`, `/pt-br/`) with a JSON translation file per locale.
+**Tier 2 (Astro):** Use Astro's built-in i18n routing (`/de/`, `/en/`, `/pt-br/`) with a JSON translation file per locale. The agency scaffold (`scaffolds/astro-tier2/`) ships with `Locale` + `LOCALE_LANG` + `LOCALE_PREFIX` + `LOCALES` exports in `src/lib/site.ts` and a `BaseLayout.astro` `localePath` prop that emits one hreflang per locale plus `x-default` automatically. For 3+ locale builds, use the `src/pages/[locale]/*.astro` dynamic template pattern with `getStaticPaths` returning the secondary locales — a single template renders N locales by reading from a `src/lib/page-strings.ts` `PAGE_STRINGS[locale]` module. See `I18N.md` §17 for the full recipe and `clients/demo-bonsai-kodama` for a 4-locale worked example (DE · EN · ES · pt-BR).
 
 **Tier 3 (Next.js):** Use `next-intl` (same library as bible-tt) with URL-based locale routing.
 
@@ -1591,6 +1591,24 @@ where to find the per-vertical token swaps + WCAG cross-references."
 If the client uses no canonical components yet, write **"none"** below the
 table. New components added later: add a row + a one-line `BRIEF.md`
 note + the section/page where the component lands.
+
+### Per-client i18n conventions (multi-locale builds only)
+
+If the client ships 3+ locales OR is prose-heavy at 2+ locales, document the
+i18n architecture here:
+
+- **`src/lib/page-strings.ts`** — per-locale per-page strings module. Renders
+  prose-rich content for every locale from a single template. Pattern in
+  `docs/design/I18N.md` §17.3.
+- **`src/pages/[locale]/*.astro`** — dynamic template generating secondary
+  locale routes via `getStaticPaths`. Pattern in `docs/design/I18N.md` §17.4.
+- **`src/lib/translations/{es,pt-br}.ts`** — translation-as-merge files
+  (if structured data is locale-multiplied — e.g. product catalog, content
+  database). Pattern in `docs/design/I18N.md` §17.6.
+
+List the locales here (e.g. `de` primary · `en` · `es` · `pt-br`) and link
+to the matching translation files. Omit this subsection entirely on
+2-locale builds that fit inline in `SITE.i18n`.
 
 ## Business context
 

@@ -34,7 +34,7 @@ function getRequiredParams(): EventParams {
   if (typeof window === 'undefined') return {};
   return {
     source_page: window.location.pathname,
-    locale: document.documentElement.lang || 'pt-BR',
+    locale: document.documentElement.lang || 'de-DE',
   };
 }
 

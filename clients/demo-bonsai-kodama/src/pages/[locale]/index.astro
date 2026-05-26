@@ -1,0 +1,169 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import NewsletterMock from '@/components/sections/NewsletterMock.astro';
+import TreeCard from '@/components/sections/TreeCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { LOCALE_PREFIX, type Locale } from '@/lib/site';
+import { TREES, getBeginnerTrees, getTreesByCategory, tr } from '@/lib/trees';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'en' }, props: { locale: 'en' as const } },
+    { params: { locale: 'es' }, props: { locale: 'es' as const } },
+    { params: { locale: 'pt-br' }, props: { locale: 'pt-br' as const } },
+  ];
+}
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const p = PAGE_STRINGS[locale].home;
+const prefix = LOCALE_PREFIX[locale];
+const beginners = getBeginnerTrees().slice(0, 4);
+const featured = TREES.slice(0, 6);
+const indoorCount = getTreesByCategory('indoor').length;
+const outdoorCount = getTreesByCategory('outdoor').length;
+---
+
+<BaseLayout
+  title={p.title}
+  description={p.description}
+  locale={locale}
+  localePath="/"
+>
+  <Header locale={locale} localePath="/" />
+  <main id="main">
+    <section class="bg-bg border-b border-border" aria-labelledby="hero-title">
+      <div class="container-page py-20 sm:py-28 lg:py-36">
+        <div class="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-center">
+          <div>
+            <p class="text-[11px] sm:text-xs tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-8">{p.heroEyebrow}</p>
+            <h1 id="hero-title" class="font-display text-[clamp(2.8rem,6.5vw,5.5rem)] leading-[1.05] tracking-[-0.02em] text-text font-medium italic">
+              {p.heroTitleLine1}<br />
+              {p.heroTitleLine2}<br />
+              {p.heroTitleLine3}
+            </h1>
+            <p class="mt-8 max-w-xl text-lg sm:text-xl text-text-muted leading-[1.7]">{p.heroBody}</p>
+            <div class="mt-10 flex flex-wrap gap-3">
+              <a href={`${prefix}/trees`} class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-md bg-accent-deep text-bg hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+                {p.featuredAllLink}
+              </a>
+              <a href={`${prefix}/search`} class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-md border border-text text-text hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+                {p.searchCta}
+              </a>
+            </div>
+
+            <div class="mt-14 pt-8 border-t border-border grid grid-cols-3 gap-6 max-w-md">
+              <div>
+                <p class="font-display text-3xl text-accent-deep">24</p>
+                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">{p.stat_species}</p>
+              </div>
+              <div>
+                <p class="font-display text-3xl text-accent-deep">{indoorCount}</p>
+                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">{p.stat_indoor}</p>
+              </div>
+              <div>
+                <p class="font-display text-3xl text-accent-deep">{outdoorCount}</p>
+                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">{p.stat_outdoor}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden lg:block">
+            <div class="aspect-[3/4] rounded-lg overflow-hidden border border-border">
+              <img
+                src={featured[0].photos[0].src}
+                alt={tr(featured[0].photos[0].alt, locale)}
+                width="2000"
+                height="1600"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface border-y border-border" aria-labelledby="paths-heading">
+      <div class="container-page py-20">
+        <div class="max-w-2xl mb-12">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">{p.pathsEyebrow}</p>
+          <h2 id="paths-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{p.pathsHeading}</h2>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-5">
+          <a href={`${prefix}/beginners`} class="group bg-bg border border-border rounded-md p-8 hover:border-accent-secondary-deep transition-colors">
+            <p class="font-display text-2xl text-text italic">{p.pathBeginnersTitle}</p>
+            <p class="mt-2 text-sm text-text-muted">{p.pathBeginnersBody}</p>
+            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">{p.pathBeginnersCta}</p>
+          </a>
+          <a href={`${prefix}/indoor`} class="group bg-bg border border-border rounded-md p-8 hover:border-accent-secondary-deep transition-colors">
+            <p class="font-display text-2xl text-text italic">{p.pathIndoorTitle}</p>
+            <p class="mt-2 text-sm text-text-muted">{p.pathIndoorBody}</p>
+            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">{p.pathIndoorCta(indoorCount)}</p>
+          </a>
+          <a href={`${prefix}/outdoor`} class="group bg-bg border border-border rounded-md p-8 hover:border-accent-secondary-deep transition-colors">
+            <p class="font-display text-2xl text-text italic">{p.pathOutdoorTitle}</p>
+            <p class="mt-2 text-sm text-text-muted">{p.pathOutdoorBody}</p>
+            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">{p.pathOutdoorCta(outdoorCount)}</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg" aria-labelledby="beginners-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
+          <div class="max-w-2xl">
+            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">{p.beginnersEyebrow}</p>
+            <h2 id="beginners-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{p.beginnersHeading}</h2>
+            <p class="mt-4 text-text-muted leading-relaxed">{p.beginnersBody}</p>
+          </div>
+          <a href={`${prefix}/beginners`} class="text-sm text-accent-deep hover:text-text underline transition-colors">{p.beginnersAllLink}</a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {beginners.map((tree) => <TreeCard tree={tree} locale={locale} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface-elev border-y border-border" aria-labelledby="philosophy-heading">
+      <div class="container-page py-20 sm:py-28">
+        <div class="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
+          <div>
+            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold mb-4">{p.philosophyEyebrow}</p>
+            <h2 id="philosophy-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{p.philosophyHeading}</h2>
+          </div>
+          <div class="space-y-5 text-text-muted leading-[1.75] text-lg">
+            {p.philosophyBody.map((para) => <p>{para}</p>)}
+            <p class="font-display italic text-text text-xl pt-4">{p.philosophyQuote}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg" aria-labelledby="featured-heading">
+      <div class="container-page py-20 sm:py-24">
+        <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
+          <div class="max-w-2xl">
+            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">{p.featuredEyebrow}</p>
+            <h2 id="featured-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{p.featuredHeading}</h2>
+          </div>
+          <a href={`${prefix}/trees`} class="text-sm text-accent-deep hover:text-text underline transition-colors">{p.featuredAllLink}</a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {featured.map((tree) => <TreeCard tree={tree} locale={locale} />)}
+        </div>
+      </div>
+    </section>
+
+    <NewsletterMock locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

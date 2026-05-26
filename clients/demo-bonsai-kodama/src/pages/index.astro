@@ -4,10 +4,11 @@ import Header from '@/components/layout/Header.astro';
 import NewsletterMock from '@/components/sections/NewsletterMock.astro';
 import TreeCard from '@/components/sections/TreeCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { SITE } from '@/lib/site';
-import { TREES, getBeginnerTrees, getTreesByCategory } from '@/lib/trees';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { TREES, getBeginnerTrees, getTreesByCategory, tr } from '@/lib/trees';
 
 const locale = 'de' as const;
+const p = PAGE_STRINGS[locale].home;
 const beginners = getBeginnerTrees().slice(0, 4);
 const featured = TREES.slice(0, 6);
 const indoorCount = getTreesByCategory('indoor').length;
@@ -15,48 +16,45 @@ const outdoorCount = getTreesByCategory('outdoor').length;
 ---
 
 <BaseLayout
-  title={`${SITE.name} — ${SITE.tagline}`}
-  description="24 Bonsai-Arten mit ausführlichen Pflegehinweisen, Stilen, Techniken und Vermehrung. Eine Berliner Werkstatt für Bonsai-Wissen."
+  title={p.title}
+  description={p.description}
   locale={locale}
+  localePath="/"
 >
-  <Header locale={locale} />
+  <Header locale={locale} localePath="/" />
   <main id="main">
     <section class="bg-bg border-b border-border" aria-labelledby="hero-title">
       <div class="container-page py-20 sm:py-28 lg:py-36">
         <div class="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-center">
           <div>
-            <p class="text-[11px] sm:text-xs tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-8">
-              BERLIN · PRENZLAUER BERG · SEIT 2019
-            </p>
+            <p class="text-[11px] sm:text-xs tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-8">{p.heroEyebrow}</p>
             <h1 id="hero-title" class="font-display text-[clamp(2.8rem,6.5vw,5.5rem)] leading-[1.05] tracking-[-0.02em] text-text font-medium italic">
-              Vierundzwanzig Bäume.<br />
-              Ein Jahreskalender.<br />
-              Eine Werkstatt.
+              {p.heroTitleLine1}<br />
+              {p.heroTitleLine2}<br />
+              {p.heroTitleLine3}
             </h1>
-            <p class="mt-8 max-w-xl text-lg sm:text-xl text-text-muted leading-[1.7]">
-              Kodama ist eine kleine Werkstatt in Berlin Prenzlauer Berg — keine Verkaufsstelle, sondern eine Wissenssammlung. 24 sorgfältig ausgewählte Bonsai-Arten, jede mit ausführlichen Pflegehinweisen, Stilen, Techniken und Zeitpunkten. Für Einsteiger und für die, die schon ein paar Bäume verloren haben.
-            </p>
+            <p class="mt-8 max-w-xl text-lg sm:text-xl text-text-muted leading-[1.7]">{p.heroBody}</p>
             <div class="mt-10 flex flex-wrap gap-3">
               <a href="/trees" class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-md bg-accent-deep text-bg hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
-                {SITE.i18n.de.cta.explore}
+                {p.featuredAllLink}
               </a>
-              <a href="/suche" class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-md border border-text text-text hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
-                Baum suchen →
+              <a href="/search" class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-md border border-text text-text hover:bg-text hover:text-bg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+                {p.searchCta}
               </a>
             </div>
 
             <div class="mt-14 pt-8 border-t border-border grid grid-cols-3 gap-6 max-w-md">
               <div>
                 <p class="font-display text-3xl text-accent-deep">24</p>
-                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">Arten</p>
+                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">{p.stat_species}</p>
               </div>
               <div>
                 <p class="font-display text-3xl text-accent-deep">{indoorCount}</p>
-                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">Indoor</p>
+                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">{p.stat_indoor}</p>
               </div>
               <div>
                 <p class="font-display text-3xl text-accent-deep">{outdoorCount}</p>
-                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">Outdoor</p>
+                <p class="text-xs text-text-muted tracking-wide uppercase mt-1">{p.stat_outdoor}</p>
               </div>
             </div>
           </div>
@@ -65,9 +63,9 @@ const outdoorCount = getTreesByCategory('outdoor').length;
             <div class="aspect-[3/4] rounded-lg overflow-hidden border border-border">
               <img
                 src={featured[0].photos[0].src}
-                alt={featured[0].photos[0].alt.de}
-                width="1800"
-                height="2400"
+                alt={tr(featured[0].photos[0].alt, locale)}
+                width="2000"
+                height="1600"
                 loading="eager"
                 decoding="async"
                 fetchpriority="high"
@@ -82,24 +80,24 @@ const outdoorCount = getTreesByCategory('outdoor').length;
     <section class="bg-surface border-y border-border" aria-labelledby="paths-heading">
       <div class="container-page py-20">
         <div class="max-w-2xl mb-12">
-          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Drei Einstiege</p>
-          <h2 id="paths-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">Wo möchtest du anfangen?</h2>
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">{p.pathsEyebrow}</p>
+          <h2 id="paths-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{p.pathsHeading}</h2>
         </div>
         <div class="grid sm:grid-cols-3 gap-5">
-          <a href="/einsteiger" class="group bg-bg border border-border rounded-md p-8 hover:border-accent-secondary-deep transition-colors">
-            <p class="font-display text-2xl text-text italic">Einsteiger</p>
-            <p class="mt-2 text-sm text-text-muted">8 Bäume, die Pflegefehler verzeihen. Ideal für den ersten Bonsai.</p>
-            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">Auswahl ansehen →</p>
+          <a href="/beginners" class="group bg-bg border border-border rounded-md p-8 hover:border-accent-secondary-deep transition-colors">
+            <p class="font-display text-2xl text-text italic">{p.pathBeginnersTitle}</p>
+            <p class="mt-2 text-sm text-text-muted">{p.pathBeginnersBody}</p>
+            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">{p.pathBeginnersCta}</p>
           </a>
           <a href="/indoor" class="group bg-bg border border-border rounded-md p-8 hover:border-accent-secondary-deep transition-colors">
-            <p class="font-display text-2xl text-text italic">Indoor</p>
-            <p class="mt-2 text-sm text-text-muted">Tropische und subtropische Arten für die Wohnung. Heller Standort, ganzjährig drinnen.</p>
-            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">{indoorCount} Arten →</p>
+            <p class="font-display text-2xl text-text italic">{p.pathIndoorTitle}</p>
+            <p class="mt-2 text-sm text-text-muted">{p.pathIndoorBody}</p>
+            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">{p.pathIndoorCta(indoorCount)}</p>
           </a>
           <a href="/outdoor" class="group bg-bg border border-border rounded-md p-8 hover:border-accent-secondary-deep transition-colors">
-            <p class="font-display text-2xl text-text italic">Outdoor</p>
-            <p class="mt-2 text-sm text-text-muted">Heimische und winterharte Arten — Koniferen, Laub, Blüten. Ganzjährig im Freien.</p>
-            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">{outdoorCount} Arten →</p>
+            <p class="font-display text-2xl text-text italic">{p.pathOutdoorTitle}</p>
+            <p class="mt-2 text-sm text-text-muted">{p.pathOutdoorBody}</p>
+            <p class="mt-6 text-xs uppercase tracking-[0.18em] text-accent-deep font-semibold group-hover:text-text transition-colors">{p.pathOutdoorCta(outdoorCount)}</p>
           </a>
         </div>
       </div>
@@ -109,15 +107,11 @@ const outdoorCount = getTreesByCategory('outdoor').length;
       <div class="container-page py-20 sm:py-24">
         <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
           <div class="max-w-2xl">
-            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Für den Anfang</p>
-            <h2 id="beginners-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">
-              Vier Bäume, die dir Zeit zum Lernen geben.
-            </h2>
-            <p class="mt-4 text-text-muted leading-relaxed">
-              Robust, schnittverträglich, fehlerverzeihend. Wenn dein erster Bonsai überleben soll, fang mit einem dieser vier an.
-            </p>
+            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">{p.beginnersEyebrow}</p>
+            <h2 id="beginners-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{p.beginnersHeading}</h2>
+            <p class="mt-4 text-text-muted leading-relaxed">{p.beginnersBody}</p>
           </div>
-          <a href="/einsteiger" class="text-sm text-accent-deep hover:text-text underline transition-colors">Alle 8 Einsteiger-Bäume ansehen →</a>
+          <a href="/beginners" class="text-sm text-accent-deep hover:text-text underline transition-colors">{p.beginnersAllLink}</a>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {beginners.map((tree) => <TreeCard tree={tree} locale={locale} />)}
@@ -129,21 +123,12 @@ const outdoorCount = getTreesByCategory('outdoor').length;
       <div class="container-page py-20 sm:py-28">
         <div class="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
           <div>
-            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold mb-4">Über Kodama</p>
-            <h2 id="philosophy-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">
-              Eine Werkstatt, kein Geschäft.
-            </h2>
+            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold mb-4">{p.philosophyEyebrow}</p>
+            <h2 id="philosophy-heading" class="font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{p.philosophyHeading}</h2>
           </div>
           <div class="space-y-5 text-text-muted leading-[1.75] text-lg">
-            <p>
-              Bonsai ist langsam. Das macht ihn nicht schwierig, sondern unverwechselbar — eine Praxis, in der zwei Jahre eine kurze Zeit sind. Kodama existiert, weil wir glauben, dass das deutschsprachige Internet zu wenig saubere, präzise und unaufgeregte Bonsai-Information bietet.
-            </p>
-            <p>
-              Wir verkaufen keine Bäume. Wir dokumentieren 24 Arten so gut wir können — mit Pflege-Daten, Stilen, Techniken und einem Jahreskalender für jede Tätigkeit. Plus alle 14 Tage einen Brief aus der Werkstatt.
-            </p>
-            <p class="font-display italic text-text text-xl pt-4">
-              "Der beste Zeitpunkt, einen Baum zu pflanzen, war vor zwanzig Jahren. Der zweitbeste Zeitpunkt ist jetzt." — chinesisches Sprichwort
-            </p>
+            {p.philosophyBody.map((para) => <p>{para}</p>)}
+            <p class="font-display italic text-text text-xl pt-4">{p.philosophyQuote}</p>
           </div>
         </div>
       </div>
@@ -153,12 +138,10 @@ const outdoorCount = getTreesByCategory('outdoor').length;
       <div class="container-page py-20 sm:py-24">
         <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
           <div class="max-w-2xl">
-            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Ein erster Blick</p>
-            <h2 id="featured-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">
-              Sechs Bäume aus der Sammlung.
-            </h2>
+            <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">{p.featuredEyebrow}</p>
+            <h2 id="featured-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">{p.featuredHeading}</h2>
           </div>
-          <a href="/trees" class="text-sm text-accent-deep hover:text-text underline transition-colors">Alle 24 Bäume →</a>
+          <a href="/trees" class="text-sm text-accent-deep hover:text-text underline transition-colors">{p.featuredAllLink}</a>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {featured.map((tree) => <TreeCard tree={tree} locale={locale} />)}

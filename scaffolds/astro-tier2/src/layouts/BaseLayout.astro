@@ -1,25 +1,32 @@
 ---
 /**
  * Base layout — ships with: localized title/description, canonical URL, OG + Twitter,
- * JSON-LD schema injection, BreadcrumbList auto-derivation, hreflang alternate,
+ * JSON-LD schema injection, BreadcrumbList auto-derivation, hreflang alternate
+ * (driven by LOCALES from site.ts so N-locale builds need zero layout changes),
  * DemoBanner, locale-aware CookieBanner.
  *
  * DO NOT OVERWRITE THIS FILE with a custom rewrite in per-client setup.
  * If a page needs additional schema, pass `extraSchema` prop. If a page has a
- * locale-alternate, pass `alternateLocaleUrl`. The features here are the
- * agency-baseline; bypassing them costs SEO + accessibility (see the 2026-05-26
- * Kodama-bonsai audit incident where a hand-rebuilt BaseLayout dropped JSON-LD,
- * BreadcrumbList, hreflang, and the OG image path simultaneously).
+ * locale-alternate, pass `localePath` (locale-neutral path, e.g. '/services'
+ * or '/products/foo'). The features here are the agency-baseline; bypassing
+ * them costs SEO + accessibility (see the 2026-05-26 Kodama-bonsai audit
+ * incident where a hand-rebuilt BaseLayout dropped JSON-LD, BreadcrumbList,
+ * hreflang, and the OG image path simultaneously).
  *
  * Per-client setup customizes: the schema function in `src/lib/seo/schema.ts`
  * (LocalBusiness → most-specific subtype) and the `i18n[locale].consent` +
  * `i18n[locale].demoBanner` blocks in `src/lib/site.ts`.
+ *
+ * Extending beyond 2 locales: see `docs/design/I18N.md` §17. Add the locale
+ * to `LOCALES` / `LOCALE_LANG` / `LOCALE_PREFIX` in `site.ts` + add the
+ * matching `i18n[locale]` block; the layout iterates `LOCALES` so no changes
+ * are required here.
  */
 import '@/styles/global.css';
 import DemoBanner from '@/components/layout/DemoBanner.astro';
 import CookieBanner from '@/components/ui/CookieBanner.astro';
 import { businessSchema } from '@/lib/seo/schema';
-import { type Locale, SITE } from '@/lib/site';
+import { LOCALE_LANG, LOCALE_PREFIX, LOCALES, type Locale, SITE } from '@/lib/site';
 
 interface Props {
   title?: string;
@@ -27,7 +34,9 @@ interface Props {
   ogImage?: string;
   noindex?: boolean;
   locale?: Locale;
-  alternateLocaleUrl?: string;
+  /** Locale-neutral path (e.g. '/services' or '/products/foo'). Used to emit
+   *  per-locale hreflang alternates. Omit on the home page (root). */
+  localePath?: string;
   /** Pass per-page extra schema (Article / BreadcrumbList already auto-emitted) */
   extraSchema?: Record<string, unknown> | null;
 }
@@ -39,7 +48,7 @@ const {
   // Demo phase: ALWAYS noindex. Per CLAUDE.md "Demo discipline" — never flip during portfolio phase.
   noindex = true,
   locale = 'de',
-  alternateLocaleUrl,
+  localePath,
   extraSchema = null,
 } = Astro.props;
 
@@ -47,19 +56,33 @@ const t = SITE.i18n[locale];
 const localizedDescription = description ?? t.tagline;
 const canonical = new URL(Astro.url.pathname, SITE.url).toString();
 const schema = JSON.stringify(businessSchema());
-const htmlLang = locale === 'de' ? 'de-DE' : 'en-US';
+const htmlLang = LOCALE_LANG[locale];
 const ogLocale = htmlLang.replace('-', '_');
-const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
+
+// Build per-locale alternate URLs when the page declared its locale-neutral path.
+// `LOCALES[0]` is the x-default target (per agency convention: the primary
+// locale, which is DE for Berlin-market clients).
+const alternates = localePath
+  ? LOCALES.map((l) => ({
+      hreflang: LOCALE_LANG[l],
+      href: new URL(`${LOCALE_PREFIX[l]}${localePath}`, SITE.url).toString(),
+    }))
+  : [];
+
+// Locale-prefix segments to strip from the breadcrumb derivation (e.g. 'en' for /en/page).
+const localePrefixSegments = LOCALES.map((l) => LOCALE_PREFIX[l].replace(/^\//, '')).filter(Boolean);
 
 // BreadcrumbList JSON-LD per SEO.md §schema — skip on home (single-segment).
 // Derives from URL path: /en/page → [Home → Page], /datenschutz → [Home → Privacy].
 function deriveBreadcrumbs(pathname: string, pageTitle: string) {
   const cleanPath = pathname.replace(/\/$/, '');
-  const segments = cleanPath.split('/').filter(Boolean);
+  let segments = cleanPath.split('/').filter(Boolean);
+  // Strip leading locale prefix so breadcrumbs don't show 'en' / 'es' / 'pt-br' as a crumb.
+  if (segments.length > 0 && localePrefixSegments.includes(segments[0])) segments = segments.slice(1);
   if (segments.length === 0) return null;
-  if (segments.length === 1 && segments[0] === 'en') return null;
+  const homeHref = `${LOCALE_PREFIX[locale]}/`;
   const items: Array<{ name: string; href: string }> = [
-    { name: locale === 'de' ? 'Startseite' : 'Home', href: locale === 'de' ? '/' : '/en/' },
+    { name: locale === 'de' ? 'Startseite' : 'Home', href: homeHref },
   ];
   items.push({ name: pageTitle, href: cleanPath });
   return items;
@@ -90,8 +113,11 @@ const breadcrumbSchema = breadcrumbItems
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="canonical" href={canonical} />
-    {alternateLocaleUrl && (
-      <link rel="alternate" hreflang={otherLocale === 'en' ? 'en' : 'de'} href={alternateLocaleUrl} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.hreflang} href={a.href} />
+    ))}
+    {alternates.length > 0 && (
+      <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
     )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />

@@ -1,0 +1,77 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { type Locale, SITE } from '@/lib/site';
+import { EN_IMPRINT } from '@/lib/translations/en';
+import { ES_IMPRINT } from '@/lib/translations/es';
+import { PTBR_IMPRINT } from '@/lib/translations/pt-br';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'en' }, props: { locale: 'en' as const } },
+    { params: { locale: 'es' }, props: { locale: 'es' as const } },
+    { params: { locale: 'pt-br' }, props: { locale: 'pt-br' as const } },
+  ];
+}
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const META: Record<Locale, { title: string; description: string }> = {
+  de: { title: 'Impressum', description: 'Impressum nach § 5 TMG für Kodama Bonsai.' },
+  en: {
+    title: 'Legal notice',
+    description: 'Legal notice under § 5 TMG for Kodama Bonsai (German law).',
+  },
+  es: {
+    title: 'Aviso legal',
+    description: 'Aviso legal conforme al § 5 TMG de Kodama Bonsai (legislación alemana).',
+  },
+  'pt-br': {
+    title: 'Informações legais',
+    description: 'Informações legais conforme § 5 TMG de Kodama Bonsai (legislação alemã).',
+  },
+};
+
+const BODIES: Record<Exclude<Locale, 'de'>, string> = {
+  en: EN_IMPRINT,
+  es: ES_IMPRINT,
+  'pt-br': PTBR_IMPRINT,
+};
+
+const meta = META[locale];
+const body = BODIES[locale as Exclude<Locale, 'de'>];
+
+const resolved = body
+  .replace(
+    /\{`mailto:\$\{SITE\.legal\.dataControllerEmail\}`\}/g,
+    `"mailto:${SITE.legal.dataControllerEmail}"`,
+  )
+  .replace(/\{`mailto:\$\{SITE\.email\}`\}/g, `"mailto:${SITE.email}"`)
+  .replace(/\{`tel:\$\{SITE\.phone\}`\}/g, `"tel:${SITE.phone}"`)
+  .replace(/\{SITE\.legal\.legalEntity\}/g, SITE.legal.legalEntity)
+  .replace(/\{SITE\.legal\.legalRepresentatives\}/g, SITE.legal.legalRepresentatives)
+  .replace(/\{SITE\.legal\.taxId\}/g, SITE.legal.taxId)
+  .replace(/\{SITE\.legal\.dataControllerEmail\}/g, SITE.legal.dataControllerEmail)
+  .replace(/\{SITE\.legal\.dataControllerPhone\}/g, SITE.legal.dataControllerPhone)
+  .replace(/\{SITE\.address\.street\}/g, SITE.address.street)
+  .replace(/\{SITE\.address\.postalCode\}/g, SITE.address.postalCode)
+  .replace(/\{SITE\.address\.city\}/g, SITE.address.city)
+  .replace(/\{SITE\.address\.country\}/g, SITE.address.country)
+  .replace(/\{SITE\.phoneDisplay\}/g, SITE.phoneDisplay)
+  .replace(/\{SITE\.phone\}/g, SITE.phone)
+  .replace(/\{SITE\.email\}/g, SITE.email)
+  .replace(/\{SITE\.name\}/g, SITE.name);
+---
+
+<BaseLayout title={meta.title} description={meta.description} locale={locale} localePath="/imprint">
+  <Header locale={locale} localePath="/imprint" />
+  <main id="main">
+    <article class="container-page py-16 sm:py-24 max-w-3xl space-y-10" set:html={resolved} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

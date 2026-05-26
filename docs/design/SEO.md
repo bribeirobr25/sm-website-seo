@@ -670,9 +670,23 @@ Required for any site serving content in multiple languages. Tells Google which 
 **Rules (75% of implementations have errors — avoid these):**
 - Every page must link to ALL language versions, including itself (self-referencing is required)
 - The relationship is symmetric: if `/de/` links to `/en/`, then `/en/` must also link back to `/de/`
-- Use valid ISO language codes: `de` (German), `en` (English), `pt-BR` (Brazilian Portuguese), `fr` (French)
-- `x-default` = the page shown when no other locale matches (usually the primary language or a language selector)
+- Use valid ISO language codes: `de` (German), `en` (English), `pt-BR` (Brazilian Portuguese), `es-ES` (Spanish — Spain), `fr` (French). Prefer the BCP-47 region-coded form (`de-DE`, `en-US`, `pt-BR`, `es-ES`) over the bare language code when the locale targets a specific region.
+- `x-default` = the page shown when no other locale matches. **For EU-operated DE-first sites, point `x-default` to the DE root URL** (i.e. `LOCALES[0]` in the scaffold's locale-helpers convention) per Google's hreflang spec — DE is the canonical primary, and language-detection serves DE when no `hreflang` match exists. Never set `x-default` to a `/en/` URL on a DE-primary build.
 - Never use IP-based auto-redirect — Google can't crawl all versions if you redirect their bot
+
+### 4-locale example — bonsai demo
+
+For a DE-primary site with EN + ES + pt-BR secondaries (e.g. `clients/demo-bonsai-kodama`):
+
+```html
+<link rel="alternate" hreflang="de-DE" href="https://client.de/services" />
+<link rel="alternate" hreflang="en-US" href="https://client.de/en/services" />
+<link rel="alternate" hreflang="es-ES" href="https://client.de/es/services" />
+<link rel="alternate" hreflang="pt-BR" href="https://client.de/pt-br/services" />
+<link rel="alternate" hreflang="x-default" href="https://client.de/services" />
+```
+
+The scaffold `BaseLayout.astro` emits this set automatically when each page passes `localePath="/services"` — see `I18N.md` §17.2.
 
 ### URL structure for multilingual
 

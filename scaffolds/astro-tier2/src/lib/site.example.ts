@@ -160,5 +160,42 @@ export const SITE = {
   },
 } as const;
 
+// -----------------------------------------------------------------------------
+// Locale helpers — agency-baseline.
+//
+// The scaffold ships with 2 locales (DE + EN). Clients can EXTEND to ES /
+// PT-BR / further locales by:
+//   1. Widening `Locale` (e.g. `'de' | 'en' | 'es' | 'pt-br'`)
+//   2. Adding the BCP-47 tag to `LOCALE_LANG`
+//   3. Adding the URL prefix to `LOCALE_PREFIX`
+//   4. Appending the code to `LOCALES`
+//   5. Adding the matching `i18n[locale]` block above with `tagline` + `consent` + `demoBanner`
+//
+// See `docs/design/I18N.md` §17 "Extending beyond 2 locales" for the worked
+// recipe + the bonsai demo (`clients/demo-bonsai-kodama`) for a 4-locale
+// reference (DE primary · EN · ES · pt-BR).
+//
+// Why these helpers matter even at 2 locales: they let `BaseLayout.astro`
+// emit hreflang + x-default by iterating `LOCALES` instead of branching on
+// `locale === 'de' ? ... : ...` — so widening to 3+ locales never requires
+// touching the layout.
+// -----------------------------------------------------------------------------
+
 export type Locale = 'de' | 'en';
+
+/** BCP-47 language tag per locale — used for `<html lang>`, `og:locale`, hreflang. */
+export const LOCALE_LANG: Record<Locale, string> = {
+  de: 'de-DE',
+  en: 'en-US',
+};
+
+/** URL prefix per locale. Primary locale is root (no prefix); secondaries get a path segment. */
+export const LOCALE_PREFIX: Record<Locale, string> = {
+  de: '',
+  en: '/en',
+};
+
+/** Ordered list of locales. The first entry is the x-default target. */
+export const LOCALES: Locale[] = ['de', 'en'];
+
 export type Site = typeof SITE;

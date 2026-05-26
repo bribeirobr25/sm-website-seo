@@ -5,7 +5,25 @@
  * Per `docs/clients/demo-bonsai-kodama/BRIEF.md` for the brand brief.
  */
 
-export type Locale = 'de' | 'en';
+export type Locale = 'de' | 'en' | 'es' | 'pt-br';
+
+// BCP-47 language tags per locale — used for html lang, og:locale, hreflang.
+export const LOCALE_LANG: Record<Locale, string> = {
+  de: 'de-DE',
+  en: 'en-US',
+  es: 'es-ES',
+  'pt-br': 'pt-BR',
+};
+
+// URL prefix per locale. DE is root (no prefix); others get a path segment.
+export const LOCALE_PREFIX: Record<Locale, string> = {
+  de: '',
+  en: '/en',
+  es: '/es',
+  'pt-br': '/pt-br',
+};
+
+export const LOCALES: Locale[] = ['de', 'en', 'es', 'pt-br'];
 
 export const SITE = {
   // Brand
@@ -143,13 +161,27 @@ export const SITE = {
         bodyBefore:
           'Wir verwenden essentielle Cookies, damit die Seite funktioniert. Mit deiner Zustimmung auch anonymisierte Analyse-Cookies, damit wir wissen, welche Bäume gelesen werden. Mehr in unserer ',
         privacyLinkLabel: 'Datenschutzerklärung',
-        privacyLinkHref: '/datenschutz',
+        privacyLinkHref: '/privacy',
         bodyAfter: '.',
         accept: 'Alle akzeptieren',
         reject: 'Alle ablehnen',
         manage: 'Cookie-Einstellungen verwalten',
       },
       demoBanner: 'BEISPIEL — Portfolio-Demo der Agentur. Kein echter Bonsai-Anbieter.',
+      chrome: {
+        skipToContent: 'Zum Inhalt springen',
+        menuOpen: 'Menü öffnen',
+        menuClose: 'Menü schließen',
+        indoorBonsai: 'Indoor-Bonsai',
+        outdoorBonsai: 'Outdoor-Bonsai',
+        imprintLabel: 'Impressum',
+        privacyLabel: 'Datenschutzerklärung',
+        navHeading: 'Navigation',
+        legalHeading: 'Rechtliches',
+        photoNote:
+          'Stockfotografie aus dem Unsplash-Pool — arten-spezifische Fotos folgen mit echtem Material.',
+        closingNote: 'Eine Werkstatt mit 24 Bäumen.',
+      },
     },
     en: {
       languageLabel: 'Language',
@@ -207,14 +239,186 @@ export const SITE = {
         title: 'Cookies — please confirm your preference.',
         bodyBefore:
           'We use essential cookies so the site works. With your consent we also use anonymised analytics so we know which trees get read. More in our ',
-        privacyLinkLabel: 'privacy policy (German)',
-        privacyLinkHref: '/datenschutz',
+        privacyLinkLabel: 'privacy policy',
+        privacyLinkHref: '/en/privacy',
         bodyAfter: '.',
         accept: 'Accept all',
         reject: 'Reject all',
         manage: 'Manage cookie preferences',
       },
       demoBanner: 'EXAMPLE — agency portfolio demo. Not a real bonsai vendor.',
+      chrome: {
+        skipToContent: 'Skip to content',
+        menuOpen: 'Open menu',
+        menuClose: 'Close menu',
+        indoorBonsai: 'Indoor bonsai',
+        outdoorBonsai: 'Outdoor bonsai',
+        imprintLabel: 'Imprint',
+        privacyLabel: 'Privacy policy',
+        navHeading: 'Navigation',
+        legalHeading: 'Legal',
+        photoNote:
+          'Stock photography from the Unsplash pool — species-specific photos to follow with real material.',
+        closingNote: 'A workshop with 24 trees.',
+      },
+    },
+    es: {
+      languageLabel: 'Idioma',
+      nav: {
+        home: 'Inicio',
+        trees: '24 árboles',
+        beginners: 'Para principiantes',
+        indoor: 'Interior',
+        outdoor: 'Exterior',
+        search: 'Buscar',
+        about: 'Taller',
+      },
+      cta: {
+        explore: 'Descubrir árboles',
+        beginner: 'Selección para principiantes',
+        subscribe: 'Suscribirse a Wakaba',
+        search: 'Buscar un árbol',
+        viewTree: 'Saber más',
+        backToTrees: '← Volver al índice',
+      },
+      sections: {
+        care: {
+          sun: 'Luz',
+          soil: 'Sustrato',
+          watering: 'Riego',
+          fertilizing: 'Abonado',
+          temperature: 'Temperatura',
+          pruning: 'Poda',
+        },
+        styles: 'Estilos habituales',
+        techniques: 'Técnicas clave',
+        propagation: 'Propagación',
+        species: 'Especie',
+        family: 'Familia',
+        origin: 'Origen',
+        category: 'Ubicación',
+        beginner: 'Apto para principiantes',
+        period: 'Época',
+        minimumAge: 'Edad mínima',
+        method: 'Método',
+        postCare: 'Cuidados posteriores',
+      },
+      labels: {
+        indoor: 'Interior',
+        outdoor: 'Exterior',
+        both: 'Interior + Exterior',
+        yes: 'Sí',
+        no: 'No',
+        beginnerBadge: 'Principiante',
+        photoCredit: 'Foto',
+        license: 'Licencia',
+      },
+      tagline: 'Un taller berlinés para el saber del bonsái.',
+      consent: {
+        title: 'Cookies: por favor, confirma tu preferencia.',
+        bodyBefore:
+          'Usamos cookies esenciales para que el sitio funcione. Con tu consentimiento, también cookies analíticas anónimas para saber qué árboles se leen. Más información en nuestra ',
+        privacyLinkLabel: 'política de privacidad',
+        privacyLinkHref: '/es/privacy',
+        bodyAfter: '.',
+        accept: 'Aceptar todas',
+        reject: 'Rechazar todas',
+        manage: 'Gestionar preferencias',
+      },
+      demoBanner: 'EJEMPLO — demo de portafolio de la agencia. No es un proveedor real de bonsáis.',
+      chrome: {
+        skipToContent: 'Saltar al contenido',
+        menuOpen: 'Abrir menú',
+        menuClose: 'Cerrar menú',
+        indoorBonsai: 'Bonsái de interior',
+        outdoorBonsai: 'Bonsái de exterior',
+        imprintLabel: 'Aviso legal',
+        privacyLabel: 'Política de privacidad',
+        navHeading: 'Navegación',
+        legalHeading: 'Información legal',
+        photoNote:
+          'Fotografía de stock del banco Unsplash — las fotos específicas por especie llegarán con material real.',
+        closingNote: 'Un taller con 24 árboles.',
+      },
+    },
+    'pt-br': {
+      languageLabel: 'Idioma',
+      nav: {
+        home: 'Início',
+        trees: '24 árvores',
+        beginners: 'Para iniciantes',
+        indoor: 'Interno',
+        outdoor: 'Externo',
+        search: 'Buscar',
+        about: 'Ateliê',
+      },
+      cta: {
+        explore: 'Conhecer as árvores',
+        beginner: 'Seleção para iniciantes',
+        subscribe: 'Assinar a Wakaba',
+        search: 'Buscar uma árvore',
+        viewTree: 'Saiba mais',
+        backToTrees: '← Voltar à lista',
+      },
+      sections: {
+        care: {
+          sun: 'Luz',
+          soil: 'Substrato',
+          watering: 'Rega',
+          fertilizing: 'Adubação',
+          temperature: 'Temperatura',
+          pruning: 'Poda',
+        },
+        styles: 'Estilos comuns',
+        techniques: 'Técnicas principais',
+        propagation: 'Propagação',
+        species: 'Espécie',
+        family: 'Família',
+        origin: 'Origem',
+        category: 'Localização',
+        beginner: 'Indicado para iniciantes',
+        period: 'Época',
+        minimumAge: 'Idade mínima',
+        method: 'Método',
+        postCare: 'Pós-cuidado',
+      },
+      labels: {
+        indoor: 'Interno',
+        outdoor: 'Externo',
+        both: 'Interno + Externo',
+        yes: 'Sim',
+        no: 'Não',
+        beginnerBadge: 'Iniciante',
+        photoCredit: 'Foto',
+        license: 'Licença',
+      },
+      tagline: 'Um ateliê berlinense dedicado ao saber do bonsai.',
+      consent: {
+        title: 'Cookies — confirme sua preferência, por favor.',
+        bodyBefore:
+          'Usamos cookies essenciais para o site funcionar. Com seu consentimento, também usamos cookies analíticos anônimos para saber quais árvores são lidas. Saiba mais em nossa ',
+        privacyLinkLabel: 'política de privacidade',
+        privacyLinkHref: '/pt-br/privacy',
+        bodyAfter: '.',
+        accept: 'Aceitar tudo',
+        reject: 'Recusar tudo',
+        manage: 'Gerenciar preferências',
+      },
+      demoBanner: 'EXEMPLO — demo de portfólio da agência. Não é um fornecedor real de bonsai.',
+      chrome: {
+        skipToContent: 'Pular para o conteúdo',
+        menuOpen: 'Abrir menu',
+        menuClose: 'Fechar menu',
+        indoorBonsai: 'Bonsai de interior',
+        outdoorBonsai: 'Bonsai de exterior',
+        imprintLabel: 'Informações legais',
+        privacyLabel: 'Política de privacidade',
+        navHeading: 'Navegação',
+        legalHeading: 'Informações legais',
+        photoNote:
+          'Fotos do banco Unsplash — imagens específicas por espécie virão com material real.',
+        closingNote: 'Um ateliê com 24 árvores.',
+      },
     },
   },
 } as const;

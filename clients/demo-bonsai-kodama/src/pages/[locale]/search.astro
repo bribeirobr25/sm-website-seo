@@ -1,0 +1,160 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { LOCALE_PREFIX, type Locale } from '@/lib/site';
+import { SEARCH_INDEX, TREES } from '@/lib/trees';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'en' }, props: { locale: 'en' as const } },
+    { params: { locale: 'es' }, props: { locale: 'es' as const } },
+    { params: { locale: 'pt-br' }, props: { locale: 'pt-br' as const } },
+  ];
+}
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const p = PAGE_STRINGS[locale].search;
+const prefix = LOCALE_PREFIX[locale];
+const indexJson = JSON.stringify(SEARCH_INDEX);
+const treesByCategory = {
+  indoor: TREES.filter((t) => t.category === 'indoor' || t.category === 'both').length,
+  outdoor: TREES.filter((t) => t.category === 'outdoor' || t.category === 'both').length,
+};
+const i18nForJs = {
+  beginner: PAGE_STRINGS[locale].treeDetail.beginnerBadge,
+  indoorLabel: PAGE_STRINGS[locale].home.stat_indoor,
+  outdoorLabel: PAGE_STRINGS[locale].home.stat_outdoor,
+  bothLabel: `${PAGE_STRINGS[locale].home.stat_indoor} + ${PAGE_STRINGS[locale].home.stat_outdoor}`,
+  zeroHits: p.zeroHits,
+  hitSingular:
+    locale === 'de'
+      ? 'Treffer'
+      : locale === 'en'
+        ? 'result'
+        : locale === 'es'
+          ? 'resultado'
+          : 'resultado',
+  hitPlural:
+    locale === 'de'
+      ? 'Treffer'
+      : locale === 'en'
+        ? 'results'
+        : locale === 'es'
+          ? 'resultados'
+          : 'resultados',
+  forLabel: locale === 'de' ? 'für' : locale === 'en' ? 'for' : locale === 'es' ? 'para' : 'para',
+};
+---
+
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/search">
+  <Header locale={locale} localePath="/search" />
+  <main id="main">
+    <section class="bg-bg border-b border-border">
+      <div class="container-page py-12 sm:py-16">
+        <div class="max-w-3xl">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-6">{p.heroEyebrow}</p>
+          <h1 class="font-display text-4xl sm:text-5xl text-text leading-[1.05] italic">{p.heroTitle}</h1>
+          <p class="mt-6 text-text-muted leading-relaxed">{p.heroBody}</p>
+
+          <form class="mt-8" data-search-form>
+            <label for="search" class="sr-only">{p.inputLabel}</label>
+            <div class="relative">
+              <input
+                type="search"
+                id="search"
+                autocomplete="off"
+                placeholder={p.placeholder}
+                class="w-full px-6 py-4 min-h-[60px] text-lg bg-surface border border-border rounded-md text-text placeholder:text-text-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-deep focus:border-accent-secondary-deep"
+              />
+            </div>
+            <div class="mt-4 flex flex-wrap gap-2 text-xs">
+              <button type="button" data-filter="indoor" aria-pressed="false" class="px-3 py-1.5 rounded-full border border-border text-text-muted hover:border-accent-secondary-deep hover:text-text transition-colors">{p.filterIndoor(treesByCategory.indoor)}</button>
+              <button type="button" data-filter="outdoor" aria-pressed="false" class="px-3 py-1.5 rounded-full border border-border text-text-muted hover:border-accent-secondary-deep hover:text-text transition-colors">{p.filterOutdoor(treesByCategory.outdoor)}</button>
+              <button type="button" data-filter="beginner" aria-pressed="false" class="px-3 py-1.5 rounded-full border border-border text-text-muted hover:border-accent-secondary-deep hover:text-text transition-colors">{p.filterBeginner}</button>
+              <button type="button" data-filter="clear" class="px-3 py-1.5 rounded-full border border-border text-accent-deep hover:text-text transition-colors">{p.filterClear}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg pb-24">
+      <div class="container-page py-12">
+        <p class="text-sm text-text-muted mb-6" data-search-status>{p.totalLabel}</p>
+        <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0" data-search-results>
+          <!-- populated via JS -->
+        </ul>
+        <p class="hidden mt-10 text-center text-text-muted italic" data-search-empty>{p.noResults}</p>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>
+
+<script is:inline define:vars={{ indexJson, locale, prefix, i18n: i18nForJs }}>
+  const INDEX = JSON.parse(indexJson);
+  const input = document.getElementById('search');
+  const results = document.querySelector('[data-search-results]');
+  const status = document.querySelector('[data-search-status]');
+  const empty = document.querySelector('[data-search-empty]');
+  const filters = document.querySelectorAll('[data-filter]');
+
+  let activeFilter = null;
+
+  function render() {
+    const q = (input.value || '').trim().toLowerCase();
+    let list = INDEX;
+    if (activeFilter === 'indoor') list = list.filter((t) => t.category === 'indoor' || t.category === 'both');
+    if (activeFilter === 'outdoor') list = list.filter((t) => t.category === 'outdoor' || t.category === 'both');
+    if (activeFilter === 'beginner') list = list.filter((t) => t.beginnerFriendly);
+    if (q) list = list.filter((t) => t.searchBlob.includes(q));
+
+    results.innerHTML = list.map((t) => {
+      const cat = t.category === 'indoor' ? i18n.indoorLabel : t.category === 'outdoor' ? i18n.outdoorLabel : i18n.bothLabel;
+      const name = t.popularName[locale];
+      const beginnerBadge = t.beginnerFriendly ? `<span class="inline-block bg-accent-secondary-deep text-bg text-[10px] uppercase tracking-[0.12em] font-semibold px-2 py-1 rounded-sm mr-2">${i18n.beginner}</span>` : '';
+      return `<li><a href="${prefix}/trees/${t.slug}" class="block bg-surface border border-border rounded-md p-5 hover:border-accent-secondary-deep transition-colors">
+        <div class="flex flex-wrap gap-2 mb-3">${beginnerBadge}<span class="inline-block bg-bg text-text text-[10px] uppercase tracking-[0.12em] font-semibold px-2 py-1 rounded-sm border border-border">${cat}</span></div>
+        <p class="font-display text-xl text-text">${name}</p>
+        <p class="mt-1 text-xs italic text-text-muted">${t.scientificName}</p>
+        <p class="mt-2 text-[11px] uppercase tracking-[0.12em] text-accent-secondary-deep font-semibold">${t.family} · ${t.origin}</p>
+      </a></li>`;
+    }).join('');
+
+    if (list.length === 0) {
+      empty.classList.remove('hidden');
+      status.textContent = i18n.zeroHits;
+    } else {
+      empty.classList.add('hidden');
+      const word = list.length === 1 ? i18n.hitSingular : i18n.hitPlural;
+      status.textContent = `${list.length} ${word}${q ? ` ${i18n.forLabel} "${q}"` : ''}`;
+    }
+  }
+
+  input.addEventListener('input', render);
+  filters.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const f = btn.getAttribute('data-filter');
+      activeFilter = f === 'clear' ? null : (activeFilter === f ? null : f);
+      if (f === 'clear') input.value = '';
+      filters.forEach((b) => {
+        b.classList.remove('bg-accent-secondary', 'text-bg', 'border-accent-secondary');
+        if (b.hasAttribute('aria-pressed')) b.setAttribute('aria-pressed', 'false');
+      });
+      if (activeFilter) {
+        const active = document.querySelector(`[data-filter="${activeFilter}"]`);
+        active?.classList.add('bg-accent-secondary', 'text-bg', 'border-accent-secondary');
+        active?.setAttribute('aria-pressed', 'true');
+      }
+      render();
+    });
+  });
+
+  render();
+</script>

@@ -19,3 +19,4 @@ dist/
 *.log
 .pnpm-debug.log
 .vercel
+public/img/trees/_original/

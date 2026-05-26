@@ -1,26 +1,49 @@
 ---
-import { type Locale, SITE } from '@/lib/site';
+import { LOCALES, LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
 
 interface Props {
   locale: Locale;
+  /** Locale-neutral path (e.g. '/trees' or '/trees/ficus-retusa') so the switcher
+   *  can build per-locale URLs. If omitted, the switcher links to each locale's home. */
+  localePath?: string;
 }
 
-const { locale } = Astro.props;
+const { locale, localePath = '/' } = Astro.props;
 const t = SITE.i18n[locale];
-const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
+const prefix = LOCALE_PREFIX[locale];
 
-// EN routes are not built in v1 — see docs/clients/demo-bonsai-kodama/CLAUDE.md "What was NOT built".
-// All nav points to DE routes regardless of locale to avoid 404s.
 const nav = [
-  { href: '/trees', label: t.nav.trees },
-  { href: '/einsteiger', label: t.nav.beginners },
-  { href: '/indoor', label: t.nav.indoor },
-  { href: '/outdoor', label: t.nav.outdoor },
-  { href: '/werkstatt', label: t.nav.about },
+  { href: `${prefix}/trees`, label: t.nav.trees },
+  { href: `${prefix}/beginners`, label: t.nav.beginners },
+  { href: `${prefix}/indoor`, label: t.nav.indoor },
+  { href: `${prefix}/outdoor`, label: t.nav.outdoor },
+  { href: `${prefix}/workshop`, label: t.nav.about },
 ];
 
-const home = '/';
-const searchHref = '/suche';
+const home = `${prefix}/`;
+const searchHref = `${prefix}/search`;
+
+// Locale switcher entries — short codes + readable labels.
+const LOCALE_CODE: Record<Locale, string> = {
+  de: 'DE',
+  en: 'EN',
+  es: 'ES',
+  'pt-br': 'PT',
+};
+const LOCALE_NAME: Record<Locale, string> = {
+  de: 'Deutsch',
+  en: 'English',
+  es: 'Español',
+  'pt-br': 'Português (BR)',
+};
+
+const localeSwitcher = LOCALES.map((l) => ({
+  locale: l,
+  code: LOCALE_CODE[l],
+  name: LOCALE_NAME[l],
+  href: `${LOCALE_PREFIX[l]}${localePath}`,
+  current: l === locale,
+}));
 ---
 
 <header class="border-b border-border bg-bg/95 sticky top-0 z-30 backdrop-blur-sm">
@@ -28,7 +51,7 @@ const searchHref = '/suche';
     <a
       href={home}
       class="flex items-center gap-2 group shrink-0"
-      aria-label={`${SITE.name} — ${locale === 'de' ? 'Startseite' : 'home'}`}
+      aria-label={`${SITE.name} — ${t.nav.home}`}
     >
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1" class="text-accent-secondary-deep" opacity="0.4" />
@@ -61,14 +84,60 @@ const searchHref = '/suche';
         <span class="hidden md:inline">{t.cta.search}</span>
       </a>
 
+      <div class="relative">
+        <button
+          id="locale-toggle"
+          type="button"
+          class="inline-flex items-center gap-1 text-sm text-text hover:text-accent-deep transition-colors px-3 py-2 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          aria-haspopup="menu"
+          aria-controls="locale-menu"
+          aria-expanded="false"
+          aria-label={t.languageLabel}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M2 12h20"></path>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="tabular tracking-wider">{LOCALE_CODE[locale]}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <ul
+          id="locale-menu"
+          role="menu"
+          aria-label={t.languageLabel}
+          class="hidden absolute right-0 mt-1 min-w-[10rem] bg-bg border border-border rounded-md shadow-elev py-1 text-sm list-none z-40"
+        >
+          {localeSwitcher.map((l) => (
+            <li role="none">
+              <a
+                role="menuitem"
+                hreflang={l.locale === 'de' ? 'de-DE' : l.locale === 'en' ? 'en-US' : l.locale === 'es' ? 'es-ES' : 'pt-BR'}
+                href={l.href}
+                aria-current={l.current ? 'true' : undefined}
+                class:list={[
+                  'flex items-center justify-between gap-3 px-3 py-2 hover:bg-surface transition-colors',
+                  l.current && 'text-accent-deep font-medium',
+                ]}
+              >
+                <span>{l.name}</span>
+                <span class="text-text-muted tabular text-xs">{l.code}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <button
         id="hamburger-toggle"
         type="button"
         class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-text hover:text-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         aria-controls="mobile-nav"
         aria-expanded="false"
-        aria-label={locale === 'de' ? 'Menü öffnen' : 'Open menu'}
-        data-close-label={locale === 'de' ? 'Menü schließen' : 'Close menu'}
+        aria-label={t.chrome.menuOpen}
+        data-close-label={t.chrome.menuClose}
       >
         <svg id="hamburger-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -93,6 +162,7 @@ const searchHref = '/suche';
 </header>
 
 <script>
+  // Hamburger
   const toggle = document.getElementById('hamburger-toggle') as HTMLButtonElement | null;
   const nav = document.getElementById('mobile-nav');
   const iconOpen = document.getElementById('hamburger-icon-open');
@@ -108,6 +178,32 @@ const searchHref = '/suche';
       iconOpen.classList.toggle('hidden', next);
       iconClose.classList.toggle('hidden', !next);
       toggle.setAttribute('aria-label', next ? (closeLabelAttr ?? 'Close menu') : openLabel);
+    });
+  }
+
+  // Locale dropdown
+  const localeToggle = document.getElementById('locale-toggle') as HTMLButtonElement | null;
+  const localeMenu = document.getElementById('locale-menu');
+
+  if (localeToggle && localeMenu) {
+    const close = () => {
+      localeToggle.setAttribute('aria-expanded', 'false');
+      localeMenu.classList.add('hidden');
+    };
+    localeToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const next = localeToggle.getAttribute('aria-expanded') !== 'true';
+      localeToggle.setAttribute('aria-expanded', String(next));
+      localeMenu.classList.toggle('hidden', !next);
+    });
+    document.addEventListener('click', (e) => {
+      if (!(e.target instanceof Node) || !localeMenu.contains(e.target)) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        close();
+        localeToggle.focus();
+      }
     });
   }
 </script>
