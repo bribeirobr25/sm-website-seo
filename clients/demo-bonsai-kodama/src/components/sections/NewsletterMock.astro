@@ -1,0 +1,64 @@
+---
+import type { Locale } from '@/lib/site';
+import { SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isDe = locale === 'de';
+---
+
+<section class="bg-inverted-bg text-inverted-text" aria-labelledby="newsletter-heading">
+  <div class="container-page py-20 sm:py-24">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-[11px] tracking-[0.32em] uppercase text-accent font-semibold mb-6">
+        {isDe ? 'Newsletter' : 'Newsletter'}
+      </p>
+      <h2 id="newsletter-heading" class="font-display text-4xl sm:text-5xl text-inverted-text leading-[1.1] italic">
+        {isDe ? SITE.newsletter.name : SITE.newsletter.nameEn}
+      </h2>
+      <p class="mt-6 text-lg text-inverted-text-muted leading-relaxed max-w-2xl mx-auto">
+        {isDe ? SITE.newsletter.description : SITE.newsletter.descriptionEn}
+      </p>
+
+      <form class="mt-10 max-w-md mx-auto" data-newsletter-form>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            required
+            placeholder={isDe ? 'du@example.com' : 'you@example.com'}
+            aria-label={isDe ? 'E-Mail-Adresse' : 'Email address'}
+            class="flex-1 px-5 py-3 min-h-[52px] rounded-md bg-inverted-surface border border-inverted-text-muted/40 text-inverted-text placeholder:text-inverted-text-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+          />
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center px-6 py-3 min-h-[52px] text-base font-medium rounded-md bg-accent-deep text-bg hover:bg-text hover:text-bg transition-colors"
+          >
+            {isDe ? 'Abonnieren' : 'Subscribe'}
+          </button>
+        </div>
+        <p data-thanks class="hidden mt-4 text-sm text-accent italic">
+          ✦ {isDe ? 'Danke. Bitte den Bestätigungs-Link in deinem Posteingang anklicken.' : 'Thanks. Please click the confirmation link in your inbox.'}
+        </p>
+        <p class="mt-6 text-xs text-inverted-text-muted italic">
+          ⚠ {isDe ? 'Mockup — kein echter Versand. Diese Demo speichert nichts.' : 'Mockup — not a real signup. This demo stores nothing.'}
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector('[data-newsletter-form]') as HTMLFormElement | null;
+  const thanks = form?.querySelector('[data-thanks]') as HTMLElement | null;
+  if (form && thanks) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      form.querySelector('input')?.setAttribute('disabled', 'true');
+      form.querySelector('button')?.setAttribute('disabled', 'true');
+      thanks.classList.remove('hidden');
+    });
+  }
+</script>

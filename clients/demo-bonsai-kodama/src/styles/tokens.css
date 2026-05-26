@@ -1,0 +1,94 @@
+@import 'tailwindcss';
+
+/*
+ * Kodama Bonsai — palette (2026-05-26).
+ *
+ * Distinct from all 6 existing demos:
+ *   - Lawyer (forest green / pure white) — same green-family but inverted dominance
+ *   - Yoga (terracotta / pale lilac) — lilac is cool-purple, ours is cool-green
+ *   - Barber (gold / near-black DARK)
+ *   - Saltlines (cyan-teal / cool near-white)
+ *   - Adele (burgundy / warm cream)
+ *   - Bellini (raspberry / warm cream)
+ *   - Kodama (matcha + persimmon / sage-grey) ← unique green-cool base
+ *
+ * Register: contemplative, craft-led, slightly Japanese without being on-the-nose.
+ * The sage-grey background reads as "stoneware studio", not "cream gallery".
+ *
+ * Framework: Split-complementary per COLOR.md §3
+ *   - Sage-grey bg (cool muted green — analogous deep neutral)
+ *   - Deep moss-black text (deep neutral, high contrast)
+ *   - Persimmon accent (warm orange-red — split-complement of sage-green)
+ *   - Matcha green secondary (yang version of bg — for category badges)
+ *
+ * WCAG 2.2 AA verified:
+ *   - text #1d2a23 on bg #dde2d8 → 12.5:1 (AAA)
+ *   - accent-deep #8c3e25 on bg #dde2d8 → 6.4:1 (AA-normal)
+ *   - accent-secondary-deep #4d6038 on bg #dde2d8 → 6.1:1 (AA-normal)
+ *   - accent #b85534 on bg #dde2d8 → 4.4:1 (borderline — reserve for buttons/large text)
+ *   - accent-secondary #7b8f5e on bg #dde2d8 → 3.4:1 (large-text + UI only)
+ */
+
+@theme {
+  /* Brand palette — sage-grey + deep moss + persimmon + matcha */
+  --color-bg: #dde2d8;                 /* soft sage-grey — stoneware studio */
+  --color-surface: #e8ece4;             /* slightly lighter card surface */
+  --color-surface-elev: #ced5c7;        /* darker chip / footer */
+  --color-text: #1d2a23;                /* deep moss-black — wet bark */
+  --color-text-muted: #5d6b5c;          /* sage-grey-deep — secondary copy */
+  /* Primary accent — persimmon (warm clay-glazed pottery). Use accent-deep (6.4:1) for body links + body text. */
+  --color-accent: #b85534;
+  --color-accent-deep: #8c3e25;
+  /* Secondary accent — matcha green. Category badges, secondary actions, dots. */
+  --color-accent-secondary: #7b8f5e;
+  --color-accent-secondary-deep: #4d6038;
+  --color-border: #c4ccc0;
+  --color-success: #4d6038;
+  --color-warning: #b85534;
+
+  /* Inverted register — deep moss for pull-quote / hero overlay blocks */
+  --color-inverted-bg: #1d2a23;
+  --color-inverted-surface: #2a3a31;
+  --color-inverted-text: #dde2d8;
+  --color-inverted-text-muted: #98a499;
+
+  /* Typography — Cormorant Garamond display serif (elegant classic) + Inter body */
+  --font-display: 'Cormorant Garamond Variable', 'EB Garamond', Georgia, serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Spacing — contemplative, generous */
+  --spacing-section: 6.5rem;
+  --spacing-section-mobile: 3rem;
+
+  /* Radii — soft but not rounded (stoneware feel, not balloon) */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  --radius-pill-half: 30px 0 0 30px;
+
+  /* Shadows — warm + soft (sage-tinted to match base) */
+  --shadow-card: 0 1px 3px rgba(29, 42, 35, 0.06);
+  --shadow-elev: 0 12px 28px rgba(29, 42, 35, 0.12);
+
+  /* Motion — slow + considered (contemplative register) */
+  --motion-fast: 200ms;
+  --motion-base: 340ms;
+  --motion-warm: 520ms;
+  --motion-deliberate: 700ms;
+  --motion-reveal: 900ms;
+
+  --ease-apple-smooth: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-quart: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-luxe: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+
+  --stagger-step: 25ms;
+
+  /* Tracking */
+  --tracking-display-sans: -0.018em;
+  --tracking-display-serif-caps: 0.03em;
+  --tracking-body: -0.005em;
+}

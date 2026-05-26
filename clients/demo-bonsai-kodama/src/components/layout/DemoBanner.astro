@@ -1,0 +1,18 @@
+---
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const text = SITE.i18n[locale].demoBanner;
+---
+
+<div
+  class="bg-surface-elev/70 border-b border-border text-[11px] sm:text-xs tracking-wide text-text-muted text-center px-4 py-1.5 font-light"
+  role="region"
+  aria-label="Demo notice"
+>
+  {text}
+</div>

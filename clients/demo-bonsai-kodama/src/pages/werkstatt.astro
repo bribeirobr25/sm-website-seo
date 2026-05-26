@@ -1,0 +1,81 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import NewsletterMock from '@/components/sections/NewsletterMock.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`;
+const dayLabels = { Mon: 'Mo', Tue: 'Di', Wed: 'Mi', Thu: 'Do', Fri: 'Fr', Sat: 'Sa', Sun: 'So' };
+---
+
+<BaseLayout
+  title="Werkstatt"
+  description="Kodama Bonsai — eine kleine Werkstatt in Berlin Prenzlauer Berg. Kollwitzstraße 76, Kollwitzplatz."
+  locale={locale}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-6">Über die Werkstatt</p>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05] italic">
+            Vier Wände, vier Regale, 80 Bäume.
+          </h1>
+          <div class="mt-8 space-y-5 text-lg text-text-muted leading-relaxed">
+            <p>
+              Kodama Bonsai ist eine kleine Werkstatt im Erdgeschoss eines Altbaus an der Kollwitzstraße in Prenzlauer Berg. Hannes Wakabayashi (Bonsai-Meister-Ausbildung Saitama 2014–2018) und Marlene Reuter (Forstwissenschaft TU Berlin) haben sie 2019 eröffnet — als Werkstatt, nicht als Verkaufsstelle.
+            </p>
+            <p>
+              Was wir tun: 80 Bäume pflegen, davon 24 in der öffentlichen Sammlung dokumentiert. Workshops für Anfänger (jeden zweiten Samstag), individuelle Werkstatt-Stunden für Fortgeschrittene (nach Vereinbarung). Plus alle 14 Tage einen Brief — Saison-Kalender, Detail-Fotos, was wir gerade machen.
+            </p>
+            <p>
+              Was wir nicht tun: Bäume verkaufen. Wer einen Baum sucht, schickt eine Mail — wir vermitteln zu unserer kleinen Liste an Züchtern in Sachsen-Anhalt, Bayern und Norditalien, denen wir vertrauen.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface-elev border-y border-border">
+      <div class="container-page py-16 sm:py-20">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+          <div class="bg-surface rounded-md p-8 border border-border space-y-2">
+            <p class="font-display text-2xl text-text italic">{SITE.name}</p>
+            <p class="text-text">{SITE.address.street}</p>
+            <p class="text-text-muted">{SITE.address.postalCode} {SITE.address.city} — {SITE.address.neighborhood}</p>
+            <p class="text-text-muted pt-2">
+              <a href={`tel:${SITE.phone}`} class="text-accent-deep hover:text-text underline tabular">{SITE.phoneDisplay}</a>
+            </p>
+            <p class="text-text-muted">
+              <a href={`mailto:${SITE.email}`} class="text-accent-deep hover:text-text underline">{SITE.email}</a>
+            </p>
+            <div class="pt-4 flex flex-wrap gap-3">
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-3 min-h-[44px] text-sm font-semibold uppercase tracking-wider rounded-md bg-accent-deep text-bg hover:bg-text hover:text-bg transition-colors">
+                In Google Maps öffnen
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-surface rounded-md p-8 border border-border space-y-5">
+            <p class="text-xs uppercase tracking-[0.18em] text-accent-secondary-deep font-semibold">Werkstatt-Öffnungszeiten</p>
+            <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-base tabular max-w-xs">
+              {SITE.hours.workshop.map((h) => (
+                <>
+                  <dt class="text-text-muted">{dayLabels[h.day as keyof typeof dayLabels]}</dt>
+                  <dd class="text-text">{h.open && h.close ? `${h.open} – ${h.close}` : 'geschlossen'}</dd>
+                </>
+              ))}
+            </dl>
+            <p class="text-xs text-text-muted italic pt-4">Werkstatt-Stunden nur nach Vereinbarung per E-Mail.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <NewsletterMock locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

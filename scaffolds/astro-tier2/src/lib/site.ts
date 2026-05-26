@@ -119,6 +119,46 @@ export const SITE = {
     //   source: 'GA4: phone_click + whatsapp_click events',
     // },
   ],
+
+  // i18n — REQUIRED by BaseLayout + CookieBanner + DemoBanner.
+  // The `consent` block is locale-driven per LEGAL.md §Cookie consent banner spec
+  // (DSGVO/LGPD/RGPD parity). The `tagline` becomes the default page description
+  // + OG description when not overridden by a page-level prop.
+  // Customize per client + per jurisdiction. Add more keys (nav, cta, sections)
+  // as needed — `Header.astro` / `Footer.astro` / page components pull from here.
+  i18n: {
+    de: {
+      tagline: 'TODO: einzeiliges Wertversprechen auf Deutsch.',
+      consent: {
+        title: 'Cookies — bitte um deine Zustimmung.',
+        bodyBefore:
+          'Wir verwenden essentielle Cookies, damit die Seite funktioniert. Mit deiner Zustimmung auch anonymisierte Analyse-Cookies. Mehr in unserer ',
+        privacyLinkLabel: 'Datenschutzerklärung',
+        privacyLinkHref: '/datenschutz',
+        bodyAfter: '.',
+        accept: 'Alle akzeptieren',
+        reject: 'Alle ablehnen',
+        manage: 'Cookie-Einstellungen verwalten',
+      },
+      demoBanner: 'BEISPIEL — Demo-Phase. Echte Inhalte folgen mit echtem Material.',
+    },
+    en: {
+      tagline: 'TODO: one-line value prop in English.',
+      consent: {
+        title: 'Cookies — please confirm your preference.',
+        bodyBefore:
+          'We use essential cookies so the site works. With your consent we also use anonymised analytics. More in our ',
+        privacyLinkLabel: 'privacy policy',
+        privacyLinkHref: '/privacy',
+        bodyAfter: '.',
+        accept: 'Accept all',
+        reject: 'Reject all',
+        manage: 'Manage cookie preferences',
+      },
+      demoBanner: 'EXAMPLE — demo phase. Real content to follow with real material.',
+    },
+  },
 } as const;
 
+export type Locale = 'de' | 'en';
 export type Site = typeof SITE;

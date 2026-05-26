@@ -1,0 +1,42 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import TreeCard from '@/components/sections/TreeCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { TREES } from '@/lib/trees';
+
+const locale = 'de' as const;
+const trees = [...TREES].sort((a, b) => a.popularName.de.localeCompare(b.popularName.de));
+---
+
+<BaseLayout
+  title="24 Bonsai-Arten"
+  description="Die vollständige Sammlung: 10 Indoor- und 14 Outdoor-Arten mit Pflegehinweisen, Stilen, Techniken und Vermehrung."
+  locale={locale}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg border-b border-border">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-6">Die Sammlung</p>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.1] italic">
+            Vierundzwanzig Arten.
+          </h1>
+          <p class="mt-6 text-lg text-text-muted leading-[1.7]">
+            Alphabetisch geordnet. Filter nach Standort und Einsteiger-Eignung über die Pfeil-Tasten am Kopf jeder Karte. Volltext-Suche unter <a href="/suche" class="text-accent-deep underline">Suche</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg pb-24">
+      <div class="container-page py-12">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {trees.map((tree) => <TreeCard tree={tree} locale={locale} />)}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

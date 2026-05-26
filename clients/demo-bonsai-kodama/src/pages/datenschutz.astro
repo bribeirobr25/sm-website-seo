@@ -1,0 +1,100 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+---
+
+<BaseLayout title="Datenschutzerklärung" description="Datenschutzerklärung nach DSGVO für Kodama Bonsai." locale={locale}>
+  <Header locale={locale} />
+  <main id="main">
+    <article class="container-page py-16 sm:py-24 max-w-3xl space-y-10">
+      <header>
+        <h1 class="font-display text-4xl sm:text-5xl text-text italic">Datenschutzerklärung</h1>
+        <p class="mt-2 text-text-muted">Stand: 26. Mai 2026</p>
+      </header>
+
+      <section class="space-y-3">
+        <h2 class="font-display text-2xl text-text">1. Verantwortlicher</h2>
+        <p>Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:</p>
+        <p>
+          {SITE.legal.legalEntity}<br />
+          {SITE.address.street}, {SITE.address.postalCode} {SITE.address.city}<br />
+          E-Mail: <a href={`mailto:${SITE.legal.dataControllerEmail}`} class="text-accent-deep underline">{SITE.legal.dataControllerEmail}</a><br />
+          Telefon: {SITE.legal.dataControllerPhone}
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="font-display text-2xl text-text">2. Erhebung und Speicherung personenbezogener Daten</h2>
+        <p>Beim Besuch dieser Website werden automatisch Informationen allgemeiner Natur erfasst (Server-Logfiles). Diese sind technischer Art, beispielsweise der verwendete Webbrowser, das Betriebssystem oder der Zeitpunkt des Seitenaufrufs. Diese Informationen werden technisch notwendig verarbeitet, um Ihnen die korrekte Anzeige der von Ihnen aufgerufenen Webseite zu liefern.</p>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der technisch fehlerfreien Darstellung).</p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="font-display text-2xl text-text">3. Newsletter</h2>
+        <p>Diese Demo-Website verarbeitet bei Newsletter-Anmeldungen <strong>keine Daten</strong>. Das Formular ist ein nicht-funktionales Mockup. In einer Produktivumgebung würden wir das Double-Opt-In-Verfahren mit Bestätigungs-E-Mail einsetzen und die Versanddienstleistung über einen DSGVO-konformen Anbieter (z. B. Brevo, Mailjet — Server in der EU) abwickeln.</p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="font-display text-2xl text-text">4. Cookies und Tracking</h2>
+        <p>Wir setzen technisch notwendige Cookies ein (Cookie-Banner-Zustand). Analyse-Cookies und externe Skripte werden ausschließlich nach Ihrer ausdrücklichen Einwilligung über den Cookie-Banner geladen. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie die Cookies in den Browsereinstellungen löschen.</p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="font-display text-2xl text-text">5. Eingebundene Drittdienste</h2>
+        <ul class="list-disc list-inside space-y-2 text-text-muted">
+          {SITE.legal.processors.map((p) => (
+            <li><strong class="text-text">{p.name}</strong> — {p.purpose} (Standort: {p.location})</li>
+          ))}
+        </ul>
+        <p class="text-sm pt-2">Mit den genannten Auftragsverarbeitern bestehen Auftragsverarbeitungsverträge nach Art. 28 DSGVO.</p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="font-display text-2xl text-text">6. Speicherdauer</h2>
+        <p>Wir speichern personenbezogene Daten nur so lange, wie es für die jeweiligen Zwecke erforderlich ist oder gesetzliche Aufbewahrungsfristen dies vorschreiben:</p>
+        <ul class="list-disc list-inside space-y-1 text-text-muted">
+          <li>Server-Logfiles: 7–14 Tage, anschließend automatische Löschung</li>
+          <li>Cookie-Einstellungen (lokal im Browser gespeichert): bis zu 180 Tage oder bis zur Löschung durch Sie</li>
+          <li>E-Mail-Korrespondenz: bis zur vollständigen Bearbeitung Ihres Anliegens; gesetzliche Aufbewahrungsfristen nach HGB/AO können längere Speicherung erfordern (max. 10 Jahre für handelsrechtlich relevante Vorgänge)</li>
+        </ul>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="font-display text-2xl text-text">7. Datensicherheit</h2>
+        <p>Diese Website nutzt TLS-Verschlüsselung (HTTPS) für die gesamte Datenübertragung. Wir setzen die folgenden technischen Schutzmaßnahmen ein:</p>
+        <ul class="list-disc list-inside space-y-1 text-text-muted">
+          <li>Strict-Transport-Security (HSTS) mit Preload</li>
+          <li>Content-Security-Policy zur Verhinderung von Cross-Site-Scripting</li>
+          <li>X-Frame-Options und X-Content-Type-Options gegen Clickjacking und MIME-Sniffing</li>
+          <li>Zugang zu Verwaltungsbereichen ausschließlich über mehrstufige Authentifizierung</li>
+        </ul>
+        <p>Trotz dieser Maßnahmen kann eine vollständig sichere Datenübertragung über das Internet nicht garantiert werden.</p>
+      </section>
+
+      <section class="space-y-3">
+        <h2 class="font-display text-2xl text-text">8. Ihre Rechte</h2>
+        <p>Ihnen stehen folgende Rechte zu:</p>
+        <ul class="list-disc list-inside space-y-1 text-text-muted">
+          <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
+          <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
+          <li>Recht auf Löschung (Art. 17 DSGVO)</li>
+          <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+          <li>Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</li>
+          <li>Widerspruchsrecht (Art. 21 DSGVO)</li>
+          <li>Recht auf Beschwerde bei der Aufsichtsbehörde (Art. 77 DSGVO)</li>
+        </ul>
+        <p class="pt-2">Zur Ausübung Ihrer Rechte kontaktieren Sie bitte: <a href={`mailto:${SITE.legal.dataControllerEmail}`} class="text-accent-deep underline">{SITE.legal.dataControllerEmail}</a></p>
+      </section>
+
+      <section class="space-y-3 text-text-muted text-sm">
+        <h2 class="font-display text-xl text-text">9. Aufsichtsbehörde</h2>
+        <p>Die für uns zuständige Aufsichtsbehörde ist die Berliner Beauftragte für Datenschutz und Informationsfreiheit, Friedrichstr. 219, 10969 Berlin.</p>
+      </section>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

@@ -1,0 +1,219 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import TreeCard from '@/components/sections/TreeCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { treeArticleSchema } from '@/lib/seo/schema';
+import { SITE } from '@/lib/site';
+import { TREES, type Tree } from '@/lib/trees';
+
+export async function getStaticPaths() {
+  return TREES.map((tree) => ({ params: { slug: tree.slug }, props: { tree } }));
+}
+
+interface Props {
+  tree: Tree;
+}
+
+const { tree } = Astro.props;
+const locale = 'de' as const;
+
+// Related trees: same category OR either side is 'both', exclude self, max 3
+const related = TREES.filter(
+  (t) => t.slug !== tree.slug && (t.category === tree.category || t.category === 'both' || tree.category === 'both'),
+).slice(0, 3);
+
+// Absolute URLs for OG + schema (relative paths break social previews)
+const treeUrl = new URL(`/trees/${tree.slug}`, SITE.url).toString();
+const ogImageUrl = new URL(tree.photos[0].src, SITE.url).toString();
+const articleSchema = treeArticleSchema({
+  popularName: tree.popularName[locale],
+  scientificName: tree.scientificName,
+  description: tree.introduction[locale],
+  url: treeUrl,
+  imageUrl: ogImageUrl,
+  category: tree.category,
+});
+
+const catLabel = tree.category === 'indoor' ? 'Indoor' : tree.category === 'outdoor' ? 'Outdoor' : 'Indoor + Outdoor';
+
+const careRows = [
+  { icon: 'sun', label: 'Licht', value: tree.care.sun[locale] },
+  { icon: 'soil', label: 'Substrat', value: tree.care.soil[locale] },
+  { icon: 'water', label: 'Gießen', value: tree.care.watering[locale] },
+  { icon: 'fert', label: 'Düngen', value: tree.care.fertilizing[locale] },
+  { icon: 'temp', label: 'Temperatur', value: tree.care.temperature[locale] },
+  { icon: 'cut', label: 'Schnitt', value: tree.care.pruning[locale] },
+];
+---
+
+<BaseLayout
+  title={`${tree.popularName[locale]} (${tree.scientificName})`}
+  description={tree.introduction[locale]}
+  locale={locale}
+  ogImage={ogImageUrl}
+  extraSchema={articleSchema}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <!-- Hero: photo left, identity right -->
+    <section class="bg-bg border-b border-border">
+      <div class="container-page py-12 sm:py-16">
+        <a href="/trees" class="inline-block mb-8 text-sm text-text-muted hover:text-accent-deep transition-colors">← Zurück zur Übersicht</a>
+        <div class="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-16 items-start">
+          <div class="aspect-[4/3] rounded-lg overflow-hidden border border-border bg-surface-elev">
+            <img src={tree.photos[0].src} alt={tree.photos[0].alt[locale]} width="2400" height="1800" loading="eager" decoding="async" fetchpriority="high" class="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div class="flex gap-2 flex-wrap mb-6">
+              <span class="inline-block bg-accent-secondary-deep text-bg text-[10px] uppercase tracking-[0.15em] font-semibold px-3 py-1 rounded-sm">{catLabel}</span>
+              {tree.beginnerFriendly && (
+                <span class="inline-block bg-accent text-bg text-[10px] uppercase tracking-[0.15em] font-semibold px-3 py-1 rounded-sm">Einsteiger</span>
+              )}
+            </div>
+            <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05] italic">{tree.popularName[locale]}</h1>
+            <p class="mt-3 font-display text-xl text-text-muted italic">{tree.scientificName}</p>
+
+            <dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
+              <div>
+                <dt class="text-text-muted text-xs uppercase tracking-[0.15em] font-semibold">Familie</dt>
+                <dd class="mt-1 text-text">{tree.family}</dd>
+              </div>
+              <div>
+                <dt class="text-text-muted text-xs uppercase tracking-[0.15em] font-semibold">Herkunft</dt>
+                <dd class="mt-1 text-text">{tree.origin}</dd>
+              </div>
+              <div>
+                <dt class="text-text-muted text-xs uppercase tracking-[0.15em] font-semibold">Standort</dt>
+                <dd class="mt-1 text-text">{catLabel}</dd>
+              </div>
+              <div>
+                <dt class="text-text-muted text-xs uppercase tracking-[0.15em] font-semibold">Vermehrung</dt>
+                <dd class="mt-1 text-text">{tree.propagation.method}</dd>
+              </div>
+            </dl>
+
+            <p class="mt-8 text-base text-text leading-relaxed">{tree.introduction[locale]}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Photo gallery (2 more photos) -->
+    <section class="bg-surface border-y border-border">
+      <div class="container-page py-12">
+        <div class="grid sm:grid-cols-2 gap-5">
+          {tree.photos.slice(1).map((photo) => (
+            <figure class="aspect-[4/3] rounded-md overflow-hidden border border-border bg-surface-elev">
+              <img src={photo.src} alt={photo.alt[locale]} loading="lazy" decoding="async" class="w-full h-full object-cover" />
+            </figure>
+          ))}
+        </div>
+        <p class="mt-4 text-xs text-text-muted/70 italic">⚠ Stockfotografie (Unsplash CC0). Echtes art-spezifisches Fotomaterial folgt mit der Werkstatt-Dokumentation.</p>
+      </div>
+    </section>
+
+    <!-- Care grid -->
+    <section class="bg-bg" aria-labelledby="care-heading">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-10">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Pflege</p>
+          <h2 id="care-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">Wie er gepflegt wird.</h2>
+        </div>
+        <dl class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {careRows.map((row) => (
+            <div class="bg-surface border border-border rounded-md p-6">
+              <dt class="text-[11px] uppercase tracking-[0.18em] text-accent-secondary-deep font-semibold">{row.label}</dt>
+              <dd class="mt-3 text-text leading-relaxed">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- Styles -->
+    <section class="bg-surface border-y border-border" aria-labelledby="styles-heading">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-10">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Gestaltung</p>
+          <h2 id="styles-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">Häufige Stile.</h2>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-5">
+          {tree.styles.map((style) => (
+            <div class="bg-bg border border-border rounded-md p-6">
+              <p class="font-display text-2xl text-text italic">{style.name}</p>
+              <p class="mt-3 text-sm text-text leading-relaxed">{style.de}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Techniques timeline -->
+    <section class="bg-bg" aria-labelledby="techniques-heading">
+      <div class="container-page py-16 sm:py-20">
+        <div class="max-w-2xl mb-10">
+          <p class="text-[11px] tracking-[0.28em] uppercase text-accent-secondary-deep font-semibold">Werkstatt-Kalender</p>
+          <h2 id="techniques-heading" class="mt-3 font-display text-3xl sm:text-4xl text-text leading-[1.15] italic">Wichtige Techniken.</h2>
+          <p class="mt-4 text-text-muted leading-relaxed">Zeitpunkt und Mindestalter sind verbindlich. Wer zur falschen Jahreszeit drahtet oder ohne Mindestalter umtopft, riskiert den Baum.</p>
+        </div>
+        <ol class="space-y-5 list-none p-0">
+          {tree.techniques.map((tech, idx) => (
+            <li class="bg-surface border border-border rounded-md p-6 sm:p-7 grid sm:grid-cols-[120px_1fr] gap-6 items-start">
+              <div class="font-display text-5xl text-accent-secondary-deep italic tabular">{String(idx + 1).padStart(2, '0')}</div>
+              <div>
+                <p class="font-display text-2xl text-text">{tech.name[locale]}</p>
+                <div class="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.15em] font-semibold">
+                  <span class="text-accent-deep">Zeitpunkt:</span><span class="text-text">{tech.period[locale]}</span>
+                </div>
+                <div class="mt-1 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.15em] font-semibold">
+                  <span class="text-accent-deep">Mindestalter:</span><span class="text-text">{tech.minimumAge}</span>
+                </div>
+                <p class="mt-4 text-text leading-relaxed">{tech.description[locale]}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Propagation -->
+    <section class="bg-inverted-bg text-inverted-text" aria-labelledby="prop-heading">
+      <div class="container-page py-16 sm:py-20">
+        <div class="grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16 items-start">
+          <div>
+            <p class="text-[11px] tracking-[0.28em] uppercase text-accent font-semibold">Vermehrung</p>
+            <h2 id="prop-heading" class="mt-3 font-display text-3xl sm:text-4xl text-inverted-text leading-[1.15] italic">Wie ein neuer Baum entsteht.</h2>
+          </div>
+          <div class="space-y-6 text-inverted-text-muted leading-relaxed">
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.18em] text-accent font-semibold">Methode</p>
+              <p class="mt-1 text-inverted-text text-xl font-display">{tree.propagation.method}</p>
+            </div>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.18em] text-accent font-semibold">Zeitpunkt</p>
+              <p class="mt-1 text-inverted-text">{tree.propagation.period[locale]}</p>
+            </div>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.18em] text-accent font-semibold">Nachpflege</p>
+              <p class="mt-1 text-inverted-text">{tree.propagation.postCare[locale]}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related trees -->
+    <section class="bg-bg" aria-labelledby="related-heading">
+      <div class="container-page py-16 sm:py-20">
+        <h2 id="related-heading" class="font-display text-2xl sm:text-3xl text-text leading-[1.15] italic mb-8">
+          Weiter erkunden.
+        </h2>
+        <div class="grid sm:grid-cols-3 gap-5">
+          {related.map((t) => <TreeCard tree={t} locale={locale} />)}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

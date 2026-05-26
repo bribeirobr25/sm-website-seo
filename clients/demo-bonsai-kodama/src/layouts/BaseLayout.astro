@@ -1,0 +1,143 @@
+---
+import '@/styles/global.css';
+import '@fontsource-variable/cormorant-garamond';
+import '@fontsource-variable/inter';
+import DemoBanner from '@/components/layout/DemoBanner.astro';
+import CookieBanner from '@/components/ui/CookieBanner.astro';
+import { businessSchema } from '@/lib/seo/schema';
+import { type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  locale?: Locale;
+  alternateLocaleUrl?: string;
+  extraSchema?: Record<string, unknown> | null;
+}
+
+const {
+  title = SITE.name,
+  description,
+  ogImage = `${SITE.url}/img/og-default.png`,
+  noindex = true,
+  locale = 'de',
+  alternateLocaleUrl,
+  extraSchema = null,
+} = Astro.props;
+
+const t = SITE.i18n[locale];
+const localizedDescription = description ?? (locale === 'de' ? SITE.tagline : SITE.taglineEn);
+const canonical = new URL(Astro.url.pathname, SITE.url).toString();
+const schema = JSON.stringify(businessSchema());
+const htmlLang = locale === 'de' ? 'de-DE' : 'en-US';
+const ogLocale = htmlLang.replace('-', '_');
+const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
+
+// BreadcrumbList JSON-LD per SEO.md §schema — skip on home (single-segment).
+function deriveBreadcrumbs(pathname: string, pageTitle: string) {
+  const cleanPath = pathname.replace(/\/$/, '');
+  const segments = cleanPath.split('/').filter(Boolean);
+  if (segments.length === 0) return null;
+  if (segments.length === 1 && segments[0] === 'en') return null;
+  const items: Array<{ name: string; href: string }> = [
+    { name: locale === 'de' ? 'Startseite' : 'Home', href: locale === 'de' ? '/' : '/en/' },
+  ];
+  // For deep paths like /trees/ficus-retusa, add intermediate Trees crumb
+  if (segments.length >= 2 && segments[0] === 'trees') {
+    items.push({ name: locale === 'de' ? '24 Bäume' : '24 trees', href: '/trees' });
+  }
+  items.push({ name: pageTitle, href: cleanPath });
+  return items;
+}
+
+const breadcrumbItems = deriveBreadcrumbs(Astro.url.pathname, title);
+const breadcrumbSchema = breadcrumbItems
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbItems.map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: b.name,
+        item: new URL(b.href, SITE.url).toString(),
+      })),
+    }
+  : null;
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title === SITE.name ? title : `${title} · ${SITE.name}`}</title>
+    <meta name="description" content={localizedDescription} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="canonical" href={canonical} />
+    {alternateLocaleUrl && (
+      <link rel="alternate" hreflang={otherLocale === 'en' ? 'en' : 'de'} href={alternateLocaleUrl} />
+    )}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={localizedDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name} — ${locale === 'de' ? SITE.tagline : SITE.taglineEn}`} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={localizedDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline type="application/ld+json" set:html={schema} />
+    {breadcrumbSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    )}
+    {extraSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(extraSchema)} />
+    )}
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-accent-deep focus:text-bg focus:px-4 focus:py-2 focus:z-50"
+    >
+      {locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}
+    </a>
+
+    <DemoBanner locale={locale} />
+
+    <slot />
+
+    <CookieBanner locale={locale} />
+
+    <script>
+      import '@/lib/analytics';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

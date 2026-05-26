@@ -58,8 +58,8 @@ The minimum useful set:
 |-------|-----|
 | `page_view` | Sessions, top pages — automatic, doesn't need an explicit handler |
 | `cta_click` | Did the primary action (call, WhatsApp, directions, reservation link) actually get clicked? |
-| `phone_link_clicked` | Specific instrumentation for `tel:` clicks — most local-business conversions |
-| `whatsapp_link_clicked` | Same for `wa.me/…` links |
+| `phone_click` | Specific instrumentation for `tel:` clicks — most local-business conversions |
+| `whatsapp_click` | Same for `wa.me/…` links |
 | `directions_link_clicked` | Same for Google Maps "Open in Maps" links |
 | `contact_form_submission_success` | Form completion |
 | `contact_form_submission_failure` | Form completion blocked (rate-limit, validation, ESP failure) |
@@ -80,7 +80,9 @@ The retainer reporting (Section 7) flows naturally from this set.
 
 ## 2. Event naming convention
 
-`{feature}_{action}` in snake_case, past tense for completed actions.
+**Canonical source: `KPI.md` §Event naming convention.** This section reconciled 2026-05-26 after a 2026-05-25 cross-tree audit found that KPI.md and ANALYTICS.md had drifted (KPI.md `phone_click` vs ANALYTICS.md `phone_link_clicked`). Every shipped demo uses the KPI.md convention; ANALYTICS.md now matches.
+
+`{feature}_{action}` in snake_case. Click events use **bare `_click`** (per KPI.md — shorter, what's actually shipped), not `_clicked`. Completed multi-step actions use `_completed`.
 
 | Pattern | Example |
 |---------|---------|
@@ -88,17 +90,17 @@ The retainer reporting (Section 7) flows naturally from this set.
 | `{feature}_completed` | `contact_form_completed`, `booking_completed` |
 | `{feature}_failed` | `contact_form_failed`, `payment_failed` |
 | `{feature}_cancelled` | `contact_form_cancelled` |
-| `{element}_clicked` | `phone_link_clicked`, `cta_button_clicked` |
+| `{element}_click` | `phone_click`, `whatsapp_click`, `nav_link_click`, `cta_button_click` |
 | `{element}_viewed` | `services_section_viewed`, `menu_pdf_viewed` |
 | `{element}_changed` | `language_changed`, `date_picker_changed` |
 | `{element}_copied` | `referral_link_copied` |
-| `{element}_shared` | `share_completed` (with `platform` parameter) |
+| `share_click` | with `platform` parameter (`whatsapp` / `email` / `twitter` / etc.) |
 | `{element}_downloaded` | `menu_pdf_downloaded` |
 
 **Rules:**
 
 1. **snake_case, lowercase, no spaces, no camelCase.** GA4 / Clarity normalize differently — pick one and stick to it.
-2. **Past tense for completed actions** — `submitted`, not `submit`; `clicked`, not `click`. The event represents something that happened, not an instruction.
+2. **Bare `_click` for click events** (not `_clicked`) — matches what every shipped demo uses. For other completed multi-step actions, use past tense `_completed`, `_failed`, `_submitted`.
 3. **Prefix by feature area** so the dashboard can group: `contact_*`, `menu_*`, `booking_*`, `nav_*`.
 4. **Constants in code, never string literals at call site:**
 
@@ -108,8 +110,8 @@ export const CONTACT_EVENTS = {
   FORM_STARTED: 'contact_form_started',
   FORM_COMPLETED: 'contact_form_completed',
   FORM_FAILED: 'contact_form_failed',
-  PHONE_CLICKED: 'phone_link_clicked',
-  WHATSAPP_CLICKED: 'whatsapp_link_clicked',
+  PHONE_CLICKED: 'phone_click',
+  WHATSAPP_CLICKED: 'whatsapp_click',
 } as const;
 
 // At call site
@@ -429,8 +431,8 @@ track('language_changed', { locale, timestamp, from_locale, to_locale });
 ### CTA clicks
 
 ```typescript
-track('phone_link_clicked', { locale, timestamp, position: 'header' | 'hero' | 'footer' | 'sticky_cta' });
-track('whatsapp_link_clicked', { locale, timestamp, position: ... });
+track('phone_click', { locale, timestamp, position: 'header' | 'hero' | 'footer' | 'sticky_cta' });
+track('whatsapp_click', { locale, timestamp, position: ... });
 track('directions_link_clicked', { locale, timestamp });
 track('reservation_link_clicked', { locale, timestamp, provider: 'thefork' | 'opentable' | 'direct' });
 track('menu_pdf_downloaded', { locale, timestamp });

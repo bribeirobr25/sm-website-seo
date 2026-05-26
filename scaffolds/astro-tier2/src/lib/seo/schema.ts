@@ -56,7 +56,7 @@ export function businessSchema(): Record<string, unknown> {
     name: SITE.name,
     description: SITE.tagline,
     url: SITE.url,
-    image: `${SITE.url}/og-default.jpg`,
+    image: `${SITE.url}/img/og-default.png`,
     telephone: SITE.phone,
     address: {
       '@type': 'PostalAddress',

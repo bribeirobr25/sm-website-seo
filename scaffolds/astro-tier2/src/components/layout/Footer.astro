@@ -51,12 +51,30 @@ const currentYear = new Date().getFullYear();
 
       <div class="space-y-3 text-sm">
         <p class="uppercase tracking-wider text-text-muted text-xs">Legal</p>
-        <!-- TODO: add per-jurisdiction legal links per docs/design/LEGAL.md mapping -->
-        <p>
-          <a href="/privacy-policy" class="text-text-muted hover:text-accent transition-colors">
-            Privacy Policy
-          </a>
-        </p>
+        <!-- TODO: per-jurisdiction legal links per docs/design/LEGAL.md mapping -->
+        <ul class="space-y-2 list-none p-0">
+          <li>
+            <a href="/datenschutz" class="text-text-muted hover:text-accent transition-colors">
+              Datenschutzerklärung
+            </a>
+          </li>
+          <li>
+            <a href="/impressum" class="text-text-muted hover:text-accent transition-colors">
+              Impressum
+            </a>
+          </li>
+          <li>
+            <!-- "Manage cookie preferences" — REQUIRED per LEGAL.md §Required UI components.
+                 Dispatches `consent:reopen` event that CookieBanner listens for. -->
+            <button
+              type="button"
+              id="footer-manage-cookies"
+              class="text-text-muted hover:text-accent transition-colors text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
+            >
+              Cookie-Einstellungen verwalten
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -65,3 +83,9 @@ const currentYear = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<script>
+  document.getElementById('footer-manage-cookies')?.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('consent:reopen'));
+  });
+</script>

@@ -1,0 +1,45 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import TreeCard from '@/components/sections/TreeCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTreesByCategory } from '@/lib/trees';
+
+const locale = 'de' as const;
+const trees = getTreesByCategory('outdoor');
+---
+
+<BaseLayout
+  title="Outdoor-Bonsai"
+  description="Heimische und winterharte Bonsai-Arten für Balkon und Garten. 14 Arten — Koniferen, Laubbäume und blühende Sorten."
+  locale={locale}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg border-b border-border">
+      <div class="container-page py-16 sm:py-24">
+        <div class="max-w-3xl">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-6">Draußen — ganzjährig</p>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-text leading-[1.05] italic">
+            Bäume für Balkon und Garten.
+          </h1>
+          <p class="mt-8 text-lg text-text-muted leading-[1.7]">
+            14 Arten, die in Berlin (Klimazone 7b) ganzjährig draußen gehalten werden — Koniferen, Laubbäume und blühende Sorten. Drei Gruppen: japanische Klassiker (Kiefern, Ahorne, Lärche, Hinoki, Ume), europäische heimische (Buche, Waldkiefer, Zierquitte) und mediterrane Spezies (Olive — braucht frostfreies Winterquartier).
+          </p>
+          <p class="mt-4 text-text-muted leading-[1.7]">
+            <strong class="text-text">Outdoor heißt outdoor.</strong> Diese Bäume brauchen Wechsel der Jahreszeiten. Wer einen Wacholder oder eine Buche ins Wohnzimmer stellt, tötet ihn in einer Saison. Im Winter kommen sie an einen geschützten Platz im Freien, mit Wurzelballenschutz, aber NICHT ins Warme.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg pb-24">
+      <div class="container-page py-12">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {trees.map((tree) => <TreeCard tree={tree} locale={locale} />)}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

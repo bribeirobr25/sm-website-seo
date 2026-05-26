@@ -1,5 +1,5 @@
 /**
- * Cookie consent — LGPD-aligned per LEGAL.md §BR + §Cookie consent banner.
+ * Cookie consent — DSGVO/TTDSG-aligned per LEGAL.md §DE + §Cookie consent banner.
  *
  * Pattern: consent-first script blocking. Scripts tagged with
  * `type="text/plain"` + `data-cookie-category` are upgraded to real

@@ -1,0 +1,128 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SEARCH_INDEX, TREES } from '@/lib/trees';
+
+const locale = 'de' as const;
+// Serialize index for client
+const indexJson = JSON.stringify(SEARCH_INDEX);
+const treesByCategory = {
+  indoor: TREES.filter((t) => t.category === 'indoor' || t.category === 'both').length,
+  outdoor: TREES.filter((t) => t.category === 'outdoor' || t.category === 'both').length,
+};
+---
+
+<BaseLayout
+  title="Suche"
+  description="Bonsai-Baum suchen — nach Trivialname, wissenschaftlichem Namen, Familie oder Herkunft."
+  locale={locale}
+>
+  <Header locale={locale} />
+  <main id="main">
+    <section class="bg-bg border-b border-border">
+      <div class="container-page py-12 sm:py-16">
+        <div class="max-w-3xl">
+          <p class="text-[11px] tracking-[0.32em] uppercase text-accent-secondary-deep font-semibold mb-6">Suche</p>
+          <h1 class="font-display text-4xl sm:text-5xl text-text leading-[1.05] italic">
+            Welchen Baum suchst du?
+          </h1>
+          <p class="mt-6 text-text-muted leading-relaxed">
+            Tippe einen deutschen oder englischen Namen, einen wissenschaftlichen Namen (Ficus retusa, Pinus thunbergii), eine botanische Familie (Pinaceae, Rosaceae) oder eine Herkunftsregion (Japan, Mediterranean).
+          </p>
+
+          <form class="mt-8" data-search-form>
+            <label for="search" class="sr-only">Bonsai-Baum suchen</label>
+            <div class="relative">
+              <input
+                type="search"
+                id="search"
+                autocomplete="off"
+                placeholder="Ficus, Pinus, Acer, Rosaceae, …"
+                class="w-full px-6 py-4 min-h-[60px] text-lg bg-surface border border-border rounded-md text-text placeholder:text-text-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-deep focus:border-accent-secondary-deep"
+              />
+            </div>
+            <div class="mt-4 flex flex-wrap gap-2 text-xs">
+              <button type="button" data-filter="indoor" class="px-3 py-1.5 rounded-full border border-border text-text-muted hover:border-accent-secondary-deep hover:text-text transition-colors">Nur Indoor ({treesByCategory.indoor})</button>
+              <button type="button" data-filter="outdoor" class="px-3 py-1.5 rounded-full border border-border text-text-muted hover:border-accent-secondary-deep hover:text-text transition-colors">Nur Outdoor ({treesByCategory.outdoor})</button>
+              <button type="button" data-filter="beginner" class="px-3 py-1.5 rounded-full border border-border text-text-muted hover:border-accent-secondary-deep hover:text-text transition-colors">Nur Einsteiger-Bäume</button>
+              <button type="button" data-filter="clear" class="px-3 py-1.5 rounded-full border border-border text-accent-deep hover:text-text transition-colors">Filter zurücksetzen</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg pb-24">
+      <div class="container-page py-12">
+        <p class="text-sm text-text-muted mb-6" data-search-status>
+          24 Bäume insgesamt.
+        </p>
+        <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none p-0" data-search-results>
+          <!-- populated via JS -->
+        </ul>
+        <p class="hidden mt-10 text-center text-text-muted italic" data-search-empty>
+          Keine Treffer — versuche es mit einem anderen Suchbegriff oder setze die Filter zurück.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>
+
+<script is:inline define:vars={{ indexJson, locale }}>
+  const INDEX = JSON.parse(indexJson);
+  const input = document.getElementById('search');
+  const results = document.querySelector('[data-search-results]');
+  const status = document.querySelector('[data-search-status]');
+  const empty = document.querySelector('[data-search-empty]');
+  const filters = document.querySelectorAll('[data-filter]');
+
+  let activeFilter = null;
+
+  function render() {
+    const q = (input.value || '').trim().toLowerCase();
+    let list = INDEX;
+    if (activeFilter === 'indoor') list = list.filter((t) => t.category === 'indoor' || t.category === 'both');
+    if (activeFilter === 'outdoor') list = list.filter((t) => t.category === 'outdoor' || t.category === 'both');
+    if (activeFilter === 'beginner') list = list.filter((t) => t.beginnerFriendly);
+    if (q) list = list.filter((t) => t.searchBlob.includes(q));
+
+    results.innerHTML = list.map((t) => {
+      const cat = t.category === 'indoor' ? 'Indoor' : t.category === 'outdoor' ? 'Outdoor' : 'Indoor + Outdoor';
+      const name = locale === 'de' ? t.popularNameDe : t.popularNameEn;
+      const beginnerBadge = t.beginnerFriendly ? '<span class="inline-block bg-accent-secondary-deep text-bg text-[10px] uppercase tracking-[0.12em] font-semibold px-2 py-1 rounded-sm mr-2">Einsteiger</span>' : '';
+      return `<li><a href="/trees/${t.slug}" class="block bg-surface border border-border rounded-md p-5 hover:border-accent-secondary-deep transition-colors">
+        <div class="flex flex-wrap gap-2 mb-3">${beginnerBadge}<span class="inline-block bg-bg text-text text-[10px] uppercase tracking-[0.12em] font-semibold px-2 py-1 rounded-sm border border-border">${cat}</span></div>
+        <p class="font-display text-xl text-text">${name}</p>
+        <p class="mt-1 text-xs italic text-text-muted">${t.scientificName}</p>
+        <p class="mt-2 text-[11px] uppercase tracking-[0.12em] text-accent-secondary-deep font-semibold">${t.family} · ${t.origin}</p>
+      </a></li>`;
+    }).join('');
+
+    if (list.length === 0) {
+      empty.classList.remove('hidden');
+      status.textContent = '0 Treffer';
+    } else {
+      empty.classList.add('hidden');
+      status.textContent = `${list.length} ${list.length === 1 ? 'Treffer' : 'Treffer'}${q ? ` für "${q}"` : ''}`;
+    }
+  }
+
+  input.addEventListener('input', render);
+  filters.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const f = btn.getAttribute('data-filter');
+      activeFilter = f === 'clear' ? null : (activeFilter === f ? null : f);
+      if (f === 'clear') input.value = '';
+      filters.forEach((b) => b.classList.remove('bg-accent-secondary', 'text-bg', 'border-accent-secondary'));
+      if (activeFilter) {
+        const active = document.querySelector(`[data-filter="${activeFilter}"]`);
+        active?.classList.add('bg-accent-secondary', 'text-bg', 'border-accent-secondary');
+      }
+      render();
+    });
+  });
+
+  render();
+</script>

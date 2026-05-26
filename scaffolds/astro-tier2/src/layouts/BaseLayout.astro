@@ -1,70 +1,129 @@
 ---
+/**
+ * Base layout — ships with: localized title/description, canonical URL, OG + Twitter,
+ * JSON-LD schema injection, BreadcrumbList auto-derivation, hreflang alternate,
+ * DemoBanner, locale-aware CookieBanner.
+ *
+ * DO NOT OVERWRITE THIS FILE with a custom rewrite in per-client setup.
+ * If a page needs additional schema, pass `extraSchema` prop. If a page has a
+ * locale-alternate, pass `alternateLocaleUrl`. The features here are the
+ * agency-baseline; bypassing them costs SEO + accessibility (see the 2026-05-26
+ * Kodama-bonsai audit incident where a hand-rebuilt BaseLayout dropped JSON-LD,
+ * BreadcrumbList, hreflang, and the OG image path simultaneously).
+ *
+ * Per-client setup customizes: the schema function in `src/lib/seo/schema.ts`
+ * (LocalBusiness → most-specific subtype) and the `i18n[locale].consent` +
+ * `i18n[locale].demoBanner` blocks in `src/lib/site.ts`.
+ */
 import '@/styles/global.css';
+import DemoBanner from '@/components/layout/DemoBanner.astro';
 import CookieBanner from '@/components/ui/CookieBanner.astro';
-import { SITE } from '@/lib/site';
 import { businessSchema } from '@/lib/seo/schema';
+import { type Locale, SITE } from '@/lib/site';
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
   noindex?: boolean;
+  locale?: Locale;
+  alternateLocaleUrl?: string;
+  /** Pass per-page extra schema (Article / BreadcrumbList already auto-emitted) */
+  extraSchema?: Record<string, unknown> | null;
 }
 
 const {
   title = SITE.name,
-  description = SITE.tagline,
-  ogImage = `${SITE.url}/og-default.jpg`,
-  // Demo phase: noindex defaults to true. Flip to false at production cutover.
+  description,
+  ogImage = `${SITE.url}/img/og-default.png`,
+  // Demo phase: ALWAYS noindex. Per CLAUDE.md "Demo discipline" — never flip during portfolio phase.
   noindex = true,
+  locale = 'de',
+  alternateLocaleUrl,
+  extraSchema = null,
 } = Astro.props;
 
+const t = SITE.i18n[locale];
+const localizedDescription = description ?? t.tagline;
 const canonical = new URL(Astro.url.pathname, SITE.url).toString();
 const schema = JSON.stringify(businessSchema());
+const htmlLang = locale === 'de' ? 'de-DE' : 'en-US';
+const ogLocale = htmlLang.replace('-', '_');
+const otherLocale: Locale = locale === 'de' ? 'en' : 'de';
+
+// BreadcrumbList JSON-LD per SEO.md §schema — skip on home (single-segment).
+// Derives from URL path: /en/page → [Home → Page], /datenschutz → [Home → Privacy].
+function deriveBreadcrumbs(pathname: string, pageTitle: string) {
+  const cleanPath = pathname.replace(/\/$/, '');
+  const segments = cleanPath.split('/').filter(Boolean);
+  if (segments.length === 0) return null;
+  if (segments.length === 1 && segments[0] === 'en') return null;
+  const items: Array<{ name: string; href: string }> = [
+    { name: locale === 'de' ? 'Startseite' : 'Home', href: locale === 'de' ? '/' : '/en/' },
+  ];
+  items.push({ name: pageTitle, href: cleanPath });
+  return items;
+}
+
+const breadcrumbItems = deriveBreadcrumbs(Astro.url.pathname, title);
+const breadcrumbSchema = breadcrumbItems
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbItems.map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: b.name,
+        item: new URL(b.href, SITE.url).toString(),
+      })),
+    }
+  : null;
 ---
 
 <!doctype html>
-<html lang={SITE.locale}>
+<html lang={htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>{title === SITE.name ? title : `${title} · ${SITE.name}`}</title>
-    <meta name="description" content={description} />
-
+    <meta name="description" content={localizedDescription} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="canonical" href={canonical} />
+    {alternateLocaleUrl && (
+      <link rel="alternate" hreflang={otherLocale === 'en' ? 'en' : 'de'} href={alternateLocaleUrl} />
+    )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Open Graph -->
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={localizedDescription} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
+    <meta property="og:image:alt" content={`${SITE.name} — ${t.tagline}`} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content={SITE.locale.replace('-', '_')} />
+    <meta property="og:locale" content={ogLocale} />
 
-    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={localizedDescription} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
 
-    <!-- Schema.org @graph — replace `businessSchema` with vertical-specific generator -->
     <script is:inline type="application/ld+json" set:html={schema} />
+    {breadcrumbSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    )}
+    {extraSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(extraSchema)} />
+    )}
 
     <!--
       Analytics tags are consent-gated via type="text/plain" pattern.
       Per LEGAL.md §Cookie consent banner — universal spec.
-      The CookieBanner script upgrades these on consent.
       TODO: replace G-XXXXXX with the real GA4 measurement ID at production cutover.
     -->
     <script
@@ -91,14 +150,15 @@ const schema = JSON.stringify(businessSchema());
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-accent focus:text-bg focus:px-4 focus:py-2 focus:z-50"
     >
-      Skip to content
+      {locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}
     </a>
+
+    <DemoBanner locale={locale} />
 
     <slot />
 
-    <CookieBanner />
+    <CookieBanner locale={locale} />
 
-    <!-- Analytics layer — registers window.track for use by components -->
     <script>
       import '@/lib/analytics';
     </script>
