@@ -1,0 +1,11 @@
+# Demo phase — block all indexing
+# Flip to "Allow: /" + add Sitemap line at production cutover.
+# Note: at the production-cutover flip, KEEP these `Disallow` lines:
+#   - /_demo/         (internal component demos, never indexed)
+#   - /contract       (internal contract form, never indexed)
+#   - /de/contract    (DE version of contract form, never indexed)
+User-agent: *
+Disallow: /
+Disallow: /_demo/
+Disallow: /contract
+Disallow: /de/contract

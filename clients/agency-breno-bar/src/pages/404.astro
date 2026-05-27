@@ -1,0 +1,36 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" noindex={true}>
+  <Header />
+
+  <main id="main" class="section">
+    <div class="container-page text-center max-w-xl mx-auto">
+      <p class="text-sm uppercase tracking-[0.18em] text-text-muted">404</p>
+      <h1 class="mt-4 text-4xl sm:text-5xl text-text">Page not found</h1>
+      <p class="mt-6 text-text-muted leading-relaxed">
+        The page you're looking for doesn't exist or has moved. Head back to the home page or browse the portfolio.
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-3 justify-center">
+        <a
+          href="/"
+          class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium"
+        >
+          Back to home
+        </a>
+        <a
+          href="/portfolio"
+          class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full border border-border text-text hover:border-text transition-colors text-sm font-medium"
+        >
+          View portfolio
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

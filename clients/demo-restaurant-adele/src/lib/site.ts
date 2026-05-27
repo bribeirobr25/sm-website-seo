@@ -19,8 +19,8 @@ export const SITE = {
   locales: ['de', 'en'] as const,
 
   // Contact
-  phone: '+493020457800',
-  phoneDisplay: '+49 30 2045 7800',
+  phone: '+4930000000006',
+  phoneDisplay: '+49 30 0000 00006',
   whatsapp: '493020457800',
   email: 'reservierung@adele-berlin.de',
 
@@ -293,7 +293,7 @@ export const SITE = {
     register: { court: 'Amtsgericht Charlottenburg', number: 'HRB 345678 B' },
     ustId: 'DE345678901',
     dataControllerEmail: 'datenschutz@adele-berlin.de',
-    dataControllerPhone: '+49 30 2045 7800',
+    dataControllerPhone: '+4930000000006',
     processors: [
       { name: 'Vercel', purpose: 'Hosting (CDN, EU region routing)', location: 'EU + US' },
       {

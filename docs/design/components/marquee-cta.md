@@ -151,7 +151,7 @@ The visitor sees the same word — but reads it as a tiny *motion event*. **Cost
 **Related but different patterns:**
 - "Letter-flip" CTAs (per-character translateY) — these are noticeably different in look (each letter animates independently rather than the label as a block). The per-character split pattern lives in `per-character-split.md`.
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a boutique / artisan / agency client with flat, no-state-feedback CTAs:
 

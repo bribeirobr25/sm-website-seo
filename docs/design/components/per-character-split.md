@@ -130,7 +130,7 @@ GSAP's pattern (measured in Really Up There §7) is to set `will-change` *once a
 
 Both portfolios. Confirms the pattern is reserved for the creative-industries / agency-self register.
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a portfolio / agency-self site that wants letter-level interactivity:
 

@@ -115,7 +115,7 @@ A high-emphasis reservation / booking / quote CTA rendered as a **half-pill** �
 - Full pill (rounded both sides) — see `DESIGN-BEST-PRACTICES.md` §7 Primary CTA button using `var(--radius-full)`. Use the full pill when the CTA is *centered* in the layout, not edge-anchored.
 - Fixed-position floating action button (mobile) — see `DESIGN-BEST-PRACTICES.md` §7 "Sticky service-CTA bubble (mobile)". The half-pill is NOT a mobile FAB; on small viewports it stays in the nav row.
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a client's existing site and a missing reservation/booking CTA is the finding, reference this component:
 

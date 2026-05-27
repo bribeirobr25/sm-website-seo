@@ -132,7 +132,7 @@ A hero pattern where a single photograph fills the viewport bottom-anchored, wit
 | Coffee Fellows | https://www.coffee-fellows.com/ | Full-bleed but with brand name baked IN the photo — anti-pattern source (do NOT copy the wordmark-in-image trick) |
 | Watch House | https://watchhouse.com/ | Half-and-half image pair variant (use FullBleedHero for the single-image version; use a custom split for the pair) |
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a gastronomy client whose hero is the template-y "grid with photo on right":
 

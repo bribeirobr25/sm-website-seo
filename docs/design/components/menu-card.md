@@ -156,7 +156,7 @@ a.mnc-card:hover img {
 | Watch House | Category cards in the "House favourites" section | Square cards + serif name + 1-line description, no price visible (Watch House sells in-store) |
 | Espressohouse | Drink-of-the-month featured row | 3-card row centered, larger imagery |
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a gastronomy client whose menu page is a 2-col text-only list with ≥6 items per category:
 

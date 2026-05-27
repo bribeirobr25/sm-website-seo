@@ -129,7 +129,7 @@ A row of 2-4 large numeric callouts — each a single oversized digit/number-str
 
 Only one site in the study uses this exact pattern, but the move is widely used across service-business landings — the codification here gives our agency a single canonical implementation.
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a service-business client whose trust signals are buried in prose:
 

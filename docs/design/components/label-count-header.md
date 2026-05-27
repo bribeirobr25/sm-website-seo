@@ -102,7 +102,7 @@ The fallback `ui-monospace, 'SF Mono', Menlo, monospace` is the OS-native mono s
 
 **Pattern confirmed across 3 independent sites** in the study — the strongest single signal that "mono = catalog label" is a 2026 convention worth codifying.
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a client's existing site with a generic-looking menu / portfolio section header (e.g., styled the same as a hero headline), reference this component:
 

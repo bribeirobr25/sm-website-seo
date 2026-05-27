@@ -105,7 +105,7 @@ The SEO trade-off is real: the `h1` is the most-indexed element on the page; red
 
 **Pattern confirmed across 3 independent sites.** Each one breaks the conventional hierarchy in the same direction.
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing an agency-self or portfolio site that lacks visual restraint:
 

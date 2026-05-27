@@ -1,0 +1,37 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+---
+
+<BaseLayout title="Server error" noindex={true}>
+  <Header />
+
+  <main id="main" class="section">
+    <div class="container-page text-center max-w-xl mx-auto">
+      <p class="text-sm uppercase tracking-[0.18em] text-text-muted">500</p>
+      <h1 class="mt-4 text-4xl sm:text-5xl text-text">Something went wrong</h1>
+      <p class="mt-6 text-text-muted leading-relaxed">
+        That's on us, not you. The error has been reported (no personal data — just the technical signal). Email us directly and we'll get back to you within a business day.
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-3 justify-center">
+        <a
+          href={`mailto:${SITE.email}`}
+          class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium"
+        >
+          Email {SITE.email}
+        </a>
+        <a
+          href="/"
+          class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full border border-border text-text hover:border-text transition-colors text-sm font-medium"
+        >
+          Back to home
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

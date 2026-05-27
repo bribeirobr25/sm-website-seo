@@ -1,0 +1,133 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { PORTFOLIO, type PortfolioEntry } from '@/lib/portfolio';
+import { portfolioCaseSchema } from '@/lib/seo/schema';
+import { LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
+
+export async function getStaticPaths() {
+  const locales: Locale[] = ['de', 'pt-br'];
+  const paths: Array<{
+    params: { locale: string; slug: string };
+    props: { locale: Locale; entry: PortfolioEntry };
+  }> = [];
+  for (const locale of locales) {
+    for (const entry of PORTFOLIO) {
+      paths.push({ params: { locale, slug: entry.slug }, props: { locale, entry } });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  locale: Locale;
+  entry: PortfolioEntry;
+}
+const { locale, entry } = Astro.props;
+const p = PAGE_STRINGS[locale].portfolio;
+const prefix = LOCALE_PREFIX[locale];
+const related = PORTFOLIO.filter((e) => e.slug !== entry.slug).slice(0, 3);
+const imageAbs = new URL(entry.imageSrc, SITE.url).toString();
+const articleSchema = portfolioCaseSchema({
+  title: entry.name,
+  description: entry.shortDescription[locale],
+  url: new URL(`${prefix}/portfolio/${entry.slug}`, SITE.url).toString(),
+  imageUrl: imageAbs,
+  liveSiteUrl: entry.liveUrl,
+  locale,
+});
+const caseStudyLabel = locale === 'de' ? 'Fallstudie' : 'Estudo de caso';
+const aboutThisProject = locale === 'de' ? 'Über dieses Projekt' : 'Sobre este projeto';
+const liveUrlLabel = locale === 'de' ? 'Live-URL' : 'URL ao vivo';
+const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto';
+---
+
+<BaseLayout
+  title={`${entry.name} — ${p.detailTitleSuffix}`}
+  description={`${p.detailDescriptionPrefix} ${entry.shortDescription[locale]}`}
+  locale={locale}
+  localePath={`/portfolio/${entry.slug}`}
+  ogImage={imageAbs}
+  extraSchema={articleSchema}
+>
+  <Header locale={locale} localePath={`/portfolio/${entry.slug}`} />
+  <main id="main">
+    <section class="bg-bg">
+      <div class="container-page py-12 sm:py-16">
+        <a href={`${prefix}/portfolio`} class="inline-block mb-8 text-sm text-text-muted hover:text-text transition-colors">{p.backToPortfolio}</a>
+        <div class="max-w-3xl">
+          <p class="text-[11px] tracking-[0.12em] uppercase text-accent-deep font-medium">{entry.vertical}</p>
+          <h1 class="mt-4 font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-text leading-[1.04] tracking-[-0.03em]">{entry.name}</h1>
+          <p class="mt-6 text-xl text-text-muted leading-[1.5]">{entry.shortDescription[locale]}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-surface">
+      <div class="container-page py-8 sm:py-12">
+        <div class="rounded-[22px] overflow-hidden border border-border shadow-elev">
+          <img src={entry.imageSrc} alt={entry.imageAlt[locale]} width="1600" height="1000" loading="eager" fetchpriority="high" decoding="async" class="w-full h-auto" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-bg">
+      <div class="container-page grid lg:grid-cols-[2fr_1fr] gap-12 lg:gap-20">
+        <div>
+          <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{caseStudyLabel}</p>
+          <h2 class="mt-4 font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] leading-[1.15] text-text">{aboutThisProject}</h2>
+          <p class="mt-8 text-lg text-text-muted leading-[1.65]">{entry.longDescription[locale]}</p>
+          <div class="mt-12 flex flex-wrap gap-3">
+            <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium">{p.visitLive} →</a>
+            <a href={`${prefix}/contact`} class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full border border-border text-text hover:border-text transition-colors text-sm font-medium">{startProject}</a>
+          </div>
+        </div>
+
+        <aside class="space-y-8">
+          <div>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{p.stackLabel}</p>
+            <p class="mt-2 text-text tabular text-sm">{entry.stackBadge}</p>
+          </div>
+          <div>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{p.verticalLabel}</p>
+            <p class="mt-2 text-text">{entry.vertical}</p>
+          </div>
+          <div>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{p.servicesLabel}</p>
+            <p class="mt-2 text-text capitalize">{entry.services.join(' · ')}</p>
+          </div>
+          <div>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{liveUrlLabel}</p>
+            <p class="mt-2 text-sm break-all">
+              <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="text-accent-deep hover:underline underline-offset-4">{entry.liveUrl}</a>
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    {related.length > 0 && (
+      <section class="section bg-surface border-t border-border">
+        <div class="container-page">
+          <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-text mb-10">{p.relatedCases}</h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {related.map((r) => (
+              <a href={`${prefix}/portfolio/${r.slug}`} class="group block rounded-[22px] overflow-hidden bg-bg border border-border hover:border-text/30 transition-colors">
+                <div class="aspect-[16/10] overflow-hidden bg-surface">
+                  <img src={r.imageSrc} alt={r.imageAlt[locale]} loading="lazy" decoding="async" width="1600" height="1000" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-[var(--motion-warm)]" />
+                </div>
+                <div class="p-5">
+                  <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{r.vertical}</p>
+                  <p class="mt-2 font-display text-lg font-semibold text-text">{r.name}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

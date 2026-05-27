@@ -122,7 +122,7 @@ For a hospitality / health / beauty business, **opening hours are the most-check
 
 Only one site in the study uses this exact pattern, but it's a strong-enough hospitality signal (and the audit-verified mobile behavior survives the hamburger collapse) that it's worth codifying for our agency template.
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a client whose hours are buried in the footer or behind a "Contact" page, reference this component:
 

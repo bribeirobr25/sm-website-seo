@@ -1,0 +1,36 @@
+{
+  "name": "agency-breno-bar",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "breno-bar — a small Berlin studio building websites for owner-led businesses. Trilingual (EN/DE/PT-BR) agency portfolio + contact form.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "biome check src/",
+    "lint:fix": "biome check --write src/",
+    "format": "biome format --write src/",
+    "validate:translations": "node --experimental-strip-types --no-warnings scripts/validate-translations.mjs",
+    "validate": "pnpm lint && pnpm validate:translations && pnpm build"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/vercel": "^10.0.7",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@sentry/astro": "^8.45.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "astro": "^6.0.0",
+    "resend": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@biomejs/biome": "^1.9.4",
+    "sharp": "^0.34.5",
+    "typescript": "^5.7.2"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

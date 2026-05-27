@@ -1,0 +1,379 @@
+---
+/**
+ * DE variant of the hidden contract form. Mirror of /contract (EN). DE is the
+ * binding language version per § 8 (s8LanguageBindingDe). Not routed via the
+ * [locale] dynamic template — kept as a dedicated static page so PT-BR doesn't
+ * accidentally generate a contract route.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { CONTRACT_STRINGS, SERVICE_SCOPES } from '@/lib/contract-strings';
+import { SITE } from '@/lib/site';
+
+const locale = 'de' as const;
+const c = CONTRACT_STRINGS[locale];
+const scopes = SERVICE_SCOPES[locale];
+
+const agencyAddressLine = `${SITE.address.street || '—'}, ${SITE.address.postalCode || '—'} ${SITE.address.city}, Deutschland`;
+const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: ausstehend' : `USt-IdNr: ${SITE.legal.taxId}`;
+---
+
+<BaseLayout
+  title="Dienstleistungsvertrag — intern"
+  description="Hidden contract template. Not for public consumption."
+  locale={locale}
+  noindex={true}
+>
+  <main id="main" class="bg-bg min-h-screen">
+    <div class="no-print bg-warning text-text border-y-2 border-text/30 py-3 px-6 text-sm leading-relaxed">
+      <strong>⚠ {c.draftBanner.split(' — ')[0]}</strong> — {c.draftBanner.split(' — ').slice(1).join(' — ')}
+    </div>
+
+    <section class="no-print bg-surface border-b border-border">
+      <div class="container-page py-12 max-w-4xl">
+        <h1 class="font-display text-3xl sm:text-4xl font-semibold text-text tracking-[-0.02em]">{c.pageTitle}</h1>
+        <p class="mt-3 text-text-muted leading-relaxed">{c.pageSubtitle}</p>
+
+        <form id="contract-form" class="mt-10 space-y-10">
+          <fieldset class="space-y-4">
+            <legend class="font-display text-lg font-semibold text-text">{c.partiesLabel}</legend>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientLegalForm}</span>
+                <select name="client_legal_form" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text">
+                  <option value="GbR">GbR</option>
+                  <option value="UG (haftungsbeschränkt)">UG (haftungsbeschränkt)</option>
+                  <option value="GmbH">GmbH</option>
+                  <option value="e.K.">e.K.</option>
+                  <option value="Einzelunternehmer">Einzelunternehmer</option>
+                  <option value="Freiberufler">Freiberufler</option>
+                  <option value="—">— (sonstige)</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientBusinessName}</span>
+                <input type="text" name="client_business_name" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientRepresentative}</span>
+                <input type="text" name="client_representative" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientRepresentativeRole}</span>
+                <input type="text" name="client_representative_role" placeholder="Geschäftsführer / Inhaber / …" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+            </div>
+            <div class="grid sm:grid-cols-[2fr_1fr_2fr] gap-4">
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientStreet}</span>
+                <input type="text" name="client_street" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientPostalCode}</span>
+                <input type="text" name="client_postal_code" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientCity}</span>
+                <input type="text" name="client_city" value="Berlin" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientEmail}</span>
+                <input type="email" name="client_email" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.clientUstId}</span>
+                <input type="text" name="client_ust_idnr" placeholder="DE…" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-xs text-text-subtle mt-1">{c.clientUstHint}</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="space-y-4">
+            <legend class="font-display text-lg font-semibold text-text">{c.servicesLabel}</legend>
+            <p class="text-sm text-text-muted">{c.servicesHint}</p>
+            {scopes.map((s) => (
+              <div class="border border-border rounded-md p-4 space-y-2">
+                <label class="flex items-start gap-3">
+                  <input type="checkbox" name={`svc_${s.slug}`} class="mt-1 svc-toggle" data-slug={s.slug} />
+                  <span class="text-sm font-medium text-text">{s.name}</span>
+                </label>
+                <label class="block ml-7">
+                  <span class="block text-xs text-text-subtle mb-1">{c.scopeEditableLabel}</span>
+                  <textarea name={`scope_${s.slug}`} rows="4" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text text-sm leading-relaxed">{s.defaultScope}</textarea>
+                </label>
+              </div>
+            ))}
+          </fieldset>
+
+          <fieldset class="space-y-4">
+            <legend class="font-display text-lg font-semibold text-text">{c.pricingLabel}</legend>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.buildFee}</span>
+                <input type="number" name="price_build" min="0" step="0.01" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.retainerFee}</span>
+                <input type="number" name="price_retainer" min="0" step="0.01" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-xs text-text-subtle mt-1">{c.retainerFeeHint}</span>
+              </label>
+            </div>
+            <div class="space-y-2">
+              <span class="block text-sm font-medium text-text">{c.vatLabel}</span>
+              <label class="flex items-start gap-3">
+                <input type="radio" name="vat_status" value="kleinunternehmer" checked class="mt-1" />
+                <span class="text-sm text-text">{c.vatKleinunternehmer}</span>
+              </label>
+              <label class="flex items-start gap-3">
+                <input type="radio" name="vat_status" value="regular" class="mt-1" />
+                <span class="text-sm text-text">{c.vatRegular}</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="space-y-4">
+            <legend class="font-display text-lg font-semibold text-text">{c.datesLabel}</legend>
+            <div class="grid sm:grid-cols-3 gap-4">
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.signatureDate}</span>
+                <input type="date" name="date_signature" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.startDate}</span>
+                <input type="date" name="date_start" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+              </label>
+              <label class="block">
+                <span class="block text-sm font-medium text-text mb-1">{c.goLiveDate}</span>
+                <input type="date" name="date_golive" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-xs text-text-subtle mt-1">{c.goLiveHint}</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="pt-4 flex items-center gap-4">
+            <button type="button" id="print-btn" class="inline-flex items-center justify-center px-6 py-3 min-h-[44px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium">
+              {c.printButton}
+            </button>
+            <p class="text-xs text-text-subtle">{c.printHint}</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="contract-doc bg-bg">
+      <article class="container-page py-16 max-w-3xl text-text">
+        <header class="mb-12 border-b border-border pb-8">
+          <p class="text-xs tracking-[0.18em] uppercase text-text-subtle font-medium">{c.contractSubtitle}</p>
+          <h1 class="mt-3 font-display text-4xl sm:text-5xl font-semibold tracking-[-0.02em]">{c.contractTitleH1}</h1>
+
+          <div class="mt-10 grid sm:grid-cols-2 gap-8">
+            <div>
+              <p class="text-xs uppercase tracking-[0.12em] text-text-subtle font-medium">{c.agencyHeading}</p>
+              <p class="mt-2 font-medium">{SITE.legal.legalEntity}</p>
+              <p class="text-sm text-text-muted">{agencyAddressLine}</p>
+              <p class="text-sm text-text-muted">{SITE.email}</p>
+              <p class="text-sm text-text-muted">{taxIdDisplay}</p>
+              <p class="text-xs text-text-subtle mt-2">{c.representedBy}: {SITE.founder}</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-[0.12em] text-text-subtle font-medium">{c.clientHeading}</p>
+              <p class="mt-2 font-medium"><span class="out-client-business-name">…</span> <span class="text-text-muted">(<span class="out-client-legal-form">—</span>)</span></p>
+              <p class="text-sm text-text-muted"><span class="out-client-street">…</span></p>
+              <p class="text-sm text-text-muted"><span class="out-client-postal-code">…</span> <span class="out-client-city">Berlin</span></p>
+              <p class="text-sm text-text-muted out-client-email">…</p>
+              <p class="text-sm text-text-muted">USt-IdNr: <span class="out-client-ust-idnr">—</span></p>
+              <p class="text-xs text-text-subtle mt-2">{c.representedBy}: <span class="out-client-representative">…</span> (<span class="out-client-representative-role">…</span>)</p>
+            </div>
+          </div>
+        </header>
+
+        <section class="mb-8">
+          <h2 class="font-display text-xl font-semibold mb-3">{c.s1Heading}</h2>
+          <p class="leading-relaxed text-sm">{c.s1Body}</p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="font-display text-xl font-semibold mb-3">{c.s2Heading}</h2>
+          <p class="text-sm leading-relaxed">{c.s2Intro}</p>
+          <div id="services-rendered" class="mt-4 space-y-4 text-sm">
+            <p class="out-no-services italic text-warning">{c.s2NoServicesSelected}</p>
+          </div>
+        </section>
+
+        <section class="mb-8 break-before-page">
+          <h2 class="font-display text-xl font-semibold mb-3">{c.s3Heading}</h2>
+          <ul class="space-y-2 text-sm leading-relaxed list-disc list-inside">
+            <li class="out-build-line">—</li>
+            <li class="out-retainer-line">—</li>
+            <li>{c.s3PaymentTerms}</li>
+            <li class="out-vat-line">—</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="font-display text-xl font-semibold mb-3">{c.s4Heading}</h2>
+          <ul class="space-y-2 text-sm leading-relaxed list-disc list-inside">
+            <li class="out-start-line">—</li>
+            <li>{c.s4MinimumTerm}</li>
+            <li>{c.s4Notice}</li>
+            <li>{c.s4ImmediateTermination}</li>
+            <li>{c.s4HandoverObligation}</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="font-display text-xl font-semibold mb-3">{c.s5Heading}</h2>
+          <p class="text-sm leading-relaxed mb-2">{c.s5ClientOwns}</p>
+          <p class="text-sm leading-relaxed">{c.s5AgencyKeeps}</p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="font-display text-xl font-semibold mb-3">{c.s6Heading}</h2>
+          <ul class="space-y-2 text-sm leading-relaxed list-disc list-inside">
+            <li>{c.s6LiabilityCap}</li>
+            <li>{c.s6LiabilityExclusions}</li>
+            <li>{c.s6Indemnification}</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="font-display text-xl font-semibold mb-3">{c.s7Heading}</h2>
+          <p class="text-sm leading-relaxed mb-2">{c.s7DataAvv}</p>
+          <p class="text-sm leading-relaxed">{c.s7Confidentiality}</p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="font-display text-xl font-semibold mb-3">{c.s8Heading}</h2>
+          <ul class="space-y-2 text-sm leading-relaxed list-disc list-inside">
+            <li>{c.s8Jurisdiction}</li>
+            <li>{c.s8WrittenForm}</li>
+            <li>{c.s8Severability}</li>
+            <li>{c.s8LanguageBindingDe}</li>
+          </ul>
+        </section>
+
+        <section class="mt-16 pt-8 border-t-2 border-text">
+          <h2 class="font-display text-xl font-semibold mb-8">{c.signaturesHeading}</h2>
+          <div class="grid sm:grid-cols-2 gap-12">
+            <div>
+              <p class="text-xs uppercase tracking-[0.12em] text-text-subtle font-medium mb-1">{c.agencyHeading}</p>
+              <p class="text-sm font-medium">{SITE.founder} — {SITE.legal.legalEntity}</p>
+              <div class="mt-12 border-t border-text pt-1 text-xs text-text-subtle">{c.signatureLineLabel}, {c.signaturePlace} + {c.signatureDateLabel}</div>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-[0.12em] text-text-subtle font-medium mb-1">{c.clientHeading}</p>
+              <p class="text-sm font-medium"><span class="out-client-representative">…</span> — <span class="out-client-business-name">…</span></p>
+              <div class="mt-12 border-t border-text pt-1 text-xs text-text-subtle">{c.signatureLineLabel}, {c.signaturePlace} + {c.signatureDateLabel}</div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="mt-16 pt-6 border-t border-border text-xs text-text-subtle text-center">
+          {c.footerNote} <span class="page-num"></span>
+        </footer>
+      </article>
+    </section>
+  </main>
+
+  <style is:global>
+    @media print {
+      .no-print { display: none !important; }
+      .contract-doc { padding-top: 0 !important; }
+      body { background: white; }
+      header, footer, nav, .reveal-rise { animation: none !important; opacity: 1 !important; transform: none !important; }
+      .break-before-page { break-before: page; page-break-before: always; }
+      .container-page { max-width: none !important; padding-inline: 1.5cm !important; }
+      article { font-size: 11pt; line-height: 1.45; }
+      h1 { font-size: 22pt; }
+      h2 { font-size: 13pt; margin-top: 18pt; }
+    }
+    @page { size: A4; margin: 1.5cm; }
+
+    .contract-doc { background: white; }
+    .contract-doc article { background: white; }
+  </style>
+
+  <script is:inline define:vars={{ locale, scopes: SERVICE_SCOPES[locale], strings: CONTRACT_STRINGS[locale] }}>
+    const form = document.getElementById('contract-form');
+    const today = new Date().toISOString().slice(0, 10);
+    form.querySelector('[name=date_signature]').value = today;
+    form.querySelector('[name=date_start]').value = today;
+
+    function eur(n) {
+      if (!Number.isFinite(n)) return '€ —';
+      return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(n);
+    }
+    function dateNice(s) {
+      if (!s) return '—';
+      const d = new Date(s + 'T00:00:00');
+      if (isNaN(d.getTime())) return '—';
+      return d.toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    function setText(sel, value) {
+      document.querySelectorAll(sel).forEach((el) => { el.textContent = value || '—'; });
+    }
+
+    function render() {
+      const fd = new FormData(form);
+      setText('.out-client-business-name', fd.get('client_business_name'));
+      setText('.out-client-legal-form', fd.get('client_legal_form'));
+      setText('.out-client-representative', fd.get('client_representative'));
+      setText('.out-client-representative-role', fd.get('client_representative_role'));
+      setText('.out-client-street', fd.get('client_street'));
+      setText('.out-client-postal-code', fd.get('client_postal_code'));
+      setText('.out-client-city', fd.get('client_city') || 'Berlin');
+      setText('.out-client-email', fd.get('client_email'));
+      setText('.out-client-ust-idnr', fd.get('client_ust_idnr') || '— (Kleinunternehmer § 19 UStG)');
+
+      const selectedSlugs = scopes.filter((s) => fd.get('svc_' + s.slug) === 'on').map((s) => s.slug);
+      const container = document.getElementById('services-rendered');
+      const noServicesEl = container.querySelector('.out-no-services');
+      container.querySelectorAll('.svc-block').forEach((el) => el.remove());
+      if (selectedSlugs.length === 0) {
+        noServicesEl.style.display = '';
+      } else {
+        noServicesEl.style.display = 'none';
+        selectedSlugs.forEach((slug, i) => {
+          const s = scopes.find((sc) => sc.slug === slug);
+          const scopeText = (fd.get('scope_' + slug) || s.defaultScope).toString();
+          const block = document.createElement('div');
+          block.className = 'svc-block';
+          block.innerHTML = `<p class="font-medium">${i + 1}. ${s.name}</p><p class="text-text-muted text-sm leading-relaxed mt-1"><strong class="text-text">${strings.s2ScopeIntroLabel}</strong> ${scopeText.replace(/[<>]/g, '')}</p>`;
+          container.appendChild(block);
+        });
+      }
+
+      const build = parseFloat(fd.get('price_build') || '0');
+      const retainer = parseFloat(fd.get('price_retainer') || '0');
+      const vatStatus = fd.get('vat_status') || 'kleinunternehmer';
+
+      document.querySelector('.out-build-line').textContent =
+        build > 0 ? strings.s3BuildFeeLine(eur(build)) : strings.s3BuildFeeLine('€ — (keine Aufbaugebühr)');
+      document.querySelector('.out-retainer-line').textContent =
+        retainer > 0 ? strings.s3RetainerLine(eur(retainer)) : strings.s3RetainerLine('€ — (kein Retainer)');
+
+      if (vatStatus === 'kleinunternehmer') {
+        document.querySelector('.out-vat-line').textContent = strings.s3VatKleinLine;
+      } else {
+        const net = build + retainer * 12;
+        const vat = net * 0.19;
+        const gross = net + vat;
+        document.querySelector('.out-vat-line').textContent = strings.s3VatRegularLine(eur(net), eur(vat), eur(gross));
+      }
+
+      const startDate = fd.get('date_start');
+      document.querySelector('.out-start-line').textContent = strings.s4Start(dateNice(startDate));
+    }
+
+    form.addEventListener('input', render);
+    form.addEventListener('change', render);
+    render();
+
+    document.getElementById('print-btn').addEventListener('click', () => {
+      window.print();
+    });
+  </script>
+</BaseLayout>

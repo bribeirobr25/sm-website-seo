@@ -13,7 +13,7 @@ This folder is the agency's **canonical reference for reusable UI components**. 
 - **Required CSS custom properties** + minimal standalone CSS snippet (makes the component scaffold-portable)
 - **Performance constraints** (mandatory for media-heavy components)
 - **Reference sites** with study §N anchors
-- **Bidirectional UI_REVIEW.md cross-link**
+- **Bidirectional archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link**
 - **Implementation pointer** to the working Astro / React file in `docs/design/components/_impl/`
 
 ---
@@ -144,7 +144,7 @@ Accordion   ──────► FAQ
 
 When deciding what to build first for a new client, build Tier 1 dependencies first if any Tier 5 component needs them.
 
-## Bidirectional use in `UI_REVIEW.md` audits
+## Bidirectional use in archived UI review (`audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md`) audits
 
 When auditing a client's existing site, reference these specs by file path. Example: *"Issue #3 — sticky CTA missing: adopt the half-pill sticky-edge CTA per `docs/design/components/half-pill-cta.md`."* Audit findings then point developers directly to the canonical implementation.
 

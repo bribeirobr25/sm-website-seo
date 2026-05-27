@@ -39,8 +39,8 @@ export const SITE = {
   locale: 'de-DE' as const,
 
   // Contact
-  phone: '+493090099142',
-  phoneDisplay: '+49 30 9009 9142',
+  phone: '+4930000000002',
+  phoneDisplay: '+49 30 0000 00002',
   email: 'hallo@kodama-bonsai.de',
 
   // Address
@@ -79,7 +79,7 @@ export const SITE = {
     registrationCourt: null,
     registrationNumber: null,
     dataControllerEmail: 'datenschutz@kodama-bonsai.de',
-    dataControllerPhone: '+493090099142',
+    dataControllerPhone: '+4930000000002',
     processors: [
       { name: 'Vercel', purpose: 'Hosting', location: 'EU (Frankfurt)' },
       { name: 'Sentry', purpose: 'Error monitoring (server-side)', location: 'EU (Frankfurt)' },

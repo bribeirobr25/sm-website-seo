@@ -1,0 +1,58 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const p = PAGE_STRINGS[locale].imprint;
+---
+
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/imprint">
+  <Header locale={locale} localePath="/imprint" />
+  <main id="main">
+    <article class="container-page py-20 sm:py-28 max-w-3xl">
+      <header class="mb-12">
+        <h1 class="font-display text-4xl sm:text-5xl text-text font-semibold tracking-[-0.02em]">{p.headingSuffix}</h1>
+        <p class="mt-3 text-text-muted">{p.intro}</p>
+      </header>
+
+      <div class="space-y-10 text-text-muted leading-relaxed">
+        <section>
+          <h2 class="font-display text-xl font-semibold text-text">{p.providerHeading}</h2>
+          <p class="mt-3">{SITE.legal.legalEntity}</p>
+          <p>Berlin, Germany</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-text">{p.representedByHeading}</h2>
+          <p class="mt-3">{SITE.legal.legalRepresentatives}</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-text">{p.contactHeading}</h2>
+          <p class="mt-3">
+            <a href={`mailto:${SITE.email}`} class="text-accent-deep hover:underline underline-offset-4">{SITE.email}</a>
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-text">{p.vatHeading}</h2>
+          <p class="mt-3">{p.vatNote} {SITE.legal.taxId}</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-text">{p.disputeHeading}</h2>
+          <p class="mt-3">{p.disputeBody}</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-text">{p.disclaimerHeading}</h2>
+          <p class="mt-3">{p.disclaimerBody}</p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

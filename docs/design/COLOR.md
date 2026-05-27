@@ -104,7 +104,7 @@ A `pnpm validate` block does NOT check items 3-6 — those are visual/judgment. 
 
 ---
 
-## 6. Anti-patterns (audit gate — `UI_REVIEW.md` flags any of these)
+## 6. Anti-patterns (audit gate — archived UI review (`audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md`) flags any of these)
 
 | # | Anti-pattern | Why it fails |
 |---|---|---|

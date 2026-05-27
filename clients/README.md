@@ -34,6 +34,6 @@ Read these BEFORE drafting your first real `docs/clients/[slug]/` doc set — th
 
 - Root `CLAUDE.md` §How to start a new client project — the canonical workflow
 - `scaffolds/README.md` — what's in each scaffold + the "must NOT be in this scaffold" purity constraints
-- `docs/design/components/_impl/README.md` — the 8 canonical components + 5 universal primitives
+- `docs/design/components/_impl/README.md` — the 32 canonical components (6 tiers) + 6 universal primitives
 - `docs/design/_impl/README.md` — non-component canonical assets (lib, legal pages, configs, Sentry)
 - `docs/audit/PENDING.md` — agency-level backlog aggregator + historical "Recently resolved" log of how this architecture emerged

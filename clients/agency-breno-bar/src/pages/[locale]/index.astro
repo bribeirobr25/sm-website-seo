@@ -1,0 +1,144 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { getFeaturedPortfolio } from '@/lib/portfolio';
+import { SERVICE_SLUGS } from '@/lib/services';
+import { LOCALE_PREFIX, type Locale } from '@/lib/site';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'de' }, props: { locale: 'de' as const } },
+    { params: { locale: 'pt-br' }, props: { locale: 'pt-br' as const } },
+  ];
+}
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const p = PAGE_STRINGS[locale].home;
+const sp = PAGE_STRINGS[locale].services.services;
+const t = PAGE_STRINGS[locale];
+const prefix = LOCALE_PREFIX[locale];
+const featured = getFeaturedPortfolio();
+---
+
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/">
+  <Header locale={locale} localePath="/" />
+  <main id="main">
+    <section class="bg-hero-gradient">
+      <div class="container-page pt-12 pb-24 sm:pt-16 sm:pb-32 lg:pt-20 lg:pb-40 text-center">
+        <p class="text-xs sm:text-sm tracking-[0.18em] uppercase text-accent-deep font-medium mb-8">{p.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(3rem,8vw,7rem)] font-semibold text-text leading-[1.02] tracking-[-0.04em] max-w-4xl mx-auto">
+          {p.heroTitleLines.map((line, i) => <span class="block reveal-rise" style={`animation-delay:${i * 50}ms`}>{line}</span>)}
+        </h1>
+        <p class="mt-8 max-w-xl mx-auto text-lg sm:text-xl text-text-muted leading-[1.5]">{p.heroSubtitle}</p>
+        <div class="mt-12 flex flex-wrap gap-3 justify-center">
+          <a href={`${prefix}/contact`} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-base font-medium">{t.contact.heroTitle.split(/[.,]/)[0]}</a>
+          <a href={`${prefix}/portfolio`} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full border border-border text-text hover:border-text transition-colors text-base font-medium">{p.portfolioAllLink.replace('→', '').trim()} →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-y border-border bg-surface-elev">
+      <div class="container-page py-16 sm:py-20">
+        <p class="text-center text-xs tracking-[0.18em] uppercase text-text-subtle font-medium mb-10">{p.statTitle}</p>
+        <dl class="grid grid-cols-3 gap-6 max-w-3xl mx-auto text-center">
+          <div>
+            <dt class="font-display text-5xl sm:text-6xl text-text font-semibold tabular tracking-[-0.04em]">{p.statLine1}</dt>
+            <dd class="mt-2 text-sm text-text-muted">{p.statLabel1}</dd>
+          </div>
+          <div>
+            <dt class="font-display text-5xl sm:text-6xl text-text font-semibold tabular tracking-[-0.04em]">{p.statLine2}</dt>
+            <dd class="mt-2 text-sm text-text-muted">{p.statLabel2}</dd>
+          </div>
+          <div>
+            <dt class="font-display text-5xl sm:text-6xl text-text font-semibold tabular tracking-[-0.04em]">{p.statLine3}</dt>
+            <dd class="mt-2 text-sm text-text-muted">{p.statLabel3}</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section bg-bg" aria-labelledby="services-heading">
+      <div class="container-page">
+        <div class="max-w-3xl mb-14">
+          <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{p.servicesEyebrow}</p>
+          <h2 id="services-heading" class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl text-text font-semibold tracking-[-0.03em] leading-[1.05]">{p.servicesHeading}</h2>
+          <p class="mt-6 text-lg text-text-muted leading-[1.5] max-w-2xl">{p.servicesBody}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-5">
+          {SERVICE_SLUGS.map((slug, i) => {
+            const s = sp[slug];
+            const isDark = i === 0 || i === 3;
+            return (
+              <a href={`${prefix}/services/${slug}`} class={`group reveal-rise relative overflow-hidden rounded-[22px] border border-border bg-surface-elev hover:border-text/30 transition-colors p-8 sm:p-10 min-h-[280px] flex flex-col justify-between ${isDark ? 'sm:bg-text sm:text-inverted-text sm:border-text' : ''}`} style={`animation-delay:${i * 50}ms`}>
+                <div>
+                  <p class={`text-xs tracking-[0.18em] uppercase font-medium ${isDark ? 'sm:text-inverted-text-muted text-accent-deep' : 'text-accent-deep'}`}>{s.heroEyebrow}</p>
+                  <h3 class="mt-4 font-display text-2xl sm:text-3xl font-semibold tracking-[-0.02em]">{s.name}</h3>
+                  <p class={`mt-3 text-sm leading-relaxed max-w-md ${isDark ? 'sm:text-inverted-text-muted text-text-muted' : 'text-text-muted'}`}>{s.shortTagline}</p>
+                </div>
+                <p class={`mt-8 text-sm font-medium ${isDark ? 'sm:text-inverted-text text-text' : 'text-text'} group-hover:translate-x-1 transition-transform`}>{t.about.heroLead.includes('Studio') ? 'Mehr erfahren →' : 'Saiba mais →'}</p>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-surface" aria-labelledby="portfolio-heading">
+      <div class="container-page">
+        <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+          <div class="max-w-xl">
+            <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{p.portfolioEyebrow}</p>
+            <h2 id="portfolio-heading" class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl text-text font-semibold tracking-[-0.03em] leading-[1.05]">{p.portfolioHeading}</h2>
+          </div>
+          <a href={`${prefix}/portfolio`} class="text-sm text-text-muted hover:text-text transition-colors underline underline-offset-4">{p.portfolioAllLink}</a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {featured.map((entry, i) => (
+            <a href={`${prefix}/portfolio/${entry.slug}`} class="group reveal-rise block rounded-[22px] overflow-hidden bg-surface-elev border border-border hover:border-text/30 transition-colors" style={`animation-delay:${i * 50}ms`}>
+              <div class="aspect-[16/10] overflow-hidden bg-surface">
+                <img src={entry.imageSrc} alt={entry.imageAlt[locale]} loading="lazy" decoding="async" width="1600" height="1000" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-[var(--motion-warm)]" />
+              </div>
+              <div class="p-6">
+                <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{entry.vertical}</p>
+                <p class="mt-2 font-display text-xl font-semibold text-text tracking-[-0.01em]">{entry.name}</p>
+                <p class="mt-2 text-sm text-text-muted line-clamp-2">{entry.shortDescription[locale]}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-bg" aria-labelledby="about-heading">
+      <div class="container-page">
+        <div class="grid lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-24">
+          <div>
+            <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{p.aboutEyebrow}</p>
+            <h2 id="about-heading" class="mt-4 font-display text-4xl sm:text-5xl text-text font-semibold tracking-[-0.03em] leading-[1.05]">{p.aboutHeading}</h2>
+          </div>
+          <div class="space-y-6 text-lg text-text-muted leading-[1.6]">
+            {p.aboutBody.map((para) => <p>{para}</p>)}
+            <p class="pt-2"><a href={`${prefix}/about`} class="text-text font-medium underline underline-offset-4 hover:text-accent-deep transition-colors">{p.aboutReadMore}</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-inverted-bg text-inverted-text">
+      <div class="container-page py-24 sm:py-32 text-center">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium mb-6">{p.ctaEyebrow}</p>
+        <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] leading-[1.05] max-w-2xl mx-auto">{p.ctaHeading}</h2>
+        <p class="mt-6 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">{p.ctaBody}</p>
+        <div class="mt-10">
+          <a href={`${prefix}/contact`} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-bg text-text hover:bg-accent hover:text-bg transition-colors text-base font-medium">{t.contact.heroTitle.split(/[.,]/)[0]}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

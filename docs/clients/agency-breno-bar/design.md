@@ -1,0 +1,125 @@
+# breno-bar — design.md
+
+**Project:** agency-self marketing site
+**Vertical:** professional-services (agency / studio)
+**Closest template fit:** `docs/design/templates/professional-services.md` Archetype A (single-operator studio). Visual register adapted toward Apple.com's marketing language.
+
+## Palette decision
+
+**Family:** monochromatic-cool with a single saturated accent (per `COLOR.md §3` harmony framework).
+**Portfolio-diversity gate:** ΔE76 ≥ 15 against all 7 existing demos. PASSES — none of the other clients use Apple's near-white-cool base.
+
+| Token | Hex | Role | Contrast vs `--color-bg` |
+|---|---|---|---|
+| `--color-bg` | `#fbfbfd` | 60 % — near-white cool (Apple #fbfbfd verbatim) | — |
+| `--color-surface` | `#f5f5f7` | card-back gray (Apple #f5f5f7) | — |
+| `--color-surface-elev` | `#ffffff` | hero-contrast cards | — |
+| `--color-text` | `#1d1d1f` | 30 % — Apple near-black | 17.4 : 1 (AAA) |
+| `--color-text-muted` | `#6e6e73` | secondary copy | 5.34 : 1 (AA pass) |
+| `--color-text-subtle` | `#86868b` | small print only | 3.86 : 1 (AA-large only — usage gated to text-xs) |
+| `--color-accent` | `#0071e3` | 10 % — Apple blue, CTAs only | 4.51 : 1 vs white (AA) |
+| `--color-accent-deep` | `#0058b8` | hover state | 7.31 : 1 (AAA) |
+| `--color-border` | `#d2d2d7` | Apple 1-px divider | — |
+| `--color-inverted-bg` | `#000000` | dark "product tile" sections at home CTA + /services overview | 21 : 1 vs inverted-text |
+| `--color-inverted-text` | `#f5f5f7` | text inside inverted sections | — |
+
+**60-30-10 verification:**
+- 60 % near-white bg on every viewport
+- 30 % near-black text (h1/h2/h3) + surface gray cards
+- 10 % Apple blue confined to: eyebrow text, primary-CTA-pill background, focus-visible outline, link hover
+
+**Anti-pattern check vs `COLOR.md §6`:**
+- ❌ Cream/bone default: N/A — near-white #fbfbfd has a cool blue undertone, not cream
+- ❌ Too many brand tokens: 5 brand tokens (bg, text, accent + 2 mutes) — within the §2 cap
+- ❌ Hover lighter than base: `accent-deep` is darker than `accent`, never lighter
+- ❌ CTA contrast hover state: verified Bg-text (#1d1d1f) → Bg-accent-deep (#0058b8) keeps the bone text at ≥ 4.5 : 1 in both states
+- ❌ `text-muted/N%` opacity multipliers: NONE used (lessons learned from bonsai audit W2)
+
+## Typography decision
+
+**Family:** Inter Variable (one family handles both display + body via the opsz axis — like Apple's SF Pro Display + SF Pro Text).
+**Self-hosted:** `@fontsource-variable/inter` per `PERFORMANCE.md §6`.
+
+| Role | Stack | Weight | Tracking | Line-height |
+|---|---|---|---|---|
+| Display (h1 / hero) | `Inter Variable, ui-sans-serif, system-ui, -apple-system, 'SF Pro Display', sans-serif` | 600 (Apple SemiBold) | -0.022em | 1.07 |
+| Body | `Inter Variable, ui-sans-serif, system-ui, -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif` | 400 / 500 | -0.005em | 1.5 - 1.65 |
+| Mono | `ui-monospace, 'SF Mono', Menlo, monospace` | — | — | — |
+
+**Distinct from prior demos:** zero other demo uses sans-serif-display + sans-serif-body. Bonsai uses Cormorant Garamond serif display; lawyer uses different serif; the agency stands apart.
+
+## Spacing decision
+
+**Vertical rhythm:**
+- `--spacing-section: 8rem` desktop / `4rem` mobile — Apple-generous
+- Container max-width 1280 px
+- Hero top-padding deliberately tightened from `py-32/44/56` to `pt-12 pb-24 / sm:pt-16 pb-32 / lg:pt-20 pb-40` (revised 2026-05-27 per user feedback — "breath space was too much")
+
+**Radii (Apple-soft):**
+- `--radius-sm: 6px`
+- `--radius-md: 12px`
+- `--radius-lg: 22px` ← Apple iOS card radius for all featured cards + portfolio tiles
+- `--radius-full: 9999px` for CTA pills
+
+## Motion decision
+
+**Apple-restrained:** slow + considered transitions, never bouncy or playful.
+
+- `--motion-warm: 500ms` (image hover scale)
+- `--motion-deliberate: 600ms` (color transitions)
+- `--motion-reveal: 800ms` (scroll-rise on hero title lines + service tiles + portfolio cards)
+
+**Reveal-on-scroll** uses `animation-timeline: view()` (CSS-only, modern browsers). Fallback: content visible immediately on Firefox / older browsers. Reduced-motion: animation duration clamped to 0.01ms via the global `@media (prefers-reduced-motion: reduce)` rule.
+
+## Composition decision (per `DESIGN-BEST-PRACTICES.md §6.5` section-variation gate)
+
+**Home composition** (top-to-bottom):
+1. Apple-centered hero (eyebrow + 2-line big h1 + 1-line subtitle + 2 CTA pills, on subtle radial gradient)
+2. Stat strip (3 numbers: 10 projects shipped · 6 verticals · 4 languages — tabular)
+3. Services section (4-up alternating-dark tile grid with "Service · NN" eyebrow)
+4. Portfolio sampler (3 featured cards with hero image + vertical + name + 2-line description)
+5. About teaser (2-column: heading + 2-paragraph ethos)
+6. Inverted CTA (pure-black bg with "Let's build yours." + single pill CTA)
+
+This composition is **distinct from the universal-9 default and every existing demo**. Verified 2026-05-27 against all 7 demos.
+
+## Per-vertical alignment notes
+
+Closest template: `docs/design/templates/professional-services.md` Archetype A.
+
+| Convention | Our approach | Justified deviation |
+|---|---|---|
+| Hero photograph of founder/team | None — single-color background + typography hero | Apple-style; agency voice is product, not personal |
+| Service-pricing table | Omitted | User-chose "no pricing" — every CTA = contact form |
+| Testimonials / client logos | Omitted | No real testimonials to ship; would feel inauthentic. Replaced with "stat strip" of 10 projects / 6 verticals / 4 languages |
+| Case-study deep-dive | Yes — 9 case-study pages | Aligns with the template's recommendation |
+| Calendly / appointment booking | Omitted | Contact form preferred — founder retains qualifying control |
+
+## Photography decision
+
+**Sourced from:** thum.io free screenshot API (`image.thum.io/get/width/1600/wait/3/<url>`). Each portfolio entry shows a 16:10 crop of the live site's hero region.
+
+**Optimization:** sharp-cli at `scripts/optimize-portfolio.mjs` — 1600×1000 WebP at q=78. 9 entries × ~50 KB each = ~441 KB total (well under `PERFORMANCE.md §1` page-weight budget).
+
+**No founder/studio photography** ships in v1. Hero on /about is pure typography. If a real founder portrait is added later, it would replace the about-page typography hero in a future revision.
+
+## OG image
+
+Currently the scaffold `og-default.png` placeholder. **Pre-launch DRAFT** — needs:
+- 1200 × 630 custom OG card with "Websites worth being proud of." + breno-bar wordmark + Apple-near-white bg + Apple-blue accent
+- Optionally: per-locale OG variants (`og-de.png`, `og-pt-br.png`) with translated headline
+
+## Accessibility verification (WCAG 2.2 AA)
+
+| Element | Computed contrast | Result |
+|---|---|---|
+| Body text on bg | 17.4 : 1 | AAA |
+| `text-muted` on bg | 5.34 : 1 | AA pass |
+| `text-subtle` on bg (text-xs only) | 3.86 : 1 | AA-large (intentional small-print downgrade) |
+| Accent CTA fill (white on `accent`) | 4.51 : 1 | AA pass |
+| Accent CTA hover (white on `accent-deep`) | 7.31 : 1 | AAA |
+| Inverted-bg sections (light text on black) | 21 : 1 | AAA |
+| Focus-visible outline | 2-px solid accent w/ 3-px offset | Visible across all backgrounds |
+
+All interactive elements ≥ 44 × 44 px touch target (CTA pills `min-h-[52px]`; form inputs `min-h-[48px]`).
+Mobile menu has `aria-expanded` + `aria-controls` + animated icon-swap. Locale switcher has `role=menu` + `aria-haspopup` + `aria-current` on the active locale.

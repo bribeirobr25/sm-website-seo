@@ -24,8 +24,8 @@ export const SITE = {
   locales: ['de', 'en'] as const,
 
   // Contact
-  phone: '+493061102018',
-  phoneDisplay: '+49 30 6110 2018',
+  phone: '+4930000000007',
+  phoneDisplay: '+49 30 0000 00007',
   whatsapp: '493061102018',
   email: 'hallo@atem-studio.de',
 
@@ -385,7 +385,7 @@ export const SITE = {
     register: { court: 'n/a', number: 'GbR (nicht registerpflichtig)' },
     ustId: 'DE321987456',
     dataControllerEmail: 'datenschutz@atem-studio.de',
-    dataControllerPhone: '+49 30 6110 2018',
+    dataControllerPhone: '+4930000000007',
     processors: [
       { name: 'Vercel', purpose: 'Hosting (CDN, EU region routing)', location: 'EU + US' },
       {

@@ -99,7 +99,7 @@ The lowest-effort way to make a long scroll feel structured: alternate the secti
 
 The pattern is used across Apple's product line and broadly across tech / consumer-product landings — but Apple's discipline (consistent ~2 % shift, never noisier) is what we're codifying.
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 When auditing a long-scroll client whose page reads as one undifferentiated stack:
 

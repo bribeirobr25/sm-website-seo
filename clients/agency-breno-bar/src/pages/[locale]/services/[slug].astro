@@ -1,0 +1,106 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { SERVICE_SLUGS, type ServiceSlug, getRelatedPortfolio } from '@/lib/services';
+import { LOCALE_PREFIX, type Locale } from '@/lib/site';
+
+export async function getStaticPaths() {
+  const locales: Locale[] = ['de', 'pt-br'];
+  const paths: Array<{
+    params: { locale: string; slug: string };
+    props: { locale: Locale; slug: ServiceSlug };
+  }> = [];
+  for (const locale of locales) {
+    for (const slug of SERVICE_SLUGS) {
+      paths.push({ params: { locale, slug }, props: { locale, slug } });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  locale: Locale;
+  slug: ServiceSlug;
+}
+const { locale, slug } = Astro.props;
+const s = PAGE_STRINGS[locale].services.services[slug];
+const pf = PAGE_STRINGS[locale].portfolio;
+const prefix = LOCALE_PREFIX[locale];
+const related = getRelatedPortfolio(slug, 3);
+const bestForLabel = locale === 'de' ? 'Am besten für' : 'Melhor para';
+const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto';
+---
+
+<BaseLayout title={`${s.name} — breno-bar`} description={s.shortTagline} locale={locale} localePath={`/services/${slug}`}>
+  <Header locale={locale} localePath={`/services/${slug}`} />
+  <main id="main">
+    <section class="bg-hero-gradient">
+      <div class="container-page py-24 sm:py-32 max-w-4xl">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium mb-6">{s.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-text leading-[1.04] tracking-[-0.03em]">{s.heroTitle}</h1>
+        <p class="mt-8 text-xl text-text-muted leading-[1.5] max-w-2xl">{s.heroBody}</p>
+      </div>
+    </section>
+
+    <section class="section bg-bg">
+      <div class="container-page">
+        <div class="grid lg:grid-cols-3 gap-5">
+          {s.bullets.map((b, i) => (
+            <div class="reveal-rise rounded-[22px] border border-border bg-surface p-8 sm:p-10" style={`animation-delay:${i * 50}ms`}>
+              <p class="font-display text-xl font-semibold text-text tracking-[-0.01em]">{b.title}</p>
+              <p class="mt-3 text-text-muted leading-relaxed">{b.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-inverted-bg text-inverted-text">
+      <div class="container-page grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
+        <div>
+          <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium">{s.outcomeHeading}</p>
+          <h2 class="mt-4 font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]">{bestForLabel}</h2>
+          <p class="mt-6 text-inverted-text-muted leading-relaxed">{s.bestFor}</p>
+        </div>
+        <ul class="space-y-4 list-none p-0">
+          {s.outcomeBullets.map((b) => (
+            <li class="flex gap-4 text-inverted-text">
+              <span class="font-display text-accent text-2xl leading-none">●</span>
+              <span class="leading-relaxed">{b}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {related.length > 0 && (
+      <section class="section bg-surface">
+        <div class="container-page">
+          <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] text-text mb-10">{pf.relatedCases}</h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {related.map((entry) => (
+              <a href={`${prefix}/portfolio/${entry.slug}`} class="group block rounded-[22px] overflow-hidden bg-surface-elev border border-border hover:border-text/30 transition-colors">
+                <div class="aspect-[16/10] overflow-hidden bg-bg">
+                  <img src={entry.imageSrc} alt={entry.imageAlt[locale]} loading="lazy" decoding="async" width="1600" height="1000" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-[var(--motion-warm)]" />
+                </div>
+                <div class="p-5">
+                  <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{entry.vertical}</p>
+                  <p class="mt-2 font-display text-lg font-semibold text-text">{entry.name}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="bg-bg">
+      <div class="container-page py-20 text-center">
+        <a href={`${prefix}/contact`} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-base font-medium">{startProject}</a>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

@@ -56,7 +56,7 @@ Tier 2 / Type 1 (static info site, no booking flow, no transactional). Scaffold 
 |---|---|---|---|
 | 1 | Real domain | DRAFT — never registered | Demo: keep `*.vercel.app` URL; if elevated to real client, register at scaffold time |
 | 2 | Real phone | DRAFT — `+49 30 4400 1987` is a vanity placeholder | Demo: keep as-is (clearly fictional pattern) |
-| 3 | Real owner photos | DRAFT — Unsplash candidate images for "Italian-grandmother-baker" + "young Italian woman in apron" identified in CREDITS.md | Demo: keep Unsplash images with attribution; flag as "Modell-Foto" / "Symbol image" in alt text |
+| 3 | Real owner photos | DRAFT — Unsplash candidate images for "Italian-grandmother-baker" + "young Italian woman in apron" identified in archived runbook artifacts | Demo: keep Unsplash images with attribution; flag as "Modell-Foto" / "Symbol image" in alt text |
 | 4 | Real menu prices | DRAFT — pricing is reasonable Prenzlauer Berg market range (single scoop €2.20, coppa €5.50) but invented | Demo: keep as-is |
 | 5 | Real opening hours | DRAFT — Sommer 11-22 / Winter Di-So 12-19 is the typical Berlin gelateria pattern, invented for plausibility | Demo: keep as-is |
 

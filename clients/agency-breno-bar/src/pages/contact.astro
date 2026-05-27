@@ -1,0 +1,193 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const p = PAGE_STRINGS[locale].contact;
+---
+
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/contact">
+  <Header locale={locale} localePath="/contact" />
+  <main id="main">
+    <section class="bg-hero-gradient">
+      <div class="container-page py-20 sm:py-24 max-w-3xl">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium mb-6">{p.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-text leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
+        <p class="mt-6 text-xl text-text-muted leading-[1.5]">{p.heroSubtitle}</p>
+      </div>
+    </section>
+
+    <section class="section bg-bg">
+      <div class="container-page grid lg:grid-cols-[1.6fr_1fr] gap-12 lg:gap-20 items-start">
+        <form
+          id="contact-form"
+          method="POST"
+          action="/api/contact"
+          novalidate
+          class="space-y-6"
+          data-locale={locale}
+        >
+          {/* Honeypot — bots fill, humans don't */}
+          <div class="absolute -left-[9999px]" aria-hidden="true">
+            <label for="_gotcha">Don't fill this field</label>
+            <input type="text" name="_gotcha" id="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
+          <input type="hidden" name="_locale" value={locale} />
+          <input type="hidden" name="_ts" id="_ts" />
+
+          <div>
+            <label for="name" class="block text-sm font-medium text-text mb-2">{p.formNameLabel}</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              required
+              minlength="2"
+              maxlength="120"
+              placeholder={p.formNamePlaceholder}
+              class="w-full px-4 py-3 min-h-[48px] rounded-md border border-border bg-bg text-text placeholder:text-text-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors"
+            />
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-text mb-2">{p.formEmailLabel}</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              required
+              maxlength="320"
+              placeholder={p.formEmailPlaceholder}
+              class="w-full px-4 py-3 min-h-[48px] rounded-md border border-border bg-bg text-text placeholder:text-text-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors"
+            />
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-text mb-2">{p.formMessageLabel}</label>
+            <textarea
+              name="message"
+              id="message"
+              required
+              minlength="10"
+              maxlength="2000"
+              rows="6"
+              placeholder={p.formMessagePlaceholder}
+              class="w-full px-4 py-3 rounded-md border border-border bg-bg text-text placeholder:text-text-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors leading-relaxed"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            id="contact-submit"
+            class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-base font-medium disabled:opacity-60 disabled:cursor-wait"
+          >
+            <span id="contact-submit-label">{p.formSubmit}</span>
+          </button>
+
+          <p class="text-xs text-text-subtle leading-relaxed">{p.privacyNote}</p>
+
+          {/* Status panel */}
+          <div
+            id="contact-status"
+            role="status"
+            aria-live="polite"
+            class="hidden rounded-md p-4 text-sm"
+            data-success-title={p.formSuccessTitle}
+            data-success-body={p.formSuccessBody}
+            data-error-title={p.formErrorTitle}
+            data-error-body={p.formErrorBody}
+            data-unavailable-body={p.formServiceUnavailable}
+          ></div>
+        </form>
+
+        <aside class="space-y-8">
+          <div>
+            <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{p.alternativesHeading}</p>
+            <p class="mt-3 text-text-muted text-sm leading-relaxed">{p.alternativesBody}</p>
+          </div>
+          <ul class="space-y-3 list-none p-0 text-sm">
+            <li>
+              <a href={`mailto:${SITE.email}`} class="text-text hover:text-accent-deep transition-colors break-all">{SITE.email}</a>
+            </li>
+            <li>
+              <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" class="text-text hover:text-accent-deep transition-colors">LinkedIn — Breno Ribeiro</a>
+            </li>
+            <li>
+              <a href={SITE.social.x} target="_blank" rel="noopener noreferrer" class="text-text hover:text-accent-deep transition-colors">X — @bribeiro_br</a>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
+  const submitLabel = document.getElementById('contact-submit-label');
+  const status = document.getElementById('contact-status') as HTMLDivElement | null;
+  const tsField = document.getElementById('_ts') as HTMLInputElement | null;
+
+  if (tsField) tsField.value = Date.now().toString();
+
+  function setStatus(kind: 'success' | 'error' | 'unavailable', titleOverride?: string, bodyOverride?: string) {
+    if (!status) return;
+    const baseClasses = 'rounded-md p-4 text-sm';
+    const tone = kind === 'success'
+      ? 'bg-surface text-text border border-border'
+      : kind === 'unavailable'
+        ? 'bg-surface text-text border border-border'
+        : 'bg-surface-elev text-text border border-border';
+    status.className = `${baseClasses} ${tone}`;
+    const title = titleOverride ?? (kind === 'success' ? status.dataset.successTitle : status.dataset.errorTitle) ?? '';
+    const body = bodyOverride
+      ?? (kind === 'success' ? status.dataset.successBody
+        : kind === 'unavailable' ? status.dataset.unavailableBody
+          : status.dataset.errorBody)
+      ?? '';
+    status.innerHTML = `<p class="font-semibold">${title}</p><p class="mt-1 text-text-muted">${body}</p>`;
+    status.classList.remove('hidden');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form || !submitBtn) return;
+    const fd = new FormData(form);
+    submitBtn.disabled = true;
+    if (submitLabel) submitLabel.textContent = submitLabel.dataset.sending ?? 'Sending…';
+    status?.classList.add('hidden');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: fd,
+      });
+      if (res.ok) {
+        setStatus('success');
+        form.reset();
+      } else if (res.status === 503) {
+        setStatus('unavailable');
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setStatus('error', undefined, data?.error);
+      }
+    } catch (_err) {
+      setStatus('error');
+    } finally {
+      submitBtn.disabled = false;
+      if (submitLabel) submitLabel.textContent = submitLabel.dataset.label ?? submitLabel.textContent;
+    }
+  });
+
+  // Stash labels for restoration
+  if (submitLabel) {
+    submitLabel.dataset.label = submitLabel.textContent ?? '';
+    submitLabel.dataset.sending = 'Sending…';  // overridden per locale via PAGE_STRINGS in the future
+  }
+</script>

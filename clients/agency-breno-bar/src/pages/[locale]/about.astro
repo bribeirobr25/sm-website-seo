@@ -1,0 +1,56 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { LOCALE_PREFIX, type Locale } from '@/lib/site';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'de' }, props: { locale: 'de' as const } },
+    { params: { locale: 'pt-br' }, props: { locale: 'pt-br' as const } },
+  ];
+}
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const p = PAGE_STRINGS[locale].about;
+const prefix = LOCALE_PREFIX[locale];
+const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto';
+---
+
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/about">
+  <Header locale={locale} localePath="/about" />
+  <main id="main">
+    <section class="bg-hero-gradient">
+      <div class="container-page py-24 sm:py-32 max-w-3xl">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium mb-6">{p.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-text leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
+        <p class="mt-8 text-xl text-text-muted leading-[1.5]">{p.heroLead}</p>
+      </div>
+    </section>
+
+    <section class="section bg-bg">
+      <div class="container-page max-w-4xl space-y-16 sm:space-y-24">
+        {p.sections.map((s, i) => (
+          <article class="reveal-rise grid sm:grid-cols-[1fr_2fr] gap-8 sm:gap-16" style={`animation-delay:${i * 40}ms`}>
+            <h2 class="font-display text-2xl sm:text-3xl font-semibold text-text tracking-[-0.02em] leading-[1.15]">{s.title}</h2>
+            <p class="text-lg text-text-muted leading-[1.65]">{s.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="bg-surface border-t border-border">
+      <div class="container-page py-16 text-center">
+        <p class="text-text-muted text-sm italic">{p.foundedNote}</p>
+        <div class="mt-8">
+          <a href={`${prefix}/contact`} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-base font-medium">{startProject}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

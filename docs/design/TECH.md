@@ -55,7 +55,7 @@ Two decisions, in order. **Product type first** (what the project does), then **
 
 **Production-cutover deliverables apply to ALL types (1–5):** before flipping `noindex` off on any client build, two cross-type deliverables must ship regardless of product type:
 
-1. **Citation-building** per `CITATIONS.md` (universal directories — GBP, Apple Business Connect, Bing Places, Yelp DE, Facebook, IG · DE-general — Gelbe Seiten, Das Örtliche, 11880, meinestadt.de, berlin.de · vertical-specific — Jameda for health, Treatwell for beauty, Tripadvisor for gastronomy, etc.). Canonical NAP declared in BRIEF.md and matched across every claimed listing. *Note: `CITATIONS.md` ships in the 2026-05-18 SEO depth work Batch 2.*
+1. **Citation-building** per `CITATIONS.md` (universal directories — GBP, Apple Business Connect, Bing Places, Yelp DE, Facebook, IG · DE-general — Gelbe Seiten, Das Örtliche, 11880, meinestadt.de, berlin.de · vertical-specific — Jameda for health, Treatwell for beauty, Tripadvisor for gastronomy, etc.). Canonical NAP declared in BRIEF.md and matched across every claimed listing.
 2. **Review-link + vanity redirect setup** per `SEO.md` §8.4 — `/bewertung` (DE) / `/avaliacao` (PT/BR) / `/review` (EN) configured and verified end-to-end (HTTP 301 → correct `g.page/r/<short-id>/review` destination) per `CHECKLIST.md` §Review generation — pre-launch. GBP review link visible in site chrome. Vanity-redirect e2e test is a 🔴 production blocker.
 
 These are not feature additions or upsells. They are the **operational floor** every client launches with, regardless of stack tier or product type. Quote the build accordingly; do not treat them as in-scope-only-for-Type-3+ work.
@@ -178,7 +178,7 @@ The activation matrix doubles as the audit baseline. A Type 1 site that "fails" 
 
 | Layer | Choice |
 |-------|--------|
-| Framework | Astro 5.2+ |
+| Framework | Astro 6 |
 | Language | TypeScript (strict) |
 | Styling | Tailwind CSS v4 via `@tailwindcss/vite` plugin |
 | Scripting | Vanilla JS via Astro `<script>` islands |
@@ -189,7 +189,7 @@ The activation matrix doubles as the audit baseline. A Type 1 site that "fails" 
 | Hosting | Vercel |
 | Package manager | pnpm |
 
-> **Tailwind v4 setup:** Use `@tailwindcss/vite` in `vite.plugins` — NOT the old `@astrojs/tailwind` integration (deprecated for v4). Run `npx astro add tailwind` on Astro 5.2+ and it wires this automatically. Tokens go in CSS with `@theme {}`, not in `tailwind.config.ts`. Import Tailwind in your base CSS with `@import "tailwindcss"`.
+> **Tailwind v4 setup:** Use `@tailwindcss/vite` in `vite.plugins` — NOT the old `@astrojs/tailwind` integration (deprecated for v4). Run `npx astro add tailwind` on Astro 6 and it wires this automatically. Tokens go in CSS with `@theme {}`, not in `tailwind.config.ts`. Import Tailwind in your base CSS with `@import "tailwindcss"`.
 
 **Tier 3 — Next.js (dynamic features)**
 
@@ -816,7 +816,7 @@ For any Type 1–2 build where the conversion is a single non-form action (call 
 - **Mobile (< 768 px):** a sticky bottom-bar with the primary CTA pill + secondary CTA icon. Always visible while scrolling, never blocks content.
 - **Desktop (≥ 768 px):** a floating bubble in the bottom-right with the secondary CTA (WhatsApp / Call). The primary CTA lives in the header.
 
-**Reference implementation:** pattern described above; no canonical `_impl/` working file yet. Tracked as a follow-up: build a `StickyMobileCta.astro` for `docs/design/components/_impl/` per the high-leverage applicability for all 12 verticals (see `PENDING.md`).
+**Reference implementation:** pattern described above; no canonical `_impl/` working file yet. Solo-operator demos currently inline the pattern in their own `src/components/`. If a future cross-vertical promotion makes sense, file a tracked entry in `PENDING.md` "Agency-template / standards work" before drafting.
 
 **When to use:** every solo-operator build per `DESIGN-BEST-PRACTICES.md` "Solo-Operator meta-archetype" (cross-vertical pattern, ~70–95 % of agency clients). When NOT to use: multi-CTA hero patterns (e.g., Equinox-style premium with `BOOK` + `MEMBER LOGIN` + `LOCATIONS` — the sticky pattern dilutes their hierarchy).
 
@@ -1226,7 +1226,7 @@ Ask three questions:
 
 **Tier 1 (HTML):** Zero npm dependencies. Tailwind via CDN for demos only. Production uses PostCSS build with pnpm.
 
-**Tier 2 (Astro):** Astro core, `@tailwindcss/vite`, Biome, Vitest, Lucide, `@astrojs/sitemap`. (Native image optimization is built into Astro 5 — no separate image package needed.)
+**Tier 2 (Astro):** Astro core, `@tailwindcss/vite`, Biome, Vitest, Lucide, `@astrojs/sitemap`. (Native image optimization is built into Astro 6 — no separate image package needed.)
 
 **Tier 3 (Next.js):** Next.js, React, Tailwind, Zod, Lucide React, Biome, Vitest, Playwright, `next-intl` (if multilingual), Resend (if contact form), Vercel Analytics.
 

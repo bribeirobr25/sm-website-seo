@@ -75,7 +75,7 @@ A hero pattern where the viewport is split 50/50 between a typography column and
 - Starbucks half-bleed variants
 - Frenchie Paris, Maison Premiere — editorial fine-dining adoption
 
-## 7. UI_REVIEW.md cross-link
+## 7. archived UI review at `docs/audit/archived/2026-05-12-porto-dos-ribeiros-uiux-review.md` cross-link
 
 > *"Issue #N — hero is template-y full-bleed with text overlay; the brand register would benefit from a half-and-half split where text and image each get full visibility: adopt SplitHero per `docs/design/components/split-hero.md`. Best fit for luxury / boutique register where the image deserves to be seen, not used as backdrop."*
 

@@ -1,0 +1,47 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { SITE } from '@/lib/site';
+
+const locale = 'en' as const;
+const p = PAGE_STRINGS[locale].privacy;
+
+const processorsList = SITE.legal.processors
+  .map((proc) => `• ${proc.name} — ${proc.purpose} (Location: ${proc.location})`)
+  .join('\n');
+
+function resolve(body: string): string {
+  return body
+    .replace(/\{\{LEGAL_ENTITY\}\}/g, SITE.legal.legalEntity)
+    .replace(/\{\{CONTROLLER_EMAIL\}\}/g, SITE.legal.dataControllerEmail)
+    .replace(
+      /\n?Phone:\s*\{\{CONTROLLER_PHONE\}\}/g,
+      SITE.legal.dataControllerPhone ? `\nPhone: ${SITE.legal.dataControllerPhone}` : '',
+    )
+    .replace(/\{\{CONTROLLER_PHONE\}\}/g, SITE.legal.dataControllerPhone ?? '')
+    .replace(/\{\{PROCESSORS_LIST\}\}/g, processorsList);
+}
+---
+
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/privacy">
+  <Header locale={locale} localePath="/privacy" />
+  <main id="main">
+    <article class="container-page py-20 sm:py-28 max-w-3xl">
+      <header class="mb-12">
+        <h1 class="font-display text-4xl sm:text-5xl text-text font-semibold tracking-[-0.02em]">{p.headingSuffix}</h1>
+        <p class="mt-3 text-text-muted">{p.lastUpdated}</p>
+      </header>
+      <div class="space-y-10">
+        {p.sections.map((s) => (
+          <section>
+            <h2 class="font-display text-xl sm:text-2xl font-semibold text-text tracking-[-0.01em]">{s.title}</h2>
+            <p class="mt-3 text-text-muted leading-relaxed whitespace-pre-line">{resolve(s.body)}</p>
+          </section>
+        ))}
+      </div>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

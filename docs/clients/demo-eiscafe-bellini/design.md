@@ -177,7 +177,7 @@ Per `templates/gastronomy.md` §Photography rules + `RESEARCH.md` Phase 3 sourci
 - **Show the street** — at least one exterior on a Berlin cobblestone street with Bezirk feel (Husemannstraße is real and cobblestoned)
 - **Owner portrait** — three-generation visual story: ideally one vintage-style 1980s family photo (or sepia-toned modern equivalent) + one modern Giulia portrait
 
-Sources: Unsplash + Pexels only (free license; attribution per `CREDITS.md`).
+Sources: Unsplash + Pexels only (free license; attribution per archived runbook artifacts at `docs/clients/archived/demo-eiscafe-bellini-runbook-artifacts/CREDITS.md`).
 
 ---
 
@@ -188,7 +188,7 @@ Sources: Unsplash + Pexels only (free license; attribution per `CREDITS.md`).
 - ❌ Floating chat bubbles
 - ❌ Animated count-up stats
 - ❌ Sticky "limited time" pricing banners
-- ❌ Generic Unsplash stock (lavender field, model-with-cone-against-pastel-wall) — see image-sourcing brief in `CREDITS.md`
+- ❌ Generic Unsplash stock (lavender field, model-with-cone-against-pastel-wall) — see image-sourcing brief in archived runbook artifacts (`docs/clients/archived/demo-eiscafe-bellini-runbook-artifacts/CREDITS.md`)
 - ❌ PDF-only menu (Annamaria does this; we don't — HTML menu for SEO + i18n + mobile)
 - ❌ Embedded Google Maps iframe (per `DESIGN-BEST-PRACTICES.md` map rule — use a link to GMaps with a static styled card)
 

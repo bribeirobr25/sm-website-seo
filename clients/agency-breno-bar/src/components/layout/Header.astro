@@ -1,0 +1,203 @@
+---
+import { LOCALES, LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale?: Locale;
+  /** Locale-neutral path for the locale-switcher; defaults to '/' */
+  localePath?: string;
+}
+
+const { locale = 'en', localePath = '/' } = Astro.props;
+const t = SITE.i18n[locale];
+const prefix = LOCALE_PREFIX[locale];
+
+const nav = [
+  { href: `${prefix}/services`, label: t.nav.services },
+  { href: `${prefix}/portfolio`, label: t.nav.portfolio },
+  { href: `${prefix}/about`, label: t.nav.about },
+  { href: `${prefix}/contact`, label: t.nav.contact },
+];
+
+const home = `${prefix}/`;
+
+const LOCALE_CODE: Record<Locale, string> = {
+  en: 'EN',
+  de: 'DE',
+  'pt-br': 'PT',
+};
+const LOCALE_NAME: Record<Locale, string> = {
+  en: 'English',
+  de: 'Deutsch',
+  'pt-br': 'Português (BR)',
+};
+
+const localeSwitcher = LOCALES.map((l) => ({
+  locale: l,
+  code: LOCALE_CODE[l],
+  name: LOCALE_NAME[l],
+  href: `${LOCALE_PREFIX[l]}${localePath}`,
+  current: l === locale,
+}));
+---
+
+<header class="sticky top-0 z-30 border-b border-border bg-bg/80 backdrop-blur-xl">
+  <div class="container-page flex items-center justify-between gap-6 py-4">
+    <a
+      href={home}
+      class="flex items-center gap-2 group shrink-0"
+      aria-label={`${SITE.name} — ${t.nav.home}`}
+    >
+      <span class="font-display text-xl sm:text-[1.35rem] font-semibold text-text group-hover:text-accent-deep transition-colors leading-none">
+        {SITE.name}
+      </span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8 text-sm list-none p-0">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="text-text-muted hover:text-text transition-colors"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3 shrink-0">
+      <a
+        href={`${prefix}/contact`}
+        class="hidden sm:inline-flex items-center justify-center px-4 py-2 min-h-[36px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium"
+      >
+        {t.cta.startProject}
+      </a>
+
+      <div class="relative">
+        <button
+          id="locale-toggle"
+          type="button"
+          class="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text transition-colors px-2 py-2 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          aria-haspopup="menu"
+          aria-controls="locale-menu"
+          aria-expanded="false"
+          aria-label={t.chrome.languageLabel}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M2 12h20"></path>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="tabular tracking-[0.05em] text-xs font-medium">{LOCALE_CODE[locale]}</span>
+        </button>
+        <ul
+          id="locale-menu"
+          role="menu"
+          aria-label={t.chrome.languageLabel}
+          class="hidden absolute right-0 mt-2 min-w-[12rem] bg-surface-elev border border-border rounded-lg shadow-elev py-1 text-sm list-none z-40"
+        >
+          {localeSwitcher.map((l) => (
+            <li role="none">
+              <a
+                role="menuitem"
+                hreflang={l.locale === 'en' ? 'en-US' : l.locale === 'de' ? 'de-DE' : 'pt-BR'}
+                href={l.href}
+                aria-current={l.current ? 'true' : undefined}
+                class:list={[
+                  'flex items-center justify-between gap-3 px-3 py-2 hover:bg-surface transition-colors',
+                  l.current && 'text-accent-deep font-medium',
+                ]}
+              >
+                <span>{l.name}</span>
+                <span class="text-text-subtle tabular text-xs">{l.code}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <button
+        id="hamburger-toggle"
+        type="button"
+        class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-text hover:text-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+        aria-label={t.chrome.menuOpen}
+        data-close-label={t.chrome.menuClose}
+      >
+        <svg id="hamburger-icon-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg id="hamburger-icon-close" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="hidden" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-nav" aria-label="Mobile primary" class="md:hidden hidden border-t border-border bg-bg">
+    <ul class="container-page flex flex-col py-4 gap-1 text-base list-none">
+      {nav.map((item) => (
+        <li><a href={item.href} class="block py-3 text-text hover:text-accent-deep transition-colors">{item.label}</a></li>
+      ))}
+      <li class="pt-3">
+        <a
+          href={`${prefix}/contact`}
+          class="inline-flex items-center justify-center w-full px-4 py-3 min-h-[44px] rounded-full bg-text text-bg text-sm font-medium"
+        >
+          {t.cta.startProject}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('hamburger-toggle') as HTMLButtonElement | null;
+  const nav = document.getElementById('mobile-nav');
+  const iconOpen = document.getElementById('hamburger-icon-open');
+  const iconClose = document.getElementById('hamburger-icon-close');
+  const closeLabelAttr = toggle?.dataset.closeLabel;
+
+  if (toggle && nav && iconOpen && iconClose) {
+    const openLabel = toggle.getAttribute('aria-label') ?? 'Open menu';
+    toggle.addEventListener('click', () => {
+      const next = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(next));
+      nav.classList.toggle('hidden', !next);
+      iconOpen.classList.toggle('hidden', next);
+      iconClose.classList.toggle('hidden', !next);
+      toggle.setAttribute('aria-label', next ? (closeLabelAttr ?? 'Close menu') : openLabel);
+    });
+  }
+
+  const localeToggle = document.getElementById('locale-toggle') as HTMLButtonElement | null;
+  const localeMenu = document.getElementById('locale-menu');
+
+  if (localeToggle && localeMenu) {
+    const close = () => {
+      localeToggle.setAttribute('aria-expanded', 'false');
+      localeMenu.classList.add('hidden');
+    };
+    localeToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const next = localeToggle.getAttribute('aria-expanded') !== 'true';
+      localeToggle.setAttribute('aria-expanded', String(next));
+      localeMenu.classList.toggle('hidden', !next);
+    });
+    document.addEventListener('click', (e) => {
+      if (!(e.target instanceof Node) || !localeMenu.contains(e.target)) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        close();
+        localeToggle.focus();
+      }
+    });
+  }
+</script>

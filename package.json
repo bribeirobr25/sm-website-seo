@@ -1,0 +1,20 @@
+{
+  "name": "sm-website-seo-tooling",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Root-level dev tooling for the sm-website-seo monorepo. NOT a workspace \u2014 per-client and scaffold packages remain independent (each clients/*/ and scaffolds/*/ has its own package.json + lockfile). This root package.json exists ONLY to host pre-commit hook tooling that runs at git-commit time across the whole tree.",
+  "scripts": {
+    "prepare": "simple-git-hooks",
+    "lint:secrets": "secretlint --maskSecrets --secretlintignore .gitignore '**/*'"
+  },
+  "devDependencies": {
+    "@secretlint/secretlint-rule-no-dotenv": "^13.0.2",
+    "@secretlint/secretlint-rule-pattern": "^13.0.2",
+    "@secretlint/secretlint-rule-preset-recommend": "^13.0.2",
+    "secretlint": "^13.0.2",
+    "simple-git-hooks": "^2.11.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "./scripts/precommit-secrets.sh"
+  }
+}

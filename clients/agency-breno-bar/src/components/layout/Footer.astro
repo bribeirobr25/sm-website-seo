@@ -1,0 +1,96 @@
+---
+/**
+ * Footer — breno-bar agency.
+ * 4 columns at desktop, stacks on mobile. Apple-clean: thin border, generous spacing.
+ * All copy locale-driven via SITE.i18n[locale].chrome.
+ */
+import { LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const currentYear = new Date().getFullYear();
+const t = SITE.i18n[locale];
+const prefix = LOCALE_PREFIX[locale];
+
+const navLinks = [
+  { href: `${prefix}/services`, label: t.nav.services },
+  { href: `${prefix}/portfolio`, label: t.nav.portfolio },
+  { href: `${prefix}/about`, label: t.nav.about },
+  { href: `${prefix}/contact`, label: t.nav.contact },
+];
+
+const legalLinks = [
+  { href: `${prefix}/imprint`, label: t.chrome.imprintLabel },
+  { href: `${prefix}/privacy`, label: t.chrome.privacyLabel },
+];
+---
+
+<footer class="border-t border-border bg-surface mt-32">
+  <div class="container-page py-16">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div class="space-y-3">
+        <p class="font-display text-xl font-semibold text-text">{SITE.name}</p>
+        <p class="text-sm text-text-muted leading-relaxed max-w-[14rem]">{t.tagline}</p>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <p class="uppercase tracking-[0.12em] text-text-subtle text-[11px] font-medium">{t.chrome.navHeading}</p>
+        <ul class="space-y-2 list-none p-0">
+          {navLinks.map((l) => (
+            <li><a href={l.href} class="text-text-muted hover:text-text transition-colors">{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <p class="uppercase tracking-[0.12em] text-text-subtle text-[11px] font-medium">{t.chrome.contactHeading}</p>
+        <p>
+          <a href={`mailto:${SITE.email}`} class="text-text-muted hover:text-text transition-colors">{SITE.email}</a>
+        </p>
+        <p class="text-text-subtle">{SITE.address.city}</p>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <p class="uppercase tracking-[0.12em] text-text-subtle text-[11px] font-medium">{t.chrome.legalHeading}</p>
+        <ul class="space-y-2 list-none p-0">
+          {legalLinks.map((l) => (
+            <li><a href={l.href} class="text-text-muted hover:text-text transition-colors">{l.label}</a></li>
+          ))}
+          <li>
+            <button
+              type="button"
+              id="footer-manage-cookies"
+              class="text-text-muted hover:text-text transition-colors text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
+            >
+              {t.consent.manage}
+            </button>
+          </li>
+        </ul>
+
+        <div class="pt-3 space-y-1">
+          <p class="uppercase tracking-[0.12em] text-text-subtle text-[11px] font-medium pb-2">{t.chrome.followHeading}</p>
+          <p>
+            <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-text transition-colors">LinkedIn</a>
+          </p>
+          <p>
+            <a href={SITE.social.x} target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-text transition-colors">X (Twitter)</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 pt-6 border-t border-border flex flex-wrap items-center justify-between gap-4 text-xs text-text-subtle">
+      <p>© {currentYear} {SITE.legal.legalEntity}. {t.chrome.closingNote}</p>
+      <p class="tabular">v{currentYear}.{new Date().getMonth() + 1}</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('footer-manage-cookies')?.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('consent:reopen'));
+  });
+</script>

@@ -20,8 +20,8 @@ export const SITE = {
   locales: ['de', 'en'] as const,
 
   // Contact
-  phone: '+493044001987',
-  phoneDisplay: '+49 30 4400 1987',
+  phone: '+4930000000004',
+  phoneDisplay: '+49 30 0000 00004',
   whatsapp: '493044001987',
   email: 'hallo@eiscafe-bellini.de',
 
@@ -423,7 +423,7 @@ export const SITE = {
     register: { court: 'Amtsgericht Charlottenburg', number: 'HRB 123456 B' },
     ustId: 'DE123456789',
     dataControllerEmail: 'datenschutz@eiscafe-bellini.de',
-    dataControllerPhone: '+49 30 4400 1987',
+    dataControllerPhone: '+4930000000004',
     processors: [
       { name: 'Vercel', purpose: 'Hosting (CDN, EU region routing)', location: 'EU + US' },
       {

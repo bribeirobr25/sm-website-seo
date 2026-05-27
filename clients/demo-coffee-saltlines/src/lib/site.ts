@@ -19,8 +19,8 @@ export const SITE = {
   locales: ['de', 'en'] as const,
 
   // Contact
-  phone: '+493078000419',
-  phoneDisplay: '+49 30 7800 0419',
+  phone: '+4930000000003',
+  phoneDisplay: '+49 30 0000 00003',
   whatsapp: '493078000419',
   email: 'hallo@saltlines.berlin',
 
@@ -308,7 +308,7 @@ export const SITE = {
     register: { court: 'Amtsgericht Charlottenburg', number: 'HRB 234567 B' },
     ustId: 'DE234567890',
     dataControllerEmail: 'datenschutz@saltlines.berlin',
-    dataControllerPhone: '+49 30 7800 0419',
+    dataControllerPhone: '+4930000000003',
     processors: [
       { name: 'Vercel', purpose: 'Hosting (CDN, EU region routing)', location: 'EU + US' },
       {

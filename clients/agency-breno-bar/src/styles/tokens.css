@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/*
+ * breno-bar agency tokens — Apple-inspired premium register.
+ *
+ * Palette choice (per COLOR.md §6 portfolio-diversity gate):
+ *   Near-white cool base + Apple near-black + single accent (Apple blue).
+ *   Deliberately distinct from the 7 existing demos: ΔE76 ≥ 15 against every
+ *   prior demo's --color-bg. Documented decision in design.md §Palette.
+ *
+ * Harmony framework: monochromatic-cool with single saturated accent (Apple's
+ * own approach to apple.com — minimum chrome, generous whitespace, one accent
+ * used sparingly on primary CTAs).
+ *
+ * 60-30-10 distribution per COLOR.md §1:
+ *   60 % --color-bg (#fbfbfd near-white cool)
+ *   30 % --color-text (#1d1d1f near-black) + --color-surface (#f5f5f7) splits
+ *   10 % --color-accent (#0071e3 Apple blue) — CTAs + active state only
+ *
+ * Inverted "tile" sections use --color-inverted-bg (pure black) for the
+ * Apple product-page rhythm where dark sections separate light sections.
+ */
+
+@theme {
+  /* ----------------------------------------------------------------------
+   * Brand palette — Apple-inspired premium
+   * ---------------------------------------------------------------------- */
+  --color-bg: #fbfbfd; /* Apple near-white (cool undertone) */
+  --color-surface: #f5f5f7; /* card-back gray — Apple #f5f5f7 verbatim */
+  --color-surface-elev: #ffffff; /* pure-white hero contrast cards */
+  --color-text: #1d1d1f; /* Apple near-black */
+  --color-text-muted: #6e6e73; /* Apple secondary gray — 5.34:1 vs bg, AA PASS */
+  --color-text-subtle: #86868b; /* small-print only — 3.86:1 vs bg, AA-large only */
+  --color-accent: #0071e3; /* Apple blue — CTA fill, 4.51:1 vs white, AA PASS */
+  --color-accent-deep: #0058b8; /* darker hover, 7.31:1, AAA */
+  --color-border: #d2d2d7; /* Apple subtle 1px divider */
+  --color-success: #28cd41;
+  --color-warning: #ff9500;
+  --color-error: #ff3b30; /* Apple SF-system error red */
+
+  /* Inverted (pure-black tile sections — Apple product-page rhythm) */
+  --color-inverted-bg: #000000;
+  --color-inverted-surface: #1d1d1f;
+  --color-inverted-text: #f5f5f7;
+  --color-inverted-text-muted: #a1a1a6;
+
+  /* Typography — Inter Variable handles both display + body via the opsz axis
+     (font-optical-sizing: auto picks the right cut per size, like SF Pro). */
+  --font-display: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "SF Pro Display",
+    sans-serif;
+  --font-body: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Spacing — Apple-generous */
+  --spacing-section: 8rem;
+  --spacing-section-mobile: 4rem;
+
+  /* Radii — Apple-soft */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 22px; /* Apple iOS card radius */
+  --radius-full: 9999px;
+  --radius-pill-half: 30px 0 0 30px;
+
+  /* Shadows — Apple is restrained; soft + barely-there */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-elev: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-hero: 0 20px 60px rgba(0, 0, 0, 0.12);
+
+  /* ----------------------------------------------------------------------
+   * Universal canonical tokens — DO NOT override (per TECH.md §7).
+   * ---------------------------------------------------------------------- */
+  --motion-fast: 180ms;
+  --motion-base: 320ms;
+  --motion-warm: 500ms;
+  --motion-deliberate: 600ms;
+  --motion-reveal: 800ms;
+
+  --ease-apple-smooth: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-quart: cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-luxe: cubic-bezier(0.25, 0.74, 0.22, 0.99);
+
+  --stagger-step: 20ms;
+
+  --tracking-display-sans: -0.022em;
+  --tracking-display-serif-caps: 0.025em;
+  --tracking-body: -0.005em;
+}

@@ -25,8 +25,8 @@ export const SITE = {
   locales: ['de', 'en'] as const,
 
   // Contact
-  phone: '+493055552014',
-  phoneDisplay: '+49 30 5555 2014',
+  phone: '+4930000000005',
+  phoneDisplay: '+49 30 0000 00005',
   whatsapp: '493055552014',
   email: 'kanzlei@sander-voss.de',
 
@@ -452,7 +452,7 @@ export const SITE = {
     register: { court: 'Amtsgericht Charlottenburg', number: 'PR 1234 B' },
     ustId: 'DE298765432',
     dataControllerEmail: 'datenschutz@sander-voss.de',
-    dataControllerPhone: '+49 30 5555 2014',
+    dataControllerPhone: '+4930000000005',
     processors: [
       { name: 'Vercel', purpose: 'Hosting (CDN, EU region routing)', location: 'EU + US' },
       {

@@ -1,0 +1,51 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { PAGE_STRINGS } from '@/lib/page-strings';
+import { SERVICE_SLUGS } from '@/lib/services';
+
+const locale = 'en' as const;
+const p = PAGE_STRINGS[locale].services;
+---
+
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/services">
+  <Header locale={locale} localePath="/services" />
+  <main id="main">
+    <section class="bg-hero-gradient">
+      <div class="container-page py-24 sm:py-32 text-center max-w-3xl mx-auto">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium mb-6">{p.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-text leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
+        <p class="mt-6 text-lg text-text-muted leading-[1.5]">{p.heroSubtitle}</p>
+      </div>
+    </section>
+
+    <section class="section bg-bg">
+      <div class="container-page space-y-5">
+        {SERVICE_SLUGS.map((slug, i) => {
+          const s = p.services[slug];
+          const isDark = i === 0 || i === 3;
+          return (
+            <a
+              href={`/services/${slug}`}
+              class={`group reveal-rise relative block rounded-[22px] overflow-hidden p-10 sm:p-14 min-h-[360px] transition-colors ${isDark ? 'bg-inverted-bg text-inverted-text hover:bg-text/95' : 'bg-surface hover:bg-surface-elev border border-border'}`}
+              style={`animation-delay:${i * 60}ms`}
+            >
+              <div class="grid sm:grid-cols-[1fr_2fr] gap-8 items-start">
+                <div>
+                  <p class={`text-xs tracking-[0.18em] uppercase font-medium ${isDark ? 'text-accent' : 'text-accent-deep'}`}>{s.heroEyebrow}</p>
+                  <h2 class="mt-4 font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]">{s.name}</h2>
+                </div>
+                <div>
+                  <p class={`text-lg leading-[1.5] ${isDark ? 'text-inverted-text-muted' : 'text-text-muted'}`}>{s.shortTagline}</p>
+                  <p class={`mt-8 text-sm font-medium ${isDark ? 'text-inverted-text' : 'text-text'} group-hover:translate-x-1 transition-transform inline-block`}>{s.heroTitle} →</p>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

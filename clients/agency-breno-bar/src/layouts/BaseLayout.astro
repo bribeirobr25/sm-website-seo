@@ -1,0 +1,225 @@
+---
+/**
+ * Base layout — ships with: localized title/description, canonical URL, OG + Twitter,
+ * JSON-LD schema injection, BreadcrumbList auto-derivation, hreflang alternate
+ * (driven by LOCALES from site.ts so N-locale builds need zero layout changes),
+ * DemoBanner, locale-aware CookieBanner.
+ *
+ * DO NOT OVERWRITE THIS FILE with a custom rewrite in per-client setup.
+ * If a page needs additional schema, pass `extraSchema` prop. If a page has a
+ * locale-alternate, pass `localePath` (locale-neutral path, e.g. '/services'
+ * or '/products/foo'). The features here are the agency-baseline; bypassing
+ * them costs SEO + accessibility (see the 2026-05-26 Kodama-bonsai audit
+ * incident where a hand-rebuilt BaseLayout dropped JSON-LD, BreadcrumbList,
+ * hreflang, and the OG image path simultaneously).
+ *
+ * Per-client setup customizes: the schema function in `src/lib/seo/schema.ts`
+ * (LocalBusiness → most-specific subtype) and the `i18n[locale].consent` +
+ * `i18n[locale].demoBanner` blocks in `src/lib/site.ts`.
+ *
+ * Extending beyond 2 locales: see `docs/design/I18N.md` §17. Add the locale
+ * to `LOCALES` / `LOCALE_LANG` / `LOCALE_PREFIX` in `site.ts` + add the
+ * matching `i18n[locale]` block; the layout iterates `LOCALES` so no changes
+ * are required here.
+ */
+import '@/styles/global.css';
+import '@fontsource-variable/inter';
+import CookieBanner from '@/components/ui/CookieBanner.astro';
+import { businessSchema } from '@/lib/seo/schema';
+import { LOCALES, LOCALE_LANG, LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  locale?: Locale;
+  /** Locale-neutral path (e.g. '/services' or '/products/foo'). Used to emit
+   *  per-locale hreflang alternates. Omit on the home page (root). */
+  localePath?: string;
+  /** Pass per-page extra schema (Article / BreadcrumbList already auto-emitted) */
+  extraSchema?: Record<string, unknown> | null;
+}
+
+const {
+  title = SITE.name,
+  description,
+  ogImage = `${SITE.url}/img/og-default.png`,
+  // Demo phase: ALWAYS noindex. Per CLAUDE.md "Demo discipline" — never flip during portfolio phase.
+  noindex = true,
+  locale = 'en',
+  localePath,
+  extraSchema = null,
+} = Astro.props;
+
+const t = SITE.i18n[locale];
+const localizedDescription = description ?? t.tagline;
+const canonical = new URL(Astro.url.pathname, SITE.url).toString();
+const schema = JSON.stringify(businessSchema());
+const htmlLang = LOCALE_LANG[locale];
+const ogLocale = htmlLang.replace('-', '_');
+
+// Build per-locale alternate URLs when the page declared its locale-neutral path.
+// `LOCALES[0]` is the x-default target (per agency convention: the primary
+// locale, which is DE for Berlin-market clients).
+const alternates = localePath
+  ? LOCALES.map((l) => ({
+      hreflang: LOCALE_LANG[l],
+      href: new URL(`${LOCALE_PREFIX[l]}${localePath}`, SITE.url).toString(),
+    }))
+  : [];
+
+// Locale-prefix segments to strip from the breadcrumb derivation (e.g. 'en' for /en/page).
+const localePrefixSegments = LOCALES.map((l) => LOCALE_PREFIX[l].replace(/^\//, '')).filter(
+  Boolean,
+);
+
+// BreadcrumbList JSON-LD per SEO.md §schema — skip on home (single-segment).
+// Derives from URL path: /en/page → [Home → Page], /datenschutz → [Home → Privacy].
+function deriveBreadcrumbs(pathname: string, pageTitle: string) {
+  const cleanPath = pathname.replace(/\/$/, '');
+  let segments = cleanPath.split('/').filter(Boolean);
+  // Strip leading locale prefix so breadcrumbs don't show 'en' / 'es' / 'pt-br' as a crumb.
+  if (segments.length > 0 && localePrefixSegments.includes(segments[0]))
+    segments = segments.slice(1);
+  if (segments.length === 0) return null;
+  const homeHref = `${LOCALE_PREFIX[locale]}/`;
+  const items: Array<{ name: string; href: string }> = [
+    { name: locale === 'de' ? 'Startseite' : 'Home', href: homeHref },
+  ];
+  items.push({ name: pageTitle, href: cleanPath });
+  return items;
+}
+
+const breadcrumbItems = deriveBreadcrumbs(Astro.url.pathname, title);
+const breadcrumbSchema = breadcrumbItems
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbItems.map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: b.name,
+        item: new URL(b.href, SITE.url).toString(),
+      })),
+    }
+  : null;
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title === SITE.name ? title : `${title} · ${SITE.name}`}</title>
+    <meta name="description" content={localizedDescription} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.hreflang} href={a.href} />
+    ))}
+    {alternates.length > 0 && (
+      <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
+    )}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={localizedDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name} — ${t.tagline}`} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={localizedDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline type="application/ld+json" set:html={schema} />
+    {breadcrumbSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    )}
+    {extraSchema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(extraSchema)} />
+    )}
+
+    <!--
+      Analytics tags are consent-gated via type="text/plain" pattern.
+      Per LEGAL.md §Cookie consent banner — universal spec.
+      TODO: replace G-XXXXXX with the real GA4 measurement ID at production cutover.
+    -->
+    <script
+      is:inline
+      type="text/plain"
+      data-cookie-category="analytics"
+      data-src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXX"
+      async></script>
+    <script is:inline type="text/plain" data-cookie-category="analytics">
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag('js', new Date());
+      window.gtag('config', 'G-XXXXXX', {
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+      });
+    </script>
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-accent focus:text-bg focus:px-4 focus:py-2 focus:z-50"
+    >
+      {locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}
+    </a>
+
+    <slot />
+
+    {/* Browser-locale auto-detect (runs only on the EN root home, once per
+        session). If `navigator.language` matches a localized variant we have,
+        redirect to it. Manual locale-switcher clicks set the `lc` flag so the
+        user is never bounced back. Inline + early so the redirect happens
+        before paint. */}
+    {locale === 'en' && Astro.url.pathname === '/' && (
+      <script is:inline set:html={`
+        try {
+          if (!sessionStorage.getItem('lc')) {
+            sessionStorage.setItem('lc', '1');
+            var l = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+            if (l.indexOf('de') === 0) { location.replace('/de'); }
+            else if (l === 'pt-br' || l === 'pt_br' || l.indexOf('pt') === 0) { location.replace('/pt-br'); }
+          }
+        } catch (e) { /* no-op */ }
+      `} />
+    )}
+
+    <CookieBanner locale={locale} />
+
+    <script>
+      import '@/lib/analytics';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

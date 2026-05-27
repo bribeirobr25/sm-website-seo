@@ -24,8 +24,8 @@ export const SITE = {
   locales: ['de', 'en'] as const,
 
   // Contact
-  phone: '+493029007311',
-  phoneDisplay: '+49 30 2900 7311',
+  phone: '+4930000000001',
+  phoneDisplay: '+49 30 0000 00001',
   whatsapp: '493029007311',
   email: 'shop@bart-pomade.de',
 
@@ -388,7 +388,7 @@ export const SITE = {
     register: { court: 'Amtsgericht Charlottenburg', number: 'HRB 187654 B' },
     ustId: 'DE412987345',
     dataControllerEmail: 'datenschutz@bart-pomade.de',
-    dataControllerPhone: '+49 30 2900 7311',
+    dataControllerPhone: '+4930000000001',
     processors: [
       { name: 'Vercel', purpose: 'Hosting (CDN, EU region routing)', location: 'EU + US' },
       {

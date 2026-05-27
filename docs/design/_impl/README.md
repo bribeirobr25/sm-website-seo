@@ -47,6 +47,20 @@ Canonical DE-DSGVO legal page templates — 8-section Impressum (TMG §5) + 10-s
 
 These files were extracted from `clients/reference-solo-barber/` and `clients/reference-studio-booking/` on 2026-05-19. Before the restructuring, this code lived only in the reference impls — which had per-client palette + content baked in, making the patterns hard to extract cleanly. The Phase 1 extraction produced byte-identical copies of every canonical asset; Phase 6 deleted the originals once extraction was verified.
 
+### Subsequent updates (2026-05-26 — Kodama-bonsai backport)
+
+Several files were upgraded from the 2026-05-19 byte-identical extraction to a stricter agency-baseline standard after the bonsai demo found gaps in the original references. These files now include features that the reference impls did not ship:
+
+| File | What was added 2026-05-26 |
+|---|---|
+| `_impl/components/BaseLayout.astro` | hreflang alternate-link emission, BreadcrumbList JSON-LD auto-derivation, `extraSchema` prop for per-page schema, locale-driven CookieBanner/DemoBanner wiring |
+| `_impl/components/CookieBanner.astro` | All strings now pull from `SITE.i18n[locale].consent` — no hardcoded strings |
+| `_impl/components/Footer.astro` | "Manage cookie preferences" link dispatching `consent:reopen` event |
+| `_impl/lib/consent.ts` | Comment updated from LGPD-only to DSGVO/TTDSG canonical |
+| `_impl/lib/seo/schema.astro.ts` | OG-image path fix (was `og-default.jpg` → `/img/og-default.png`) |
+
+The scaffolds at `scaffolds/astro-tier2/` got the same backport in parallel. Cross-ref: `docs/audit/PENDING.md` Recently resolved "Path C — infrastructure debt closure" + "i18n patterns backport."
+
 ## Cross-references
 
 Working files cited in standards docs:

@@ -100,7 +100,7 @@ All standards documents live in `docs/design/`. Read the relevant ones before st
 | `docs/design/CITATIONS.md` | Local citation / business-directory landscape — universal (GBP/Apple/Bing/Yelp/FB/IG) · DE general (Gelbe Seiten/Sellwerk trap, Das Örtliche, 11880 telesales, meinestadt, **berlin.de**) · per-vertical must-claim across 12 verticals (Jameda, Treatwell, Tripadvisor, MyHammer, etc.) · PT + BR seed lists · NAP canonical template (declared per client in BRIEF.md) · aggregator verdict (no Yext/Uberall below €500/mo retainer) · 6-month refresh cadence | Every client at launch — pre-`noindex`-flip production-cutover deliverable |
 | `docs/design/I18N.md` | Multilingual setup, locale config, translation files, parity validator, DE/EN/PT-BR rules | Any multilingual site |
 | `docs/design/CHECKLIST.md` | Master pre-delivery checklist + leanest free launch combo runbook | Before going live on any client |
-| `docs/design/SALES.md` | Outreach workflow, pricing, contracts, client handoff, retainer | When managing the client relationship |
+| `docs/design/SALES.md` | **Public stub** — agency methodology summary + cross-doc-reference absorber. Tactical playbook (objection scripts, retainer terms, cold-call openings) is internal, lives at `docs/design/private/SALES.md` (gitignored). | When managing the client relationship |
 | `docs/design/components/` | **Canonical UI component library — 32 components + 6 universal primitives** organized into 6 tiers: Tier 0 universal primitives (Button · CookieBanner · Placeholder · ShareButton · Section) · Tier 1 infrastructure (Dialog · Accordion · ConsentGate) · Tier 2 universal SMB (FAQ · Testimonial · TeamGrid) · Tier 3 reference-study patterns (HalfPillCTA · LabelCountHeader · HoursInNav · MarqueeCTA · EyebrowDisplayHero · StatCallouts · Section · SplitText) · Tier 3b hero+menu (FullBleedHero · MenuCard) · Tier 4 promotion-from-demos (SplitHero · CourseList · Press · NewsletterMock · BookingMock · WaveReportTicker · PhotoGrid) · Tier 5 vertical multipliers (VideoFacade · MapEmbed · Lightbox · BeforeAfterSlider · PricingTable · TrustBadgeRow · ServiceArea · Timeline · ScrollSpyNav). Each component has a spec sheet + working `_impl/` file. README.md has the full tiered index + build-dependency graph + skip-list (carousel/toast/tabs anti-patterns) + buy-don't-build table. | Picking components for any client UI work — read the README's tier index, then the matching spec sheet |
 
 **Per-vertical templates** live in `docs/design/templates/`:
@@ -157,7 +157,7 @@ Fill in the `design.md` using the template in `DESIGN-BEST-PRACTICES.md` §17.
 
 Use the decision tree in `TECH.md` §1:
 - Single landing page → HTML + Tailwind + vanilla JS (Tier 1)
-- Multi-page static → Astro 5+ + Tailwind v4 (Tier 2) ← most common
+- Multi-page static → Astro 6 + Tailwind v4 (Tier 2) ← most common
 - Dynamic features needed → Next.js 16 + next-intl (Tier 3)
 
 **Then pick the matching vertical template in `docs/design/templates/`** (12 available — one per benchmark category): gastronomy · beauty · trades · health · studio · professional-services · pets · automotive · education · events-hospitality · home-garden · artisan. The template captures archetype options, default palette per sub-archetype (when client has no brand), photography rules, typography pairings, anti-patterns, and reference sites. Read its §1 archetype matrix + §10 decision matrix before drafting the per-client `design.md`.
@@ -201,7 +201,7 @@ pnpm dev                                    # http://localhost:3000
 - `public/favicon.svg` (scaffold ships placeholder; replace with client brand) + `public/favicon.ico` (32×32 PNG fallback — generate via `rsvg-convert` per `TECH.md` §8) + `public/apple-touch-icon.png` (180×180)
 - `public/robots.txt` (scaffold ships `Disallow: /` for demo phase; flip at production cutover)
 
-**Canonical components** are at `docs/design/components/_impl/` (8 + 5 universal primitives). Scaffolds do NOT auto-include the 8 from the UI/UX reference study — opt in per the matching `docs/design/components/[component].md` §1 per-vertical applicability table. Universal primitives (`Button`, `CookieBanner`, `Placeholder`, `Header`/`Footer`) ARE in each scaffold's `src/components/`.
+**Canonical components** are at `docs/design/components/_impl/` (32 canonical components + 6 universal primitives, per the tier index at `docs/design/components/README.md`). Scaffolds do NOT auto-include the 32 — opt in per the matching `docs/design/components/[component].md` §1 per-vertical applicability table. Universal primitives (`Button`, `CookieBanner`, `Placeholder`, `ShareButton`, `Section`, `Header`/`Footer`) ARE in each scaffold's `src/components/`.
 
 **Non-component canonical assets** (lib code, legal pages, configs, Sentry recipes) are at `docs/design/_impl/`. The scaffolds include the universal subset; per-vertical assets (DSGVO Impressum/Datenschutz, LGPD política, Drizzle schema, form-endpoint route.ts) are opt-in copies from `docs/design/_impl/`.
 
@@ -235,6 +235,8 @@ vercel --prod   # Gets a vercel.app URL
 
 ## Working principles (apply to every client session)
 
+- **Pre-commit secret scanning is mandatory.** A `secretlint` hook installed via `simple-git-hooks` blocks any commit that contains a secret pattern (AWS / Stripe / GitHub / Sentry-DSN / Resend / Anthropic / OpenAI / Vercel / Upstash). See `scripts/precommit-secrets.sh` for the wrapper + `.secretlintrc.json` for the rule set + `package.json` `simple-git-hooks` for the wiring. On a fresh `git clone` you must run `pnpm install` at the repo root to activate the hook. Bypass available via `git commit --no-verify` or `SKIP_SIMPLE_GIT_HOOKS=1` — use intentionally + only when you understand why.
+- **Two private/ folders are gitignored and contain internal-only docs.** `docs/audit/private/` holds the operational backlog (`PENDING.md`), prospect intakes, and competitive research. `docs/design/private/` holds the tactical sales playbook (`SALES.md`). Both have public stubs at the canonical paths so cross-doc references still resolve for outside readers. Convention documented in each private/ folder's `README.md`. Do not commit anything from `private/` — the `.gitignore` is your safety net + the pre-commit hook is the final block.
 - **Never auto-commit or auto-push.** Stage changes, report what's ready, wait for instruction.
 - **Atomic commits.** English, imperative, one logical change per commit.
 - **Write the plan first** for any multi-step task. Get approval. Then execute.
@@ -258,7 +260,7 @@ vercel --prod   # Gets a vercel.app URL
 - **Sentry instruments every server-side execution surface** — Tier 1 pure-static has no surface; Tier 1 + form endpoint instruments only the function; Tier 2/3 use the full SDK. `send_default_pii: false` is non-negotiable in every Sentry init (`INFRASTRUCTURE.md` §Error tracking).
 - **KPI dashboards delivered with every retainer client** — every production cutover wires at least 3 KPIs from `KPI.md` §Per-product-type KPI defaults (Type 1: ≥ 3 acquisition/conversion KPIs · Type 2+: add form-conversion · Type 3+: add funnel + retention via PostHog). Per-vertical picks live in each template's §11 Measurement. The BRIEF.md "KPI contract" block (`KPI.md` §KPI contract) is owner-confirmed before scaffold starts. No KPIs wired = no production launch.
 - **Track unresolved items in `docs/audit/PENDING.md`** — agency-level backlog aggregator across all clients. Add to it when a DRAFT item surfaces; move to "Recently resolved" when it closes.
-- **Imported canonical components declared in per-client CLAUDE.md** — when a client imports a component from `docs/design/components/_impl/` (the 8 from the 24-site UI/UX reference study + 5 universal primitives), record the import in the client's `docs/clients/[slug]/CLAUDE.md` "Imported components" table per `TECH.md` §20. Makes per-client review of "what canonical patterns are in use, where to find the spec sheets + per-vertical token swaps" a one-shot lookup.
+- **Imported canonical components declared in per-client CLAUDE.md** — when a client imports a component from `docs/design/components/_impl/` (the 32-component canonical library across 6 tiers + 6 universal primitives — see `docs/design/components/README.md` for the tier index), record the import in the client's `docs/clients/[slug]/CLAUDE.md` "Imported components" table per `TECH.md` §20. Makes per-client review of "what canonical patterns are in use, where to find the spec sheets + per-vertical token swaps" a one-shot lookup.
 - **Citation hygiene applied per client at launch** — claim universal directories (GBP/Apple/Bing/Yelp DE/Facebook/IG) + DE-general (Gelbe Seiten/Das Örtliche/11880/meinestadt/**berlin.de**) + 1-3 vertical-specific (Jameda/Treatwell/Tripadvisor/MyHammer/etc.) per `CITATIONS.md` §2-§4. Canonical NAP declared in `BRIEF.md` per §7 template before any directory is claimed. **No monthly citation maintenance below €500/mo retainer** — Sterling Sky 2026 retainer-experiments evidence shows it's wasted budget; default cadence is the semi-annual 6-month audit per `CITATIONS.md` §9. Per-directory premium-upsell traps (Sellwerk 3-month auto-renewal, 11880 telesales) documented in retainer agreement at claim time.
 - **Review-generation playbook applied per retainer client** — every retainer client with a GBP listing ships with `review_count_30d` + `review_response_rate_30d` + `days_since_last_review` as canonical Health KPIs per `KPI.md` Cross-type Health KPIs. Vanity review redirect (`/bewertung` DE / `/avaliacao` PT-BR / `/review` EN) configured + e2e tested as 🔴 production blocker per `CHECKLIST.md` §Review generation. DE message templates ship as DRAFT requiring client legal counsel sign-off (Bestandskunden frame per `LEGAL.md` §DE) before any agency-managed mass campaign deploys. Drought-alert SLA at 21 days 🟡 / 42 days 🔴 per `SEO.md` §8.4.3.
 
@@ -266,17 +268,26 @@ vercel --prod   # Gets a vercel.app URL
 
 ## Current client roster
 
-**No active paying client builds.** The agency rule library is feature-complete (legal · KPI · integrations · social sharing · review-generation · citations · schema cookbook all shipped through 2026-05-19; "Recently resolved" entries in `docs/audit/PENDING.md` summarize the work).
+**Live agency-self marketing site:** `clients/agency-breno-bar/` deployed at https://agency-breno-bar.vercel.app (Tier 2 Astro · trilingual EN/DE/pt-BR · Apple-inspired register · Resend-wired contact form · 51 static + 1 SSR routes). Pre-production: DRAFT legal items + real domain + Resend API key pending. Per-client docs at `docs/clients/agency-breno-bar/`.
 
-**Two install-ready scaffolds** at `scaffolds/` are the canonical starting points. The prior reference impls in `clients/reference-*/` were distilled into `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/` and the original `clients/` tree was deleted 2026-05-19:
+**Seven portfolio demos** at `clients/demo-*/`:
+- `demo-bonsai-kodama` (4-locale education/artisan · 134 routes — agency-largest)
+- `demo-restaurant-adele` (gastronomy/fine-dining)
+- `demo-yoga-atem-studio` (studio/wellness)
+- `demo-coffee-saltlines` (gastronomy/specialty-café)
+- `demo-barber-bart-pomade` (beauty/barbershop)
+- `demo-lawyer-sander-voss` (professional-services/legal)
+- `demo-eiscafe-bellini` (gastronomy — Vercel URL squatted on `demo-gastronomy.vercel.app`; deferred until re-aliased)
+
+All on `noindex`. Per-client docs at `docs/clients/demo-*/`. Recently resolved entries in `docs/audit/PENDING.md` summarize each build closure.
+
+**Two install-ready scaffolds** at `scaffolds/` are the canonical starting points. The prior reference impls in `clients/reference-*/` were distilled into `docs/design/_impl/` + `docs/design/components/_impl/` + `scaffolds/` on 2026-05-19:
 - `scaffolds/astro-tier2/` (Tier 2 / Astro 6 / Tailwind v4 / Sentry — for Type 1 + Type 2 client builds)
 - `scaffolds/nextjs-tier3/` (Tier 3 / Next.js 16 / Tailwind v4 / Drizzle + Neon + Upstash + Resend + Sentry + PostHog — for Type 3+ client builds)
 
 Per-client doc archives at `docs/clients/archived/reference-solo-barber/` (Tier 2 / BR-LGPD worked example) and `docs/clients/archived/reference-studio-booking/` (Tier 3 / DE-DSGVO worked example) retain the canonical `CLAUDE.md` + `BRIEF.md` + `design.md` shapes.
 
-The previous portfolio attempts (Jean Souza Barbearia + Porto dos Ribeiros 3 variants) were deleted from `clients/` on 2026-05-16 because they pre-dated the legal/KPI/monitoring rule expansion; their per-client docs are archived at `docs/clients/archived/` for historical reference.
-
-**Next phase: client work.** The rule library is feature-complete for the agency's typical client. Either pick a friend-and-family portfolio site (per `SALES.md` §5 + this file's "Portfolio strategy" section) or pursue Café Del Corso / Laudam — both have intakes ready in `docs/audit/`. See `docs/audit/PENDING.md` for the current backlog and trigger-gated items.
+**Next phase: paying clients.** The rule library is feature-complete + the agency's own site is live. Either pursue Café Del Corso / Laudam (intakes ready in `docs/audit/`) or use the agency site for inbound. See `docs/audit/PENDING.md` for the current backlog and trigger-gated items.
 
 ---
 
