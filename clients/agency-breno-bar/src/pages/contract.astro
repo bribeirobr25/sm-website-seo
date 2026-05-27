@@ -2,13 +2,15 @@
 /**
  * Hidden contract form — fill in browser, then Cmd/Ctrl+P → save as PDF or print A4.
  *
- * NOT linked anywhere public. Reachable only by typing /contract directly.
- * Listed in robots.txt as Disallow. noindex via BaseLayout default.
+ * Not linked anywhere public. `Disallow: /contract` in robots.txt + `noindex`
+ * via BaseLayout default. EN root version; DE at /de/contract.
  *
- * EN root version. DE version at /de/contract.
- *
- * **LEGAL CAVEAT**: This template is NOT lawyer-reviewed. See contract-strings.ts
- * header + the visible DRAFT banner on the page (hidden when printed).
+ * Design follows agency Apple-clean register:
+ *   - Sticky toolbar (print button always reachable)
+ *   - 44 px+ touch targets on every input (ACCESSIBILITY.md §6)
+ *   - 15 px body floor on rendered contract (legal-readability baseline)
+ *   - localStorage auto-save (form survives page refresh during a meeting)
+ *   - Print CSS hides form chrome + agency header/footer; renders contract only
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { CONTRACT_STRINGS, SERVICE_SCOPES } from '@/lib/contract-strings';
@@ -18,9 +20,10 @@ const locale = 'en' as const;
 const c = CONTRACT_STRINGS[locale];
 const scopes = SERVICE_SCOPES[locale];
 
-// Pre-fill agency identity from site.ts
 const agencyAddressLine = `${SITE.address.street || '—'}, ${SITE.address.postalCode || '—'} ${SITE.address.city}, ${SITE.address.country}`;
-const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: pending' : `USt-IdNr: ${SITE.legal.taxId}`;
+const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
+  ? 'USt-IdNr: pending'
+  : `USt-IdNr: ${SITE.legal.taxId}`;
 ---
 
 <BaseLayout
@@ -30,26 +33,50 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: pending' :
   noindex={true}
 >
   <main id="main" class="bg-bg min-h-screen">
-    {/* DRAFT BANNER — visible on screen, hidden in print */}
-    <div class="no-print bg-warning text-text border-y-2 border-text/30 py-3 px-6 text-sm leading-relaxed">
-      <strong>⚠ {c.draftBanner.split(' — ')[0]}</strong> — {c.draftBanner.split(' — ').slice(1).join(' — ')}
+    {/* STICKY TOOLBAR — visible on screen, hidden in print */}
+    <div class="no-print sticky top-[64px] z-20 bg-bg/90 backdrop-blur-xl border-b border-border">
+      <div class="container-page py-4 flex items-center justify-between gap-4">
+        <div class="min-w-0 flex-1">
+          <p class="text-xs tracking-[0.18em] uppercase text-text-subtle font-medium">Internal</p>
+          <p class="font-display text-lg sm:text-xl font-semibold text-text leading-tight truncate">{c.pageTitle}</p>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            id="toggle-form-btn"
+            class="hidden sm:inline-flex items-center justify-center px-4 py-2 min-h-[44px] rounded-full border border-border text-text hover:border-text transition-colors text-sm font-medium"
+            aria-pressed="false"
+            aria-controls="form-panel"
+          >
+            <span data-show-text>Hide form</span>
+          </button>
+          <button
+            type="button"
+            id="print-btn"
+            class="inline-flex items-center justify-center px-5 py-2 min-h-[44px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="mr-2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>{c.printButton}</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    {/* FORM PANEL — visible on screen, hidden in print */}
-    <section class="no-print bg-surface border-b border-border">
-      <div class="container-page py-12 max-w-4xl">
-        <h1 class="font-display text-3xl sm:text-4xl font-semibold text-text tracking-[-0.02em]">{c.pageTitle}</h1>
-        <p class="mt-3 text-text-muted leading-relaxed">{c.pageSubtitle}</p>
+    {/* FORM PANEL */}
+    <section id="form-panel" class="no-print bg-surface border-b border-border">
+      <div class="container-page py-12 sm:py-16 max-w-4xl">
+        <p class="text-sm text-text-muted leading-relaxed mb-2">{c.pageSubtitle}</p>
+        <p class="text-xs text-text-subtle italic">{c.formIntro}</p>
 
-        <form id="contract-form" class="mt-10 space-y-10">
+        <form id="contract-form" class="mt-10 space-y-14">
           {/* SECTION 1 — CLIENT */}
-          <fieldset class="space-y-4">
-            <legend class="font-display text-lg font-semibold text-text">{c.partiesLabel}</legend>
+          <fieldset class="space-y-5">
+            <legend class="font-display text-base font-semibold text-text tracking-[-0.005em]">{c.partiesLabel}</legend>
 
             <div class="grid sm:grid-cols-2 gap-4">
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientLegalForm}</span>
-                <select name="client_legal_form" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text">
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientLegalForm}</span>
+                <select name="client_legal_form" class="ag-input">
                   <option value="GbR">GbR</option>
                   <option value="UG (haftungsbeschränkt)">UG (haftungsbeschränkt)</option>
                   <option value="GmbH">GmbH</option>
@@ -60,263 +87,335 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: pending' :
                 </select>
               </label>
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientBusinessName}</span>
-                <input type="text" name="client_business_name" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientBusinessName}</span>
+                <input type="text" name="client_business_name" class="ag-input" />
               </label>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientRepresentative}</span>
-                <input type="text" name="client_representative" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientRepresentative}</span>
+                <input type="text" name="client_representative" class="ag-input" />
               </label>
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientRepresentativeRole}</span>
-                <input type="text" name="client_representative_role" placeholder="Geschäftsführer / Inhaber / …" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientRepresentativeRole}</span>
+                <input type="text" name="client_representative_role" placeholder="Geschäftsführer / Inhaber / …" class="ag-input" />
               </label>
             </div>
 
             <div class="grid sm:grid-cols-[2fr_1fr_2fr] gap-4">
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientStreet}</span>
-                <input type="text" name="client_street" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientStreet}</span>
+                <input type="text" name="client_street" class="ag-input" />
               </label>
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientPostalCode}</span>
-                <input type="text" name="client_postal_code" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientPostalCode}</span>
+                <input type="text" name="client_postal_code" class="ag-input" />
               </label>
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientCity}</span>
-                <input type="text" name="client_city" value="Berlin" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientCity}</span>
+                <input type="text" name="client_city" value="Berlin" class="ag-input" />
               </label>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientEmail}</span>
-                <input type="email" name="client_email" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientEmail}</span>
+                <input type="email" name="client_email" class="ag-input" />
               </label>
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.clientUstId}</span>
-                <input type="text" name="client_ust_idnr" placeholder="DE…" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
-                <span class="block text-xs text-text-subtle mt-1">{c.clientUstHint}</span>
+                <span class="block text-sm font-medium text-text mb-1.5">{c.clientUstId}</span>
+                <input type="text" name="client_ust_idnr" placeholder="DE…" class="ag-input" />
+                <span class="block text-xs text-text-subtle mt-1.5">{c.clientUstHint}</span>
               </label>
             </div>
           </fieldset>
 
           {/* SECTION 2 — SERVICES */}
-          <fieldset class="space-y-4">
-            <legend class="font-display text-lg font-semibold text-text">{c.servicesLabel}</legend>
-            <p class="text-sm text-text-muted">{c.servicesHint}</p>
+          <fieldset class="space-y-5">
+            <legend class="font-display text-base font-semibold text-text tracking-[-0.005em]">{c.servicesLabel}</legend>
+            <p class="text-sm text-text-muted leading-relaxed">{c.servicesHint}</p>
 
-            {scopes.map((s) => (
-              <div class="border border-border rounded-md p-4 space-y-2">
-                <label class="flex items-start gap-3">
-                  <input type="checkbox" name={`svc_${s.slug}`} class="mt-1 svc-toggle" data-slug={s.slug} />
-                  <span class="text-sm font-medium text-text">{s.name}</span>
-                </label>
-                <label class="block ml-7">
-                  <span class="block text-xs text-text-subtle mb-1">{c.scopeEditableLabel}</span>
-                  <textarea name={`scope_${s.slug}`} rows="4" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text text-sm leading-relaxed">{s.defaultScope}</textarea>
-                </label>
-              </div>
-            ))}
+            <div class="space-y-3">
+              {scopes.map((s) => (
+                <div class="border border-border rounded-[14px] bg-bg overflow-hidden">
+                  <label class="flex items-start gap-3 p-4 cursor-pointer hover:bg-surface transition-colors min-h-[52px]">
+                    <input type="checkbox" name={`svc_${s.slug}`} class="mt-1 svc-toggle h-5 w-5 accent-accent" data-slug={s.slug} />
+                    <span class="text-sm font-medium text-text leading-relaxed">{s.name}</span>
+                  </label>
+                  <div class="border-t border-border bg-surface px-4 py-3">
+                    <label class="block">
+                      <span class="block text-xs text-text-subtle mb-1.5 font-medium">{c.scopeEditableLabel}</span>
+                      <textarea name={`scope_${s.slug}`} rows="4" class="ag-input text-sm leading-relaxed">{s.defaultScope}</textarea>
+                    </label>
+                  </div>
+                </div>
+              ))}
+            </div>
           </fieldset>
 
           {/* SECTION 3 — PRICING */}
-          <fieldset class="space-y-4">
-            <legend class="font-display text-lg font-semibold text-text">{c.pricingLabel}</legend>
+          <fieldset class="space-y-5">
+            <legend class="font-display text-base font-semibold text-text tracking-[-0.005em]">{c.pricingLabel}</legend>
 
             <div class="grid sm:grid-cols-2 gap-4">
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.buildFee}</span>
-                <input type="number" name="price_build" min="0" step="0.01" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.buildFee}</span>
+                <input type="number" name="price_build" min="0" step="0.01" placeholder="0.00" class="ag-input tabular" />
               </label>
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.retainerFee}</span>
-                <input type="number" name="price_retainer" min="0" step="0.01" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
-                <span class="block text-xs text-text-subtle mt-1">{c.retainerFeeHint}</span>
+                <span class="block text-sm font-medium text-text mb-1.5">{c.retainerFee}</span>
+                <input type="number" name="price_retainer" min="0" step="0.01" placeholder="0.00" class="ag-input tabular" />
+                <span class="block text-xs text-text-subtle mt-1.5">{c.retainerFeeHint}</span>
               </label>
             </div>
 
-            <div class="space-y-2">
-              <span class="block text-sm font-medium text-text">{c.vatLabel}</span>
-              <label class="flex items-start gap-3">
-                <input type="radio" name="vat_status" value="kleinunternehmer" checked class="mt-1" />
-                <span class="text-sm text-text">{c.vatKleinunternehmer}</span>
+            <div class="space-y-2.5 pt-2">
+              <span class="block text-sm font-medium text-text mb-2">{c.vatLabel}</span>
+              <label class="flex items-start gap-3 p-3 min-h-[44px] rounded-[10px] border border-border hover:bg-surface transition-colors cursor-pointer">
+                <input type="radio" name="vat_status" value="kleinunternehmer" checked class="mt-0.5 h-4 w-4 accent-accent" />
+                <span class="text-sm text-text leading-relaxed">{c.vatKleinunternehmer}</span>
               </label>
-              <label class="flex items-start gap-3">
-                <input type="radio" name="vat_status" value="regular" class="mt-1" />
-                <span class="text-sm text-text">{c.vatRegular}</span>
+              <label class="flex items-start gap-3 p-3 min-h-[44px] rounded-[10px] border border-border hover:bg-surface transition-colors cursor-pointer">
+                <input type="radio" name="vat_status" value="regular" class="mt-0.5 h-4 w-4 accent-accent" />
+                <span class="text-sm text-text leading-relaxed">{c.vatRegular}</span>
               </label>
             </div>
           </fieldset>
 
           {/* SECTION 4 — DATES */}
-          <fieldset class="space-y-4">
-            <legend class="font-display text-lg font-semibold text-text">{c.datesLabel}</legend>
+          <fieldset class="space-y-5">
+            <legend class="font-display text-base font-semibold text-text tracking-[-0.005em]">{c.datesLabel}</legend>
             <div class="grid sm:grid-cols-3 gap-4">
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.signatureDate}</span>
-                <input type="date" name="date_signature" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.signatureDate}</span>
+                <input type="date" name="date_signature" class="ag-input tabular" />
               </label>
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.startDate}</span>
-                <input type="date" name="date_start" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
+                <span class="block text-sm font-medium text-text mb-1.5">{c.startDate}</span>
+                <input type="date" name="date_start" class="ag-input tabular" />
               </label>
               <label class="block">
-                <span class="block text-sm font-medium text-text mb-1">{c.goLiveDate}</span>
-                <input type="date" name="date_golive" class="w-full px-3 py-2 rounded-md border border-border bg-bg text-text" />
-                <span class="block text-xs text-text-subtle mt-1">{c.goLiveHint}</span>
+                <span class="block text-sm font-medium text-text mb-1.5">{c.goLiveDate}</span>
+                <input type="date" name="date_golive" class="ag-input tabular" />
+                <span class="block text-xs text-text-subtle mt-1.5">{c.goLiveHint}</span>
               </label>
             </div>
           </fieldset>
 
-          <div class="pt-4 flex items-center gap-4">
-            <button type="button" id="print-btn" class="inline-flex items-center justify-center px-6 py-3 min-h-[44px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium">
-              {c.printButton}
-            </button>
-            <p class="text-xs text-text-subtle">{c.printHint}</p>
-          </div>
+          {/* Auto-save indicator */}
+          <p class="text-xs text-text-subtle text-center pt-2 flex items-center justify-center gap-2">
+            <span id="save-indicator" style="color: var(--color-success);">●</span>
+            <span id="save-text">Saved locally — your typing survives a refresh.</span>
+          </p>
         </form>
       </div>
     </section>
 
-    {/* RENDERED CONTRACT — visible on screen + the only thing that prints */}
-    <section class="contract-doc bg-bg">
-      <article class="container-page py-16 max-w-3xl text-text">
-        <header class="mb-12 border-b border-border pb-8">
-          <p class="text-xs tracking-[0.18em] uppercase text-text-subtle font-medium">{c.contractSubtitle}</p>
-          <h1 class="mt-3 font-display text-4xl sm:text-5xl font-semibold tracking-[-0.02em]">{c.contractTitleH1}</h1>
+    {/* PREVIEW DIVIDER */}
+    <div class="no-print bg-bg border-y border-border">
+      <div class="container-page py-6 max-w-3xl flex items-center gap-4">
+        <div class="h-px flex-1 bg-border"></div>
+        <p class="text-xs tracking-[0.18em] uppercase text-text-subtle font-medium shrink-0">Contract preview</p>
+        <div class="h-px flex-1 bg-border"></div>
+      </div>
+    </div>
 
-          <div class="mt-10 grid sm:grid-cols-2 gap-8">
-            <div>
-              <p class="text-xs uppercase tracking-[0.12em] text-text-subtle font-medium">{c.agencyHeading}</p>
-              <p class="mt-2 font-medium">{SITE.legal.legalEntity}</p>
-              <p class="text-sm text-text-muted">{agencyAddressLine}</p>
-              <p class="text-sm text-text-muted">{SITE.email}</p>
-              <p class="text-sm text-text-muted">{taxIdDisplay}</p>
-              <p class="text-xs text-text-subtle mt-2">{c.representedBy}: {SITE.founder}</p>
+    {/* RENDERED CONTRACT — the only thing that prints */}
+    <section class="contract-doc bg-bg">
+      <article class="container-page py-12 sm:py-16 max-w-3xl text-text">
+        <header class="mb-14 border-b border-border pb-10">
+          <p class="text-xs tracking-[0.18em] uppercase text-text-subtle font-medium">{c.contractSubtitle}</p>
+          <h1 class="mt-4 font-display text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.05]">{c.contractTitleH1}</h1>
+
+          <div class="mt-12 grid sm:grid-cols-2 gap-10 sm:gap-12">
+            <div class="space-y-1.5">
+              <p class="text-[11px] uppercase tracking-[0.15em] text-text-subtle font-semibold pb-2">{c.agencyHeading}</p>
+              <p class="text-[15px] font-semibold text-text">{SITE.legal.legalEntity}</p>
+              <p class="text-[14px] text-text-muted leading-relaxed">{agencyAddressLine}</p>
+              <p class="text-[14px] text-text-muted">{SITE.email}</p>
+              <p class="text-[14px] text-text-muted tabular">{taxIdDisplay}</p>
+              <p class="text-xs text-text-subtle pt-2">{c.representedBy}: {SITE.founder}</p>
             </div>
-            <div>
-              <p class="text-xs uppercase tracking-[0.12em] text-text-subtle font-medium">{c.clientHeading}</p>
-              <p class="mt-2 font-medium"><span class="out-client-business-name">…</span> <span class="text-text-muted">(<span class="out-client-legal-form">—</span>)</span></p>
-              <p class="text-sm text-text-muted"><span class="out-client-street">…</span></p>
-              <p class="text-sm text-text-muted"><span class="out-client-postal-code">…</span> <span class="out-client-city">Berlin</span></p>
-              <p class="text-sm text-text-muted out-client-email">…</p>
-              <p class="text-sm text-text-muted">USt-IdNr: <span class="out-client-ust-idnr">—</span></p>
-              <p class="text-xs text-text-subtle mt-2">{c.representedBy}: <span class="out-client-representative">…</span> (<span class="out-client-representative-role">…</span>)</p>
+            <div class="space-y-1.5">
+              <p class="text-[11px] uppercase tracking-[0.15em] text-text-subtle font-semibold pb-2">{c.clientHeading}</p>
+              <p class="text-[15px] font-semibold text-text"><span class="out-client-business-name">…</span> <span class="text-text-muted font-normal">(<span class="out-client-legal-form">—</span>)</span></p>
+              <p class="text-[14px] text-text-muted"><span class="out-client-street">…</span></p>
+              <p class="text-[14px] text-text-muted"><span class="out-client-postal-code">…</span> <span class="out-client-city">Berlin</span></p>
+              <p class="text-[14px] text-text-muted out-client-email">…</p>
+              <p class="text-[14px] text-text-muted tabular">USt-IdNr: <span class="out-client-ust-idnr">—</span></p>
+              <p class="text-xs text-text-subtle pt-2">{c.representedBy}: <span class="out-client-representative">…</span> (<span class="out-client-representative-role">…</span>)</p>
             </div>
           </div>
         </header>
 
-        <section class="mb-8">
-          <h2 class="font-display text-xl font-semibold mb-3">{c.s1Heading}</h2>
-          <p class="leading-relaxed text-sm">{c.s1Body}</p>
-        </section>
+        <div class="space-y-10 contract-body">
+          <section class="contract-clause">
+            <h2 class="contract-h2">{c.s1Heading}</h2>
+            <p class="contract-p">{c.s1Body}</p>
+          </section>
 
-        <section class="mb-8">
-          <h2 class="font-display text-xl font-semibold mb-3">{c.s2Heading}</h2>
-          <p class="text-sm leading-relaxed">{c.s2Intro}</p>
-          <div id="services-rendered" class="mt-4 space-y-4 text-sm">
-            <p class="out-no-services italic text-warning">{c.s2NoServicesSelected}</p>
-          </div>
-        </section>
-
-        <section class="mb-8 break-before-page">
-          <h2 class="font-display text-xl font-semibold mb-3">{c.s3Heading}</h2>
-          <ul class="space-y-2 text-sm leading-relaxed list-disc list-inside">
-            <li class="out-build-line">—</li>
-            <li class="out-retainer-line">—</li>
-            <li>{c.s3PaymentTerms}</li>
-            <li class="out-vat-line">—</li>
-          </ul>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="font-display text-xl font-semibold mb-3">{c.s4Heading}</h2>
-          <ul class="space-y-2 text-sm leading-relaxed list-disc list-inside">
-            <li class="out-start-line">—</li>
-            <li>{c.s4MinimumTerm}</li>
-            <li>{c.s4Notice}</li>
-            <li>{c.s4ImmediateTermination}</li>
-            <li>{c.s4HandoverObligation}</li>
-          </ul>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="font-display text-xl font-semibold mb-3">{c.s5Heading}</h2>
-          <p class="text-sm leading-relaxed mb-2">{c.s5ClientOwns}</p>
-          <p class="text-sm leading-relaxed">{c.s5AgencyKeeps}</p>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="font-display text-xl font-semibold mb-3">{c.s6Heading}</h2>
-          <ul class="space-y-2 text-sm leading-relaxed list-disc list-inside">
-            <li>{c.s6LiabilityCap}</li>
-            <li>{c.s6LiabilityExclusions}</li>
-            <li>{c.s6Indemnification}</li>
-          </ul>
-        </section>
-
-        <section class="mb-8">
-          <h2 class="font-display text-xl font-semibold mb-3">{c.s7Heading}</h2>
-          <p class="text-sm leading-relaxed mb-2">{c.s7DataAvv}</p>
-          <p class="text-sm leading-relaxed">{c.s7Confidentiality}</p>
-        </section>
-
-        <section class="mb-10">
-          <h2 class="font-display text-xl font-semibold mb-3">{c.s8Heading}</h2>
-          <ul class="space-y-2 text-sm leading-relaxed list-disc list-inside">
-            <li>{c.s8Jurisdiction}</li>
-            <li>{c.s8WrittenForm}</li>
-            <li>{c.s8Severability}</li>
-            <li>{c.s8LanguageBindingEn}</li>
-          </ul>
-        </section>
-
-        {/* SIGNATURES */}
-        <section class="mt-16 pt-8 border-t-2 border-text">
-          <h2 class="font-display text-xl font-semibold mb-8">{c.signaturesHeading}</h2>
-          <div class="grid sm:grid-cols-2 gap-12">
-            {/* Agency block */}
-            <div>
-              <p class="text-xs uppercase tracking-[0.12em] text-text-subtle font-medium mb-1">{c.agencyHeading}</p>
-              <p class="text-sm font-medium">{SITE.founder} — {SITE.legal.legalEntity}</p>
-              <div class="mt-12 border-t border-text pt-1 text-xs text-text-subtle">{c.signatureLineLabel}, {c.signaturePlace} + {c.signatureDateLabel}</div>
+          <section class="contract-clause">
+            <h2 class="contract-h2">{c.s2Heading}</h2>
+            <p class="contract-p mb-3">{c.s2Intro}</p>
+            <div id="services-rendered" class="space-y-5 mt-4">
+              <p class="out-no-services contract-p italic text-text-subtle">{c.s2NoServicesSelected}</p>
             </div>
-            {/* Client block */}
+          </section>
+
+          <section class="contract-clause break-before-page">
+            <h2 class="contract-h2">{c.s3Heading}</h2>
+            <ul class="contract-list">
+              <li class="out-build-line">—</li>
+              <li class="out-retainer-line">—</li>
+              <li>{c.s3PaymentTerms}</li>
+              <li class="out-vat-line">—</li>
+            </ul>
+          </section>
+
+          <section class="contract-clause">
+            <h2 class="contract-h2">{c.s4Heading}</h2>
+            <ul class="contract-list">
+              <li class="out-start-line">—</li>
+              <li>{c.s4MinimumTerm}</li>
+              <li>{c.s4Notice}</li>
+              <li>{c.s4ImmediateTermination}</li>
+              <li>{c.s4HandoverObligation}</li>
+            </ul>
+          </section>
+
+          <section class="contract-clause">
+            <h2 class="contract-h2">{c.s5Heading}</h2>
+            <p class="contract-p">{c.s5ClientOwns}</p>
+            <p class="contract-p mt-3">{c.s5AgencyKeeps}</p>
+          </section>
+
+          <section class="contract-clause">
+            <h2 class="contract-h2">{c.s6Heading}</h2>
+            <ul class="contract-list">
+              <li>{c.s6LiabilityCap}</li>
+              <li>{c.s6LiabilityExclusions}</li>
+              <li>{c.s6Indemnification}</li>
+            </ul>
+          </section>
+
+          <section class="contract-clause">
+            <h2 class="contract-h2">{c.s7Heading}</h2>
+            <p class="contract-p">{c.s7DataAvv}</p>
+            <p class="contract-p mt-3">{c.s7Confidentiality}</p>
+          </section>
+
+          <section class="contract-clause">
+            <h2 class="contract-h2">{c.s8Heading}</h2>
+            <ul class="contract-list">
+              <li>{c.s8Jurisdiction}</li>
+              <li>{c.s8WrittenForm}</li>
+              <li>{c.s8Severability}</li>
+              <li>{c.s8LanguageBindingEn}</li>
+            </ul>
+          </section>
+        </div>
+
+        <section class="mt-20 pt-10 border-t-2 border-text contract-signatures">
+          <h2 class="font-display text-xl font-semibold mb-10 tracking-[-0.01em]">{c.signaturesHeading}</h2>
+          <div class="grid sm:grid-cols-2 gap-12 sm:gap-16">
             <div>
-              <p class="text-xs uppercase tracking-[0.12em] text-text-subtle font-medium mb-1">{c.clientHeading}</p>
-              <p class="text-sm font-medium"><span class="out-client-representative">…</span> — <span class="out-client-business-name">…</span></p>
-              <div class="mt-12 border-t border-text pt-1 text-xs text-text-subtle">{c.signatureLineLabel}, {c.signaturePlace} + {c.signatureDateLabel}</div>
+              <p class="text-[11px] uppercase tracking-[0.15em] text-text-subtle font-semibold mb-3">{c.agencyHeading}</p>
+              <p class="text-[14px] font-medium text-text leading-relaxed">{SITE.founder}</p>
+              <p class="text-[13px] text-text-muted leading-relaxed">{SITE.legal.legalEntity}</p>
+              <div class="sig-line"><span class="sig-label">{c.signaturePlace}, {c.signatureDateLabel}</span></div>
+              <div class="sig-line"><span class="sig-label">{c.signatureLineLabel}</span></div>
+            </div>
+            <div>
+              <p class="text-[11px] uppercase tracking-[0.15em] text-text-subtle font-semibold mb-3">{c.clientHeading}</p>
+              <p class="text-[14px] font-medium text-text leading-relaxed"><span class="out-client-representative">…</span></p>
+              <p class="text-[13px] text-text-muted leading-relaxed"><span class="out-client-business-name">…</span></p>
+              <div class="sig-line"><span class="sig-label">{c.signaturePlace}, {c.signatureDateLabel}</span></div>
+              <div class="sig-line"><span class="sig-label">{c.signatureLineLabel}</span></div>
             </div>
           </div>
         </section>
 
         <footer class="mt-16 pt-6 border-t border-border text-xs text-text-subtle text-center">
-          {c.footerNote} <span class="page-num"></span>
+          {c.footerNote}
         </footer>
       </article>
     </section>
   </main>
 
   <style is:global>
-    /* Screen — show form + render. Print — hide form, show only rendered doc. */
+    .ag-input {
+      display: block;
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-size: 15px;
+      line-height: 1.45;
+      transition: border-color var(--motion-fast) var(--ease-apple-smooth),
+                  box-shadow var(--motion-fast) var(--ease-apple-smooth);
+    }
+    .ag-input:hover { border-color: color-mix(in oklab, var(--color-text), transparent 60%); }
+    .ag-input:focus-visible {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent), transparent 80%);
+    }
+    textarea.ag-input { min-height: 96px; font-family: var(--font-body); }
+
+    .contract-body { color: var(--color-text); }
+    .contract-h2 {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      margin: 0 0 0.75rem 0;
+    }
+    .contract-p { font-size: 15px; line-height: 1.65; color: var(--color-text); }
+    .contract-list { list-style: disc; padding-left: 1.25rem; margin: 0; }
+    .contract-list > li {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--color-text);
+      margin-bottom: 0.625rem;
+    }
+    .contract-list > li:last-child { margin-bottom: 0; }
+
+    .sig-line {
+      margin-top: 3rem;
+      padding-top: 0.25rem;
+      border-top: 1px solid var(--color-text);
+    }
+    .sig-label {
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .tabular { font-variant-numeric: tabular-nums; }
+
     @media print {
       .no-print { display: none !important; }
-      .contract-doc { padding-top: 0 !important; }
       body { background: white; }
-      header, footer, nav, .reveal-rise { animation: none !important; opacity: 1 !important; transform: none !important; }
-      /* Use page-break-before for section 3 (Compensation onwards) to keep layout predictable */
-      .break-before-page { break-before: page; page-break-before: always; }
-      /* Cleaner A4 spacing */
-      .container-page { max-width: none !important; padding-inline: 1.5cm !important; }
-      article { font-size: 11pt; line-height: 1.45; }
+      body > header, body > footer { display: none !important; }
+      .contract-doc { padding-top: 0 !important; }
+      .container-page { max-width: none !important; padding-inline: 0 !important; }
+      article {
+        font-size: 11pt;
+        line-height: 1.5;
+        color: black !important;
+      }
+      .contract-h2 { font-size: 12pt; margin-top: 14pt; }
+      .contract-p, .contract-list > li { font-size: 10.5pt; line-height: 1.55; }
       h1 { font-size: 22pt; }
-      h2 { font-size: 13pt; margin-top: 18pt; }
+      .break-before-page { break-before: page; page-break-before: always; }
+      .contract-clause { break-inside: avoid; page-break-inside: avoid; }
+      .contract-signatures { break-inside: avoid; page-break-inside: avoid; }
     }
-    @page { size: A4; margin: 1.5cm; }
+    @page { size: A4; margin: 1.8cm 1.6cm; }
 
     .contract-doc { background: white; }
     .contract-doc article { background: white; }
@@ -324,11 +423,49 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: pending' :
 
   <script is:inline define:vars={{ locale, scopes: SERVICE_SCOPES[locale], strings: CONTRACT_STRINGS[locale] }}>
     const form = document.getElementById('contract-form');
+    const formPanel = document.getElementById('form-panel');
+    const toggleBtn = document.getElementById('toggle-form-btn');
+    const printBtn = document.getElementById('print-btn');
+    const saveIndicator = document.getElementById('save-indicator');
+
+    const STORAGE_KEY = `contract-form-${locale}`;
     const today = new Date().toISOString().slice(0, 10);
 
-    // Initial date defaults
-    form.querySelector('[name=date_signature]').value = today;
-    form.querySelector('[name=date_start]').value = today;
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
+
+    Array.from(form.elements).forEach((el) => {
+      if (!el.name) return;
+      if (el.type === 'radio') {
+        if (saved[el.name] !== undefined) el.checked = (el.value === saved[el.name]);
+      } else if (el.type === 'checkbox') {
+        if (saved[el.name] !== undefined) el.checked = !!saved[el.name];
+      } else if (saved[el.name] !== undefined && saved[el.name] !== '') {
+        el.value = saved[el.name];
+      }
+    });
+    if (!saved.date_signature) form.querySelector('[name=date_signature]').value = today;
+    if (!saved.date_start) form.querySelector('[name=date_start]').value = today;
+    if (!saved.client_city) form.querySelector('[name=client_city]').value = 'Berlin';
+
+    function persist() {
+      const data = {};
+      Array.from(form.elements).forEach((el) => {
+        if (!el.name) return;
+        if (el.type === 'checkbox') data[el.name] = el.checked;
+        else if (el.type === 'radio') { if (el.checked) data[el.name] = el.value; }
+        else data[el.name] = el.value;
+      });
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+      flashSave();
+    }
+    let saveTimer;
+    function flashSave() {
+      if (!saveIndicator) return;
+      saveIndicator.style.color = 'var(--color-accent)';
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => { saveIndicator.style.color = 'var(--color-success)'; }, 600);
+    }
 
     function eur(n) {
       if (!Number.isFinite(n)) return '€ —';
@@ -338,9 +475,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: pending' :
       if (!s) return '—';
       const d = new Date(s + 'T00:00:00');
       if (isNaN(d.getTime())) return '—';
-      // Locale-aware long-format date
-      const fmt = locale === 'de' ? 'de-DE' : 'en-GB';
-      return d.toLocaleDateString(fmt, { year: 'numeric', month: 'long', day: 'numeric' });
+      return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
     }
     function setText(sel, value) {
       document.querySelectorAll(sel).forEach((el) => { el.textContent = value || '—'; });
@@ -349,7 +484,6 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: pending' :
     function render() {
       const fd = new FormData(form);
 
-      // Client info
       setText('.out-client-business-name', fd.get('client_business_name'));
       setText('.out-client-legal-form', fd.get('client_legal_form'));
       setText('.out-client-representative', fd.get('client_representative'));
@@ -360,11 +494,9 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: pending' :
       setText('.out-client-email', fd.get('client_email'));
       setText('.out-client-ust-idnr', fd.get('client_ust_idnr') || '— (Kleinunternehmer § 19 UStG)');
 
-      // Services
       const selectedSlugs = scopes.filter((s) => fd.get('svc_' + s.slug) === 'on').map((s) => s.slug);
       const container = document.getElementById('services-rendered');
       const noServicesEl = container.querySelector('.out-no-services');
-      // Remove previously-rendered service blocks
       container.querySelectorAll('.svc-block').forEach((el) => el.remove());
       if (selectedSlugs.length === 0) {
         noServicesEl.style.display = '';
@@ -375,45 +507,49 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO') ? 'USt-IdNr: pending' :
           const scopeText = (fd.get('scope_' + slug) || s.defaultScope).toString();
           const block = document.createElement('div');
           block.className = 'svc-block';
-          block.innerHTML = `<p class="font-medium">${i + 1}. ${s.name}</p><p class="text-text-muted text-sm leading-relaxed mt-1"><strong class="text-text">${strings.s2ScopeIntroLabel}</strong> ${scopeText.replace(/[<>]/g, '')}</p>`;
+          block.innerHTML = `
+            <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--color-text);margin:0 0 6px 0;">${i + 1}. ${s.name}</h3>
+            <p class="contract-p" style="margin:0;"><span style="font-weight:500;">${strings.s2ScopeIntroLabel}</span> ${scopeText.replace(/[<>]/g, '')}</p>
+          `;
           container.appendChild(block);
         });
       }
 
-      // Pricing
       const build = parseFloat(fd.get('price_build') || '0');
       const retainer = parseFloat(fd.get('price_retainer') || '0');
       const vatStatus = fd.get('vat_status') || 'kleinunternehmer';
 
       document.querySelector('.out-build-line').textContent =
-        build > 0 ? strings.s3BuildFeeLine(eur(build)) : strings.s3BuildFeeLine('€ — (no build fee)');
+        strings.s3BuildFeeLine.replace('{eur}', build > 0 ? eur(build) : '€ — (no build fee)');
       document.querySelector('.out-retainer-line').textContent =
-        retainer > 0 ? strings.s3RetainerLine(eur(retainer)) : strings.s3RetainerLine('€ — (no retainer)');
+        strings.s3RetainerLine.replace('{eur}', retainer > 0 ? eur(retainer) : '€ — (no retainer)');
 
       if (vatStatus === 'kleinunternehmer') {
         document.querySelector('.out-vat-line').textContent = strings.s3VatKleinLine;
       } else {
-        // Combine build + 12 retainers for an indicative net total. Per-invoice VAT is the operative rule.
         const net = build + retainer * 12;
         const vat = net * 0.19;
         const gross = net + vat;
-        document.querySelector('.out-vat-line').textContent = strings.s3VatRegularLine(eur(net), eur(vat), eur(gross));
+        document.querySelector('.out-vat-line').textContent = strings.s3VatRegularLine.replace('{net}', eur(net)).replace('{vat}', eur(vat)).replace('{gross}', eur(gross));
       }
 
-      // Term
       const startDate = fd.get('date_start');
-      document.querySelector('.out-start-line').textContent = strings.s4Start(dateNice(startDate));
-
-      // Page-number footer
-      document.querySelectorAll('.page-num').forEach((el) => { el.textContent = ''; });  // browser handles page numbering in print
+      document.querySelector('.out-start-line').textContent = strings.s4Start.replace('{date}', dateNice(startDate));
     }
 
-    form.addEventListener('input', render);
-    form.addEventListener('change', render);
+    form.addEventListener('input', () => { render(); persist(); });
+    form.addEventListener('change', () => { render(); persist(); });
     render();
 
-    document.getElementById('print-btn').addEventListener('click', () => {
-      window.print();
-    });
+    printBtn.addEventListener('click', () => window.print());
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const isHidden = formPanel.style.display === 'none';
+        formPanel.style.display = isHidden ? '' : 'none';
+        toggleBtn.setAttribute('aria-pressed', String(!isHidden));
+        toggleBtn.querySelector('[data-show-text]').textContent = isHidden ? 'Hide form' : 'Show form';
+      });
+    }
   </script>
 </BaseLayout>
