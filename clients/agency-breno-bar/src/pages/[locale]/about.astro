@@ -32,6 +32,25 @@ const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto'
       </div>
     </section>
 
+    {p.heroImageSrc && (
+      <figure class="bg-bg pt-0 pb-16 sm:pb-20">
+        <div class="container-page max-w-[1400px]">
+          <div class="aspect-[21/9] sm:aspect-[24/9] overflow-hidden rounded-[22px] bg-surface">
+            <img
+              src={p.heroImageSrc}
+              alt={p.heroImageAlt ?? ''}
+              width="2400"
+              height="1029"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </figure>
+    )}
+
     <section class="section bg-bg">
       <div class="container-page max-w-4xl space-y-16 sm:space-y-24">
         {p.sections.map((s, i) => (

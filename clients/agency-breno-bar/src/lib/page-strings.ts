@@ -99,6 +99,9 @@ export interface PageStrings {
     heroEyebrow: string;
     heroTitle: string;
     heroLead: string;
+    /** Optional photograph rendered below the hero copy. */
+    heroImageSrc?: string;
+    heroImageAlt?: string;
     sections: { title: string; body: string }[];
     foundedNote: string;
   };
@@ -198,7 +201,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Services',
       heroTitle: 'Three services. One studio. No upsell.',
       heroSubtitle:
-        'Each service is sold as a standalone build with an optional monthly retainer. No long contracts; you can stop any month.',
+        'Three small services, sold the way a Berlin shopkeeper sells anything — one at a time, with no obligation to buy the next.',
       services: {
         website: {
           name: 'Website',
@@ -238,93 +241,111 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         },
         seo: {
           name: 'SEO',
-          shortTagline: 'Local SEO. Honest. Measurable. No black-hat shortcuts.',
+          shortTagline: 'The page someone sees just before they call you.',
           heroEyebrow: 'Service · 02',
           heroTitle: 'Found by the people already looking.',
           heroBody:
-            'Local SEO done the slow correct way: on-page structure, schema markup, Google Search Console + Bing Webmaster Tools, technical correctness. We do not buy backlinks. We do not promise page-one in two weeks. We do what works in 90 days.',
+            "Half of your next month's customers are already searching for you tonight. SEO is making sure the page they find first isn't the closest competitor on Schönhauser Allee. We do the patient, boring work for ninety days. They start finding you.",
           bullets: [
             {
-              title: "Schema markup that's correct",
-              body: 'Most-specific @type per business. LocalBusiness + ProfessionalService + Organization. No aggregateRating self-serving stars. Properly typed inLanguage per locale.',
+              title: 'The metadata Google quietly trusts.',
+              body: 'Schema in the right places, in the right language, for the right business type. Boring to talk about. Decisive when someone in your Kiez types your service into a phone.',
             },
             {
-              title: 'Real keyword research',
-              body: 'For your neighborhood, your service, your language. Real search volumes, not vanity terms. Reviewed quarterly.',
+              title: 'Researched at the Kiez level, not the agency level.',
+              body: 'We learn the words your next customer actually types — in their language, in their neighborhood. No vanity keywords pulled from a SaaS list. Reviewed every ninety days as the seasons change.',
             },
             {
-              title: 'Console + analytics',
-              body: 'Search Console + Bing Webmaster + GA4 set up under your account. Monthly retainer report with the metrics that matter (impressions, position, conversions).',
+              title: 'Numbers you can read on a Sunday morning.',
+              body: 'Google Search Console and the basics, set up under your account, not ours. One monthly note — what we did, what worked, what we will try next. No twelve-tab dashboards you will never open.',
             },
           ],
           outcomeHeading: 'What you get',
           outcomeBullets: [
-            'Audit of your current state with prioritized fix list.',
-            'Schema + on-page + technical SEO shipped within the build.',
-            'Monthly report with concrete next-step recommendations.',
+            'An honest audit before any promises — usually finds three quick wins.',
+            'On-page work done at build time. No retroactive Frankenstein retrofit.',
+            'A monthly note you can read in three minutes — what moved, what to try next.',
           ],
           bestFor:
-            'Businesses where the customer is already searching — restaurants, salons, clinics, studios, trades.',
+            'The Bäckerei, the salon, the dentist, the plumber. Any business where the customer is already searching — they just need to find you instead of someone else.',
+          heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
+          heroImageAlt:
+            'A man sitting on a city sidewalk, hands cradling a phone, a passerby blurred in the background.',
+          secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
+          secondaryImageAlt:
+            'An overhead view of a bakery display case — croissants, danishes with red fruit, glass-jar cookies, marble counter, small label cards.',
         },
         'google-business': {
           name: 'Google Business Profile',
-          shortTagline: 'Setup + monthly optimization of the GBP listing. Photos, posts, reviews.',
+          shortTagline: 'The first half-second of every local search.',
           heroEyebrow: 'Service · 03',
           heroTitle: 'The listing that does the local-search heavy lifting.',
           heroBody:
-            'Setting up + optimizing your Google Business Profile is often the single highest-ROI action for a local business. We set it up properly the first time, then maintain it monthly: photos, posts, review responses, hours, services, Q&A.',
+            "When someone three blocks away types 'Bäckerei in der Nähe' into their phone, the answer is a list of three businesses. Your job is to be one of them. Ours is to make that happen — and then keep it that way.",
           bullets: [
             {
-              title: 'Setup done right',
-              body: 'Verified ownership, category + sub-category fits, service-area calibration, attributes, hours including holidays, every photo geo-tagged.',
+              title: 'Set up the way Google actually wants it.',
+              body: 'Verified ownership, the most-specific category, the right service area, the right hours, every photo geo-tagged at the door. Tedious. Decisive. Done once, then maintained.',
             },
             {
-              title: 'Monthly optimization',
-              body: 'Two posts per month, every review responded to within 48 h, photos refreshed, Q&A maintained. Quarterly review of insights + recommendations.',
+              title: 'Quiet upkeep, every month.',
+              body: 'Two posts a month. Every review answered within forty-eight hours. Photos refreshed when the menu turns. Q&A kept current. The way it should look when someone discovers you on a Tuesday.',
             },
             {
-              title: 'Review-generation playbook',
-              body: 'A vanity URL on your domain that funnels to your review form. Friendly per-jurisdiction templates (DSGVO-compliant). Drought alerts if no reviews in 21 days.',
+              title: 'A polite way to ask for reviews.',
+              body: 'A short, your-domain URL that takes a happy customer straight to the review form. DSGVO-safe message templates in DE, EN, and PT-BR. A quiet alert if no review has come in for three weeks — usually means something worth asking about.',
             },
           ],
           outcomeHeading: 'What you get',
           outcomeBullets: [
-            'Verified, fully-populated GBP listing.',
-            'Monthly content + review cadence with documented response rate.',
-            'Dashboard view of insights — calls, direction requests, photo views.',
+            'A listing that looks like the business actually wants the call.',
+            'Posts, reviews answered, photos current — every month, on the calendar.',
+            'One number you will actually look at: how many phones called the listing this month.',
           ],
-          bestFor: 'Any business with a physical location or a defined service area.',
+          bestFor:
+            "Anyone customers find with the word 'nearby' in the search. The studio, the clinic, the workshop, the kitchen — anywhere with a door or a service area.",
+          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
+          heroImageAlt:
+            'A small Berlin shopfront — green double doors, red enamel signage reading "Aseli — Berliner Original — seit 1921", ivy climbing the facade.',
+          secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
+          secondaryImageAlt:
+            'A hand holding a smartphone displaying a navigation map at night, surrounded by colourful city-light bokeh.',
         },
         'social-media': {
           name: 'Social media',
-          shortTagline:
-            'Light-touch Instagram + Facebook posting for businesses with no marketing staff.',
+          shortTagline: "Two posts a week, in your voice, that don't take your Tuesday.",
           heroEyebrow: 'Service · 04 (optional)',
           heroTitle: 'A small social cadence you can actually sustain.',
           heroBody:
-            'Not a viral-growth promise. A sane, sustainable posting rhythm for owner-operated businesses where the founder has no time to be a content creator. Two posts a week, real photos, response monitoring, no buying followers.',
+            'Most owner-operators we meet have an Instagram they last posted to on a Wednesday in March. Not because they have no story — because there is no time. We post twice a week from your photos, in your voice. No viral promises. Just visible, quietly, every week.',
           bullets: [
             {
-              title: 'Two posts per week',
-              body: 'Drafted from your photos, your hours, your menu, your milestones. Reviewed by you before publish — never automated copy-paste.',
+              title: 'Two posts a week. Drawn from your week.',
+              body: 'Your photos, your menu, your small milestones — drafted by us, approved by you, never an automated caption. The way it would sound if you had the time to write it yourself.',
             },
             {
-              title: 'Response monitoring',
-              body: "DM + comment monitoring weekdays. Routed to you if it needs a personal reply, handled by us if it doesn't.",
+              title: 'Someone watching the inbox on weekdays.',
+              body: 'DMs and comments checked every weekday. Personal questions routed to you. Routine ones answered in the voice we agreed on. Nothing falls through to Monday.',
             },
             {
-              title: 'No buying followers',
-              body: "Honest organic growth. Slow but real. You'll know which posts worked because the metrics are reported monthly.",
+              title: 'Slow, real numbers. No bought followers.',
+              body: 'Slow, real growth. The people who follow you are people who could walk in. One short monthly note about what worked and what did not.',
             },
           ],
           outcomeHeading: 'What you get',
           outcomeBullets: [
-            'Two-posts-per-week cadence on Instagram + Facebook.',
-            'DM/comment monitoring weekdays.',
-            "Monthly report — what worked, what didn't, what we'll try next.",
+            'Two posts a week, ready in your drafts before Monday morning.',
+            'Inbox watched, answered, escalated — every weekday.',
+            'A note once a month — what worked, what did not, what we will try.',
           ],
           bestFor:
-            "Businesses that need to be visible on social but don't want a part-time content hire.",
+            'The owner who knows social matters — and who also knows they cannot personally be the one posting at nine on a Sunday night.',
+          heroImageSrc: '/img/services/social-media/hero-florist.jpg',
+          heroImageAlt:
+            'A florist seen through hanging plants in the doorway of her shop, working quietly at a counter of cut flowers.',
+          secondaryImageSrc: '/img/services/social-media/latte-overhead.jpg',
+          secondaryImageAlt:
+            'Overhead view of four cappuccinos with leaf and heart latte art arranged on a small round wooden table.',
         },
       },
     },
@@ -335,7 +356,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Portfolio',
       heroTitle: 'Selected work.',
       heroSubtitle:
-        "Local-business demos (Berlin verticals) plus a few external projects we've helped ship. Every entry has a live URL.",
+        "A few rooms we have built. Some for businesses already running on Schönhauser Allee, some still in demo form on a quiet vercel.app URL — waiting for the owner to say yes. All of them have a live link below.",
       visitLive: 'Visit live site',
       backToPortfolio: '← All projects',
       relatedCases: 'Other recent work',
@@ -352,23 +373,26 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'About',
       heroTitle: 'A small studio with a slow practice.',
       heroLead:
-        'breno-bar is a single-operator studio in Berlin. We build trilingual marketing websites for owner-led businesses — and we sell three services, not thirty.',
+        'breno-bar is one set of hands, in Berlin. Trilingual websites for owner-led businesses — three services, not thirty, because nobody needed thirty.',
+      heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
+      heroImageAlt:
+        'A quiet Berlin street at dawn — Altbau buildings catching the first warm light, no traffic, no people.',
       sections: [
         {
           title: 'Why small',
-          body: 'Most agencies grow until they need account managers, project managers, and meetings about meetings. We chose not to. Every project is touched by the person who designs it — fewer handoffs, fewer wrong assumptions, fewer surprise invoices.',
+          body: 'Most agencies grow until they need account managers, project managers, and meetings about meetings. The person who heard the first sentence is no longer the person writing the code. We chose not to grow that way. Every project is touched by the same hands, start to finish.',
         },
         {
           title: 'Why three services',
-          body: "Website + SEO + Google Business Profile. That's 90 % of what an owner-led local business actually needs. We can do social media as a sustainable add-on. We will not build you an app, run your paid ads, or write your newsletter.",
+          body: 'Website + SEO + Google Business Profile. That is most of what a small local business needs to be found and called. Social media is an optional fourth, if you want it. We will not build you an app. We will not run your ads. We will not write your newsletter. Plenty of good studios will.',
         },
         {
           title: 'How we work',
-          body: 'A demo first, then a conversation. You see a working version of your site before you commit to anything. Every commit is on your GitHub, every deploy is on your Vercel, every domain is in your name. Nothing locked behind us.',
+          body: 'A demo first, then a conversation. You see a working version of your site before you commit to a single euro. Every line of code lives on your GitHub. Every deploy lives on your Vercel. The domain stays in your name. Nothing rented from us — we like you free to find us back, not stuck with us.',
         },
         {
           title: 'Languages',
-          body: 'Berlin German + international English are the defaults. Brazilian Portuguese, Spanish, and Portuguese-Portugal available when the audience needs them. Translation is cultural, not literal.',
+          body: "Berlin German and international English by default. Brazilian Portuguese, European Portuguese, and Spanish when your audience asks for them. Translation is cultural — a Kreuzberg café and a São Paulo padaria don't sound alike, even when they sell the same coffee.",
         },
       ],
       foundedNote: 'Founded 2026 by Breno Ribeiro in Berlin.',
@@ -379,7 +403,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Contact',
       heroTitle: "Let's talk.",
       heroSubtitle:
-        'Write what you need. We answer in one or two paragraphs within a business day. No sales call, no slide decks.',
+        'Tell us what you are trying to build. We answer in one or two paragraphs, within one business day. No sales call. No decks. No follow-up sequence.',
       formNameLabel: 'Your name',
       formNamePlaceholder: 'Jane Doe',
       formEmailLabel: 'Email',
@@ -472,7 +496,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'STUDIO · BERLIN',
       heroTitleLines: ['Webseiten, auf die', 'man stolz sein kann.'],
       heroSubtitle:
-        'Drei Leistungen für inhabergeführte Unternehmen. Website. SEO. Google Business Profile.',
+        'Für die kleinen Berliner Geschäfte, die einen Kiez zusammenhalten. Wir bauen die Webseiten, die ihrer würdig sind.',
+      heroImageSrc: '/img/home/hero-altbau-kiez.jpg',
+      heroImageAlt:
+        'Eine klassische Berliner Altbaustraße: ornamentale Fassade in Weiß und Orange, Café im Erdgeschoss mit roter Markise, Menschen an Außentischen, Bäume werfen Schatten aufs Kopfsteinpflaster.',
       statTitle: 'Zahlen, die wir mögen',
       statLine1: '10',
       statLine2: '6',
@@ -483,17 +510,20 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       servicesEyebrow: 'Leistungen',
       servicesHeading: 'Drei Dinge, gut gemacht.',
       servicesBody:
-        'Eine fokussierte Praxis. Website + SEO + Google Business Profile. Social Media als optionale Vierte. Keine Zusatzverkäufe, keine Buzzwords, kein Agentur-im-Agentur-Tanz.',
+        'Drei Dinge, gut gemacht, von denselben Händen. Eine Website, auf der gefunden zu werden zählt. Ein Suchergebnis, das einen Klick wert ist. Ein Google-Profil, das geöffnet werden will. Social Media, falls du es wirklich willst — wir sagen dir, wann nicht.',
       portfolioEyebrow: 'Ausgewählte Arbeiten',
       portfolioHeading: 'Ein paar, die uns gefallen.',
       portfolioAllLink: 'Alle Projekte ansehen →',
       aboutEyebrow: 'Studio',
       aboutHeading: 'Ein kleines Studio. Kein Upsell.',
       aboutBody: [
-        'breno-bar ist ein Solo-Studio in Berlin. Wir gestalten und deployen mehrsprachige Marketing-Webseiten — klein, schnell, zugänglich, gebaut um die wenigen Dinge, die ein lokales Unternehmen wirklich braucht, um gefunden und angerufen zu werden.',
-        'Wir nutzen keine No-Code-Stacks; jedes Projekt landet auf einer eigenen Codebasis, die dir gehört, auf einem Host, den du kontrollierst. Wir verkaufen keine Werbekampagnen oder Social-Media-Frequenzen, die du nicht halten kannst. Wir jagen keine Wachstumsmetriken, die nicht zu Kund:innen werden.',
+        'breno-bar ist ein Paar Hände, in Berlin. Ein Studio, leise genug, um zu sehen, was dein Geschäft wirklich tut — und klein genug, dass du immer weißt, wer deine Seite gebaut hat.',
+        'Wir verkaufen keine Werbekampagnen, die du nicht halten kannst, keine Dashboards, die du nicht liest, und kein Wachstum, das nicht zu Kund:innen wird. Wir bauen den Raum, in den die Leute reingehen. Das ist das ganze Versprechen.',
       ],
       aboutReadMore: 'Studio-Philosophie lesen →',
+      aboutImageSrc: '/img/home/studio-notebook.jpg',
+      aboutImageAlt:
+        'Draufsicht auf einen kleinen Holztisch mit Lederheft, Stift und Kaffeetasse, beleuchtet durch das Lattenmuster der Jalousien.',
       ctaEyebrow: 'Gespräch starten',
       ctaHeading: 'Lass uns deins bauen.',
       ctaBody:
@@ -506,128 +536,152 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Leistungen',
       heroTitle: 'Drei Leistungen. Ein Studio. Kein Upsell.',
       heroSubtitle:
-        'Jede Leistung wird als eigenständige Umsetzung verkauft, mit optionalem Monatsretainer. Keine Langzeitverträge; du kannst jeden Monat aufhören.',
+        'Drei kleine Leistungen, verkauft so, wie ein Berliner Geschäft alles verkauft — eine nach der anderen, ohne Pflicht, die nächste zu nehmen.',
       services: {
         website: {
           name: 'Website',
-          shortTagline:
-            'Eine mehrsprachige Marketing-Seite, deployed auf einer Infrastruktur, die du kontrollierst.',
+          shortTagline: 'Der erste Raum, in den dein nächster Kunde geht.',
           heroEyebrow: 'Leistung · 01',
           heroTitle: 'Eine Seite, die dir einen Anruf einbringt.',
           heroBody:
-            'Eine mehrsprachige, zugängliche, schnelle Marketing-Website, gebaut auf Astro oder Next.js. Deployed auf Vercel unter deinem Konto, mit der Domain auf deinem Namen und der Codebasis auf deinem GitHub. Nichts hinter unserem Login eingesperrt.',
+            'Die meisten deiner nächsten Kund:innen werden dich auf einem Handy treffen — irgendwo an der Schönhauser Allee, am U-Bahnsteig, zwischen zwei Terminen. Was sie in diesen vier Sekunden sehen, entscheidet, ob sie reingehen — oder weitergehen.',
+          heroImageSrc: '/img/services/website/hero-terrace.jpg',
+          heroImageAlt:
+            'Ein Restaurant durch sein Schaufenster bei Nacht — goldenes Kronleuchterlicht, Gäste an Tischen, ein Kellner in Bewegung.',
           bullets: [
             {
-              title: 'Mehrsprachig ab Tag eins',
-              body: 'EN + DE standardmäßig. PT-BR oder eine dritte Sprache, wenn deine Zielgruppe sie braucht. URL-Struktur + hreflang + Locale-spezifisches Schema beim Launch korrekt.',
+              title: 'Spricht jede Sprache, die dein Block spricht.',
+              body: 'Die Hälfte von Berlin lebt schon am Dienstag in zwei Sprachen. Deine Seite sollte jeder von ihnen das Gefühl geben, dass wir sie für sie gebaut haben.',
             },
             {
-              title: 'Handgebaut, keine Templates',
-              body: 'Kein Drag-and-Drop, keine Theme-Store-Ableitungen. Deine Tokens, deine Typografie, deine Fotos. Gleiche Agentur-Standards in jedem Projekt; nichts sieht aus wie das letzte.',
+              title: 'Sieht nicht aus wie die vier Cafés in derselben Straße.',
+              body: 'Theme-gebaute Seiten erkennt jeder, der zwei davon gesehen hat. Deine wird keine davon sein. Deine Farben, deine Fotos, dein Raum.',
             },
             {
-              title: 'Echte Rechtskonformität',
-              body: 'DSGVO/TMG, RGPD, LGPD — abgedeckt je nach Rechtsraum. Cookie-Banner, Datenschutzerklärung, Impressum: für dein Unternehmen geschrieben, nicht aus einem Generator kopiert.',
+              title: 'Die langweiligen deutschen Teile, erledigt.',
+              body: 'Cookie-Banner, Datenschutzerklärung, Impressum — für dein Unternehmen geschrieben, nie aus einem Generator kopiert. Du hörst auf, dir darum Sorgen zu machen. Du gehst zurück und kümmerst dich um den Laden.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
           outcomeBullets: [
-            '5–12 Seiten Marketing-Site, Mobile-First, WCAG 2.2 AA.',
-            'Eigene Domain + Vercel-Deployment + 99,99 % Verfügbarkeit.',
-            'Cookie- + Datenschutz- + Impressum-Seiten — ab Tag eins rechtskonform.',
+            'Fünf bis zwölf Seiten, schnell auch beim schlechtesten U-Bahn-Signal.',
+            'Deine Domain, dein Code, deine Kontrolle. Nichts von uns gemietet.',
+            'Live in drei bis sechs Wochen — online, bevor der nächste ruhige Dienstag kommt.',
           ],
           bestFor:
-            'Inhabergeführte Unternehmen, die eine ernsthafte Web-Präsenz wollen, ohne SaaS-Abo-Müdigkeit.',
+            'Das Café, das leise seine Preise erhöht hat. Das Studio mit der Warteliste. Der Barber, der keine Walk-ins mehr annimmt. Geschäfte, die gut genug sind, um eine ruhigere, bessere Eingangstür zu brauchen.',
+          secondaryImageSrc: '/img/services/website/barista-pour.jpg',
+          secondaryImageAlt:
+            'Ein Barista in lederner Schürze, Seitenprofil, konzentriert beim Aufschäumen der Milch an der Espressomaschine.',
         },
         seo: {
           name: 'SEO',
-          shortTagline: 'Lokales SEO. Ehrlich. Messbar. Keine Black-Hat-Abkürzungen.',
+          shortTagline: 'Die Seite, die jemand sieht, kurz bevor er dich anruft.',
           heroEyebrow: 'Leistung · 02',
           heroTitle: 'Gefunden von Menschen, die schon suchen.',
           heroBody:
-            'Lokales SEO auf die langsame korrekte Art: On-Page-Struktur, Schema-Markup, Google Search Console + Bing Webmaster Tools, technische Korrektheit. Wir kaufen keine Backlinks. Wir versprechen keine Seite-Eins in zwei Wochen. Wir machen, was in 90 Tagen funktioniert.',
+            'Die Hälfte deiner Kund:innen vom nächsten Monat sucht heute Abend schon nach dir. SEO heißt sicherzustellen, dass die Seite, die sie zuerst finden, nicht der nächste Konkurrent an der Schönhauser Allee ist. Wir machen die geduldige, langweilige Arbeit für neunzig Tage. Dann fangen sie an, dich zu finden.',
           bullets: [
             {
-              title: 'Schema-Markup, korrekt',
-              body: 'Spezifischster @type pro Unternehmen. LocalBusiness + ProfessionalService + Organization. Keine aggregateRating-Selbstvergabe. inLanguage pro Sprache korrekt getypt.',
+              title: 'Die Metadaten, denen Google still vertraut.',
+              body: 'Schema an den richtigen Stellen, in der richtigen Sprache, für die richtige Geschäftsart. Langweilig zu besprechen. Entscheidend, wenn jemand in deinem Kiez deine Leistung ins Handy tippt.',
             },
             {
-              title: 'Echte Keyword-Recherche',
-              body: 'Für deinen Kiez, deine Leistung, deine Sprache. Echte Suchvolumina, keine Vanity-Terms. Quartalsweise überprüft.',
+              title: 'Recherchiert auf Kiez-Ebene, nicht auf Agentur-Ebene.',
+              body: 'Wir lernen die Wörter, die deine nächsten Kund:innen wirklich tippen — in ihrer Sprache, in ihrer Nachbarschaft. Keine Vanity-Keywords aus einer SaaS-Liste. Alle neunzig Tage überprüft, wenn die Jahreszeiten wechseln.',
             },
             {
-              title: 'Console + Analytics',
-              body: 'Search Console + Bing Webmaster + GA4 unter deinem Konto eingerichtet. Monatlicher Retainer-Report mit den wichtigen Metriken (Impressions, Position, Conversions).',
+              title: 'Zahlen, die du sonntagmorgens lesen kannst.',
+              body: 'Google Search Console und die Basics, unter deinem Konto eingerichtet, nicht unserem. Eine monatliche Notiz — was wir gemacht haben, was funktioniert hat, was wir als nächstes probieren. Keine zwölf-Tab-Dashboards, die du nie öffnest.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
           outcomeBullets: [
-            'Audit deines aktuellen Stands mit priorisierter Fix-Liste.',
-            'Schema + On-Page + technisches SEO im Build enthalten.',
-            'Monatlicher Report mit konkreten nächsten Schritten.',
+            'Ein ehrliches Audit vor jedem Versprechen — findet meistens drei schnelle Verbesserungen.',
+            'On-Page-Arbeit zur Bauzeit erledigt. Kein nachträglicher Frankenstein-Umbau.',
+            'Eine monatliche Notiz, die du in drei Minuten liest — was sich bewegt hat, was wir als nächstes probieren.',
           ],
           bestFor:
-            'Unternehmen, bei denen Kund:innen bereits suchen — Restaurants, Salons, Praxen, Studios, Handwerk.',
+            'Die Bäckerei, der Salon, die Praxis, der Klempner. Jedes Geschäft, bei dem Kund:innen schon suchen — sie müssen dich nur finden statt jemand anderen.',
+          heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
+          heroImageAlt:
+            'Ein Mann sitzt auf einem Bürgersteig, Hände um sein Handy, eine vorbeigehende Person verschwommen im Hintergrund.',
+          secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
+          secondaryImageAlt:
+            'Draufsicht auf die Auslage einer Bäckerei — Croissants, Danishes mit roten Früchten, Keksgläser, Marmortresen, kleine Etiketten.',
         },
         'google-business': {
           name: 'Google Business Profile',
-          shortTagline:
-            'Einrichtung + monatliche Pflege des GBP-Eintrags. Fotos, Beiträge, Bewertungen.',
+          shortTagline: 'Die erste halbe Sekunde jeder lokalen Suche.',
           heroEyebrow: 'Leistung · 03',
           heroTitle: 'Der Eintrag, der die lokale Suche macht.',
           heroBody:
-            'Die Einrichtung + Optimierung deines Google Business Profile ist oft die einzelne Aktion mit dem höchsten ROI für ein lokales Unternehmen. Wir richten es beim ersten Mal richtig ein, dann pflegen wir es monatlich: Fotos, Beiträge, Bewertungsantworten, Öffnungszeiten, Services, Q&A.',
+            "Wenn jemand drei Blocks entfernt 'Bäckerei in der Nähe' ins Handy tippt, ist die Antwort eine Liste von drei Geschäften. Dein Job ist, eines davon zu sein. Unserer ist, das zu schaffen — und dann dafür zu sorgen, dass es so bleibt.",
           bullets: [
             {
-              title: 'Richtige Einrichtung',
-              body: 'Verifiziertes Eigentum, Kategorie + Unterkategorie passend, Service-Area-Kalibrierung, Attribute, Öffnungszeiten inkl. Feiertage, jedes Foto geo-getaggt.',
+              title: 'Eingerichtet so, wie Google es wirklich will.',
+              body: 'Verifiziertes Eigentum, die spezifischste Kategorie, das richtige Servicegebiet, die richtigen Öffnungszeiten, jedes Foto an der Tür geo-getaggt. Mühsam. Entscheidend. Einmal gemacht, dann gepflegt.',
             },
             {
-              title: 'Monatliche Optimierung',
-              body: 'Zwei Beiträge pro Monat, jede Bewertung innerhalb 48 h beantwortet, Fotos aufgefrischt, Q&A gepflegt. Quartalsmäßiger Insights-Review + Empfehlungen.',
+              title: 'Stille Pflege, jeden Monat.',
+              body: 'Zwei Beiträge im Monat. Jede Bewertung in achtundvierzig Stunden beantwortet. Fotos aufgefrischt, wenn die Karte wechselt. Q&A aktuell gehalten. So, wie es aussehen sollte, wenn dich jemand am Dienstag entdeckt.',
             },
             {
-              title: 'Review-Playbook',
-              body: 'Eine Vanity-URL auf deiner Domain, die zum Bewertungsformular leitet. Freundliche per-Rechtsraum-Templates (DSGVO-konform). Drought-Alerts wenn 21 Tage ohne neue Bewertung.',
+              title: 'Eine höfliche Art, um Bewertungen zu bitten.',
+              body: 'Eine kurze URL auf deiner Domain, die zufriedene Kund:innen direkt zum Bewertungsformular führt. DSGVO-sichere Templates auf DE, EN und PT-BR. Ein leiser Alarm, wenn drei Wochen lang keine Bewertung kam — meistens gibt es etwas, worüber sich zu fragen lohnt.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
           outcomeBullets: [
-            'Verifizierter, vollständig befüllter GBP-Eintrag.',
-            'Monatliche Content- + Bewertungskadenz mit dokumentierter Antwortrate.',
-            'Dashboard-Sicht auf Insights — Anrufe, Wegbeschreibungen, Foto-Views.',
+            'Ein Eintrag, der aussieht, als wollte das Geschäft den Anruf wirklich haben.',
+            'Beiträge, beantwortete Bewertungen, aktuelle Fotos — jeden Monat, im Kalender.',
+            'Eine Zahl, die du wirklich anschauen wirst: wie viele Telefone den Eintrag diesen Monat angerufen haben.',
           ],
-          bestFor: 'Jedes Unternehmen mit physischem Standort oder definiertem Servicegebiet.',
+          bestFor:
+            "Alle, die Kund:innen mit dem Wort 'in der Nähe' in der Suche finden. Das Studio, die Praxis, die Werkstatt, die Küche — überall mit einer Tür oder einem Servicegebiet.",
+          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
+          heroImageAlt:
+            'Ein kleines Berliner Schaufenster — grüne Doppeltüren, rotes Emailschild „Aseli — Berliner Original — seit 1921", Efeu an der Fassade.',
+          secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
+          secondaryImageAlt:
+            'Eine Hand hält ein Smartphone mit einer Navigations-Karte bei Nacht, umgeben von bunten Bokeh-Stadtlichtern.',
         },
         'social-media': {
           name: 'Social Media',
-          shortTagline: 'Leichte Instagram-/Facebook-Pflege für Unternehmen ohne Marketing-Team.',
+          shortTagline:
+            'Zwei Beiträge pro Woche, in deiner Stimme, die dir den Dienstag nicht stehlen.',
           heroEyebrow: 'Leistung · 04 (optional)',
           heroTitle: 'Ein kleiner Social-Rhythmus, den du wirklich halten kannst.',
           heroBody:
-            'Kein viraler Wachstums-Versprechen. Ein vernünftiger, nachhaltiger Posting-Rhythmus für inhabergeführte Unternehmen, in denen der/die Eigentümer:in keine Zeit hat, Content-Creator zu sein. Zwei Beiträge pro Woche, echte Fotos, Antwort-Monitoring, keine gekauften Follower.',
+            'Die meisten inhabergeführten Geschäfte, die wir kennenlernen, haben ein Instagram, in das sie zuletzt an einem Mittwoch im März gepostet haben. Nicht weil ihnen die Geschichten fehlen — sondern weil die Zeit fehlt. Wir posten zweimal pro Woche aus deinen Fotos, in deiner Stimme. Keine viralen Versprechen. Nur sichtbar, leise, jede Woche.',
           bullets: [
             {
-              title: 'Zwei Beiträge pro Woche',
-              body: 'Entworfen aus deinen Fotos, deinen Öffnungszeiten, deiner Karte, deinen Meilensteinen. Vor Veröffentlichung von dir geprüft — nie automatisiertes Copy-Paste.',
+              title: 'Zwei Beiträge pro Woche. Aus deiner Woche.',
+              body: 'Deine Fotos, deine Karte, deine kleinen Meilensteine — von uns entworfen, von dir freigegeben, nie eine automatische Caption. So, wie es klingen würde, wenn du selbst die Zeit hättest, es zu schreiben.',
             },
             {
-              title: 'Antwort-Monitoring',
-              body: 'DM- + Kommentar-Monitoring werktags. An dich geleitet, wenn es persönliche Antwort braucht; von uns erledigt, wenn nicht.',
+              title: 'Jemand schaut werktags in den Posteingang.',
+              body: 'DMs und Kommentare werden jeden Werktag geprüft. Persönliche Fragen werden an dich weitergeleitet. Routinefragen mit der Stimme beantwortet, auf die wir uns geeinigt haben. Nichts bleibt bis Montag liegen.',
             },
             {
-              title: 'Keine gekauften Follower',
-              body: 'Ehrliches organisches Wachstum. Langsam, aber echt. Du wirst wissen, welche Beiträge gewirkt haben, weil die Metriken monatlich berichtet werden.',
+              title: 'Langsame, echte Zahlen. Keine gekauften Follower.',
+              body: 'Langsames, echtes Wachstum. Die Leute, die dir folgen, sind Leute, die reinkommen könnten. Eine kurze monatliche Notiz, was funktioniert hat und was nicht.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
           outcomeBullets: [
-            'Zwei-Beiträge-pro-Woche-Kadenz auf Instagram + Facebook.',
-            'DM-/Kommentar-Monitoring werktags.',
-            'Monatlicher Report — was funktioniert hat, was nicht, was wir als nächstes versuchen.',
+            'Zwei Beiträge pro Woche, vor Montagmorgen in deinen Drafts.',
+            'Posteingang gelesen, beantwortet, weitergeleitet — jeden Werktag.',
+            'Eine Notiz im Monat — was funktioniert hat, was nicht, was wir als nächstes probieren.',
           ],
           bestFor:
-            'Unternehmen, die social sichtbar sein müssen, aber keinen Teilzeit-Content-Mitarbeiter wollen.',
+            'Der/die Eigentümer:in, der/die weiß, dass Social Media zählt — und gleichzeitig weiß, dass er/sie nicht persönlich sonntagabends um neun postet.',
+          heroImageSrc: '/img/services/social-media/hero-florist.jpg',
+          heroImageAlt:
+            'Eine Floristin, gesehen durch hängende Pflanzen in der Tür ihres Ladens, ruhig arbeitend an einem Tisch mit geschnittenen Blumen.',
+          secondaryImageSrc: '/img/services/social-media/latte-overhead.jpg',
+          secondaryImageAlt:
+            'Draufsicht auf vier Cappuccinos mit Blatt- und Herz-Latte-Art auf einem kleinen runden Holztisch.',
         },
       },
     },
@@ -638,7 +692,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Portfolio',
       heroTitle: 'Ausgewählte Arbeiten.',
       heroSubtitle:
-        'Lokale Unternehmens-Demos (Berliner Branchen) plus einige externe Projekte, die wir mit umgesetzt haben. Jeder Eintrag hat eine Live-URL.',
+        'Ein paar Räume, die wir gebaut haben. Einige für Geschäfte, die schon an der Schönhauser Allee laufen, einige noch als Demo auf einer ruhigen vercel.app-URL — wartend, bis der/die Eigentümer:in ja sagt. Alle mit einem Live-Link unten.',
       visitLive: 'Live-Seite besuchen',
       backToPortfolio: '← Alle Projekte',
       relatedCases: 'Weitere aktuelle Arbeiten',
@@ -655,23 +709,26 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Studio',
       heroTitle: 'Ein kleines Studio mit einer langsamen Praxis.',
       heroLead:
-        'breno-bar ist ein Solo-Studio in Berlin. Wir bauen mehrsprachige Marketing-Webseiten für inhabergeführte Unternehmen — und wir verkaufen drei Leistungen, nicht dreißig.',
+        'breno-bar ist ein Paar Hände, in Berlin. Mehrsprachige Webseiten für inhabergeführte Unternehmen — drei Leistungen, nicht dreißig, weil niemand dreißig brauchte.',
+      heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
+      heroImageAlt:
+        'Eine ruhige Berliner Straße in der Dämmerung — kahle Baumreihen, Altbauten im Hintergrund, der Fernsehturm in der Ferne, keine Menschen, kein Verkehr.',
       sections: [
         {
           title: 'Warum klein',
-          body: 'Die meisten Agenturen wachsen, bis sie Account Manager, Projekt Manager und Meetings über Meetings brauchen. Wir haben uns dagegen entschieden. Jedes Projekt wird von der Person berührt, die es gestaltet — weniger Übergaben, weniger falsche Annahmen, weniger überraschende Rechnungen.',
+          body: 'Die meisten Agenturen wachsen, bis sie Account Manager, Projekt Manager und Meetings über Meetings brauchen. Die Person, die den ersten Satz gehört hat, ist nicht mehr die Person, die den Code schreibt. Wir haben uns entschieden, nicht so zu wachsen. Jedes Projekt wird von denselben Händen berührt, von Anfang bis Ende.',
         },
         {
           title: 'Warum drei Leistungen',
-          body: 'Website + SEO + Google Business Profile. Das sind 90 % von dem, was ein inhabergeführtes lokales Unternehmen wirklich braucht. Wir können Social Media als nachhaltige Ergänzung machen. Wir werden dir keine App bauen, keine Paid Ads schalten und keinen Newsletter schreiben.',
+          body: 'Website + SEO + Google Business Profile. Das ist das meiste, was ein kleines lokales Geschäft braucht, um gefunden und angerufen zu werden. Social Media ist eine optionale Vierte, wenn du sie willst. Wir bauen dir keine App. Wir schalten dir keine Werbung. Wir schreiben deinen Newsletter nicht. Es gibt genug gute Studios dafür.',
         },
         {
           title: 'Wie wir arbeiten',
-          body: 'Erst eine Demo, dann ein Gespräch. Du siehst eine funktionierende Version deiner Seite, bevor du dich zu etwas verpflichtest. Jeder Commit liegt auf deinem GitHub, jedes Deploy auf deinem Vercel, jede Domain auf deinem Namen. Nichts bei uns eingesperrt.',
+          body: 'Erst eine Demo, dann ein Gespräch. Du siehst eine funktionierende Version deiner Seite, bevor du einen einzigen Euro versprichst. Jede Codezeile liegt auf deinem GitHub. Jedes Deployment liegt auf deinem Vercel. Die Domain bleibt auf deinem Namen. Nichts von uns gemietet — wir mögen es, wenn du uns aus freien Stücken wiederfindest, nicht weil du festhängst.',
         },
         {
           title: 'Sprachen',
-          body: 'Berliner Deutsch + internationales Englisch sind Standard. Brasilianisches Portugiesisch, Spanisch und Portugiesisch-Portugal verfügbar, wenn die Zielgruppe sie braucht. Übersetzung ist kulturell, nicht wörtlich.',
+          body: 'Berliner Deutsch und internationales Englisch als Standard. Brasilianisches Portugiesisch, europäisches Portugiesisch und Spanisch, wenn deine Zielgruppe danach fragt. Übersetzung ist kulturell — ein Kreuzberger Café und eine padaria in São Paulo klingen nicht gleich, auch wenn sie denselben Kaffee verkaufen.',
         },
       ],
       foundedNote: 'Gegründet 2026 von Breno Ribeiro in Berlin.',
@@ -682,7 +739,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Kontakt',
       heroTitle: 'Reden wir.',
       heroSubtitle:
-        'Schreib, was du brauchst. Wir antworten in ein bis zwei Absätzen innerhalb eines Werktags. Kein Verkaufsgespräch, keine Folien.',
+        'Erzähl uns, was du bauen willst. Wir antworten in ein oder zwei Absätzen, innerhalb eines Werktags. Kein Verkaufsgespräch. Keine Folien. Keine Follow-up-Sequenz.',
       formNameLabel: 'Dein Name',
       formNamePlaceholder: 'Maria Müller',
       formEmailLabel: 'E-Mail',
@@ -775,7 +832,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'ESTÚDIO · BERLIM',
       heroTitleLines: ['Sites dos quais', 'a gente se orgulha.'],
       heroSubtitle:
-        'Três serviços para negócios liderados pelo dono. Site. SEO. Google Business Profile.',
+        'Para os pequenos negócios berlinenses que sustentam um bairro. A gente constrói os sites que eles merecem.',
+      heroImageSrc: '/img/home/hero-altbau-kiez.jpg',
+      heroImageAlt:
+        'Uma rua clássica de Altbau berlinense: fachada ornamentada em branco e laranja, café no térreo com toldo vermelho, pessoas em mesas externas, árvores projetando sombras nos paralelepípedos.',
       statTitle: 'Números que a gente gosta',
       statLine1: '10',
       statLine2: '6',
@@ -786,17 +846,20 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       servicesEyebrow: 'Serviços',
       servicesHeading: 'Três coisas, bem feitas.',
       servicesBody:
-        'Uma prática focada. Site + SEO + Google Business Profile. Mídia social como quarto opcional. Sem upsells, sem buzzwords, sem dança de agência-de-agência.',
+        'Três coisas, bem feitas, pelas mesmas mãos. Um site que vale a pena ser encontrado. Um resultado de busca que vale o clique. Um perfil do Google que vale a pena abrir. Redes sociais se você realmente quiser — a gente avisa quando não quiser.',
       portfolioEyebrow: 'Trabalhos selecionados',
       portfolioHeading: 'Alguns que a gente gosta.',
       portfolioAllLink: 'Ver todos os projetos →',
       aboutEyebrow: 'Estúdio',
       aboutHeading: 'Um pequeno estúdio. Sem upsell.',
       aboutBody: [
-        'breno-bar é um estúdio de um só operador em Berlim. A gente projeta e implanta sites de marketing multilíngues — pequenos, rápidos, acessíveis e construídos em torno das poucas coisas que um negócio local realmente precisa para ser encontrado e procurado.',
-        'A gente não usa stacks no-code; cada projeto vai pra uma codebase própria que é sua, num host que você controla. A gente não vende campanhas de anúncios ou frequências de redes sociais que você não consegue sustentar. A gente não persegue métricas de crescimento que não viram clientes.',
+        'breno-bar é um par de mãos, em Berlim. Um estúdio tranquilo o bastante para perceber o que seu negócio realmente faz — e pequeno o bastante para você sempre saber quem construiu seu site.',
+        'A gente não vende campanhas de anúncios que você não consegue sustentar, dashboards que você não consegue ler, ou crescimento que não vira cliente. A gente constrói o cômodo onde as pessoas entram. É essa a proposta toda.',
       ],
       aboutReadMore: 'Ler a filosofia do estúdio →',
+      aboutImageSrc: '/img/home/studio-notebook.jpg',
+      aboutImageAlt:
+        'Vista de cima de uma pequena mesa de madeira com caderno de couro, caneta e xícara de café, iluminada pelo padrão das venezianas.',
       ctaEyebrow: 'Comece uma conversa',
       ctaHeading: 'Vamos construir o seu.',
       ctaBody:
@@ -809,128 +872,151 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Serviços',
       heroTitle: 'Três serviços. Um estúdio. Sem upsell.',
       heroSubtitle:
-        'Cada serviço é vendido como entrega autônoma com retainer mensal opcional. Sem contratos longos; você pode parar em qualquer mês.',
+        'Três pequenos serviços, vendidos como um comerciante berlinense vende qualquer coisa — um de cada vez, sem obrigação de comprar o próximo.',
       services: {
         website: {
           name: 'Site',
-          shortTagline:
-            'Um site de marketing multilíngue, implantado em infraestrutura que você controla.',
+          shortTagline: 'O primeiro cômodo onde seu próximo cliente vai entrar.',
           heroEyebrow: 'Serviço · 01',
           heroTitle: 'Um site que rende ligação.',
           heroBody:
-            'Um site de marketing multilíngue, acessível, rápido, construído em Astro ou Next.js. Implantado no Vercel sob sua conta, com o domínio no seu nome e a codebase no seu GitHub. Nada trancado atrás do nosso login.',
+            'A maioria dos seus próximos clientes vai te encontrar pelo celular — em pé em algum ponto da Schönhauser Allee, esperando o U-Bahn, entre duas reuniões. O que eles virem nesses quatro segundos decide se entram, ou seguem em frente.',
+          heroImageSrc: '/img/services/website/hero-terrace.jpg',
+          heroImageAlt:
+            'Um restaurante visto pela janela da frente à noite — luz dourada do candelabro, clientes em volta das mesas, um garçom se movendo entre elas.',
           bullets: [
             {
-              title: 'Multilíngue desde o dia um',
-              body: 'EN + DE por padrão. PT-BR ou um terceiro idioma adicionado se seu público precisar. Estrutura de URL + hreflang + schema por idioma corretos no lançamento.',
+              title: 'Fala todo idioma que seu quarteirão fala.',
+              body: 'Metade de Berlim vive em dois idiomas já na terça-feira. Seu site deveria fazer cada um deles se sentir como o público para quem a gente construiu.',
             },
             {
-              title: 'Feito à mão, sem templates',
-              body: 'Sem arrasta-e-solta, sem derivados de loja de temas. Seus tokens, sua tipografia, suas fotos. As mesmas regras de agência em cada projeto; nada parecido com o anterior.',
+              title: 'Não parece com os quatro cafés da mesma rua.',
+              body: 'Sites feitos com template são reconhecíveis por qualquer um que tenha visto dois. O seu não vai ser um deles. Suas cores, suas fotos, seu cômodo.',
             },
             {
-              title: 'Compliance legal de verdade',
-              body: 'DSGVO/TMG, RGPD, LGPD — cobertos por jurisdição. Banner de cookies, Política de Privacidade, Informações Legais: escritos para o seu negócio, não copiados de um gerador.',
+              title: 'As partes alemãs chatas, resolvidas.',
+              body: 'Cookie banner, Datenschutzerklärung, Impressum — escritos para o seu negócio, nunca colados de um gerador. Você para de se preocupar com isso. Volta a cuidar do salão.',
             },
           ],
           outcomeHeading: 'O que você recebe',
           outcomeBullets: [
-            '5–12 páginas de site de marketing, mobile-first, WCAG 2.2 AA.',
-            'Domínio próprio + deploy no Vercel + 99,99 % de uptime.',
-            'Páginas de cookies + privacidade + informações legais — corretas desde o dia um.',
+            'Cinco a doze páginas, rápidas até no pior sinal do U-Bahn.',
+            'Seu domínio, seu código, seu controle. Nada alugado da gente.',
+            'No ar em três a seis semanas — online antes da próxima terça-feira morna.',
           ],
           bestFor:
-            'Negócios liderados pelo dono que querem presença web séria sem o cansaço de assinaturas SaaS.',
+            'O café que aumentou silenciosamente os preços. O estúdio com lista de espera. O barbeiro que parou de aceitar walk-ins. Negócios bons o bastante para precisar de uma porta de entrada mais tranquila e melhor.',
+          secondaryImageSrc: '/img/services/website/barista-pour.jpg',
+          secondaryImageAlt:
+            'Um barista de avental de couro, perfil lateral, concentrado em vaporizar o leite na máquina de espresso.',
         },
         seo: {
           name: 'SEO',
-          shortTagline: 'SEO local. Honesto. Mensurável. Sem atalhos black-hat.',
+          shortTagline: 'A página que alguém vê pouco antes de te ligar.',
           heroEyebrow: 'Serviço · 02',
           heroTitle: 'Encontrado por quem já está procurando.',
           heroBody:
-            'SEO local feito do jeito lento e correto: estrutura on-page, marcação Schema, Google Search Console + Bing Webmaster Tools, correção técnica. A gente não compra backlinks. Não promete primeira página em duas semanas. Faz o que funciona em 90 dias.',
+            'Metade dos seus clientes do mês que vem já está te procurando esta noite. SEO é garantir que a página que eles encontram primeiro não é o concorrente mais próximo da Schönhauser Allee. A gente faz o trabalho paciente e chato por noventa dias. Eles começam a te encontrar.',
           bullets: [
             {
-              title: 'Marcação Schema correta',
-              body: '@type mais específico por negócio. LocalBusiness + ProfessionalService + Organization. Sem auto-elogio com aggregateRating. inLanguage por idioma tipado corretamente.',
+              title: 'Os metadados em que o Google silenciosamente confia.',
+              body: 'Schema nos lugares certos, no idioma certo, para o tipo certo de negócio. Chato de discutir. Decisivo quando alguém no seu bairro digita seu serviço no celular.',
             },
             {
-              title: 'Pesquisa real de palavras-chave',
-              body: 'Para seu bairro, seu serviço, seu idioma. Volumes reais de busca, não termos vaidosos. Revisão trimestral.',
+              title: 'Pesquisado no nível do bairro, não no nível da agência.',
+              body: 'A gente aprende as palavras que seu próximo cliente realmente digita — no idioma dele, na vizinhança dele. Sem palavras-chave de vaidade tiradas de uma lista de SaaS. Revisado a cada noventa dias quando as estações mudam.',
             },
             {
-              title: 'Console + analytics',
-              body: 'Search Console + Bing Webmaster + GA4 configurados sob sua conta. Relatório mensal de retainer com as métricas que importam (impressões, posição, conversões).',
+              title: 'Números que você consegue ler num domingo de manhã.',
+              body: 'Google Search Console e o básico, configurados sob sua conta, não a nossa. Uma nota mensal — o que a gente fez, o que funcionou, o que vamos tentar a seguir. Sem dashboards de doze abas que você nunca vai abrir.',
             },
           ],
           outcomeHeading: 'O que você recebe',
           outcomeBullets: [
-            'Auditoria do estado atual com lista priorizada de correções.',
-            'Schema + on-page + SEO técnico entregues junto com o build.',
-            'Relatório mensal com recomendações concretas de próximo passo.',
+            'Uma auditoria honesta antes de qualquer promessa — geralmente encontra três ganhos rápidos.',
+            'Trabalho on-page feito no momento da construção. Sem remendo Frankenstein retroativo.',
+            'Uma nota mensal que você lê em três minutos — o que se moveu, o que vamos tentar.',
           ],
           bestFor:
-            'Negócios onde o cliente já está pesquisando — restaurantes, salões, clínicas, estúdios, ofícios.',
+            'A padaria, o salão, o dentista, o encanador. Qualquer negócio onde o cliente já está procurando — eles só precisam te encontrar em vez de outra pessoa.',
+          heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
+          heroImageAlt:
+            'Um homem sentado na calçada urbana, mãos segurando um celular, um transeunte desfocado ao fundo.',
+          secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
+          secondaryImageAlt:
+            'Vista de cima da vitrine de uma padaria — croissants, danishes com frutas vermelhas, potes de biscoito, balcão de mármore, pequenas etiquetas.',
         },
         'google-business': {
           name: 'Google Business Profile',
-          shortTagline: 'Setup + otimização mensal do perfil GBP. Fotos, posts, avaliações.',
+          shortTagline: 'O primeiro meio-segundo de toda busca local.',
           heroEyebrow: 'Serviço · 03',
           heroTitle: 'O perfil que faz o trabalho pesado da busca local.',
           heroBody:
-            'Configurar + otimizar seu Google Business Profile é frequentemente a ação de maior ROI para um negócio local. A gente faz certo da primeira vez e mantém mensalmente: fotos, posts, respostas a avaliações, horários, serviços, Q&A.',
+            "Quando alguém a três quarteirões digita 'padaria perto de mim' no celular, a resposta é uma lista de três negócios. Seu trabalho é ser um deles. O nosso é fazer isso acontecer — e depois cuidar para que continue assim.",
           bullets: [
             {
-              title: 'Setup feito direito',
-              body: 'Propriedade verificada, categoria + subcategoria adequadas, calibração de área de atendimento, atributos, horários incluindo feriados, cada foto geo-tagueada.',
+              title: 'Configurado do jeito que o Google realmente quer.',
+              body: 'Propriedade verificada, a categoria mais específica, a área de atendimento certa, os horários certos, cada foto geo-marcada na porta. Tedioso. Decisivo. Feito uma vez, depois mantido.',
             },
             {
-              title: 'Otimização mensal',
-              body: 'Dois posts por mês, toda avaliação respondida em até 48 h, fotos atualizadas, Q&A mantido. Revisão trimestral de insights + recomendações.',
+              title: 'Manutenção silenciosa, todo mês.',
+              body: 'Dois posts por mês. Toda avaliação respondida em quarenta e oito horas. Fotos atualizadas quando o cardápio muda. Q&A em dia. Como deveria parecer quando alguém te descobre numa terça-feira.',
             },
             {
-              title: 'Playbook de avaliações',
-              body: 'Uma URL personalizada no seu domínio que direciona para o formulário de avaliação. Templates amigáveis por jurisdição (DSGVO-compliant). Alertas de seca se 21 dias sem avaliação.',
+              title: 'Um jeito educado de pedir avaliações.',
+              body: 'Uma URL curta no seu domínio que leva um cliente satisfeito direto para o formulário de avaliação. Templates compatíveis com LGPD/DSGVO em DE, EN e PT-BR. Um alerta silencioso se passarem três semanas sem avaliação — geralmente significa algo a perguntar.',
             },
           ],
           outcomeHeading: 'O que você recebe',
           outcomeBullets: [
-            'Perfil GBP verificado e totalmente preenchido.',
-            'Cadência mensal de conteúdo + avaliações com taxa de resposta documentada.',
-            'Visão de dashboard dos insights — ligações, pedidos de rota, views de fotos.',
+            'Um perfil que parece que o negócio realmente quer a ligação.',
+            'Posts, avaliações respondidas, fotos atuais — todo mês, na agenda.',
+            'Um número que você vai mesmo olhar: quantos celulares ligaram pro perfil este mês.',
           ],
-          bestFor: 'Qualquer negócio com endereço físico ou área de atendimento definida.',
+          bestFor:
+            "Qualquer um que clientes encontram com a palavra 'perto' na busca. O estúdio, a clínica, a oficina, a cozinha — qualquer lugar com uma porta ou área de atendimento.",
+          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
+          heroImageAlt:
+            'Uma pequena fachada berlinense — portas verdes duplas, placa em esmalte vermelho com "Aseli — Berliner Original — desde 1921", hera subindo pela parede.',
+          secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
+          secondaryImageAlt:
+            'Uma mão segurando um smartphone com um mapa de navegação à noite, cercada por bokeh colorido das luzes da cidade.',
         },
         'social-media': {
           name: 'Redes sociais',
-          shortTagline:
-            'Posting leve no Instagram + Facebook para negócios sem equipe de marketing.',
+          shortTagline: 'Dois posts por semana, na sua voz, que não roubam sua terça-feira.',
           heroEyebrow: 'Serviço · 04 (opcional)',
           heroTitle: 'Um pequeno ritmo social que você consegue mesmo manter.',
           heroBody:
-            'Sem promessa de crescimento viral. Um ritmo de postagem sensato e sustentável para negócios geridos pelo dono em que a pessoa fundadora não tem tempo de ser criadora de conteúdo. Dois posts por semana, fotos reais, monitoramento de respostas, sem comprar seguidores.',
+            'A maioria dos donos com quem a gente conversa tem um Instagram em que o último post foi numa quarta de março. Não porque não tenham história — porque não há tempo. A gente posta duas vezes por semana com suas fotos, na sua voz. Sem promessa viral. Só visível, em silêncio, toda semana.',
           bullets: [
             {
-              title: 'Dois posts por semana',
-              body: 'Rascunhados a partir das suas fotos, seus horários, seu cardápio, suas conquistas. Revisados por você antes de publicar — nunca cópia-e-cola automatizada.',
+              title: 'Dois posts por semana. Da sua semana.',
+              body: 'Suas fotos, seu cardápio, seus pequenos marcos — rascunhados pela gente, aprovados por você, nunca uma legenda automática. Do jeito que soaria se você tivesse tempo de escrever sozinho.',
             },
             {
-              title: 'Monitoramento de respostas',
-              body: 'Monitoramento de DMs + comentários em dias úteis. Encaminhado a você se precisar de resposta pessoal, resolvido por nós se não.',
+              title: 'Alguém olhando a caixa de entrada em dias úteis.',
+              body: 'DMs e comentários conferidos todo dia útil. Perguntas pessoais encaminhadas pra você. Perguntas de rotina respondidas na voz que combinamos. Nada cai pra segunda-feira.',
             },
             {
-              title: 'Sem comprar seguidores',
-              body: 'Crescimento orgânico honesto. Lento, mas real. Você vai saber quais posts funcionaram porque as métricas são reportadas mensalmente.',
+              title: 'Números lentos e reais. Sem seguidores comprados.',
+              body: 'Crescimento lento e real. As pessoas que te seguem são pessoas que poderiam entrar pela porta. Uma nota curta uma vez por mês sobre o que funcionou e o que não.',
             },
           ],
           outcomeHeading: 'O que você recebe',
           outcomeBullets: [
-            'Cadência de dois posts por semana no Instagram + Facebook.',
-            'Monitoramento de DMs/comentários em dias úteis.',
-            'Relatório mensal — o que funcionou, o que não, o que vamos tentar a seguir.',
+            'Dois posts por semana, prontos nos seus rascunhos antes de segunda de manhã.',
+            'Caixa de entrada lida, respondida, escalada — todo dia útil.',
+            'Uma nota uma vez por mês — o que funcionou, o que não, o que vamos tentar.',
           ],
           bestFor:
-            'Negócios que precisam de visibilidade social mas não querem contratar meio expediente de conteúdo.',
+            'O dono que sabe que rede social importa — e que também sabe que não vai ser ele postando às nove da noite num domingo.',
+          heroImageSrc: '/img/services/social-media/hero-florist.jpg',
+          heroImageAlt:
+            'Uma florista vista por entre plantas penduradas na porta da loja, trabalhando em silêncio em um balcão de flores cortadas.',
+          secondaryImageSrc: '/img/services/social-media/latte-overhead.jpg',
+          secondaryImageAlt:
+            'Vista de cima de quatro cappuccinos com latte art em folha e coração, dispostos sobre uma pequena mesa redonda de madeira.',
         },
       },
     },
@@ -941,7 +1027,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Portfólio',
       heroTitle: 'Trabalhos selecionados.',
       heroSubtitle:
-        'Demos de negócios locais (segmentos berlinenses) mais alguns projetos externos que ajudamos a entregar. Todo item tem URL ao vivo.',
+        'Alguns cômodos que a gente construiu. Alguns para negócios que já rodam pela Schönhauser Allee, alguns ainda em forma de demo numa URL tranquila do vercel.app — esperando o dono dizer sim. Todos têm um link ao vivo abaixo.',
       visitLive: 'Visitar site ao vivo',
       backToPortfolio: '← Todos os projetos',
       relatedCases: 'Outros trabalhos recentes',
@@ -958,23 +1044,26 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Estúdio',
       heroTitle: 'Um pequeno estúdio com uma prática lenta.',
       heroLead:
-        'breno-bar é um estúdio de um só operador em Berlim. Construímos sites de marketing multilíngues para negócios liderados pelo dono — e vendemos três serviços, não trinta.',
+        'breno-bar é um par de mãos, em Berlim. Sites multilíngues para negócios liderados pelo dono — três serviços, não trinta, porque ninguém precisava de trinta.',
+      heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
+      heroImageAlt:
+        'Uma rua berlinense silenciosa no amanhecer — árvores sem folhas, prédios Altbau ao fundo, a Fernsehturm ao longe, sem pessoas, sem trânsito.',
       sections: [
         {
           title: 'Por que pequeno',
-          body: 'A maioria das agências cresce até precisar de account managers, project managers e reuniões sobre reuniões. A gente escolheu não. Cada projeto é tocado pela pessoa que o projeta — menos handoffs, menos suposições erradas, menos faturas surpresa.',
+          body: 'A maioria das agências cresce até precisar de account managers, project managers e reuniões sobre reuniões. A pessoa que ouviu a primeira frase não é mais a pessoa que escreve o código. A gente escolheu não crescer assim. Cada projeto é tocado pelas mesmas mãos, do começo ao fim.',
         },
         {
           title: 'Por que três serviços',
-          body: 'Site + SEO + Google Business Profile. Isso são 90 % do que um negócio local liderado pelo dono realmente precisa. A gente faz redes sociais como adição sustentável. Não vai construir seu app, gerir seus anúncios pagos, nem escrever sua newsletter.',
+          body: 'Site + SEO + Google Business Profile. Isso é a maior parte do que um pequeno negócio local precisa para ser encontrado e procurado. Redes sociais é uma quarta opcional, se você quiser. A gente não vai construir seu app. Não vai gerir seus anúncios. Não vai escrever sua newsletter. Tem estúdio bom o bastante por aí pra isso.',
         },
         {
           title: 'Como trabalhamos',
-          body: 'Primeiro uma demo, depois uma conversa. Você vê uma versão funcionando do seu site antes de se comprometer com qualquer coisa. Todo commit fica no seu GitHub, todo deploy no seu Vercel, todo domínio no seu nome. Nada trancado conosco.',
+          body: 'Primeiro uma demo, depois uma conversa. Você vê uma versão funcionando do seu site antes de prometer um único euro. Cada linha de código fica no seu GitHub. Cada deploy fica no seu Vercel. O domínio permanece no seu nome. Nada alugado da gente — a gente gosta de ser reencontrado por escolha, não por dependência.',
         },
         {
           title: 'Idiomas',
-          body: 'Alemão de Berlim + inglês internacional são padrões. Português brasileiro, espanhol e português-Portugal disponíveis quando o público precisar. Tradução é cultural, não literal.',
+          body: 'Alemão de Berlim e inglês internacional por padrão. Português brasileiro, português europeu e espanhol quando seu público pedir. Tradução é cultural — um café de Kreuzberg e uma padaria de São Paulo não soam iguais, mesmo quando vendem o mesmo café.',
         },
       ],
       foundedNote: 'Fundado em 2026 por Breno Ribeiro em Berlim.',
@@ -985,7 +1074,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Contato',
       heroTitle: 'Vamos conversar.',
       heroSubtitle:
-        'Escreva o que você precisa. A gente responde em um ou dois parágrafos dentro de um dia útil. Sem call comercial, sem slide decks.',
+        'Conta pra gente o que você está tentando construir. A gente responde em um ou dois parágrafos, dentro de um dia útil. Sem call comercial. Sem deck. Sem sequência de follow-up.',
       formNameLabel: 'Seu nome',
       formNamePlaceholder: 'João da Silva',
       formEmailLabel: 'E-mail',
