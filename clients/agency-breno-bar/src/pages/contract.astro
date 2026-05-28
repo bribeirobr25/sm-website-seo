@@ -35,16 +35,20 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
   <main id="main" class="bg-bg min-h-screen">
     {/* STICKY TOOLBAR — visible on screen, hidden in print */}
     <div class="no-print sticky top-[64px] z-20 bg-bg/90 backdrop-blur-xl border-b border-border">
-      <div class="container-page py-4 flex items-center justify-between gap-4">
+      <div class="container-page py-3 sm:py-4 flex items-center justify-between gap-3">
         <div class="min-w-0 flex-1">
-          <p class="text-xs tracking-[0.18em] uppercase text-text-subtle font-medium">Internal</p>
-          <p class="font-display text-lg sm:text-xl font-semibold text-text leading-tight truncate">{c.pageTitle}</p>
+          <p class="text-[10px] sm:text-xs tracking-[0.18em] uppercase text-text-subtle font-medium">Internal</p>
+          <p class="font-display text-base sm:text-xl font-semibold text-text leading-tight truncate">Service Agreement</p>
         </div>
-        <div class="flex items-center gap-3 shrink-0">
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          <span id="save-pill" class="hidden md:inline-flex items-center gap-1.5 text-xs text-text-muted px-3 py-1.5 rounded-full bg-surface border border-border" aria-live="polite">
+            <span id="save-indicator" style="color: var(--color-success);" aria-hidden="true">●</span>
+            <span id="save-text">Saved</span>
+          </span>
           <button
             type="button"
             id="toggle-form-btn"
-            class="hidden sm:inline-flex items-center justify-center px-4 py-2 min-h-[44px] rounded-full border border-border text-text hover:border-text transition-colors text-sm font-medium"
+            class="inline-flex items-center justify-center px-3 sm:px-4 py-2 min-h-[44px] rounded-full border border-border text-text hover:border-text transition-colors text-sm font-medium"
             aria-pressed="false"
             aria-controls="form-panel"
           >
@@ -53,10 +57,11 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
           <button
             type="button"
             id="print-btn"
-            class="inline-flex items-center justify-center px-5 py-2 min-h-[44px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium"
+            class="inline-flex items-center justify-center px-3 sm:px-5 py-2 min-h-[44px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium"
+            aria-label={c.printButton}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="mr-2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-            <span>{c.printButton}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="sm:mr-2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span class="hidden sm:inline">{c.printButton}</span>
           </button>
         </div>
       </div>
@@ -64,150 +69,169 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
 
     {/* FORM PANEL */}
     <section id="form-panel" class="no-print bg-surface border-b border-border">
-      <div class="container-page py-12 sm:py-16 max-w-4xl">
-        <p class="text-sm text-text-muted leading-relaxed mb-2">{c.pageSubtitle}</p>
-        <p class="text-xs text-text-subtle italic">{c.formIntro}</p>
+      <div class="container-page py-10 sm:py-14 max-w-4xl">
+        <p class="text-sm text-text-muted leading-relaxed">{c.formIntro}</p>
 
-        <form id="contract-form" class="mt-10 space-y-14">
-          {/* SECTION 1 — CLIENT */}
-          <fieldset class="space-y-5">
-            <legend class="font-display text-base font-semibold text-text tracking-[-0.005em]">{c.partiesLabel}</legend>
+        <form id="contract-form" class="mt-8 sm:mt-10">
+          {/* STEP 1 — CLIENT */}
+          <fieldset class="form-step">
+            <legend class="form-step__legend">
+              <span class="form-step__num" aria-hidden="true">1</span>
+              <span class="form-step__title">{c.partiesLabel}</span>
+            </legend>
+            <div class="form-step__body space-y-5">
+              <div class="grid sm:grid-cols-[1fr_2fr] gap-4">
+                <label class="block">
+                  <span class="form-label">{c.clientLegalForm}</span>
+                  <select name="client_legal_form" class="ag-input">
+                    <option value="GbR">GbR</option>
+                    <option value="UG (haftungsbeschränkt)">UG (haftungsbeschränkt)</option>
+                    <option value="GmbH">GmbH</option>
+                    <option value="e.K.">e.K.</option>
+                    <option value="Einzelunternehmer">Einzelunternehmer</option>
+                    <option value="Freiberufler">Freiberufler</option>
+                    <option value="—">— (other)</option>
+                  </select>
+                </label>
+                <label class="block">
+                  <span class="form-label">{c.clientBusinessName}</span>
+                  <input type="text" name="client_business_name" class="ag-input" autocomplete="organization" />
+                </label>
+              </div>
 
-            <div class="grid sm:grid-cols-2 gap-4">
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientLegalForm}</span>
-                <select name="client_legal_form" class="ag-input">
-                  <option value="GbR">GbR</option>
-                  <option value="UG (haftungsbeschränkt)">UG (haftungsbeschränkt)</option>
-                  <option value="GmbH">GmbH</option>
-                  <option value="e.K.">e.K.</option>
-                  <option value="Einzelunternehmer">Einzelunternehmer</option>
-                  <option value="Freiberufler">Freiberufler</option>
-                  <option value="—">— (other)</option>
-                </select>
-              </label>
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientBusinessName}</span>
-                <input type="text" name="client_business_name" class="ag-input" />
-              </label>
-            </div>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <label class="block">
+                  <span class="form-label">{c.clientRepresentative}</span>
+                  <input type="text" name="client_representative" class="ag-input" autocomplete="name" />
+                </label>
+                <label class="block">
+                  <span class="form-label">{c.clientRepresentativeRole}</span>
+                  <input type="text" name="client_representative_role" placeholder="Geschäftsführer / Inhaber / …" class="ag-input" />
+                </label>
+              </div>
 
-            <div class="grid sm:grid-cols-2 gap-4">
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientRepresentative}</span>
-                <input type="text" name="client_representative" class="ag-input" />
-              </label>
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientRepresentativeRole}</span>
-                <input type="text" name="client_representative_role" placeholder="Geschäftsführer / Inhaber / …" class="ag-input" />
-              </label>
-            </div>
-
-            <div class="grid sm:grid-cols-[2fr_1fr_2fr] gap-4">
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientStreet}</span>
-                <input type="text" name="client_street" class="ag-input" />
-              </label>
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientPostalCode}</span>
-                <input type="text" name="client_postal_code" class="ag-input" />
-              </label>
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientCity}</span>
-                <input type="text" name="client_city" value="Berlin" class="ag-input" />
-              </label>
-            </div>
-
-            <div class="grid sm:grid-cols-2 gap-4">
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientEmail}</span>
-                <input type="email" name="client_email" class="ag-input" />
-              </label>
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.clientUstId}</span>
-                <input type="text" name="client_ust_idnr" placeholder="DE…" class="ag-input" />
-                <span class="block text-xs text-text-subtle mt-1.5">{c.clientUstHint}</span>
-              </label>
-            </div>
-          </fieldset>
-
-          {/* SECTION 2 — SERVICES */}
-          <fieldset class="space-y-5">
-            <legend class="font-display text-base font-semibold text-text tracking-[-0.005em]">{c.servicesLabel}</legend>
-            <p class="text-sm text-text-muted leading-relaxed">{c.servicesHint}</p>
-
-            <div class="space-y-3">
-              {scopes.map((s) => (
-                <div class="border border-border rounded-[14px] bg-bg overflow-hidden">
-                  <label class="flex items-start gap-3 p-4 cursor-pointer hover:bg-surface transition-colors min-h-[52px]">
-                    <input type="checkbox" name={`svc_${s.slug}`} class="mt-1 svc-toggle h-5 w-5 accent-accent" data-slug={s.slug} />
-                    <span class="text-sm font-medium text-text leading-relaxed">{s.name}</span>
+              <div>
+                <label class="block">
+                  <span class="form-label">{c.clientStreet}</span>
+                  <input type="text" name="client_street" class="ag-input" autocomplete="street-address" />
+                </label>
+                <div class="grid grid-cols-[1fr_2fr] gap-4 mt-4">
+                  <label class="block">
+                    <span class="form-label">{c.clientPostalCode}</span>
+                    <input type="text" name="client_postal_code" class="ag-input tabular" autocomplete="postal-code" inputmode="numeric" />
                   </label>
-                  <div class="border-t border-border bg-surface px-4 py-3">
-                    <label class="block">
-                      <span class="block text-xs text-text-subtle mb-1.5 font-medium">{c.scopeEditableLabel}</span>
-                      <textarea name={`scope_${s.slug}`} rows="4" class="ag-input text-sm leading-relaxed">{s.defaultScope}</textarea>
-                    </label>
-                  </div>
+                  <label class="block">
+                    <span class="form-label">{c.clientCity}</span>
+                    <input type="text" name="client_city" placeholder="Berlin" class="ag-input" autocomplete="address-level2" />
+                  </label>
                 </div>
-              ))}
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <label class="block">
+                  <span class="form-label">{c.clientEmail}</span>
+                  <input type="email" name="client_email" class="ag-input" autocomplete="email" />
+                </label>
+                <label class="block">
+                  <span class="form-label">{c.clientUstId} <span class="form-label__hint">(optional)</span></span>
+                  <input type="text" name="client_ust_idnr" placeholder="DE…" class="ag-input tabular" />
+                  <span class="form-hint">{c.clientUstHint}</span>
+                </label>
+              </div>
             </div>
           </fieldset>
 
-          {/* SECTION 3 — PRICING */}
-          <fieldset class="space-y-5">
-            <legend class="font-display text-base font-semibold text-text tracking-[-0.005em]">{c.pricingLabel}</legend>
+          {/* STEP 2 — SERVICES */}
+          <fieldset class="form-step">
+            <legend class="form-step__legend">
+              <span class="form-step__num" aria-hidden="true">2</span>
+              <span class="form-step__title">{c.servicesLabel}</span>
+            </legend>
+            <div class="form-step__body space-y-4">
+              <p class="text-sm text-text-muted leading-relaxed">{c.servicesHint}</p>
 
-            <div class="grid sm:grid-cols-2 gap-4">
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.buildFee}</span>
-                <input type="number" name="price_build" min="0" step="0.01" placeholder="0.00" class="ag-input tabular" />
-              </label>
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.retainerFee}</span>
-                <input type="number" name="price_retainer" min="0" step="0.01" placeholder="0.00" class="ag-input tabular" />
-                <span class="block text-xs text-text-subtle mt-1.5">{c.retainerFeeHint}</span>
-              </label>
-            </div>
-
-            <div class="space-y-2.5 pt-2">
-              <span class="block text-sm font-medium text-text mb-2">{c.vatLabel}</span>
-              <label class="flex items-start gap-3 p-3 min-h-[44px] rounded-[10px] border border-border hover:bg-surface transition-colors cursor-pointer">
-                <input type="radio" name="vat_status" value="kleinunternehmer" checked class="mt-0.5 h-4 w-4 accent-accent" />
-                <span class="text-sm text-text leading-relaxed">{c.vatKleinunternehmer}</span>
-              </label>
-              <label class="flex items-start gap-3 p-3 min-h-[44px] rounded-[10px] border border-border hover:bg-surface transition-colors cursor-pointer">
-                <input type="radio" name="vat_status" value="regular" class="mt-0.5 h-4 w-4 accent-accent" />
-                <span class="text-sm text-text leading-relaxed">{c.vatRegular}</span>
-              </label>
+              <div class="grid sm:grid-cols-2 gap-3">
+                {scopes.map((s) => (
+                  <div class="svc-card">
+                    <label class="svc-card__head">
+                      <input type="checkbox" name={`svc_${s.slug}`} class="svc-toggle h-5 w-5 accent-accent shrink-0" data-slug={s.slug} />
+                      <span class="svc-card__name">{s.name}</span>
+                    </label>
+                    <div class="svc-card__scope">
+                      <span class="form-label form-label--mini">{c.scopeEditableLabel}</span>
+                      <textarea name={`scope_${s.slug}`} rows="4" class="ag-input text-sm leading-relaxed">{s.defaultScope}</textarea>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </fieldset>
 
-          {/* SECTION 4 — DATES */}
-          <fieldset class="space-y-5">
-            <legend class="font-display text-base font-semibold text-text tracking-[-0.005em]">{c.datesLabel}</legend>
-            <div class="grid sm:grid-cols-3 gap-4">
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.signatureDate}</span>
-                <input type="date" name="date_signature" class="ag-input tabular" />
-              </label>
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.startDate}</span>
-                <input type="date" name="date_start" class="ag-input tabular" />
-              </label>
-              <label class="block">
-                <span class="block text-sm font-medium text-text mb-1.5">{c.goLiveDate}</span>
-                <input type="date" name="date_golive" class="ag-input tabular" />
-                <span class="block text-xs text-text-subtle mt-1.5">{c.goLiveHint}</span>
-              </label>
+          {/* STEP 3 — PRICING */}
+          <fieldset class="form-step">
+            <legend class="form-step__legend">
+              <span class="form-step__num" aria-hidden="true">3</span>
+              <span class="form-step__title">{c.pricingLabel}</span>
+            </legend>
+            <div class="form-step__body space-y-5">
+              <div class="grid sm:grid-cols-2 gap-4">
+                <label class="block">
+                  <span class="form-label">{c.buildFee}</span>
+                  <div class="ag-input-currency">
+                    <span class="ag-input-currency__symbol" aria-hidden="true">€</span>
+                    <input type="number" name="price_build" min="0" step="0.01" placeholder="0.00" class="ag-input ag-input--currency tabular" inputmode="decimal" />
+                  </div>
+                </label>
+                <label class="block">
+                  <span class="form-label">{c.retainerFee}</span>
+                  <div class="ag-input-currency">
+                    <span class="ag-input-currency__symbol" aria-hidden="true">€</span>
+                    <input type="number" name="price_retainer" min="0" step="0.01" placeholder="0.00" class="ag-input ag-input--currency tabular" inputmode="decimal" />
+                  </div>
+                  <span class="form-hint">{c.retainerFeeHint}</span>
+                </label>
+              </div>
+
+              <div>
+                <span class="form-label" id="vat-label">{c.vatLabel}</span>
+                <div role="radiogroup" aria-labelledby="vat-label" class="grid sm:grid-cols-2 gap-3">
+                  <label class="vat-card">
+                    <input type="radio" name="vat_status" value="kleinunternehmer" checked class="vat-card__input" />
+                    <span class="vat-card__label">{c.vatKleinunternehmer}</span>
+                  </label>
+                  <label class="vat-card">
+                    <input type="radio" name="vat_status" value="regular" class="vat-card__input" />
+                    <span class="vat-card__label">{c.vatRegular}</span>
+                  </label>
+                </div>
+              </div>
             </div>
           </fieldset>
 
-          {/* Auto-save indicator */}
-          <p class="text-xs text-text-subtle text-center pt-2 flex items-center justify-center gap-2">
-            <span id="save-indicator" style="color: var(--color-success);">●</span>
-            <span id="save-text">Saved locally — your typing survives a refresh.</span>
-          </p>
+          {/* STEP 4 — DATES */}
+          <fieldset class="form-step">
+            <legend class="form-step__legend">
+              <span class="form-step__num" aria-hidden="true">4</span>
+              <span class="form-step__title">{c.datesLabel}</span>
+            </legend>
+            <div class="form-step__body">
+              <div class="grid sm:grid-cols-3 gap-4">
+                <label class="block">
+                  <span class="form-label">{c.signatureDate}</span>
+                  <input type="date" name="date_signature" class="ag-input tabular" />
+                </label>
+                <label class="block">
+                  <span class="form-label">{c.startDate}</span>
+                  <input type="date" name="date_start" class="ag-input tabular" />
+                </label>
+                <label class="block">
+                  <span class="form-label">{c.goLiveDate} <span class="form-label__hint">(optional)</span></span>
+                  <input type="date" name="date_golive" class="ag-input tabular" />
+                  <span class="form-hint">{c.goLiveHint}</span>
+                </label>
+              </div>
+            </div>
+          </fieldset>
         </form>
       </div>
     </section>
@@ -344,6 +368,55 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
   </main>
 
   <style is:global>
+    /* Form step containers — numbered cards with separator */
+    .form-step { margin: 0; padding: 0; border: 0; min-width: 0; }
+    .form-step + .form-step { margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--color-border); }
+    .form-step__legend { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 1.5rem 0; padding: 0; }
+    .form-step__num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 9999px;
+      background: var(--color-text); color: var(--color-bg);
+      font-size: 13px; font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .form-step__title {
+      font-family: var(--font-display);
+      font-size: 1.25rem; /* 20px */
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+      line-height: 1.2;
+    }
+    .form-step__body { min-width: 0; }
+
+    /* Form labels — small uppercase eyebrows */
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-subtle);
+      margin-bottom: 0.5rem;
+    }
+    .form-label--mini { font-size: 10px; margin-bottom: 0.375rem; }
+    .form-label__hint {
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--color-text-subtle);
+      font-size: 11px;
+    }
+    .form-hint {
+      display: block;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--color-text-subtle);
+      margin-top: 0.5rem;
+    }
+
+    /* Inputs */
     .ag-input {
       display: block;
       width: 100%;
@@ -365,6 +438,81 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
       box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent), transparent 80%);
     }
     textarea.ag-input { min-height: 96px; font-family: var(--font-body); }
+
+    /* Currency-prefix input wrapper */
+    .ag-input-currency { position: relative; }
+    .ag-input-currency__symbol {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--color-text-subtle); font-size: 15px;
+      pointer-events: none;
+    }
+    .ag-input--currency { padding-left: 30px; }
+
+    /* Service cards — compact, scope hidden until checked */
+    .svc-card {
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      background: var(--color-bg);
+      overflow: hidden;
+      transition: border-color var(--motion-fast) var(--ease-apple-smooth),
+                  box-shadow var(--motion-fast) var(--ease-apple-smooth);
+    }
+    .svc-card:has(input[type="checkbox"]:checked) {
+      border-color: color-mix(in oklab, var(--color-accent), transparent 50%);
+      box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent), transparent 60%);
+    }
+    .svc-card__head {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 12px 16px;
+      min-height: 56px;
+      cursor: pointer;
+      transition: background var(--motion-fast) var(--ease-apple-smooth);
+    }
+    .svc-card__head:hover { background: var(--color-surface); }
+    .svc-card__name {
+      font-size: 14px; font-weight: 500;
+      color: var(--color-text);
+      line-height: 1.35;
+    }
+    .svc-card__scope {
+      display: none;
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface);
+      padding: 12px 16px 14px;
+    }
+    .svc-card:has(input[type="checkbox"]:checked) .svc-card__scope { display: block; }
+
+    /* VAT radio cards — compact 2-up */
+    .vat-card {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 12px 16px;
+      min-height: 56px;
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      background: var(--color-bg);
+      cursor: pointer;
+      transition: border-color var(--motion-fast) var(--ease-apple-smooth),
+                  background var(--motion-fast) var(--ease-apple-smooth);
+    }
+    .vat-card:hover { background: var(--color-surface); }
+    .vat-card:has(input:checked) {
+      border-color: var(--color-text);
+      background: var(--color-bg);
+    }
+    .vat-card:focus-within {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+    .vat-card__input {
+      width: 18px; height: 18px;
+      accent-color: var(--color-accent);
+      flex-shrink: 0;
+    }
+    .vat-card__label {
+      font-size: 14px;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
 
     .contract-body { color: var(--color-text); }
     .contract-h2 {
@@ -445,8 +593,6 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
       }
     });
     if (!saved.date_signature) form.querySelector('[name=date_signature]').value = today;
-    if (!saved.date_start) form.querySelector('[name=date_start]').value = today;
-    if (!saved.client_city) form.querySelector('[name=client_city]').value = 'Berlin';
 
     function persist() {
       const data = {};

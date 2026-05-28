@@ -188,7 +188,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
       'Tip: in the print dialog, set margins to "Default" and disable headers/footers for a clean A4. Both pages should fit without scaling.',
     formIntro: "Editable fields. Defaults are pre-filled where they don't change per client.",
 
-    partiesLabel: '1. Client business details',
+    partiesLabel: 'Client business details',
     clientLegalForm: 'Legal form',
     clientBusinessName: 'Business name',
     clientRepresentative: 'Representative (full name)',
@@ -197,28 +197,28 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     clientPostalCode: 'PLZ',
     clientCity: 'City',
     clientEmail: 'Email',
-    clientUstId: 'VAT ID (USt-IdNr) — optional',
+    clientUstId: 'VAT ID (USt-IdNr)',
     clientUstHint:
       'Leave blank if the client is Kleinunternehmer under § 19 UStG and has no VAT ID.',
 
-    servicesLabel: '2. Services',
+    servicesLabel: 'Services',
     servicesHint:
       "Tick what the client is hiring. Scope text below each pre-fills with the agency's default but is editable for client-specific overrides.",
     scopeEditableLabel: 'Scope (editable per deal):',
 
-    pricingLabel: '3. Pricing',
-    buildFee: 'One-time build fee (€)',
-    retainerFee: 'Monthly retainer (€) — leave blank if no retainer',
+    pricingLabel: 'Pricing',
+    buildFee: 'One-time build fee',
+    retainerFee: 'Monthly retainer',
     retainerFeeHint:
       'If multiple services have monthly retainers, enter the combined total here. Per-service breakdown shows in the agreement.',
     vatLabel: 'VAT handling',
     vatKleinunternehmer: 'Kleinunternehmer (§ 19 UStG) — no VAT charged',
     vatRegular: 'Regular VAT — 19 % MwSt added to every line',
 
-    datesLabel: '4. Dates',
-    signatureDate: 'Signature date (auto-filled to today)',
+    datesLabel: 'Dates',
+    signatureDate: 'Signature date',
     startDate: 'Project start',
-    goLiveDate: 'Expected go-live (optional)',
+    goLiveDate: 'Expected go-live',
     goLiveHint:
       'For Website service only. SEO/GBP/Social do not have a "go-live" — the retainer starts on the start date.',
 
@@ -317,7 +317,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     formIntro:
       'Bearbeitbare Felder. Standardwerte sind dort vorausgefüllt, wo sie sich nicht pro Mandat ändern.',
 
-    partiesLabel: '1. Mandantendaten',
+    partiesLabel: 'Mandantendaten',
     clientLegalForm: 'Rechtsform',
     clientBusinessName: 'Firmenname',
     clientRepresentative: 'Vertreten durch (vollständiger Name)',
@@ -326,28 +326,28 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     clientPostalCode: 'PLZ',
     clientCity: 'Stadt',
     clientEmail: 'E-Mail',
-    clientUstId: 'USt-IdNr — optional',
+    clientUstId: 'USt-IdNr',
     clientUstHint:
       'Leer lassen, wenn der Mandant Kleinunternehmer nach § 19 UStG ist und keine USt-IdNr hat.',
 
-    servicesLabel: '2. Leistungen',
+    servicesLabel: 'Leistungen',
     servicesHint:
       'Ankreuzen, was der Mandant bucht. Der Leistungsumfang darunter ist mit der Standard-Beschreibung der Agentur vorbelegt und für mandanten-spezifische Anpassungen bearbeitbar.',
     scopeEditableLabel: 'Leistungsumfang (pro Mandat bearbeitbar):',
 
-    pricingLabel: '3. Vergütung',
-    buildFee: 'Einmalige Aufbaugebühr (€)',
-    retainerFee: 'Monatlicher Retainer (€) — leer lassen, wenn kein Retainer',
+    pricingLabel: 'Vergütung',
+    buildFee: 'Einmalige Aufbaugebühr',
+    retainerFee: 'Monatlicher Retainer',
     retainerFeeHint:
       'Wenn mehrere Leistungen Retainer haben, hier den Gesamtbetrag eintragen. Die Aufschlüsselung erscheint im Vertrag.',
     vatLabel: 'Umsatzsteuer-Regelung',
     vatKleinunternehmer: 'Kleinunternehmer (§ 19 UStG) — keine Umsatzsteuer',
     vatRegular: 'Regelbesteuerung — 19 % MwSt auf jede Position',
 
-    datesLabel: '4. Termine',
-    signatureDate: 'Unterzeichnungsdatum (auto-gefüllt mit heute)',
+    datesLabel: 'Termine',
+    signatureDate: 'Unterzeichnungsdatum',
     startDate: 'Projektbeginn',
-    goLiveDate: 'Geplanter Go-Live (optional)',
+    goLiveDate: 'Geplanter Go-Live',
     goLiveHint:
       'Nur für Website-Leistung. SEO/GBP/Social haben keinen "Go-Live" — der Retainer beginnt am Projektbeginn.',
 
