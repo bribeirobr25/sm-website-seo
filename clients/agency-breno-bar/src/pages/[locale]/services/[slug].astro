@@ -44,6 +44,25 @@ const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto'
       </div>
     </section>
 
+    {s.heroImageSrc && (
+      <figure class="bg-bg">
+        <div class="container-page max-w-[1400px]">
+          <div class="aspect-[21/9] sm:aspect-[24/9] overflow-hidden rounded-[22px] bg-surface">
+            <img
+              src={s.heroImageSrc}
+              alt={s.heroImageAlt ?? ''}
+              width="2400"
+              height="1029"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </figure>
+    )}
+
     <section class="section bg-bg">
       <div class="container-page">
         <div class="grid lg:grid-cols-3 gap-5">
@@ -58,20 +77,39 @@ const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto'
     </section>
 
     <section class="section bg-inverted-bg text-inverted-text">
-      <div class="container-page grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
-        <div>
-          <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium">{s.outcomeHeading}</p>
-          <h2 class="mt-4 font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]">{bestForLabel}</h2>
-          <p class="mt-6 text-inverted-text-muted leading-relaxed">{s.bestFor}</p>
+      <div class="container-page">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {s.secondaryImageSrc ? (
+            <figure class="order-2 lg:order-1">
+              <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-[22px] bg-surface">
+                <img
+                  src={s.secondaryImageSrc}
+                  alt={s.secondaryImageAlt ?? ''}
+                  width="1800"
+                  height="2400"
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </figure>
+          ) : (
+            <div class="hidden lg:block"></div>
+          )}
+          <div class="order-1 lg:order-2">
+            <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium">{s.outcomeHeading}</p>
+            <h2 class="mt-4 font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]">{bestForLabel}</h2>
+            <p class="mt-6 text-inverted-text-muted leading-relaxed">{s.bestFor}</p>
+            <ul class="mt-10 space-y-4 list-none p-0">
+              {s.outcomeBullets.map((b) => (
+                <li class="flex gap-4 text-inverted-text">
+                  <span class="font-display text-accent text-2xl leading-none">●</span>
+                  <span class="leading-relaxed">{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <ul class="space-y-4 list-none p-0">
-          {s.outcomeBullets.map((b) => (
-            <li class="flex gap-4 text-inverted-text">
-              <span class="font-display text-accent text-2xl leading-none">●</span>
-              <span class="leading-relaxed">{b}</span>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
 

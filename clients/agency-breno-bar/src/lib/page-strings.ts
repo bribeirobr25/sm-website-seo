@@ -23,10 +23,17 @@ export interface ServiceStrings {
   heroEyebrow: string;
   heroTitle: string;
   heroBody: string;
+  /** Optional hero photograph rendered full-bleed below the hero copy. Path relative to /public. */
+  heroImageSrc?: string;
+  /** Alt text for the hero photograph (per locale, since this lives inside the locale block). */
+  heroImageAlt?: string;
   bullets: { title: string; body: string }[]; // 3-block "what we do"
   outcomeHeading: string;
   outcomeBullets: string[]; // 3 outcome statements
   bestFor: string;
+  /** Optional secondary photograph rendered before the Best-for section. */
+  secondaryImageSrc?: string;
+  secondaryImageAlt?: string;
 }
 
 export interface PageStrings {
@@ -183,33 +190,39 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       services: {
         website: {
           name: 'Website',
-          shortTagline: 'A multilingual marketing site, deployed on infrastructure you control.',
+          shortTagline: 'The first room your next customer will walk into.',
           heroEyebrow: 'Service · 01',
           heroTitle: 'A site that earns you a phone call.',
           heroBody:
-            'A multilingual, accessible, fast marketing website built on Astro or Next.js. Deployed on Vercel under your account, with the domain in your name and the codebase on your GitHub. Nothing locked behind our login.',
+            "Most of your next customers will meet you on a phone — standing somewhere on Schönhauser Allee, waiting for the U-Bahn, between two meetings. What they see in those four seconds decides whether they walk in, or keep walking.",
+          heroImageSrc: '/img/services/website/hero-terrace.jpg',
+          heroImageAlt:
+            'A restaurant seen through its front window at night — golden chandelier light, diners around tables, a server moving between them.',
           bullets: [
             {
-              title: 'Multilingual from day one',
-              body: 'EN + DE shipped by default. PT-BR or any third locale added if your audience needs it. URL structure + hreflang + per-locale schema correct on launch.',
+              title: 'Speaks every language your block does.',
+              body: 'Half of Berlin lives in two languages by Tuesday. Your site should make every one of them feel they were the audience we built it for.',
             },
             {
-              title: 'Hand-built, no templates',
-              body: 'No drag-and-drop, no theme-store derivatives. Your tokens, your typography, your photographs. Same agency baseline rules across every project; nothing that looks like the last one.',
+              title: "Doesn't look like the four cafés on the same street.",
+              body: "Theme-built sites are recognisable to anyone who's seen two of them. Yours won't be one of those. Your colours, your photographs, your room.",
             },
             {
-              title: 'Real legal compliance',
-              body: 'DSGVO/TMG, RGPD, LGPD — covered by jurisdiction. Cookie banner, Datenschutzerklärung, Impressum: written for your business, not pasted from a generator.',
+              title: 'The boring German parts, handled.',
+              body: 'Cookie banner, Datenschutzerklärung, Impressum — written for your business, never pasted from a generator. You stop worrying about them. You go back to running the place.',
             },
           ],
           outcomeHeading: 'What you get',
           outcomeBullets: [
-            '5–12 pages of marketing site, mobile-first, WCAG 2.2 AA.',
-            'Custom domain + Vercel deployment + 99.99 % uptime.',
-            'Cookie + privacy + imprint pages — legal-correct from day one.',
+            'Five to twelve pages, fast on the worst U-Bahn signal.',
+            'Your domain, your code, your control. Nothing rented from us.',
+            'Live in three to six weeks — online before the next slow Tuesday.',
           ],
           bestFor:
-            'Owner-led businesses that want a serious web presence without ongoing SaaS subscription fatigue.',
+            'The café that quietly raised its prices. The studio with a wait-list. The barber who stopped taking walk-ins. Businesses good enough to need a quieter, better front door.',
+          secondaryImageSrc: '/img/services/website/barista-pour.jpg',
+          secondaryImageAlt:
+            'A barista in a leather apron, side profile, focused on pouring milk from a steel pitcher at the espresso machine.',
         },
         seo: {
           name: 'SEO',
