@@ -43,6 +43,9 @@ export interface PageStrings {
     heroEyebrow: string;
     heroTitleLines: string[];
     heroSubtitle: string;
+    /** Optional hero photograph rendered full-bleed below the hero copy. */
+    heroImageSrc?: string;
+    heroImageAlt?: string;
     statTitle: string;
     statLine1: string; // 3 stats joined by ' · '
     statLine2: string;
@@ -60,6 +63,9 @@ export interface PageStrings {
     aboutHeading: string;
     aboutBody: string[];
     aboutReadMore: string;
+    /** Optional photograph rendered alongside the About teaser. */
+    aboutImageSrc?: string;
+    aboutImageAlt?: string;
     ctaEyebrow: string;
     ctaHeading: string;
     ctaBody: string;
@@ -152,7 +158,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'STUDIO · BERLIN',
       heroTitleLines: ['Websites worth', 'being proud of.'],
       heroSubtitle:
-        'Three services for owner-led businesses. Website. SEO. Google Business Profile.',
+        'For the kind of business someone walks past twice, then comes back to. Built one studio at a time, in Berlin.',
+      heroImageSrc: '/img/home/hero-kurfurstendamm.jpg',
+      heroImageAlt:
+        'A Berlin street at night near the Kurfürstendamm U-Bahn entrance, with the trees wrapped in warm winter lights.',
       statTitle: 'Numbers we like',
       statLine1: '10',
       statLine2: '6',
@@ -163,17 +172,20 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       servicesEyebrow: 'Services',
       servicesHeading: 'Three things, done well.',
       servicesBody:
-        'A focused practice. Website + SEO + Google Business Profile. Social media as an optional fourth. No upsells, no buzzwords, no agency-of-agencies dance.',
+        "Three things, done well, by the same hands. A website worth being found on. A search result worth clicking. A Google profile worth opening. Social media if you really want it — we'll tell you when you don't.",
       portfolioEyebrow: 'Selected work',
       portfolioHeading: 'A few we like.',
       portfolioAllLink: 'See all projects →',
       aboutEyebrow: 'About',
       aboutHeading: 'A small studio. No upsell.',
       aboutBody: [
-        'breno-bar is a single-operator studio in Berlin. We design and deploy multilingual marketing websites — small, fast, accessible, and built around the few things a local business actually needs to be found and called.',
-        "We don't use no-code stacks; every project ships on its own codebase you own, on a host you control. We don't sell ad campaigns or social-media frequency you can't sustain. We don't chase growth metrics that don't turn into customers.",
+        "breno-bar is one set of hands, in Berlin. A studio quiet enough to notice what your business actually does — and small enough that you'll always know who built your site.",
+        "We don't sell ad campaigns you can't sustain, dashboards you can't read, or growth that doesn't turn into customers. We build the room people walk into. That's the whole pitch.",
       ],
       aboutReadMore: 'Read the studio philosophy →',
+      aboutImageSrc: '/img/home/studio-notebook.jpg',
+      aboutImageAlt:
+        'Overhead view of a small wooden table with a leather notebook, pen, and coffee mug, lit by slatted window light.',
       ctaEyebrow: 'Start a conversation',
       ctaHeading: "Let's build yours.",
       ctaBody:

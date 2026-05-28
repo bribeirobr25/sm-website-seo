@@ -17,7 +17,7 @@ const featured = getFeaturedPortfolio();
   <main id="main">
     {/* HERO */}
     <section class="bg-hero-gradient">
-      <div class="container-page pt-12 pb-24 sm:pt-16 sm:pb-32 lg:pt-20 lg:pb-40 text-center">
+      <div class="container-page pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28 text-center">
         <p class="text-xs sm:text-sm tracking-[0.18em] uppercase text-accent-deep font-medium mb-8">{p.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(3rem,8vw,7rem)] font-semibold text-text leading-[1.02] tracking-[-0.04em] max-w-4xl mx-auto">
           {p.heroTitleLines.map((line, i) => <span class="block reveal-rise" style={`animation-delay:${i * 50}ms`}>{line}</span>)}
@@ -29,6 +29,25 @@ const featured = getFeaturedPortfolio();
         </div>
       </div>
     </section>
+
+    {p.heroImageSrc && (
+      <figure class="bg-hero-gradient pb-16 sm:pb-20">
+        <div class="container-page max-w-[1400px]">
+          <div class="aspect-[21/9] sm:aspect-[24/9] overflow-hidden rounded-[22px] bg-surface">
+            <img
+              src={p.heroImageSrc}
+              alt={p.heroImageAlt ?? ''}
+              width="2400"
+              height="1029"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </figure>
+    )}
 
     {/* STATS STRIP */}
     <section class="border-y border-border bg-surface-elev">
@@ -107,14 +126,31 @@ const featured = getFeaturedPortfolio();
     {/* ABOUT TEASER */}
     <section class="section bg-bg" aria-labelledby="about-heading">
       <div class="container-page">
-        <div class="grid lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-24">
-          <div>
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {p.aboutImageSrc ? (
+            <figure class="order-2 lg:order-1">
+              <div class="aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] overflow-hidden rounded-[22px] bg-surface">
+                <img
+                  src={p.aboutImageSrc}
+                  alt={p.aboutImageAlt ?? ''}
+                  width="1800"
+                  height="2250"
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </figure>
+          ) : (
+            <div class="hidden lg:block"></div>
+          )}
+          <div class="order-1 lg:order-2">
             <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{p.aboutEyebrow}</p>
             <h2 id="about-heading" class="mt-4 font-display text-4xl sm:text-5xl text-text font-semibold tracking-[-0.03em] leading-[1.05]">{p.aboutHeading}</h2>
-          </div>
-          <div class="space-y-6 text-lg text-text-muted leading-[1.6]">
-            {p.aboutBody.map((para) => <p>{para}</p>)}
-            <p class="pt-2"><a href="/about" class="text-text font-medium underline underline-offset-4 hover:text-accent-deep transition-colors">{p.aboutReadMore}</a></p>
+            <div class="mt-8 space-y-6 text-lg text-text-muted leading-[1.6]">
+              {p.aboutBody.map((para) => <p>{para}</p>)}
+              <p class="pt-2"><a href="/about" class="text-text font-medium underline underline-offset-4 hover:text-accent-deep transition-colors">{p.aboutReadMore}</a></p>
+            </div>
           </div>
         </div>
       </div>
