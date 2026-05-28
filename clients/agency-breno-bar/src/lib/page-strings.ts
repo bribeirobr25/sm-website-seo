@@ -158,10 +158,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'STUDIO · BERLIN',
       heroTitleLines: ['Websites worth', 'being proud of.'],
       heroSubtitle:
-        'For the kind of business someone walks past twice, then comes back to. Built one studio at a time, in Berlin.',
-      heroImageSrc: '/img/home/hero-kurfurstendamm.jpg',
+        'For the small Berlin businesses that hold a Kiez together. We build the websites worthy of them.',
+      heroImageSrc: '/img/home/hero-altbau-kiez.jpg',
       heroImageAlt:
-        'A Berlin street at night near the Kurfürstendamm U-Bahn entrance, with the trees wrapped in warm winter lights.',
+        'A classic Berlin Altbau street: ornate facade in white and orange, ground-floor café with red awning, people at outdoor tables, trees casting shadows on the cobblestones.',
       statTitle: 'Numbers we like',
       statLine1: '10',
       statLine2: '6',
