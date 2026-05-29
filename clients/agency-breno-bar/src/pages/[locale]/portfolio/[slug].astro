@@ -99,9 +99,9 @@ const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto'
             <p class="mt-2 text-text capitalize">{entry.services.join(' · ')}</p>
           </div>
           <div>
-            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{liveUrlLabel}</p>
-            <p class="mt-2 text-sm break-all">
-              <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="text-accent-deep hover:underline underline-offset-4">{entry.liveUrl}</a>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{p.visitLive}</p>
+            <p class="mt-2 text-sm">
+              <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="text-accent-deep hover:underline underline-offset-4">{p.visitLive} →</a>
             </p>
           </div>
         </aside>

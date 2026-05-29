@@ -224,7 +224,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'The boring German parts, handled.',
-              body: 'Cookie banner, Datenschutzerklärung, Impressum. Written for your business, never pasted from a generator. You stop worrying about them. You go back to running the place.',
+              body: 'The pop-ups and legal pages every German site has to have. Written for your business, never pasted from a generator. You stop worrying about them. You go back to running the place.',
             },
           ],
           outcomeHeading: 'What you get',
@@ -249,7 +249,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           bullets: [
             {
               title: 'The metadata Google quietly trusts.',
-              body: 'Schema in the right places, in the right language, for the right business type. Boring to talk about. Decisive when someone in your Kiez types your service into a phone.',
+              body: 'The behind-the-scenes signals Google quietly trusts, in the right places, in the right language, for the right business type. Boring to talk about. Decisive when someone in your Kiez types your service into a phone.',
             },
             {
               title: 'Researched at the Kiez level, not the agency level.',
@@ -257,7 +257,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Numbers you can read on a Sunday morning.',
-              body: 'Google Search Console and the basics, set up under your account, not ours. One monthly note. What we did, what worked, what we will try next. No twelve-tab dashboards you will never open.',
+              body: "Google's own reporting tools, set up under your account, not ours. One monthly note. What we did, what worked, what we will try next. No twelve-tab dashboards you will never open.",
             },
           ],
           outcomeHeading: 'What you get',
@@ -352,15 +352,15 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     portfolio: {
       title: 'Portfolio — breno-bar',
       description:
-        'Selected work — local-business demos and external projects. Each entry includes the live URL, stack, and a short case-study.',
+        'Selected work — local-business demos and external projects. Each entry includes a live link and a short case study.',
       heroEyebrow: 'Portfolio',
       heroTitle: 'Selected work.',
       heroSubtitle:
-        "A few rooms we have built. Some for businesses already running on Schönhauser Allee, some still in demo form on a quiet vercel.app URL, waiting for the owner to say yes. All of them have a live link below.",
+        "A few rooms we have built. Some for businesses already running on Schönhauser Allee, some still in demo form on a quiet preview link, waiting for the owner to say yes. All of them have a live link below.",
       visitLive: 'Visit live site',
       backToPortfolio: '← All projects',
       relatedCases: 'Other recent work',
-      stackLabel: 'Stack',
+      stackLabel: 'Type',
       servicesLabel: 'Services',
       verticalLabel: 'Vertical',
       detailTitleSuffix: 'Portfolio — breno-bar',
@@ -380,7 +380,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       sections: [
         {
           title: 'Why small',
-          body: 'Most agencies grow until they need account managers, project managers, and meetings about meetings. The person who heard the first sentence is no longer the person writing the code. We chose not to grow that way. Every project is touched by the same hands, start to finish.',
+          body: 'Most agencies grow until they need account managers, project managers, and meetings about meetings. The person who heard the first sentence is no longer the person doing the work. We chose not to grow that way. Every project is touched by the same hands, start to finish.',
         },
         {
           title: 'Why three services',
@@ -388,7 +388,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         },
         {
           title: 'How we work',
-          body: 'A demo first, then a conversation. You see a working version of your site before you commit to a single euro. Every line of code lives on your GitHub. Every deploy lives on your Vercel. The domain stays in your name. Nothing rented from us. We like you free to find us back, not stuck with us.',
+          body: 'A demo first, then a conversation. You see a working version of your site before you commit to a single euro. Everything we build stays in your name, on accounts you control. The domain stays in your name. Nothing rented from us. We like you free to find us back, not stuck with us.',
         },
         {
           title: 'Languages',
@@ -518,7 +518,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       aboutHeading: 'Ein kleines Studio. Kein Upsell.',
       aboutBody: [
         'breno-bar ist ein Paar Hände, in Berlin. Ein Studio, leise genug, um zu sehen, was dein Geschäft wirklich tut. Klein genug, dass du immer weißt, wer deine Seite gebaut hat.',
-        'Wir verkaufen keine Werbekampagnen, die du nicht halten kannst, keine Dashboards, die du nicht liest, und kein Wachstum, das nicht zu Kund:innen wird. Wir bauen den Raum, in den die Leute reingehen. Das ist das ganze Versprechen.',
+        'Wir verkaufen keine Werbekampagnen, die du nicht halten kannst, keine Dashboards, die du nicht liest, und kein Wachstum, das nicht zu Kund:innen wird. Wir bauen den Ort, an den die Leute kommen. Das ist das ganze Versprechen.',
       ],
       aboutReadMore: 'Studio-Philosophie lesen →',
       aboutImageSrc: '/img/home/studio-notebook.jpg',
@@ -540,7 +540,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       services: {
         website: {
           name: 'Website',
-          shortTagline: 'Der erste Raum, in den dein nächster Kunde geht.',
+          shortTagline: 'Der erste Ort, an den dein nächster Kunde kommt.',
           heroEyebrow: 'Leistung · 01',
           heroTitle: 'Eine Website, die dir den nächsten Kunden bringt.',
           heroBody:
@@ -555,11 +555,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Sieht nicht aus wie die vier Cafés in derselben Straße.',
-              body: 'Die meisten Websites sehen aus, als kämen sie aus derselben Schublade. Deine nicht. Deine Farben, deine Fotos, dein Raum.',
+              body: 'Die meisten Websites sehen aus, als kämen sie aus derselben Schublade. Deine nicht. Deine Farben, deine Fotos, dein Ort.',
             },
             {
               title: 'Die langweiligen deutschen Teile, erledigt.',
-              body: 'Cookie-Banner, Datenschutzerklärung, Impressum. Für dein Unternehmen geschrieben, nie aus einem Generator kopiert. Du hörst auf, dir darum Sorgen zu machen. Du gehst zurück und kümmerst dich um den Laden.',
+              body: 'Die Pop-ups, die Datenschutzerklärung, das Impressum. Für dein Unternehmen geschrieben, nie aus einem Generator kopiert. Du hörst auf, dir darum Sorgen zu machen. Du gehst zurück und kümmerst dich um den Laden.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
@@ -584,7 +584,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           bullets: [
             {
               title: 'Die Metadaten, denen Google still vertraut.',
-              body: 'Schema an den richtigen Stellen, in der richtigen Sprache, für die richtige Geschäftsart. Langweilig zu besprechen. Entscheidend, wenn jemand in deinem Kiez deine Leistung ins Handy tippt.',
+              body: 'Die unsichtbaren Signale, denen Google still vertraut, an den richtigen Stellen, in der richtigen Sprache, für die richtige Geschäftsart. Langweilig zu besprechen. Entscheidend, wenn jemand in deinem Kiez deine Leistung ins Handy tippt.',
             },
             {
               title: 'Recherchiert auf Kiez-Ebene, nicht auf Agentur-Ebene.',
@@ -592,7 +592,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Zahlen, die du sonntagmorgens lesen kannst.',
-              body: 'Google Search Console und die Basics, unter deinem Konto eingerichtet, nicht unserem. Eine monatliche Notiz. Was wir gemacht haben, was funktioniert hat, was wir als nächstes probieren. Keine zwölf-Tab-Dashboards, die du nie öffnest.',
+              body: 'Googles eigene Reporting-Tools, unter deinem Konto eingerichtet, nicht unserem. Eine monatliche Notiz. Was wir gemacht haben, was funktioniert hat, was wir als nächstes probieren. Keine zwölf-Tab-Dashboards, die du nie öffnest.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
@@ -688,15 +688,15 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     portfolio: {
       title: 'Portfolio — breno-bar',
       description:
-        'Ausgewählte Arbeiten — Demos lokaler Unternehmen und externe Projekte. Jeder Eintrag mit Live-URL, Stack und kurzem Case-Study.',
+        'Ausgewählte Arbeiten — Demos lokaler Unternehmen und externe Projekte. Jeder Eintrag mit Live-Link und einer kurzen Fallstudie.',
       heroEyebrow: 'Portfolio',
       heroTitle: 'Ausgewählte Arbeiten.',
       heroSubtitle:
-        'Ein paar Räume, die wir gebaut haben. Einige für Geschäfte, die schon an der Schönhauser Allee laufen, einige noch als Demo auf einer ruhigen vercel.app-URL, wartend, bis der/die Eigentümer:in ja sagt. Alle mit einem Live-Link unten.',
+        'Ein paar Orte, die wir gebaut haben. Einige für Geschäfte, die schon an der Schönhauser Allee laufen, einige noch als Demo auf einem ruhigen Vorschau-Link, wartend, bis der/die Eigentümer:in ja sagt. Alle mit einem Live-Link unten.',
       visitLive: 'Live-Seite besuchen',
       backToPortfolio: '← Alle Projekte',
       relatedCases: 'Weitere aktuelle Arbeiten',
-      stackLabel: 'Stack',
+      stackLabel: 'Art',
       servicesLabel: 'Leistungen',
       verticalLabel: 'Branche',
       detailTitleSuffix: 'Portfolio — breno-bar',
@@ -716,7 +716,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       sections: [
         {
           title: 'Warum klein',
-          body: 'Die meisten Agenturen wachsen, bis sie Account Manager, Projekt Manager und Meetings über Meetings brauchen. Die Person, die den ersten Satz gehört hat, ist nicht mehr die Person, die den Code schreibt. Wir haben uns entschieden, nicht so zu wachsen. Jedes Projekt wird von denselben Händen berührt, von Anfang bis Ende.',
+          body: 'Die meisten Agenturen wachsen, bis sie Account Manager, Projekt Manager und Meetings über Meetings brauchen. Die Person, die den ersten Satz gehört hat, ist nicht mehr die Person, die die Arbeit macht. Wir haben uns entschieden, nicht so zu wachsen. Jedes Projekt wird von denselben Händen berührt, von Anfang bis Ende.',
         },
         {
           title: 'Warum drei Leistungen',
@@ -724,7 +724,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         },
         {
           title: 'Wie wir arbeiten',
-          body: 'Erst eine Demo, dann ein Gespräch. Du siehst eine funktionierende Version deiner Seite, bevor du einen einzigen Euro versprichst. Jede Codezeile liegt auf deinem GitHub. Jedes Deployment liegt auf deinem Vercel. Die Domain bleibt auf deinem Namen. Nichts von uns gemietet. Wir mögen es, wenn du uns aus freien Stücken wiederfindest, nicht weil du festhängst.',
+          body: 'Erst eine Demo, dann ein Gespräch. Du siehst eine funktionierende Version deiner Seite, bevor du einen einzigen Euro versprichst. Alles, was wir bauen, bleibt auf deinen Namen, auf Konten, die du kontrollierst. Die Domain bleibt auf deinem Namen. Nichts von uns gemietet. Wir mögen es, wenn du uns aus freien Stücken wiederfindest, nicht weil du festhängst.',
         },
         {
           title: 'Sprachen',
@@ -854,7 +854,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       aboutHeading: 'Um pequeno estúdio. Sem upsell.',
       aboutBody: [
         'breno-bar é um par de mãos, em Berlim. Um estúdio tranquilo o bastante para perceber o que seu negócio realmente faz. Pequeno o bastante para você sempre saber quem construiu seu site.',
-        'A gente não vende campanhas de anúncios que você não consegue sustentar, dashboards que você não consegue ler, ou crescimento que não vira cliente. A gente constrói o cômodo onde as pessoas entram. É essa a proposta toda.',
+        'A gente não vende campanhas de anúncios que você não consegue sustentar, dashboards que você não consegue ler, ou crescimento que não vira cliente. A gente constrói o espaço onde as pessoas entram. É essa a proposta toda.',
       ],
       aboutReadMore: 'Ler a filosofia do estúdio →',
       aboutImageSrc: '/img/home/studio-notebook.jpg',
@@ -876,7 +876,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       services: {
         website: {
           name: 'Site',
-          shortTagline: 'O primeiro cômodo onde seu próximo cliente vai entrar.',
+          shortTagline: 'O primeiro espaço onde seu próximo cliente vai entrar.',
           heroEyebrow: 'Serviço · 01',
           heroTitle: 'Um site que traz o próximo cliente.',
           heroBody:
@@ -891,11 +891,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Não parece com os quatro cafés da mesma rua.',
-              body: 'A maioria dos sites parece feita com o mesmo molde. O seu não. Suas cores, suas fotos, seu cômodo.',
+              body: 'A maioria dos sites parece feita com o mesmo molde. O seu não. Suas cores, suas fotos, seu espaço.',
             },
             {
               title: 'As partes alemãs chatas, resolvidas.',
-              body: 'Cookie banner, Datenschutzerklärung, Impressum. Escritos para o seu negócio, nunca colados de um gerador. Você para de se preocupar com isso. Volta a cuidar do salão.',
+              body: 'Os pop-ups e as páginas legais que todo site alemão precisa ter. Escritos para o seu negócio, nunca colados de um gerador. Você para de se preocupar com isso. Volta a cuidar do salão.',
             },
           ],
           outcomeHeading: 'O que você recebe',
@@ -920,7 +920,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           bullets: [
             {
               title: 'Os metadados em que o Google silenciosamente confia.',
-              body: 'Schema nos lugares certos, no idioma certo, para o tipo certo de negócio. Chato de discutir. Decisivo quando alguém no seu bairro digita seu serviço no celular.',
+              body: 'Os sinais nos bastidores em que o Google silenciosamente confia, nos lugares certos, no idioma certo, para o tipo certo de negócio. Chato de discutir. Decisivo quando alguém no seu bairro digita seu serviço no celular.',
             },
             {
               title: 'Pesquisado no nível do bairro, não no nível da agência.',
@@ -928,7 +928,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Números que você consegue ler num domingo de manhã.',
-              body: 'Google Search Console e o básico, configurados sob sua conta, não a nossa. Uma nota mensal. O que a gente fez, o que funcionou, o que vamos tentar a seguir. Sem dashboards de doze abas que você nunca vai abrir.',
+              body: 'As próprias ferramentas de relatório do Google, configuradas sob sua conta, não a nossa. Uma nota mensal. O que a gente fez, o que funcionou, o que vamos tentar a seguir. Sem dashboards de doze abas que você nunca vai abrir.',
             },
           ],
           outcomeHeading: 'O que você recebe',
@@ -1023,15 +1023,15 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     portfolio: {
       title: 'Portfólio — breno-bar',
       description:
-        'Trabalhos selecionados — demos de negócios locais e projetos externos. Cada item inclui URL ao vivo, stack e um curto estudo de caso.',
+        'Trabalhos selecionados — demos de negócios locais e projetos externos. Cada item inclui um link ao vivo e um curto estudo de caso.',
       heroEyebrow: 'Portfólio',
       heroTitle: 'Trabalhos selecionados.',
       heroSubtitle:
-        'Alguns cômodos que a gente construiu. Alguns para negócios que já rodam pela Schönhauser Allee, alguns ainda em forma de demo numa URL tranquila do vercel.app, esperando o dono dizer sim. Todos têm um link ao vivo abaixo.',
+        'Alguns espaços que a gente construiu. Alguns para negócios que já rodam pela Schönhauser Allee, alguns ainda em forma de demo num link de pré-visualização tranquilo, esperando o dono dizer sim. Todos têm um link ao vivo abaixo.',
       visitLive: 'Visitar site ao vivo',
       backToPortfolio: '← Todos os projetos',
       relatedCases: 'Outros trabalhos recentes',
-      stackLabel: 'Stack',
+      stackLabel: 'Tipo',
       servicesLabel: 'Serviços',
       verticalLabel: 'Segmento',
       detailTitleSuffix: 'Portfólio — breno-bar',
@@ -1051,7 +1051,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       sections: [
         {
           title: 'Por que pequeno',
-          body: 'A maioria das agências cresce até precisar de account managers, project managers e reuniões sobre reuniões. A pessoa que ouviu a primeira frase não é mais a pessoa que escreve o código. A gente escolheu não crescer assim. Cada projeto é tocado pelas mesmas mãos, do começo ao fim.',
+          body: 'A maioria das agências cresce até precisar de account managers, project managers e reuniões sobre reuniões. A pessoa que ouviu a primeira frase não é mais a pessoa que faz o trabalho. A gente escolheu não crescer assim. Cada projeto é tocado pelas mesmas mãos, do começo ao fim.',
         },
         {
           title: 'Por que três serviços',
@@ -1059,7 +1059,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         },
         {
           title: 'Como trabalhamos',
-          body: 'Primeiro uma demo, depois uma conversa. Você vê uma versão funcionando do seu site antes de prometer um único euro. Cada linha de código fica no seu GitHub. Cada deploy fica no seu Vercel. O domínio permanece no seu nome. Nada alugado da gente. A gente gosta de ser reencontrado por escolha, não por dependência.',
+          body: 'Primeiro uma demo, depois uma conversa. Você vê uma versão funcionando do seu site antes de prometer um único euro. Tudo o que a gente constrói fica no seu nome, em contas que você controla. O domínio permanece no seu nome. Nada alugado da gente. A gente gosta de ser reencontrado por escolha, não por dependência.',
         },
         {
           title: 'Idiomas',
