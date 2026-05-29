@@ -175,14 +175,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       servicesEyebrow: 'Services',
       servicesHeading: 'Three things, done well.',
       servicesBody:
-        "Three things, done well, by the same hands. A website worth being found on. A search result worth clicking. A Google profile worth opening. Social media if you really want it — we'll tell you when you don't.",
+        "The website. The search result. The Google profile. Done by the same hands, with the same care. Social media if you really want it. We'll tell you when you don't.",
       portfolioEyebrow: 'Selected work',
       portfolioHeading: 'A few we like.',
       portfolioAllLink: 'See all projects →',
       aboutEyebrow: 'About',
       aboutHeading: 'A small studio. No upsell.',
       aboutBody: [
-        "breno-bar is one set of hands, in Berlin. A studio quiet enough to notice what your business actually does — and small enough that you'll always know who built your site.",
+        "breno-bar is one set of hands, in Berlin. A studio quiet enough to notice what your business actually does. Small enough that you'll always know who built your site.",
         "We don't sell ad campaigns you can't sustain, dashboards you can't read, or growth that doesn't turn into customers. We build the room people walk into. That's the whole pitch.",
       ],
       aboutReadMore: 'Read the studio philosophy →',
@@ -192,7 +192,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ctaEyebrow: 'Start a conversation',
       ctaHeading: "Let's build yours.",
       ctaBody:
-        'Reply within one business day. No sales call, no decks — just a one-paragraph answer.',
+        'Reply within one business day. No sales call. No decks. Just a one-paragraph answer.',
     },
     services: {
       title: 'Services — breno-bar',
@@ -201,18 +201,18 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Services',
       heroTitle: 'Three services. One studio. No upsell.',
       heroSubtitle:
-        'Three small services, sold the way a Berlin shopkeeper sells anything — one at a time, with no obligation to buy the next.',
+        'Three small services, sold the way a Berlin shopkeeper sells anything. One at a time. No obligation to buy the next.',
       services: {
         website: {
           name: 'Website',
           shortTagline: 'The first room your next customer will walk into.',
           heroEyebrow: 'Service · 01',
-          heroTitle: 'A site that earns you a phone call.',
+          heroTitle: 'A site that earns you the next customer.',
           heroBody:
-            "Most of your next customers will meet you on a phone — standing somewhere on Schönhauser Allee, waiting for the U-Bahn, between two meetings. What they see in those four seconds decides whether they walk in, or keep walking.",
+            'Most of your next customers will meet you on a phone. Somewhere on Schönhauser Allee. Waiting for the U-Bahn. Between two meetings. What they see in those four seconds decides whether they walk in, or keep walking.',
           heroImageSrc: '/img/services/website/hero-terrace.jpg',
           heroImageAlt:
-            'A restaurant seen through its front window at night — golden chandelier light, diners around tables, a server moving between them.',
+            'A restaurant seen through its front window at night, golden chandelier light, diners around tables, a server moving between them.',
           bullets: [
             {
               title: 'Speaks every language your block does.',
@@ -220,18 +220,18 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: "Doesn't look like the four cafés on the same street.",
-              body: "Theme-built sites are recognisable to anyone who's seen two of them. Yours won't be one of those. Your colours, your photographs, your room.",
+              body: "Most websites look like they came out of the same drawer. Yours won't. Your colours, your photographs, your room.",
             },
             {
               title: 'The boring German parts, handled.',
-              body: 'Cookie banner, Datenschutzerklärung, Impressum — written for your business, never pasted from a generator. You stop worrying about them. You go back to running the place.',
+              body: 'Cookie banner, Datenschutzerklärung, Impressum. Written for your business, never pasted from a generator. You stop worrying about them. You go back to running the place.',
             },
           ],
           outcomeHeading: 'What you get',
           outcomeBullets: [
             'Five to twelve pages, fast on the worst U-Bahn signal.',
             'Your domain, your code, your control. Nothing rented from us.',
-            'Live in three to six weeks — online before the next slow Tuesday.',
+            'Live in three to six weeks. Online before the next slow Tuesday.',
           ],
           bestFor:
             'The café that quietly raised its prices. The studio with a wait-list. The barber who stopped taking walk-ins. Businesses good enough to need a quieter, better front door.',
@@ -253,27 +253,27 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Researched at the Kiez level, not the agency level.',
-              body: 'We learn the words your next customer actually types — in their language, in their neighborhood. No vanity keywords pulled from a SaaS list. Reviewed every ninety days as the seasons change.',
+              body: 'We learn the words your next customer actually types. In their language, in their neighborhood. No vanity keywords pulled from a SaaS list. Reviewed every ninety days as the seasons change.',
             },
             {
               title: 'Numbers you can read on a Sunday morning.',
-              body: 'Google Search Console and the basics, set up under your account, not ours. One monthly note — what we did, what worked, what we will try next. No twelve-tab dashboards you will never open.',
+              body: 'Google Search Console and the basics, set up under your account, not ours. One monthly note. What we did, what worked, what we will try next. No twelve-tab dashboards you will never open.',
             },
           ],
           outcomeHeading: 'What you get',
           outcomeBullets: [
-            'An honest audit before any promises — usually finds three quick wins.',
+            'An honest audit before any promises. Usually finds three quick wins.',
             'On-page work done at build time. No retroactive Frankenstein retrofit.',
-            'A monthly note you can read in three minutes — what moved, what to try next.',
+            'A monthly note you can read in three minutes. What moved, what to try next.',
           ],
           bestFor:
-            'The Bäckerei, the salon, the dentist, the plumber. Any business where the customer is already searching — they just need to find you instead of someone else.',
+            'The Bäckerei, the salon, the dentist, the plumber. Any business where the customer is already searching. They just need to find you instead of someone else.',
           heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
           heroImageAlt:
             'A man sitting on a city sidewalk, hands cradling a phone, a passerby blurred in the background.',
           secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
           secondaryImageAlt:
-            'An overhead view of a bakery display case — croissants, danishes with red fruit, glass-jar cookies, marble counter, small label cards.',
+            'An overhead view of a bakery display case, croissants, danishes with red fruit, glass-jar cookies, marble counter, small label cards.',
         },
         'google-business': {
           name: 'Google Business Profile',
@@ -281,7 +281,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           heroEyebrow: 'Service · 03',
           heroTitle: 'The listing that does the local-search heavy lifting.',
           heroBody:
-            "When someone three blocks away types 'Bäckerei in der Nähe' into their phone, the answer is a list of three businesses. Your job is to be one of them. Ours is to make that happen — and then keep it that way.",
+            "When someone three blocks away types 'Bäckerei in der Nähe' into their phone, the answer is a list of three businesses. Your job is to be one of them. Ours is to make that happen, and then keep it that way.",
           bullets: [
             {
               title: 'Set up the way Google actually wants it.',
@@ -293,20 +293,20 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'A polite way to ask for reviews.',
-              body: 'A short, your-domain URL that takes a happy customer straight to the review form. DSGVO-safe message templates in DE, EN, and PT-BR. A quiet alert if no review has come in for three weeks — usually means something worth asking about.',
+              body: 'A short, your-domain URL that takes a happy customer straight to the review form. DSGVO-safe message templates in DE, EN, and PT-BR. A quiet alert if no review has come in for three weeks. Usually means something worth asking about.',
             },
           ],
           outcomeHeading: 'What you get',
           outcomeBullets: [
             'A listing that looks like the business actually wants the call.',
-            'Posts, reviews answered, photos current — every month, on the calendar.',
+            'Posts, reviews answered, photos current. Every month, on the calendar.',
             'One number you will actually look at: how many phones called the listing this month.',
           ],
           bestFor:
-            "Anyone customers find with the word 'nearby' in the search. The studio, the clinic, the workshop, the kitchen — anywhere with a door or a service area.",
+            "Anyone customers find with the word 'nearby' in the search. The studio, the clinic, the workshop, the kitchen. Anywhere with a door or a service area.",
           heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
           heroImageAlt:
-            'A small Berlin shopfront — green double doors, red enamel signage reading "Aseli — Berliner Original — seit 1921", ivy climbing the facade.',
+            'A small Berlin shopfront. Green double doors, red enamel signage reading "Aseli — Berliner Original — seit 1921", ivy climbing the facade.',
           secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
           secondaryImageAlt:
             'A hand holding a smartphone displaying a navigation map at night, surrounded by colourful city-light bokeh.',
@@ -317,11 +317,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           heroEyebrow: 'Service · 04 (optional)',
           heroTitle: 'A small social cadence you can actually sustain.',
           heroBody:
-            'Most owner-operators we meet have an Instagram they last posted to on a Wednesday in March. Not because they have no story — because there is no time. We post twice a week from your photos, in your voice. No viral promises. Just visible, quietly, every week.',
+            'Most owner-operators we meet have an Instagram they last posted to on a Wednesday in March. Not because they have no story. Because there is no time. We post twice a week from your photos, in your voice. No viral promises. Just visible, quietly, every week.',
           bullets: [
             {
               title: 'Two posts a week. Drawn from your week.',
-              body: 'Your photos, your menu, your small milestones — drafted by us, approved by you, never an automated caption. The way it would sound if you had the time to write it yourself.',
+              body: 'Your photos, your menu, your small milestones. Drafted by us, approved by you, never an automated caption. The way it would sound if you had the time to write it yourself.',
             },
             {
               title: 'Someone watching the inbox on weekdays.',
@@ -335,11 +335,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           outcomeHeading: 'What you get',
           outcomeBullets: [
             'Two posts a week, ready in your drafts before Monday morning.',
-            'Inbox watched, answered, escalated — every weekday.',
-            'A note once a month — what worked, what did not, what we will try.',
+            'Inbox watched, answered, escalated. Every weekday.',
+            'A note once a month. What worked, what did not, what we will try.',
           ],
           bestFor:
-            'The owner who knows social matters — and who also knows they cannot personally be the one posting at nine on a Sunday night.',
+            'The owner who knows social matters. And also knows they cannot personally be the one posting at nine on a Sunday night.',
           heroImageSrc: '/img/services/social-media/hero-florist.jpg',
           heroImageAlt:
             'A florist seen through hanging plants in the doorway of her shop, working quietly at a counter of cut flowers.',
@@ -356,7 +356,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Portfolio',
       heroTitle: 'Selected work.',
       heroSubtitle:
-        "A few rooms we have built. Some for businesses already running on Schönhauser Allee, some still in demo form on a quiet vercel.app URL — waiting for the owner to say yes. All of them have a live link below.",
+        "A few rooms we have built. Some for businesses already running on Schönhauser Allee, some still in demo form on a quiet vercel.app URL, waiting for the owner to say yes. All of them have a live link below.",
       visitLive: 'Visit live site',
       backToPortfolio: '← All projects',
       relatedCases: 'Other recent work',
@@ -373,10 +373,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'About',
       heroTitle: 'A small studio with a slow practice.',
       heroLead:
-        'breno-bar is one set of hands, in Berlin. Trilingual websites for owner-led businesses — three services, not thirty, because nobody needed thirty.',
+        'breno-bar is one set of hands, in Berlin. Trilingual websites for owner-led businesses. Three services, not thirty, because nobody needed thirty.',
       heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
       heroImageAlt:
-        'A quiet Berlin street at dawn — Altbau buildings catching the first warm light, no traffic, no people.',
+        'A quiet Berlin street at dawn. Altbau buildings catching the first warm light, no traffic, no people.',
       sections: [
         {
           title: 'Why small',
@@ -388,11 +388,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         },
         {
           title: 'How we work',
-          body: 'A demo first, then a conversation. You see a working version of your site before you commit to a single euro. Every line of code lives on your GitHub. Every deploy lives on your Vercel. The domain stays in your name. Nothing rented from us — we like you free to find us back, not stuck with us.',
+          body: 'A demo first, then a conversation. You see a working version of your site before you commit to a single euro. Every line of code lives on your GitHub. Every deploy lives on your Vercel. The domain stays in your name. Nothing rented from us. We like you free to find us back, not stuck with us.',
         },
         {
           title: 'Languages',
-          body: "Berlin German and international English by default. Brazilian Portuguese, European Portuguese, and Spanish when your audience asks for them. Translation is cultural — a Kreuzberg café and a São Paulo padaria don't sound alike, even when they sell the same coffee.",
+          body: "Berlin German and international English by default. Brazilian Portuguese, European Portuguese, and Spanish when your audience asks for them. Translation is cultural. A Kreuzberg café and a São Paulo padaria don't sound alike, even when they sell the same coffee.",
         },
       ],
       foundedNote: 'Founded 2026 by Breno Ribeiro in Berlin.',
@@ -415,12 +415,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       formSending: 'Sending…',
       formSuccessTitle: 'Message received.',
       formSuccessBody:
-        "Thanks — we'll reply within one business day. Check your spam folder if you don't hear from us.",
+        "Thanks. We'll reply within one business day. Check your spam folder if you don't hear from us.",
       formErrorTitle: 'Something went wrong.',
       formErrorBody:
         "We couldn't send your message. Please try again, or email us directly at the address below.",
       formServiceUnavailable:
-        'The contact form is temporarily unavailable. Please email us directly — we still read every message.',
+        'The contact form is temporarily unavailable. Please email us directly. We still read every message.',
       alternativesHeading: 'Or write directly',
       alternativesBody: 'Some people prefer email or a DM. All these reach us.',
       privacyNote:
@@ -510,14 +510,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       servicesEyebrow: 'Leistungen',
       servicesHeading: 'Drei Dinge, gut gemacht.',
       servicesBody:
-        'Drei Dinge, gut gemacht, von denselben Händen. Eine Website, auf der gefunden zu werden zählt. Ein Suchergebnis, das einen Klick wert ist. Ein Google-Profil, das geöffnet werden will. Social Media, falls du es wirklich willst — wir sagen dir, wann nicht.',
+        'Die Website. Das Suchergebnis. Das Google-Profil. Von denselben Händen, mit derselben Sorgfalt. Social Media, falls du es wirklich willst. Wir sagen dir, wann nicht.',
       portfolioEyebrow: 'Ausgewählte Arbeiten',
       portfolioHeading: 'Ein paar, die uns gefallen.',
       portfolioAllLink: 'Alle Projekte ansehen →',
       aboutEyebrow: 'Studio',
       aboutHeading: 'Ein kleines Studio. Kein Upsell.',
       aboutBody: [
-        'breno-bar ist ein Paar Hände, in Berlin. Ein Studio, leise genug, um zu sehen, was dein Geschäft wirklich tut — und klein genug, dass du immer weißt, wer deine Seite gebaut hat.',
+        'breno-bar ist ein Paar Hände, in Berlin. Ein Studio, leise genug, um zu sehen, was dein Geschäft wirklich tut. Klein genug, dass du immer weißt, wer deine Seite gebaut hat.',
         'Wir verkaufen keine Werbekampagnen, die du nicht halten kannst, keine Dashboards, die du nicht liest, und kein Wachstum, das nicht zu Kund:innen wird. Wir bauen den Raum, in den die Leute reingehen. Das ist das ganze Versprechen.',
       ],
       aboutReadMore: 'Studio-Philosophie lesen →',
@@ -527,7 +527,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ctaEyebrow: 'Gespräch starten',
       ctaHeading: 'Lass uns deins bauen.',
       ctaBody:
-        'Antwort innerhalb eines Werktags. Kein Verkaufsgespräch, keine Folien — nur eine Antwort in einem Absatz.',
+        'Antwort innerhalb eines Werktags. Kein Verkaufsgespräch. Keine Folien. Nur eine Antwort in einem Absatz.',
     },
     services: {
       title: 'Leistungen — breno-bar',
@@ -536,18 +536,18 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Leistungen',
       heroTitle: 'Drei Leistungen. Ein Studio. Kein Upsell.',
       heroSubtitle:
-        'Drei kleine Leistungen, verkauft so, wie ein Berliner Geschäft alles verkauft — eine nach der anderen, ohne Pflicht, die nächste zu nehmen.',
+        'Drei kleine Leistungen, verkauft so, wie ein Berliner Geschäft alles verkauft. Eine nach der anderen. Ohne Pflicht, die nächste zu nehmen.',
       services: {
         website: {
           name: 'Website',
           shortTagline: 'Der erste Raum, in den dein nächster Kunde geht.',
           heroEyebrow: 'Leistung · 01',
-          heroTitle: 'Eine Seite, die dir einen Anruf einbringt.',
+          heroTitle: 'Eine Website, die dir den nächsten Kunden bringt.',
           heroBody:
-            'Die meisten deiner nächsten Kund:innen werden dich auf einem Handy treffen — irgendwo an der Schönhauser Allee, am U-Bahnsteig, zwischen zwei Terminen. Was sie in diesen vier Sekunden sehen, entscheidet, ob sie reingehen — oder weitergehen.',
+            'Die meisten deiner nächsten Kund:innen treffen dich auf einem Handy. Irgendwo an der Schönhauser Allee. Am U-Bahnsteig. Zwischen zwei Terminen. Was sie in diesen vier Sekunden sehen, entscheidet, ob sie reingehen oder weitergehen.',
           heroImageSrc: '/img/services/website/hero-terrace.jpg',
           heroImageAlt:
-            'Ein Restaurant durch sein Schaufenster bei Nacht — goldenes Kronleuchterlicht, Gäste an Tischen, ein Kellner in Bewegung.',
+            'Ein Restaurant durch sein Schaufenster bei Nacht, goldenes Kronleuchterlicht, Gäste an Tischen, ein Kellner in Bewegung.',
           bullets: [
             {
               title: 'Spricht jede Sprache, die dein Block spricht.',
@@ -555,18 +555,18 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Sieht nicht aus wie die vier Cafés in derselben Straße.',
-              body: 'Theme-gebaute Seiten erkennt jeder, der zwei davon gesehen hat. Deine wird keine davon sein. Deine Farben, deine Fotos, dein Raum.',
+              body: 'Die meisten Websites sehen aus, als kämen sie aus derselben Schublade. Deine nicht. Deine Farben, deine Fotos, dein Raum.',
             },
             {
               title: 'Die langweiligen deutschen Teile, erledigt.',
-              body: 'Cookie-Banner, Datenschutzerklärung, Impressum — für dein Unternehmen geschrieben, nie aus einem Generator kopiert. Du hörst auf, dir darum Sorgen zu machen. Du gehst zurück und kümmerst dich um den Laden.',
+              body: 'Cookie-Banner, Datenschutzerklärung, Impressum. Für dein Unternehmen geschrieben, nie aus einem Generator kopiert. Du hörst auf, dir darum Sorgen zu machen. Du gehst zurück und kümmerst dich um den Laden.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
           outcomeBullets: [
             'Fünf bis zwölf Seiten, schnell auch beim schlechtesten U-Bahn-Signal.',
             'Deine Domain, dein Code, deine Kontrolle. Nichts von uns gemietet.',
-            'Live in drei bis sechs Wochen — online, bevor der nächste ruhige Dienstag kommt.',
+            'Live in drei bis sechs Wochen. Online, bevor der nächste ruhige Dienstag kommt.',
           ],
           bestFor:
             'Das Café, das leise seine Preise erhöht hat. Das Studio mit der Warteliste. Der Barber, der keine Walk-ins mehr annimmt. Geschäfte, die gut genug sind, um eine ruhigere, bessere Eingangstür zu brauchen.',
@@ -588,27 +588,27 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Recherchiert auf Kiez-Ebene, nicht auf Agentur-Ebene.',
-              body: 'Wir lernen die Wörter, die deine nächsten Kund:innen wirklich tippen — in ihrer Sprache, in ihrer Nachbarschaft. Keine Vanity-Keywords aus einer SaaS-Liste. Alle neunzig Tage überprüft, wenn die Jahreszeiten wechseln.',
+              body: 'Wir lernen die Wörter, die deine nächsten Kund:innen wirklich tippen. In ihrer Sprache, in ihrer Nachbarschaft. Keine Vanity-Keywords aus einer SaaS-Liste. Alle neunzig Tage überprüft, wenn die Jahreszeiten wechseln.',
             },
             {
               title: 'Zahlen, die du sonntagmorgens lesen kannst.',
-              body: 'Google Search Console und die Basics, unter deinem Konto eingerichtet, nicht unserem. Eine monatliche Notiz — was wir gemacht haben, was funktioniert hat, was wir als nächstes probieren. Keine zwölf-Tab-Dashboards, die du nie öffnest.',
+              body: 'Google Search Console und die Basics, unter deinem Konto eingerichtet, nicht unserem. Eine monatliche Notiz. Was wir gemacht haben, was funktioniert hat, was wir als nächstes probieren. Keine zwölf-Tab-Dashboards, die du nie öffnest.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
           outcomeBullets: [
-            'Ein ehrliches Audit vor jedem Versprechen — findet meistens drei schnelle Verbesserungen.',
+            'Ein ehrliches Audit vor jedem Versprechen. Findet meistens drei schnelle Verbesserungen.',
             'On-Page-Arbeit zur Bauzeit erledigt. Kein nachträglicher Frankenstein-Umbau.',
-            'Eine monatliche Notiz, die du in drei Minuten liest — was sich bewegt hat, was wir als nächstes probieren.',
+            'Eine monatliche Notiz, die du in drei Minuten liest. Was sich bewegt hat, was wir als nächstes probieren.',
           ],
           bestFor:
-            'Die Bäckerei, der Salon, die Praxis, der Klempner. Jedes Geschäft, bei dem Kund:innen schon suchen — sie müssen dich nur finden statt jemand anderen.',
+            'Die Bäckerei, der Salon, die Praxis, der Klempner. Jedes Geschäft, bei dem Kund:innen schon suchen. Sie müssen dich nur finden statt jemand anderen.',
           heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
           heroImageAlt:
             'Ein Mann sitzt auf einem Bürgersteig, Hände um sein Handy, eine vorbeigehende Person verschwommen im Hintergrund.',
           secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
           secondaryImageAlt:
-            'Draufsicht auf die Auslage einer Bäckerei — Croissants, Danishes mit roten Früchten, Keksgläser, Marmortresen, kleine Etiketten.',
+            'Draufsicht auf die Auslage einer Bäckerei, Croissants, Danishes mit roten Früchten, Keksgläser, Marmortresen, kleine Etiketten.',
         },
         'google-business': {
           name: 'Google Business Profile',
@@ -616,7 +616,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           heroEyebrow: 'Leistung · 03',
           heroTitle: 'Der Eintrag, der die lokale Suche macht.',
           heroBody:
-            "Wenn jemand drei Blocks entfernt 'Bäckerei in der Nähe' ins Handy tippt, ist die Antwort eine Liste von drei Geschäften. Dein Job ist, eines davon zu sein. Unserer ist, das zu schaffen — und dann dafür zu sorgen, dass es so bleibt.",
+            "Wenn jemand drei Blocks entfernt 'Bäckerei in der Nähe' ins Handy tippt, ist die Antwort eine Liste von drei Geschäften. Dein Job ist, eines davon zu sein. Unserer ist, das zu schaffen, und dann dafür zu sorgen, dass es so bleibt.",
           bullets: [
             {
               title: 'Eingerichtet so, wie Google es wirklich will.',
@@ -628,20 +628,20 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Eine höfliche Art, um Bewertungen zu bitten.',
-              body: 'Eine kurze URL auf deiner Domain, die zufriedene Kund:innen direkt zum Bewertungsformular führt. DSGVO-sichere Templates auf DE, EN und PT-BR. Ein leiser Alarm, wenn drei Wochen lang keine Bewertung kam — meistens gibt es etwas, worüber sich zu fragen lohnt.',
+              body: 'Eine kurze URL auf deiner Domain, die zufriedene Kund:innen direkt zum Bewertungsformular führt. DSGVO-sichere Templates auf DE, EN und PT-BR. Ein leiser Alarm, wenn drei Wochen lang keine Bewertung kam. Meistens gibt es etwas, worüber sich zu fragen lohnt.',
             },
           ],
           outcomeHeading: 'Was du bekommst',
           outcomeBullets: [
             'Ein Eintrag, der aussieht, als wollte das Geschäft den Anruf wirklich haben.',
-            'Beiträge, beantwortete Bewertungen, aktuelle Fotos — jeden Monat, im Kalender.',
+            'Beiträge, beantwortete Bewertungen, aktuelle Fotos. Jeden Monat, im Kalender.',
             'Eine Zahl, die du wirklich anschauen wirst: wie viele Telefone den Eintrag diesen Monat angerufen haben.',
           ],
           bestFor:
-            "Alle, die Kund:innen mit dem Wort 'in der Nähe' in der Suche finden. Das Studio, die Praxis, die Werkstatt, die Küche — überall mit einer Tür oder einem Servicegebiet.",
+            "Alle, die Kund:innen mit dem Wort 'in der Nähe' in der Suche finden. Das Studio, die Praxis, die Werkstatt, die Küche. Überall mit einer Tür oder einem Servicegebiet.",
           heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
           heroImageAlt:
-            'Ein kleines Berliner Schaufenster — grüne Doppeltüren, rotes Emailschild „Aseli — Berliner Original — seit 1921", Efeu an der Fassade.',
+            'Ein kleines Berliner Schaufenster. Grüne Doppeltüren, rotes Emailschild „Aseli — Berliner Original — seit 1921", Efeu an der Fassade.',
           secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
           secondaryImageAlt:
             'Eine Hand hält ein Smartphone mit einer Navigations-Karte bei Nacht, umgeben von bunten Bokeh-Stadtlichtern.',
@@ -653,11 +653,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           heroEyebrow: 'Leistung · 04 (optional)',
           heroTitle: 'Ein kleiner Social-Rhythmus, den du wirklich halten kannst.',
           heroBody:
-            'Die meisten inhabergeführten Geschäfte, die wir kennenlernen, haben ein Instagram, in das sie zuletzt an einem Mittwoch im März gepostet haben. Nicht weil ihnen die Geschichten fehlen — sondern weil die Zeit fehlt. Wir posten zweimal pro Woche aus deinen Fotos, in deiner Stimme. Keine viralen Versprechen. Nur sichtbar, leise, jede Woche.',
+            'Die meisten inhabergeführten Geschäfte, die wir kennenlernen, haben ein Instagram, in das sie zuletzt an einem Mittwoch im März gepostet haben. Nicht weil ihnen die Geschichten fehlen. Sondern weil die Zeit fehlt. Wir posten zweimal pro Woche aus deinen Fotos, in deiner Stimme. Keine viralen Versprechen. Nur sichtbar, leise, jede Woche.',
           bullets: [
             {
               title: 'Zwei Beiträge pro Woche. Aus deiner Woche.',
-              body: 'Deine Fotos, deine Karte, deine kleinen Meilensteine — von uns entworfen, von dir freigegeben, nie eine automatische Caption. So, wie es klingen würde, wenn du selbst die Zeit hättest, es zu schreiben.',
+              body: 'Deine Fotos, deine Karte, deine kleinen Meilensteine. Von uns entworfen, von dir freigegeben, nie eine automatische Caption. So, wie es klingen würde, wenn du selbst die Zeit hättest, es zu schreiben.',
             },
             {
               title: 'Jemand schaut werktags in den Posteingang.',
@@ -671,11 +671,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           outcomeHeading: 'Was du bekommst',
           outcomeBullets: [
             'Zwei Beiträge pro Woche, vor Montagmorgen in deinen Drafts.',
-            'Posteingang gelesen, beantwortet, weitergeleitet — jeden Werktag.',
-            'Eine Notiz im Monat — was funktioniert hat, was nicht, was wir als nächstes probieren.',
+            'Posteingang gelesen, beantwortet, weitergeleitet. Jeden Werktag.',
+            'Eine Notiz im Monat. Was funktioniert hat, was nicht, was wir als nächstes probieren.',
           ],
           bestFor:
-            'Der/die Eigentümer:in, der/die weiß, dass Social Media zählt — und gleichzeitig weiß, dass er/sie nicht persönlich sonntagabends um neun postet.',
+            'Der/die Eigentümer:in, der/die weiß, dass Social Media zählt. Und gleichzeitig weiß, dass er/sie nicht persönlich sonntagabends um neun postet.',
           heroImageSrc: '/img/services/social-media/hero-florist.jpg',
           heroImageAlt:
             'Eine Floristin, gesehen durch hängende Pflanzen in der Tür ihres Ladens, ruhig arbeitend an einem Tisch mit geschnittenen Blumen.',
@@ -692,7 +692,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Portfolio',
       heroTitle: 'Ausgewählte Arbeiten.',
       heroSubtitle:
-        'Ein paar Räume, die wir gebaut haben. Einige für Geschäfte, die schon an der Schönhauser Allee laufen, einige noch als Demo auf einer ruhigen vercel.app-URL — wartend, bis der/die Eigentümer:in ja sagt. Alle mit einem Live-Link unten.',
+        'Ein paar Räume, die wir gebaut haben. Einige für Geschäfte, die schon an der Schönhauser Allee laufen, einige noch als Demo auf einer ruhigen vercel.app-URL, wartend, bis der/die Eigentümer:in ja sagt. Alle mit einem Live-Link unten.',
       visitLive: 'Live-Seite besuchen',
       backToPortfolio: '← Alle Projekte',
       relatedCases: 'Weitere aktuelle Arbeiten',
@@ -709,10 +709,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Studio',
       heroTitle: 'Ein kleines Studio mit einer langsamen Praxis.',
       heroLead:
-        'breno-bar ist ein Paar Hände, in Berlin. Mehrsprachige Webseiten für inhabergeführte Unternehmen — drei Leistungen, nicht dreißig, weil niemand dreißig brauchte.',
+        'breno-bar ist ein Paar Hände, in Berlin. Mehrsprachige Webseiten für inhabergeführte Unternehmen. Drei Leistungen, nicht dreißig, weil niemand dreißig brauchte.',
       heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
       heroImageAlt:
-        'Eine ruhige Berliner Straße in der Dämmerung — kahle Baumreihen, Altbauten im Hintergrund, der Fernsehturm in der Ferne, keine Menschen, kein Verkehr.',
+        'Eine ruhige Berliner Straße in der Dämmerung. Kahle Baumreihen, Altbauten im Hintergrund, der Fernsehturm in der Ferne, keine Menschen, kein Verkehr.',
       sections: [
         {
           title: 'Warum klein',
@@ -724,11 +724,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         },
         {
           title: 'Wie wir arbeiten',
-          body: 'Erst eine Demo, dann ein Gespräch. Du siehst eine funktionierende Version deiner Seite, bevor du einen einzigen Euro versprichst. Jede Codezeile liegt auf deinem GitHub. Jedes Deployment liegt auf deinem Vercel. Die Domain bleibt auf deinem Namen. Nichts von uns gemietet — wir mögen es, wenn du uns aus freien Stücken wiederfindest, nicht weil du festhängst.',
+          body: 'Erst eine Demo, dann ein Gespräch. Du siehst eine funktionierende Version deiner Seite, bevor du einen einzigen Euro versprichst. Jede Codezeile liegt auf deinem GitHub. Jedes Deployment liegt auf deinem Vercel. Die Domain bleibt auf deinem Namen. Nichts von uns gemietet. Wir mögen es, wenn du uns aus freien Stücken wiederfindest, nicht weil du festhängst.',
         },
         {
           title: 'Sprachen',
-          body: 'Berliner Deutsch und internationales Englisch als Standard. Brasilianisches Portugiesisch, europäisches Portugiesisch und Spanisch, wenn deine Zielgruppe danach fragt. Übersetzung ist kulturell — ein Kreuzberger Café und eine padaria in São Paulo klingen nicht gleich, auch wenn sie denselben Kaffee verkaufen.',
+          body: 'Berliner Deutsch und internationales Englisch als Standard. Brasilianisches Portugiesisch, europäisches Portugiesisch und Spanisch, wenn deine Zielgruppe danach fragt. Übersetzung ist kulturell. Ein Kreuzberger Café und eine padaria in São Paulo klingen nicht gleich, auch wenn sie denselben Kaffee verkaufen.',
         },
       ],
       foundedNote: 'Gegründet 2026 von Breno Ribeiro in Berlin.',
@@ -751,12 +751,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       formSending: 'Wird gesendet…',
       formSuccessTitle: 'Nachricht erhalten.',
       formSuccessBody:
-        'Danke — wir melden uns innerhalb eines Werktags. Schau in deinen Spam-Ordner, falls du nichts von uns hörst.',
+        'Danke. Wir melden uns innerhalb eines Werktags. Schau in deinen Spam-Ordner, falls du nichts von uns hörst.',
       formErrorTitle: 'Etwas ist schiefgelaufen.',
       formErrorBody:
         'Wir konnten deine Nachricht nicht senden. Versuch es noch mal oder schreib uns direkt an die unten genannte Adresse.',
       formServiceUnavailable:
-        'Das Kontaktformular ist gerade nicht verfügbar. Bitte schreib uns direkt — wir lesen weiterhin jede Nachricht.',
+        'Das Kontaktformular ist gerade nicht verfügbar. Bitte schreib uns direkt. Wir lesen weiterhin jede Nachricht.',
       alternativesHeading: 'Oder schreib direkt',
       alternativesBody: 'Manche bevorzugen E-Mail oder DM. Alles erreicht uns.',
       privacyNote:
@@ -832,7 +832,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'ESTÚDIO · BERLIM',
       heroTitleLines: ['Sites dos quais', 'a gente se orgulha.'],
       heroSubtitle:
-        'Para os pequenos negócios berlinenses que sustentam um bairro. A gente constrói os sites que eles merecem.',
+        'Para os pequenos negócios em Berlim que dão vida ao bairro. A gente constrói os sites que eles merecem.',
       heroImageSrc: '/img/home/hero-altbau-kiez.jpg',
       heroImageAlt:
         'Uma rua clássica de Altbau berlinense: fachada ornamentada em branco e laranja, café no térreo com toldo vermelho, pessoas em mesas externas, árvores projetando sombras nos paralelepípedos.',
@@ -846,14 +846,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       servicesEyebrow: 'Serviços',
       servicesHeading: 'Três coisas, bem feitas.',
       servicesBody:
-        'Três coisas, bem feitas, pelas mesmas mãos. Um site que vale a pena ser encontrado. Um resultado de busca que vale o clique. Um perfil do Google que vale a pena abrir. Redes sociais se você realmente quiser — a gente avisa quando não quiser.',
+        'O site. O resultado de busca. O perfil do Google. Pelas mesmas mãos, com o mesmo cuidado. Redes sociais se você realmente quiser. A gente avisa quando não.',
       portfolioEyebrow: 'Trabalhos selecionados',
       portfolioHeading: 'Alguns que a gente gosta.',
       portfolioAllLink: 'Ver todos os projetos →',
       aboutEyebrow: 'Estúdio',
       aboutHeading: 'Um pequeno estúdio. Sem upsell.',
       aboutBody: [
-        'breno-bar é um par de mãos, em Berlim. Um estúdio tranquilo o bastante para perceber o que seu negócio realmente faz — e pequeno o bastante para você sempre saber quem construiu seu site.',
+        'breno-bar é um par de mãos, em Berlim. Um estúdio tranquilo o bastante para perceber o que seu negócio realmente faz. Pequeno o bastante para você sempre saber quem construiu seu site.',
         'A gente não vende campanhas de anúncios que você não consegue sustentar, dashboards que você não consegue ler, ou crescimento que não vira cliente. A gente constrói o cômodo onde as pessoas entram. É essa a proposta toda.',
       ],
       aboutReadMore: 'Ler a filosofia do estúdio →',
@@ -863,7 +863,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ctaEyebrow: 'Comece uma conversa',
       ctaHeading: 'Vamos construir o seu.',
       ctaBody:
-        'Resposta dentro de um dia útil. Sem call comercial, sem deck — só uma resposta de um parágrafo.',
+        'Resposta dentro de um dia útil. Sem call comercial. Sem deck. Só uma resposta de um parágrafo.',
     },
     services: {
       title: 'Serviços — breno-bar',
@@ -872,18 +872,18 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Serviços',
       heroTitle: 'Três serviços. Um estúdio. Sem upsell.',
       heroSubtitle:
-        'Três pequenos serviços, vendidos como um comerciante berlinense vende qualquer coisa — um de cada vez, sem obrigação de comprar o próximo.',
+        'Três pequenos serviços, vendidos como um comerciante berlinense vende qualquer coisa. Um de cada vez. Sem obrigação de comprar o próximo.',
       services: {
         website: {
           name: 'Site',
           shortTagline: 'O primeiro cômodo onde seu próximo cliente vai entrar.',
           heroEyebrow: 'Serviço · 01',
-          heroTitle: 'Um site que rende ligação.',
+          heroTitle: 'Um site que traz o próximo cliente.',
           heroBody:
-            'A maioria dos seus próximos clientes vai te encontrar pelo celular — em pé em algum ponto da Schönhauser Allee, esperando o U-Bahn, entre duas reuniões. O que eles virem nesses quatro segundos decide se entram, ou seguem em frente.',
+            'A maioria dos seus próximos clientes vai te encontrar pelo celular. Em algum ponto da Schönhauser Allee. Esperando o U-Bahn. Entre duas reuniões. O que eles virem nesses quatro segundos decide se entram, ou seguem em frente.',
           heroImageSrc: '/img/services/website/hero-terrace.jpg',
           heroImageAlt:
-            'Um restaurante visto pela janela da frente à noite — luz dourada do candelabro, clientes em volta das mesas, um garçom se movendo entre elas.',
+            'Um restaurante visto pela janela da frente à noite, luz dourada do candelabro, clientes em volta das mesas, um garçom se movendo entre elas.',
           bullets: [
             {
               title: 'Fala todo idioma que seu quarteirão fala.',
@@ -891,18 +891,18 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Não parece com os quatro cafés da mesma rua.',
-              body: 'Sites feitos com template são reconhecíveis por qualquer um que tenha visto dois. O seu não vai ser um deles. Suas cores, suas fotos, seu cômodo.',
+              body: 'A maioria dos sites parece feita com o mesmo molde. O seu não. Suas cores, suas fotos, seu cômodo.',
             },
             {
               title: 'As partes alemãs chatas, resolvidas.',
-              body: 'Cookie banner, Datenschutzerklärung, Impressum — escritos para o seu negócio, nunca colados de um gerador. Você para de se preocupar com isso. Volta a cuidar do salão.',
+              body: 'Cookie banner, Datenschutzerklärung, Impressum. Escritos para o seu negócio, nunca colados de um gerador. Você para de se preocupar com isso. Volta a cuidar do salão.',
             },
           ],
           outcomeHeading: 'O que você recebe',
           outcomeBullets: [
             'Cinco a doze páginas, rápidas até no pior sinal do U-Bahn.',
             'Seu domínio, seu código, seu controle. Nada alugado da gente.',
-            'No ar em três a seis semanas — online antes da próxima terça-feira morna.',
+            'No ar em três a seis semanas. Online antes da próxima terça-feira morna.',
           ],
           bestFor:
             'O café que aumentou silenciosamente os preços. O estúdio com lista de espera. O barbeiro que parou de aceitar walk-ins. Negócios bons o bastante para precisar de uma porta de entrada mais tranquila e melhor.',
@@ -924,27 +924,27 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Pesquisado no nível do bairro, não no nível da agência.',
-              body: 'A gente aprende as palavras que seu próximo cliente realmente digita — no idioma dele, na vizinhança dele. Sem palavras-chave de vaidade tiradas de uma lista de SaaS. Revisado a cada noventa dias quando as estações mudam.',
+              body: 'A gente aprende as palavras que seu próximo cliente realmente digita. No idioma dele, na vizinhança dele. Sem palavras-chave de vaidade tiradas de uma lista de SaaS. Revisado a cada noventa dias quando as estações mudam.',
             },
             {
               title: 'Números que você consegue ler num domingo de manhã.',
-              body: 'Google Search Console e o básico, configurados sob sua conta, não a nossa. Uma nota mensal — o que a gente fez, o que funcionou, o que vamos tentar a seguir. Sem dashboards de doze abas que você nunca vai abrir.',
+              body: 'Google Search Console e o básico, configurados sob sua conta, não a nossa. Uma nota mensal. O que a gente fez, o que funcionou, o que vamos tentar a seguir. Sem dashboards de doze abas que você nunca vai abrir.',
             },
           ],
           outcomeHeading: 'O que você recebe',
           outcomeBullets: [
-            'Uma auditoria honesta antes de qualquer promessa — geralmente encontra três ganhos rápidos.',
+            'Uma auditoria honesta antes de qualquer promessa. Geralmente encontra três ganhos rápidos.',
             'Trabalho on-page feito no momento da construção. Sem remendo Frankenstein retroativo.',
-            'Uma nota mensal que você lê em três minutos — o que se moveu, o que vamos tentar.',
+            'Uma nota mensal que você lê em três minutos. O que se moveu, o que vamos tentar.',
           ],
           bestFor:
-            'A padaria, o salão, o dentista, o encanador. Qualquer negócio onde o cliente já está procurando — eles só precisam te encontrar em vez de outra pessoa.',
+            'A padaria, o salão, o dentista, o encanador. Qualquer negócio onde o cliente já está procurando. Eles só precisam te encontrar em vez de outra pessoa.',
           heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
           heroImageAlt:
             'Um homem sentado na calçada urbana, mãos segurando um celular, um transeunte desfocado ao fundo.',
           secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
           secondaryImageAlt:
-            'Vista de cima da vitrine de uma padaria — croissants, danishes com frutas vermelhas, potes de biscoito, balcão de mármore, pequenas etiquetas.',
+            'Vista de cima da vitrine de uma padaria, croissants, danishes com frutas vermelhas, potes de biscoito, balcão de mármore, pequenas etiquetas.',
         },
         'google-business': {
           name: 'Google Business Profile',
@@ -952,7 +952,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           heroEyebrow: 'Serviço · 03',
           heroTitle: 'O perfil que faz o trabalho pesado da busca local.',
           heroBody:
-            "Quando alguém a três quarteirões digita 'padaria perto de mim' no celular, a resposta é uma lista de três negócios. Seu trabalho é ser um deles. O nosso é fazer isso acontecer — e depois cuidar para que continue assim.",
+            "Quando alguém a três quarteirões digita 'padaria perto de mim' no celular, a resposta é uma lista de três negócios. Seu trabalho é ser um deles. O nosso é fazer isso acontecer, e depois cuidar para que continue assim.",
           bullets: [
             {
               title: 'Configurado do jeito que o Google realmente quer.',
@@ -964,20 +964,20 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             },
             {
               title: 'Um jeito educado de pedir avaliações.',
-              body: 'Uma URL curta no seu domínio que leva um cliente satisfeito direto para o formulário de avaliação. Templates compatíveis com LGPD/DSGVO em DE, EN e PT-BR. Um alerta silencioso se passarem três semanas sem avaliação — geralmente significa algo a perguntar.',
+              body: 'Uma URL curta no seu domínio que leva um cliente satisfeito direto para o formulário de avaliação. Templates compatíveis com LGPD/DSGVO em DE, EN e PT-BR. Um alerta silencioso se passarem três semanas sem avaliação. Geralmente significa algo a perguntar.',
             },
           ],
           outcomeHeading: 'O que você recebe',
           outcomeBullets: [
             'Um perfil que parece que o negócio realmente quer a ligação.',
-            'Posts, avaliações respondidas, fotos atuais — todo mês, na agenda.',
+            'Posts, avaliações respondidas, fotos atuais. Todo mês, na agenda.',
             'Um número que você vai mesmo olhar: quantos celulares ligaram pro perfil este mês.',
           ],
           bestFor:
-            "Qualquer um que clientes encontram com a palavra 'perto' na busca. O estúdio, a clínica, a oficina, a cozinha — qualquer lugar com uma porta ou área de atendimento.",
+            "Qualquer um que clientes encontram com a palavra 'perto' na busca. O estúdio, a clínica, a oficina, a cozinha. Qualquer lugar com uma porta ou área de atendimento.",
           heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
           heroImageAlt:
-            'Uma pequena fachada berlinense — portas verdes duplas, placa em esmalte vermelho com "Aseli — Berliner Original — desde 1921", hera subindo pela parede.',
+            'Uma pequena fachada berlinense. Portas verdes duplas, placa em esmalte vermelho com "Aseli — Berliner Original — desde 1921", hera subindo pela parede.',
           secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
           secondaryImageAlt:
             'Uma mão segurando um smartphone com um mapa de navegação à noite, cercada por bokeh colorido das luzes da cidade.',
@@ -988,11 +988,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           heroEyebrow: 'Serviço · 04 (opcional)',
           heroTitle: 'Um pequeno ritmo social que você consegue mesmo manter.',
           heroBody:
-            'A maioria dos donos com quem a gente conversa tem um Instagram em que o último post foi numa quarta de março. Não porque não tenham história — porque não há tempo. A gente posta duas vezes por semana com suas fotos, na sua voz. Sem promessa viral. Só visível, em silêncio, toda semana.',
+            'A maioria dos donos com quem a gente conversa tem um Instagram em que o último post foi numa quarta de março. Não porque não tenham história. Porque não há tempo. A gente posta duas vezes por semana com suas fotos, na sua voz. Sem promessa viral. Só visível, em silêncio, toda semana.',
           bullets: [
             {
               title: 'Dois posts por semana. Da sua semana.',
-              body: 'Suas fotos, seu cardápio, seus pequenos marcos — rascunhados pela gente, aprovados por você, nunca uma legenda automática. Do jeito que soaria se você tivesse tempo de escrever sozinho.',
+              body: 'Suas fotos, seu cardápio, seus pequenos marcos. Rascunhados pela gente, aprovados por você, nunca uma legenda automática. Do jeito que soaria se você tivesse tempo de escrever sozinho.',
             },
             {
               title: 'Alguém olhando a caixa de entrada em dias úteis.',
@@ -1006,11 +1006,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           outcomeHeading: 'O que você recebe',
           outcomeBullets: [
             'Dois posts por semana, prontos nos seus rascunhos antes de segunda de manhã.',
-            'Caixa de entrada lida, respondida, escalada — todo dia útil.',
-            'Uma nota uma vez por mês — o que funcionou, o que não, o que vamos tentar.',
+            'Caixa de entrada lida, respondida, escalada. Todo dia útil.',
+            'Uma nota uma vez por mês. O que funcionou, o que não, o que vamos tentar.',
           ],
           bestFor:
-            'O dono que sabe que rede social importa — e que também sabe que não vai ser ele postando às nove da noite num domingo.',
+            'O dono que sabe que rede social importa. E que também sabe que não vai ser ele postando às nove da noite num domingo.',
           heroImageSrc: '/img/services/social-media/hero-florist.jpg',
           heroImageAlt:
             'Uma florista vista por entre plantas penduradas na porta da loja, trabalhando em silêncio em um balcão de flores cortadas.',
@@ -1027,7 +1027,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Portfólio',
       heroTitle: 'Trabalhos selecionados.',
       heroSubtitle:
-        'Alguns cômodos que a gente construiu. Alguns para negócios que já rodam pela Schönhauser Allee, alguns ainda em forma de demo numa URL tranquila do vercel.app — esperando o dono dizer sim. Todos têm um link ao vivo abaixo.',
+        'Alguns cômodos que a gente construiu. Alguns para negócios que já rodam pela Schönhauser Allee, alguns ainda em forma de demo numa URL tranquila do vercel.app, esperando o dono dizer sim. Todos têm um link ao vivo abaixo.',
       visitLive: 'Visitar site ao vivo',
       backToPortfolio: '← Todos os projetos',
       relatedCases: 'Outros trabalhos recentes',
@@ -1044,10 +1044,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Estúdio',
       heroTitle: 'Um pequeno estúdio com uma prática lenta.',
       heroLead:
-        'breno-bar é um par de mãos, em Berlim. Sites multilíngues para negócios liderados pelo dono — três serviços, não trinta, porque ninguém precisava de trinta.',
+        'breno-bar é um par de mãos, em Berlim. Sites multilíngues para negócios liderados pelo dono. Três serviços, não trinta, porque ninguém precisava de trinta.',
       heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
       heroImageAlt:
-        'Uma rua berlinense silenciosa no amanhecer — árvores sem folhas, prédios Altbau ao fundo, a Fernsehturm ao longe, sem pessoas, sem trânsito.',
+        'Uma rua berlinense silenciosa no amanhecer. Árvores sem folhas, prédios Altbau ao fundo, a Fernsehturm ao longe, sem pessoas, sem trânsito.',
       sections: [
         {
           title: 'Por que pequeno',
@@ -1059,11 +1059,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         },
         {
           title: 'Como trabalhamos',
-          body: 'Primeiro uma demo, depois uma conversa. Você vê uma versão funcionando do seu site antes de prometer um único euro. Cada linha de código fica no seu GitHub. Cada deploy fica no seu Vercel. O domínio permanece no seu nome. Nada alugado da gente — a gente gosta de ser reencontrado por escolha, não por dependência.',
+          body: 'Primeiro uma demo, depois uma conversa. Você vê uma versão funcionando do seu site antes de prometer um único euro. Cada linha de código fica no seu GitHub. Cada deploy fica no seu Vercel. O domínio permanece no seu nome. Nada alugado da gente. A gente gosta de ser reencontrado por escolha, não por dependência.',
         },
         {
           title: 'Idiomas',
-          body: 'Alemão de Berlim e inglês internacional por padrão. Português brasileiro, português europeu e espanhol quando seu público pedir. Tradução é cultural — um café de Kreuzberg e uma padaria de São Paulo não soam iguais, mesmo quando vendem o mesmo café.',
+          body: 'Alemão de Berlim e inglês internacional por padrão. Português brasileiro, português europeu e espanhol quando seu público pedir. Tradução é cultural. Um café de Kreuzberg e uma padaria de São Paulo não soam iguais, mesmo quando vendem o mesmo café.',
         },
       ],
       foundedNote: 'Fundado em 2026 por Breno Ribeiro em Berlim.',
@@ -1086,12 +1086,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       formSending: 'Enviando…',
       formSuccessTitle: 'Mensagem recebida.',
       formSuccessBody:
-        'Obrigado — vamos responder dentro de um dia útil. Cheque o spam se não nos ouvir.',
+        'Obrigado. Vamos responder dentro de um dia útil. Cheque o spam se não nos ouvir.',
       formErrorTitle: 'Algo deu errado.',
       formErrorBody:
         'Não conseguimos enviar sua mensagem. Tente de novo ou nos escreva diretamente no e-mail abaixo.',
       formServiceUnavailable:
-        'O formulário de contato está temporariamente indisponível. Por favor, nos escreva diretamente — a gente continua lendo toda mensagem.',
+        'O formulário de contato está temporariamente indisponível. Por favor, nos escreva diretamente. A gente continua lendo toda mensagem.',
       alternativesHeading: 'Ou escreva direto',
       alternativesBody: 'Algumas pessoas preferem e-mail ou DM. Tudo nos alcança.',
       privacyNote:

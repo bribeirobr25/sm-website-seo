@@ -169,3 +169,24 @@ html {
 .bg-noise {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.02 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+/* Image-backed service cards. Photo as positioned <img> for native lazy +
+   LCP control; dark veil between image and copy guarantees WCAG AA contrast.
+   White cascade scoped to the card so children inherit white before the
+   body `color: var(--color-text)` rule can shadow them. */
+.svc-card-photo {
+  background-color: var(--color-text);
+  color: #ffffff;
+}
+.svc-card-photo__img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform var(--motion-warm) var(--ease-apple-smooth);
+}
+.svc-card-photo:hover .svc-card-photo__img { transform: scale(1.03); }
+.svc-card-photo__veil {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(165deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.38) 45%, rgba(0,0,0,0.22) 100%);
+}
