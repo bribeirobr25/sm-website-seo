@@ -5,6 +5,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { PAGE_STRINGS } from '@/lib/page-strings';
 import { getFeaturedPortfolio } from '@/lib/portfolio';
 import { SERVICE_SLUGS } from '@/lib/services';
+import { heroSrcset } from '@/lib/srcset';
 
 const locale = 'en' as const;
 const p = PAGE_STRINGS[locale].home;
@@ -20,9 +21,11 @@ const featured = getFeaturedPortfolio();
       {p.heroImageSrc && (
         <img
           src={p.heroImageSrc}
+          srcset={heroSrcset(p.heroImageSrc)}
+          sizes="100vw"
           alt={p.heroImageAlt ?? ''}
-          width="2400"
-          height="1029"
+          width="1920"
+          height="823"
           loading="eager"
           fetchpriority="high"
           decoding="async"
@@ -31,7 +34,7 @@ const featured = getFeaturedPortfolio();
       )}
       <div class="hero-dark__veil" aria-hidden="true"></div>
       <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 lg:pt-44 lg:pb-40 text-center">
-        <p class="text-xs sm:text-sm tracking-[0.18em] uppercase text-accent font-medium mb-8">{p.heroEyebrow}</p>
+        <p class="text-xs sm:text-sm tracking-[0.18em] uppercase text-accent-light font-medium mb-8">{p.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(3rem,8vw,7rem)] font-semibold text-white leading-[1.02] tracking-[-0.04em] max-w-4xl mx-auto">
           {p.heroTitleLines.map((line, i) => <span class="block reveal-rise" style={`animation-delay:${i * 50}ms`}>{line}</span>)}
         </h1>
@@ -46,7 +49,7 @@ const featured = getFeaturedPortfolio();
     {/* STATS STRIP — dark register, continues the cinematic opening */}
     <section class="bg-inverted-surface">
       <div class="container-page py-16 sm:py-20">
-        <p class="text-center text-xs tracking-[0.18em] uppercase text-accent font-medium mb-10">{p.statTitle}</p>
+        <p class="text-center text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-10">{p.statTitle}</p>
         <dl class="grid grid-cols-3 gap-6 max-w-3xl mx-auto text-center">
           <div>
             <dt class="font-display text-5xl sm:text-6xl text-inverted-text font-semibold tabular tracking-[-0.04em]">{p.statLine1}</dt>
@@ -80,6 +83,8 @@ const featured = getFeaturedPortfolio();
                 {s.heroImageSrc && (
                   <img
                     src={s.heroImageSrc}
+                    srcset={heroSrcset(s.heroImageSrc)}
+                    sizes="(max-width: 640px) 100vw, 50vw"
                     alt=""
                     aria-hidden="true"
                     width="1600"
@@ -120,7 +125,7 @@ const featured = getFeaturedPortfolio();
                 <img src={entry.imageSrc} alt={entry.imageAlt[locale]} loading="lazy" decoding="async" width="1600" height="1000" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-[var(--motion-warm)]" />
               </div>
               <div class="p-6">
-                <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{entry.vertical}</p>
+                <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{entry.vertical}</p>
                 <p class="mt-2 font-display text-xl font-semibold text-text tracking-[-0.01em]">{entry.name}</p>
                 <p class="mt-2 text-sm text-text-muted line-clamp-2">{entry.shortDescription[locale]}</p>
               </div>
@@ -139,9 +144,11 @@ const featured = getFeaturedPortfolio();
               <div class="aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] overflow-hidden rounded-[22px] bg-surface">
                 <img
                   src={p.aboutImageSrc}
+                  srcset={heroSrcset(p.aboutImageSrc)}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   alt={p.aboutImageAlt ?? ''}
-                  width="1800"
-                  height="2250"
+                  width="1920"
+                  height="2400"
                   loading="lazy"
                   decoding="async"
                   class="w-full h-full object-cover"
@@ -166,7 +173,7 @@ const featured = getFeaturedPortfolio();
     {/* CTA — dark inverted Apple "product tile" */}
     <section class="bg-inverted-bg text-inverted-text">
       <div class="container-page py-24 sm:py-32 text-center">
-        <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium mb-6">{p.ctaEyebrow}</p>
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{p.ctaEyebrow}</p>
         <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] leading-[1.05] max-w-2xl mx-auto">{p.ctaHeading}</h2>
         <p class="mt-6 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">{p.ctaBody}</p>
         <div class="mt-10">

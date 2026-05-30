@@ -29,7 +29,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
     <div class="no-print sticky top-[64px] z-20 bg-bg/90 backdrop-blur-xl border-b border-border">
       <div class="container-page py-3 sm:py-4 flex items-center justify-between gap-3">
         <div class="min-w-0 flex-1">
-          <p class="text-[10px] sm:text-xs tracking-[0.18em] uppercase text-text-subtle font-medium">Intern</p>
+          <p class="text-[10px] sm:text-xs tracking-[0.18em] uppercase text-text-muted font-medium">Intern</p>
           <p class="font-display text-base sm:text-xl font-semibold text-text leading-tight truncate">Dienstleistungsvertrag</p>
         </div>
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
@@ -226,7 +226,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
     <div class="no-print bg-bg border-y border-border">
       <div class="container-page py-6 max-w-3xl flex items-center gap-4">
         <div class="h-px flex-1 bg-border"></div>
-        <p class="text-xs tracking-[0.18em] uppercase text-text-subtle font-medium shrink-0">Vertragsvorschau</p>
+        <p class="text-xs tracking-[0.18em] uppercase text-text-muted font-medium shrink-0">Vertragsvorschau</p>
         <div class="h-px flex-1 bg-border"></div>
       </div>
     </div>
@@ -234,26 +234,26 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
     <section class="contract-doc bg-bg">
       <article class="container-page py-12 sm:py-16 max-w-3xl text-text">
         <header class="mb-14 border-b border-border pb-10">
-          <p class="text-xs tracking-[0.18em] uppercase text-text-subtle font-medium">{c.contractSubtitle}</p>
+          <p class="text-xs tracking-[0.18em] uppercase text-text-muted font-medium">{c.contractSubtitle}</p>
           <h1 class="mt-4 font-display text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.05]">{c.contractTitleH1}</h1>
 
           <div class="mt-12 grid sm:grid-cols-2 gap-10 sm:gap-12">
             <div class="space-y-1.5">
-              <p class="text-[11px] uppercase tracking-[0.15em] text-text-subtle font-semibold pb-2">{c.agencyHeading}</p>
+              <p class="text-[11px] uppercase tracking-[0.15em] text-text-muted font-semibold pb-2">{c.agencyHeading}</p>
               <p class="text-[15px] font-semibold text-text">{SITE.legal.legalEntity}</p>
               <p class="text-[14px] text-text-muted leading-relaxed">{agencyAddressLine}</p>
               <p class="text-[14px] text-text-muted">{SITE.email}</p>
               <p class="text-[14px] text-text-muted tabular">{taxIdDisplay}</p>
-              <p class="text-xs text-text-subtle pt-2">{c.representedBy}: {SITE.founder}</p>
+              <p class="text-xs text-text-muted pt-2">{c.representedBy}: {SITE.founder}</p>
             </div>
             <div class="space-y-1.5">
-              <p class="text-[11px] uppercase tracking-[0.15em] text-text-subtle font-semibold pb-2">{c.clientHeading}</p>
+              <p class="text-[11px] uppercase tracking-[0.15em] text-text-muted font-semibold pb-2">{c.clientHeading}</p>
               <p class="text-[15px] font-semibold text-text"><span class="out-client-business-name">…</span> <span class="text-text-muted font-normal">(<span class="out-client-legal-form">—</span>)</span></p>
               <p class="text-[14px] text-text-muted"><span class="out-client-street">…</span></p>
               <p class="text-[14px] text-text-muted"><span class="out-client-postal-code">…</span> <span class="out-client-city">Berlin</span></p>
               <p class="text-[14px] text-text-muted out-client-email">…</p>
               <p class="text-[14px] text-text-muted tabular">USt-IdNr: <span class="out-client-ust-idnr">—</span></p>
-              <p class="text-xs text-text-subtle pt-2">{c.representedBy}: <span class="out-client-representative">…</span> (<span class="out-client-representative-role">…</span>)</p>
+              <p class="text-xs text-text-muted pt-2">{c.representedBy}: <span class="out-client-representative">…</span> (<span class="out-client-representative-role">…</span>)</p>
             </div>
           </div>
         </header>
@@ -268,7 +268,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
             <h2 class="contract-h2">{c.s2Heading}</h2>
             <p class="contract-p mb-3">{c.s2Intro}</p>
             <div id="services-rendered" class="space-y-5 mt-4">
-              <p class="out-no-services contract-p italic text-text-subtle">{c.s2NoServicesSelected}</p>
+              <p class="out-no-services contract-p italic text-text-muted">{c.s2NoServicesSelected}</p>
             </div>
           </section>
 
@@ -329,14 +329,14 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
           <h2 class="font-display text-xl font-semibold mb-10 tracking-[-0.01em]">{c.signaturesHeading}</h2>
           <div class="grid sm:grid-cols-2 gap-12 sm:gap-16">
             <div>
-              <p class="text-[11px] uppercase tracking-[0.15em] text-text-subtle font-semibold mb-3">{c.agencyHeading}</p>
+              <p class="text-[11px] uppercase tracking-[0.15em] text-text-muted font-semibold mb-3">{c.agencyHeading}</p>
               <p class="text-[14px] font-medium text-text leading-relaxed">{SITE.founder}</p>
               <p class="text-[13px] text-text-muted leading-relaxed">{SITE.legal.legalEntity}</p>
               <div class="sig-line"><span class="sig-label">{c.signaturePlace}, {c.signatureDateLabel}</span></div>
               <div class="sig-line"><span class="sig-label">{c.signatureLineLabel}</span></div>
             </div>
             <div>
-              <p class="text-[11px] uppercase tracking-[0.15em] text-text-subtle font-semibold mb-3">{c.clientHeading}</p>
+              <p class="text-[11px] uppercase tracking-[0.15em] text-text-muted font-semibold mb-3">{c.clientHeading}</p>
               <p class="text-[14px] font-medium text-text leading-relaxed"><span class="out-client-representative">…</span></p>
               <p class="text-[13px] text-text-muted leading-relaxed"><span class="out-client-business-name">…</span></p>
               <div class="sig-line"><span class="sig-label">{c.signaturePlace}, {c.signatureDateLabel}</span></div>
@@ -345,7 +345,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
           </div>
         </section>
 
-        <footer class="mt-16 pt-6 border-t border-border text-xs text-text-subtle text-center">
+        <footer class="mt-16 pt-6 border-t border-border text-xs text-text-muted text-center">
           {c.footerNote}
         </footer>
       </article>

@@ -33,6 +33,9 @@
   --color-text-subtle: #86868b; /* small-print only — 3.86:1 vs bg, AA-large only */
   --color-accent: #0071e3; /* Apple blue — CTA fill, 4.51:1 vs white, AA PASS */
   --color-accent-deep: #0058b8; /* darker hover, 7.31:1, AAA */
+  --color-accent-light: #2997ff; /* Apple dark-mode system blue — AA on dark surfaces.
+                                     5.55:1 on #1d1d1f (inverted-surface), 7.1:1 on #000.
+                                     Use this on bg-inverted-* and inside .hero-dark. */
   --color-border: #d2d2d7; /* Apple subtle 1px divider */
   --color-success: #28cd41;
   --color-warning: #ff9500;

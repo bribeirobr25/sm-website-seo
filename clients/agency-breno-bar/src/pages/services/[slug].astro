@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { PAGE_STRINGS } from '@/lib/page-strings';
 import { SERVICE_SLUGS, type ServiceSlug, getRelatedPortfolio } from '@/lib/services';
+import { heroSrcset } from '@/lib/srcset';
 
 export async function getStaticPaths() {
   return SERVICE_SLUGS.map((slug) => ({ params: { slug } }));
@@ -23,9 +24,11 @@ const related = getRelatedPortfolio(slug, 3);
       {s.heroImageSrc && (
         <img
           src={s.heroImageSrc}
+          srcset={heroSrcset(s.heroImageSrc)}
+          sizes="100vw"
           alt={s.heroImageAlt ?? ''}
-          width="2400"
-          height="1029"
+          width="1920"
+          height="823"
           loading="eager"
           fetchpriority="high"
           decoding="async"
@@ -34,7 +37,7 @@ const related = getRelatedPortfolio(slug, 3);
       )}
       <div class="hero-dark__veil" aria-hidden="true"></div>
       <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 lg:pt-44 lg:pb-40 max-w-4xl">
-        <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium mb-6">{s.heroEyebrow}</p>
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{s.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{s.heroTitle}</h1>
         <p class="mt-8 text-xl text-white/85 leading-[1.5] max-w-2xl">{s.heroBody}</p>
       </div>
@@ -62,8 +65,10 @@ const related = getRelatedPortfolio(slug, 3);
               <div class="aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-[22px] bg-surface">
                 <img
                   src={s.secondaryImageSrc}
+                  srcset={heroSrcset(s.secondaryImageSrc)}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   alt={s.secondaryImageAlt ?? ''}
-                  width="1800"
+                  width="1920"
                   height="2400"
                   loading="lazy"
                   decoding="async"
@@ -75,13 +80,13 @@ const related = getRelatedPortfolio(slug, 3);
             <div class="hidden lg:block"></div>
           )}
           <div class="order-1 lg:order-2">
-            <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium">{s.outcomeHeading}</p>
+            <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium">{s.outcomeHeading}</p>
             <h2 class="mt-4 font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]">Best for</h2>
             <p class="mt-6 text-inverted-text-muted leading-relaxed">{s.bestFor}</p>
             <ul class="mt-10 space-y-4 list-none p-0">
               {s.outcomeBullets.map((b) => (
                 <li class="flex gap-4 text-inverted-text">
-                  <span class="font-display text-accent text-2xl leading-none">●</span>
+                  <span class="font-display text-accent-light text-2xl leading-none">●</span>
                   <span class="leading-relaxed">{b}</span>
                 </li>
               ))}
@@ -102,7 +107,7 @@ const related = getRelatedPortfolio(slug, 3);
                   <img src={entry.imageSrc} alt={entry.imageAlt[locale]} loading="lazy" decoding="async" width="1600" height="1000" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-[var(--motion-warm)]" />
                 </div>
                 <div class="p-5">
-                  <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{entry.vertical}</p>
+                  <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{entry.vertical}</p>
                   <p class="mt-2 font-display text-lg font-semibold text-text">{entry.name}</p>
                 </div>
               </a>

@@ -60,7 +60,7 @@ const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto'
       <div class="relative container-page pt-12 pb-24 sm:pt-16 sm:pb-32 lg:pb-40">
         <a href={`${prefix}/portfolio`} class="inline-block mb-8 text-sm text-white/75 hover:text-white transition-colors">{p.backToPortfolio}</a>
         <div class="max-w-3xl">
-          <p class="text-[11px] tracking-[0.12em] uppercase text-accent font-medium">{entry.vertical}</p>
+          <p class="text-[11px] tracking-[0.12em] uppercase text-accent-light font-medium">{entry.vertical}</p>
           <h1 class="mt-4 font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{entry.name}</h1>
           <p class="mt-6 text-xl text-white/85 leading-[1.5]">{entry.shortDescription[locale]}</p>
         </div>
@@ -81,19 +81,19 @@ const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto'
 
         <aside class="space-y-8">
           <div>
-            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{p.stackLabel}</p>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{p.stackLabel}</p>
             <p class="mt-2 text-text tabular text-sm">{entry.stackBadge}</p>
           </div>
           <div>
-            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{p.verticalLabel}</p>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{p.verticalLabel}</p>
             <p class="mt-2 text-text">{entry.vertical}</p>
           </div>
           <div>
-            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{p.servicesLabel}</p>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{p.servicesLabel}</p>
             <p class="mt-2 text-text capitalize">{entry.services.join(' · ')}</p>
           </div>
           <div>
-            <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{p.visitLive}</p>
+            <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{p.visitLive}</p>
             <p class="mt-2 text-sm">
               <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="text-accent-deep hover:underline underline-offset-4">{p.visitLive} →</a>
             </p>
@@ -113,7 +113,7 @@ const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto'
                   <img src={r.imageSrc} alt={r.imageAlt[locale]} loading="lazy" decoding="async" width="1600" height="1000" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-[var(--motion-warm)]" />
                 </div>
                 <div class="p-5">
-                  <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{r.vertical}</p>
+                  <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{r.vertical}</p>
                   <p class="mt-2 font-display text-lg font-semibold text-text">{r.name}</p>
                 </div>
               </a>

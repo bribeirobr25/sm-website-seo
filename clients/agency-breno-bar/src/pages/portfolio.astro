@@ -15,7 +15,7 @@ const p = PAGE_STRINGS[locale].portfolio;
     <section class="hero-dark relative overflow-hidden">
       <div class="hero-dark__veil" aria-hidden="true"></div>
       <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 max-w-3xl">
-        <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium mb-6">{p.heroEyebrow}</p>
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{p.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
         <p class="mt-6 text-lg text-white/85 leading-[1.5]">{p.heroSubtitle}</p>
       </div>
@@ -34,10 +34,10 @@ const p = PAGE_STRINGS[locale].portfolio;
                 <img src={entry.imageSrc} alt={entry.imageAlt[locale]} loading={i < 3 ? 'eager' : 'lazy'} decoding="async" width="1600" height="1000" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[var(--motion-warm)]" />
               </div>
               <div class="p-6">
-                <p class="text-[11px] tracking-[0.12em] uppercase text-text-subtle font-medium">{entry.vertical}</p>
+                <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{entry.vertical}</p>
                 <p class="mt-2 font-display text-xl font-semibold text-text tracking-[-0.01em]">{entry.name}</p>
                 <p class="mt-2 text-sm text-text-muted line-clamp-2">{entry.shortDescription[locale]}</p>
-                <p class="mt-4 text-xs text-text-subtle tabular">{entry.stackBadge}</p>
+                <p class="mt-4 text-xs text-text-muted tabular">{entry.stackBadge}</p>
               </div>
             </a>
           ))}

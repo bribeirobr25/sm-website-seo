@@ -3,6 +3,7 @@ import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { PAGE_STRINGS } from '@/lib/page-strings';
+import { heroSrcset } from '@/lib/srcset';
 
 const locale = 'en' as const;
 const p = PAGE_STRINGS[locale].about;
@@ -15,9 +16,11 @@ const p = PAGE_STRINGS[locale].about;
       {p.heroImageSrc && (
         <img
           src={p.heroImageSrc}
+          srcset={heroSrcset(p.heroImageSrc)}
+          sizes="100vw"
           alt={p.heroImageAlt ?? ''}
-          width="2400"
-          height="1029"
+          width="1920"
+          height="823"
           loading="eager"
           fetchpriority="high"
           decoding="async"
@@ -26,7 +29,7 @@ const p = PAGE_STRINGS[locale].about;
       )}
       <div class="hero-dark__veil" aria-hidden="true"></div>
       <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 lg:pt-44 lg:pb-40 max-w-3xl">
-        <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium mb-6">{p.heroEyebrow}</p>
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{p.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
         <p class="mt-8 text-xl text-white/85 leading-[1.5]">{p.heroLead}</p>
       </div>

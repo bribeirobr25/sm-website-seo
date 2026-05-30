@@ -15,7 +15,7 @@ const p = PAGE_STRINGS[locale].contact;
     <section class="hero-dark relative overflow-hidden">
       <div class="hero-dark__veil" aria-hidden="true"></div>
       <div class="relative container-page pt-24 pb-20 sm:pt-32 sm:pb-24 max-w-3xl">
-        <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium mb-6">{p.heroEyebrow}</p>
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{p.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
         <p class="mt-6 text-xl text-white/85 leading-[1.5]">{p.heroSubtitle}</p>
       </div>
@@ -49,7 +49,7 @@ const p = PAGE_STRINGS[locale].contact;
               minlength="2"
               maxlength="120"
               placeholder={p.formNamePlaceholder}
-              class="w-full px-4 py-3 min-h-[48px] rounded-md border border-border bg-bg text-text placeholder:text-text-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors"
+              class="w-full px-4 py-3 min-h-[48px] rounded-md border border-border bg-bg text-text placeholder:text-text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors"
             />
           </div>
 
@@ -62,7 +62,7 @@ const p = PAGE_STRINGS[locale].contact;
               required
               maxlength="320"
               placeholder={p.formEmailPlaceholder}
-              class="w-full px-4 py-3 min-h-[48px] rounded-md border border-border bg-bg text-text placeholder:text-text-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors"
+              class="w-full px-4 py-3 min-h-[48px] rounded-md border border-border bg-bg text-text placeholder:text-text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors"
             />
           </div>
 
@@ -76,7 +76,7 @@ const p = PAGE_STRINGS[locale].contact;
               maxlength="2000"
               rows="6"
               placeholder={p.formMessagePlaceholder}
-              class="w-full px-4 py-3 rounded-md border border-border bg-bg text-text placeholder:text-text-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors leading-relaxed"
+              class="w-full px-4 py-3 rounded-md border border-border bg-bg text-text placeholder:text-text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors leading-relaxed"
             ></textarea>
           </div>
 
@@ -88,7 +88,7 @@ const p = PAGE_STRINGS[locale].contact;
             <span id="contact-submit-label">{p.formSubmit}</span>
           </button>
 
-          <p class="text-xs text-text-subtle leading-relaxed">{p.privacyNote}</p>
+          <p class="text-xs text-text-muted leading-relaxed">{p.privacyNote}</p>
 
           {/* Status panel */}
           <div
