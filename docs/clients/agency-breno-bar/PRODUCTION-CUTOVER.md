@@ -20,6 +20,7 @@ Status legend: `[DONE]` shipped and live · `[PENDING DOMAIN]` waiting for `bren
 | §1.6 | Resend domain verification + production API key | `[PENDING DOMAIN]` |
 | §1.7 | Sentry production project DSN | `[PENDING OWNER]` (verify Vercel env) |
 | §1.8 | GBP listing claim with production URL | `[PENDING DOMAIN]` |
+| §1.9 | HSTS preload-list submission at `hstspreload.org` (one-way door) | `[PENDING DOMAIN]` |
 | §2.1–§2.9 | Per-page meta refinements (titles + descriptions, 3 locales) | `[DONE]` (deployed 2026-05-30) |
 | §3.1 | `knowsAbout` 8 EN → 22 trilingual | `[DONE]` |
 | §3.2 | `serviceType` 4 EN → 12 trilingual | `[DONE]` |
@@ -136,6 +137,23 @@ GBP is its own pre-launch deliverable, but the production URL is the value GBP n
 | Add 3 verticals to "Services" | GBP > Services | "Website design", "Search engine optimization", "Google Business Profile setup". |
 | Hours | GBP | "By appointment" (matches `SITE.hours.appointment`). |
 | Photos | GBP | Minimum 5 photos: 1 logo, 1 cover (1200 x 627), 3 supporting (studio, neighborhood, work-in-progress). Same photography as the schema 3-aspect set. |
+
+### 1.9. HSTS preload-list submission `[PENDING DOMAIN]`
+
+The agency's `vercel.json` already emits the preload-eligible HSTS header (`Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`). Submitting `breno-bar.com` to the shared browser preload list hard-pins it to HTTPS in every Chrome / Firefox / Safari shipped after the next release, closing the first-visit SSL-stripping window that HSTS alone cannot.
+
+| Action | Where | Detail |
+|---|---|---|
+| Verify the header is live on the new domain | shell | `curl -sI https://breno-bar.com/ \| grep -i strict-transport-security` — confirm the response carries `max-age=63072000; includeSubDomains; preload`. |
+| Verify apex + www both serve HTTPS only | shell | `curl -sI http://breno-bar.com/` and `curl -sI http://www.breno-bar.com/` must both 301/308-redirect to `https://`. Vercel's apex + www config does this automatically; sanity-check before submitting. |
+| Submit to the preload list | https://hstspreload.org/ | Enter `breno-bar.com`. The form validates the 4 prerequisites: valid cert, redirect HTTP → HTTPS on apex, `max-age` ≥ 31536000, both `includeSubDomains` + `preload` directives present. Vercel meets all four. Submit. |
+| Track inclusion | the same form | The form's status page shows `pending`, then `preloaded` once it rolls into the next Chrome stable release. Typical timeline: 6 to 12 weeks. |
+
+**One-way door — read before submitting.** HSTS preload is effectively irreversible. Removal requires a formal request and takes 6 to 12 months minimum to propagate. Submitting commits the agency to HTTPS-only on `breno-bar.com` and every subdomain forever. Vercel makes this trivial (free certs, auto-renewal), so it's the right move for a marketing site that owns its DNS, but never preload a domain you might want to point at a non-HTTPS legacy system later.
+
+**Why bother:** without preload, a user typing `breno-bar.com` (no protocol) into a fresh browser session that has never visited the site gets one HTTP request before the HSTS header pins them to HTTPS. An active network attacker on that hop (cafe wifi, hostile ISP) can intercept and downgrade. Preload closes this on a per-browser basis the moment the user updates their browser.
+
+**Do not run §1.9 until §1.1 and §1.2 are clean.** Submitting before the domain serves the correct header is a wasted submission.
 
 ---
 
@@ -585,8 +603,9 @@ When the real domain arrives, run in this order:
 10. GSC Domain property added, sitemap submitted, ~30 URLs individually URL-inspected
 11. Bing Webmaster Tools imported from GSC
 12. GBP listing created or claimed, website URL set
-13. Apply §2 per-page meta refinements (commit + redeploy)
-14. Apply §3.1 to §3.3 schema enhancements (commit + redeploy)
-15. Monitor §4.2 + §4.3 windows.
+13. HSTS preload submitted at https://hstspreload.org/ (verify header + redirects first; this is a one-way door, see §1.9)
+14. ~~Apply §2 per-page meta refinements~~ already shipped 2026-05-30 (skip)
+15. ~~Apply §3.1 to §3.3 schema enhancements~~ already shipped 2026-05-30 (skip)
+16. Monitor §4.2 + §4.3 windows.
 
 Done is the day the home page shows up on its own brand search ("breno-bar") within the first 3 results. That should happen 3 to 14 days after the §1 gates are clean.

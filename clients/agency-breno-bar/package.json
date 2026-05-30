@@ -32,5 +32,10 @@
     "sharp": "^0.34.5",
     "typescript": "^5.7.2"
   },
-  "packageManager": "pnpm@9.15.0"
+  "packageManager": "pnpm@9.15.0",
+  "pnpm": {
+    "overrides": {
+      "yaml@<2.8.3": "^2.8.3"
+    }
+  }
 }

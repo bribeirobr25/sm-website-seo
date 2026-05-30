@@ -146,7 +146,9 @@ export const POST: APIRoute = async ({ request }) => {
       to: notifyTo,
       replyTo: email,
       subject: `[breno-bar] New inquiry from ${name} (${locale})`,
-      text: `Name:    ${name}\nEmail:   ${email}\nLocale:  ${locale}\nIP:      ${ip}\n\nMessage:\n${message}`,
+      // IP intentionally NOT logged in the email body — DSGVO data-minimisation.
+      // Rate-limit keeps the IP in server memory for `RATE_LIMIT_MS` only, never persisted.
+      text: `Name:    ${name}\nEmail:   ${email}\nLocale:  ${locale}\n\nMessage:\n${message}`,
       html: `
         <h2 style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0 0 16px;">New inquiry via breno-bar</h2>
         <table style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; line-height: 1.6;" cellpadding="0" cellspacing="0">
@@ -157,7 +159,7 @@ export const POST: APIRoute = async ({ request }) => {
         <hr style="border: none; border-top: 1px solid #d2d2d7; margin: 24px 0;" />
         <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(message)}</p>
         <hr style="border: none; border-top: 1px solid #d2d2d7; margin: 24px 0;" />
-        <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: #86868b;">IP: ${escapeHtml(ip)} · Sent ${new Date().toISOString()}</p>
+        <p style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; color: #86868b;">Sent ${new Date().toISOString()}</p>
       `,
     });
 
