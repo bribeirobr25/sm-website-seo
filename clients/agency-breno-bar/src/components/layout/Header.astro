@@ -121,7 +121,7 @@ const localeSwitcher = LOCALES.map((l) => ({
       <button
         id="hamburger-toggle"
         type="button"
-        class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-text hover:text-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-text hover:text-accent-deep transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         aria-controls="mobile-nav"
         aria-expanded="false"
         aria-label={t.chrome.menuOpen}
@@ -166,13 +166,21 @@ const localeSwitcher = LOCALES.map((l) => ({
 
   if (toggle && nav && iconOpen && iconClose) {
     const openLabel = toggle.getAttribute('aria-label') ?? 'Open menu';
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('hidden', !open);
+      iconOpen.classList.toggle('hidden', open);
+      iconClose.classList.toggle('hidden', !open);
+      toggle.setAttribute('aria-label', open ? (closeLabelAttr ?? 'Close menu') : openLabel);
+    };
     toggle.addEventListener('click', () => {
-      const next = toggle.getAttribute('aria-expanded') !== 'true';
-      toggle.setAttribute('aria-expanded', String(next));
-      nav.classList.toggle('hidden', !next);
-      iconOpen.classList.toggle('hidden', next);
-      iconClose.classList.toggle('hidden', !next);
-      toggle.setAttribute('aria-label', next ? (closeLabelAttr ?? 'Close menu') : openLabel);
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
     });
   }
 

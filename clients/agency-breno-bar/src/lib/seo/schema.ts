@@ -14,7 +14,14 @@
 
 import { LOCALES, LOCALE_LANG, type Locale, SITE } from '../site';
 
-export function businessSchema(): Record<string, unknown> {
+/**
+ * Build the agency JSON-LD @graph.
+ * `locale` controls only the human-language `description` on the ProfessionalService
+ * node; everything else is locale-agnostic, and `knowsAbout` / `serviceType`
+ * surface trilingual terms simultaneously so Google's entity-extraction picks up
+ * signal for EN + DE + PT-BR queries regardless of the rendered page locale.
+ */
+export function businessSchema(locale: Locale = 'en'): Record<string, unknown> {
   const businessId = `${SITE.url}/#business`;
   const websiteId = `${SITE.url}/#website`;
   const personId = `${SITE.url}/#founder`;
@@ -59,7 +66,7 @@ export function businessSchema(): Record<string, unknown> {
     '@type': 'ProfessionalService',
     '@id': businessId,
     name: SITE.name,
-    description: SITE.tagline,
+    description: SITE.i18n[locale].tagline,
     url: SITE.url,
     image: images,
     email: SITE.email,
@@ -77,13 +84,28 @@ export function businessSchema(): Record<string, unknown> {
       { '@type': 'Country', name: 'Portugal' },
       { '@type': 'Country', name: 'Brazil' },
     ],
+    // Trilingual serviceType + knowsAbout: Google's entity extraction picks up
+    // EN + DE + PT-BR variants simultaneously per the agency's 3-market strategy
+    // (Berlin DE clients · Berlin EN-speaking expats · Brazilian-community niche).
     serviceType: [
+      // English
       'Website design',
       'Search engine optimization',
       'Google Business Profile',
       'Social media management',
+      // German
+      'Webdesign',
+      'Suchmaschinenoptimierung',
+      'Google Unternehmensprofil',
+      'Social-Media-Betreuung',
+      // Portuguese-BR
+      'Design de sites',
+      'SEO local',
+      'Perfil da Empresa no Google',
+      'Gestão de redes sociais',
     ],
     knowsAbout: [
+      // English
       'Web design',
       'Web development',
       'Local SEO',
@@ -91,7 +113,23 @@ export function businessSchema(): Record<string, unknown> {
       'Google Search Console',
       'Google Business Profile',
       'Multilingual websites',
-      'DSGVO compliance',
+      'GDPR compliance',
+      // German
+      'Webdesign',
+      'Webentwicklung',
+      'Lokales SEO',
+      'Suchmaschinenoptimierung',
+      'Google Unternehmensprofil',
+      'Mehrsprachige Webseiten',
+      'DSGVO-Konformität',
+      'Datenschutzkonformität',
+      // Portuguese-BR
+      'Design de sites',
+      'Desenvolvimento web',
+      'SEO local',
+      'Perfil da Empresa no Google',
+      'Sites multilíngues',
+      'Conformidade com LGPD',
     ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',

@@ -39,21 +39,15 @@ const articleSchema = portfolioCaseSchema({
 >
   <Header locale={locale} localePath={`/portfolio/${entry.slug}`} />
   <main id="main">
-    <section class="bg-bg">
-      <div class="container-page py-12 sm:py-16">
-        <a href="/portfolio" class="inline-block mb-8 text-sm text-text-muted hover:text-text transition-colors">{p.backToPortfolio}</a>
+    <section class="hero-dark relative overflow-hidden">
+      <img src={entry.imageSrc} alt={entry.imageAlt[locale]} width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async" class="hero-dark__img" />
+      <div class="hero-dark__veil" aria-hidden="true"></div>
+      <div class="relative container-page pt-12 pb-24 sm:pt-16 sm:pb-32 lg:pb-40">
+        <a href="/portfolio" class="inline-block mb-8 text-sm text-white/75 hover:text-white transition-colors">{p.backToPortfolio}</a>
         <div class="max-w-3xl">
-          <p class="text-[11px] tracking-[0.12em] uppercase text-accent-deep font-medium">{entry.vertical}</p>
-          <h1 class="mt-4 font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-text leading-[1.04] tracking-[-0.03em]">{entry.name}</h1>
-          <p class="mt-6 text-xl text-text-muted leading-[1.5]">{entry.shortDescription[locale]}</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-surface">
-      <div class="container-page py-8 sm:py-12">
-        <div class="rounded-[22px] overflow-hidden border border-border shadow-elev">
-          <img src={entry.imageSrc} alt={entry.imageAlt[locale]} width="1600" height="1000" loading="eager" fetchpriority="high" decoding="async" class="w-full h-auto" />
+          <p class="text-[11px] tracking-[0.12em] uppercase text-accent font-medium">{entry.vertical}</p>
+          <h1 class="mt-4 font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{entry.name}</h1>
+          <p class="mt-6 text-xl text-white/85 leading-[1.5]">{entry.shortDescription[locale]}</p>
         </div>
       </div>
     </section>

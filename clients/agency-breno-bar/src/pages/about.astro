@@ -11,32 +11,26 @@ const p = PAGE_STRINGS[locale].about;
 <BaseLayout title={p.title} description={p.description} locale={locale} localePath="/about">
   <Header locale={locale} localePath="/about" />
   <main id="main">
-    <section class="bg-hero-gradient">
-      <div class="container-page py-24 sm:py-32 max-w-3xl">
-        <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium mb-6">{p.heroEyebrow}</p>
-        <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-text leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
-        <p class="mt-8 text-xl text-text-muted leading-[1.5]">{p.heroLead}</p>
+    <section class="hero-dark relative overflow-hidden">
+      {p.heroImageSrc && (
+        <img
+          src={p.heroImageSrc}
+          alt={p.heroImageAlt ?? ''}
+          width="2400"
+          height="1029"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="hero-dark__img"
+        />
+      )}
+      <div class="hero-dark__veil" aria-hidden="true"></div>
+      <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 lg:pt-44 lg:pb-40 max-w-3xl">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium mb-6">{p.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
+        <p class="mt-8 text-xl text-white/85 leading-[1.5]">{p.heroLead}</p>
       </div>
     </section>
-
-    {p.heroImageSrc && (
-      <figure class="bg-bg pt-0 pb-16 sm:pb-20">
-        <div class="container-page max-w-[1400px]">
-          <div class="aspect-[4/5] sm:aspect-[21/9] lg:aspect-[24/9] overflow-hidden rounded-[22px] bg-surface">
-            <img
-              src={p.heroImageSrc}
-              alt={p.heroImageAlt ?? ''}
-              width="2400"
-              height="1029"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-              class="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </figure>
-    )}
 
     <section class="section bg-bg">
       <div class="container-page max-w-4xl space-y-16 sm:space-y-24">

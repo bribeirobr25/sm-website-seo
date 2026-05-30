@@ -20,6 +20,10 @@ import type { Locale } from './site';
 export interface ServiceStrings {
   name: string;
   shortTagline: string; // 1-line in the services overview card
+  /** Optional <title> override for the detail page. Falls back to `${name} — breno-bar`. */
+  seoTitle?: string;
+  /** Optional meta description for the detail page. Falls back to `shortTagline`. */
+  seoDescription?: string;
   heroEyebrow: string;
   heroTitle: string;
   heroBody: string;
@@ -157,12 +161,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     home: {
       title: 'breno-bar — Websites worth being proud of.',
       description:
-        'A small Berlin studio building websites for owner-led businesses. Website, SEO, Google Business Profile. Trilingual delivery.',
+        'A small Berlin web agency for owner-led businesses. Multilingual website design, local SEO, Google Business Profile. English, German, Portuguese.',
       heroEyebrow: 'STUDIO · BERLIN',
       heroTitleLines: ['Websites worth', 'being proud of.'],
       heroSubtitle:
         'For the small Berlin businesses that hold a Kiez together. We build the websites worthy of them.',
-      heroImageSrc: '/img/home/hero-altbau-kiez.jpg',
+      heroImageSrc: '/img/home/hero-altbau-kiez.webp',
       heroImageAlt:
         'A classic Berlin Altbau street: ornate facade in white and orange, ground-floor café with red awning, people at outdoor tables, trees casting shadows on the cobblestones.',
       statTitle: 'Numbers we like',
@@ -186,7 +190,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         "We don't sell ad campaigns you can't sustain, dashboards you can't read, or growth that doesn't turn into customers. We build the room people walk into. That's the whole pitch.",
       ],
       aboutReadMore: 'Read the studio philosophy →',
-      aboutImageSrc: '/img/home/studio-notebook.jpg',
+      aboutImageSrc: '/img/home/studio-notebook.webp',
       aboutImageAlt:
         'Overhead view of a small wooden table with a leather notebook, pen, and coffee mug, lit by slatted window light.',
       ctaEyebrow: 'Start a conversation',
@@ -195,9 +199,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Reply within one business day. No sales call. No decks. Just a one-paragraph answer.',
     },
     services: {
-      title: 'Services — breno-bar',
+      title: 'Web design, SEO and Google Business Profile services in Berlin — breno-bar',
       description:
-        'Three core services for owner-led businesses: website creation, search-engine optimization, Google Business Profile setup. Plus optional social-media management.',
+        'Web design, local SEO, and Google Business Profile setup for small Berlin businesses. Sold one at a time. No upsell, no retainer pressure.',
       heroEyebrow: 'Services',
       heroTitle: 'Three services. One studio. No upsell.',
       heroSubtitle:
@@ -206,11 +210,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         website: {
           name: 'Website',
           shortTagline: 'The first room your next customer will walk into.',
+          seoTitle: 'Small business website design in Berlin — breno-bar',
+          seoDescription:
+            'Multilingual websites for Berlin restaurants, cafés, salons, and trades. Fast on the worst U-Bahn signal. Live in 3 to 6 weeks. DSGVO and Impressum included.',
           heroEyebrow: 'Service · 01',
           heroTitle: 'A site that earns you the next customer.',
           heroBody:
             'Most of your next customers will meet you on a phone. Somewhere on Schönhauser Allee. Waiting for the U-Bahn. Between two meetings. What they see in those four seconds decides whether they walk in, or keep walking.',
-          heroImageSrc: '/img/services/website/hero-terrace.jpg',
+          heroImageSrc: '/img/services/website/hero-terrace.webp',
           heroImageAlt:
             'A restaurant seen through its front window at night, golden chandelier light, diners around tables, a server moving between them.',
           bullets: [
@@ -235,13 +242,16 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'The café that quietly raised its prices. The studio with a wait-list. The barber who stopped taking walk-ins. Businesses good enough to need a quieter, better front door.',
-          secondaryImageSrc: '/img/services/website/barista-pour.jpg',
+          secondaryImageSrc: '/img/services/website/barista-pour.webp',
           secondaryImageAlt:
             'A barista in a leather apron, side profile, focused on pouring milk from a steel pitcher at the espresso machine.',
         },
         seo: {
           name: 'SEO',
           shortTagline: 'The page someone sees just before they call you.',
+          seoTitle: 'Local SEO for small Berlin businesses — breno-bar',
+          seoDescription:
+            "Quiet, patient local SEO over 90 days. Schema, on-page, Search Console. For the bakery, the salon, the dentist, the plumber. One monthly note. No 12-tab dashboards.",
           heroEyebrow: 'Service · 02',
           heroTitle: 'Found by the people already looking.',
           heroBody:
@@ -268,16 +278,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'The Bäckerei, the salon, the dentist, the plumber. Any business where the customer is already searching. They just need to find you instead of someone else.',
-          heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
+          heroImageSrc: '/img/services/seo/hero-walking-phone.webp',
           heroImageAlt:
             'A man sitting on a city sidewalk, hands cradling a phone, a passerby blurred in the background.',
-          secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
+          secondaryImageSrc: '/img/services/seo/bakery-display.webp',
           secondaryImageAlt:
             'An overhead view of a bakery display case, croissants, danishes with red fruit, glass-jar cookies, marble counter, small label cards.',
         },
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'The first half-second of every local search.',
+          seoTitle: 'Google Business Profile setup and management in Berlin — breno-bar',
+          seoDescription:
+            'Verified ownership, geo-tagged photos, monthly posts, reviews answered within 48 hours. The listing that does the local-search heavy lifting.',
           heroEyebrow: 'Service · 03',
           heroTitle: 'The listing that does the local-search heavy lifting.',
           heroBody:
@@ -304,16 +317,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             "Anyone customers find with the word 'nearby' in the search. The studio, the clinic, the workshop, the kitchen. Anywhere with a door or a service area.",
-          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
+          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.webp',
           heroImageAlt:
             'A small Berlin shopfront. Green double doors, red enamel signage reading "Aseli — Berliner Original — seit 1921", ivy climbing the facade.',
-          secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
+          secondaryImageSrc: '/img/services/google-business/mid-phone-map.webp',
           secondaryImageAlt:
             'A hand holding a smartphone displaying a navigation map at night, surrounded by colourful city-light bokeh.',
         },
         'social-media': {
           name: 'Social media',
           shortTagline: "Two posts a week, in your voice, that don't take your Tuesday.",
+          seoTitle: 'Instagram management for small Berlin businesses — breno-bar',
+          seoDescription:
+            'Two posts a week, in your voice, drawn from your week. DMs answered on weekdays. No viral promises, no bought followers. Optional, not a retainer trap.',
           heroEyebrow: 'Service · 04 (optional)',
           heroTitle: 'A small social cadence you can actually sustain.',
           heroBody:
@@ -340,19 +356,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'The owner who knows social matters. And also knows they cannot personally be the one posting at nine on a Sunday night.',
-          heroImageSrc: '/img/services/social-media/hero-florist.jpg',
+          heroImageSrc: '/img/services/social-media/hero-florist.webp',
           heroImageAlt:
             'A florist seen through hanging plants in the doorway of her shop, working quietly at a counter of cut flowers.',
-          secondaryImageSrc: '/img/services/social-media/latte-overhead.jpg',
+          secondaryImageSrc: '/img/services/social-media/latte-overhead.webp',
           secondaryImageAlt:
             'Overhead view of four cappuccinos with leaf and heart latte art arranged on a small round wooden table.',
         },
       },
     },
     portfolio: {
-      title: 'Portfolio — breno-bar',
+      title: 'Selected work: Berlin web agency portfolio — breno-bar',
       description:
-        'Selected work — local-business demos and external projects. Each entry includes a live link and a short case study.',
+        'Nine projects across restaurants, cafés, salons, studios, education, and legal. Multilingual, fast, DSGVO-ready. Each entry includes a live link and a short case study.',
       heroEyebrow: 'Portfolio',
       heroTitle: 'Selected work.',
       heroSubtitle:
@@ -367,14 +383,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       detailDescriptionPrefix: 'Case study:',
     },
     about: {
-      title: 'About — breno-bar',
+      title: 'About the studio: Breno Ribeiro, web designer in Berlin — breno-bar',
       description:
         'A small Berlin studio building websites for owner-led businesses. Workshop philosophy: three services, no upsell.',
       heroEyebrow: 'About',
       heroTitle: 'A small studio with a slow practice.',
       heroLead:
         'breno-bar is one set of hands, in Berlin. Trilingual websites for owner-led businesses. Three services, not thirty, because nobody needed thirty.',
-      heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
+      heroImageSrc: '/img/about/berlin-altbau-dawn.webp',
       heroImageAlt:
         'A quiet Berlin street at dawn. Altbau buildings catching the first warm light, no traffic, no people.',
       sections: [
@@ -492,12 +508,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     home: {
       title: 'breno-bar — Webseiten, auf die man stolz sein kann.',
       description:
-        'Ein kleines Berliner Studio, das Webseiten für inhabergeführte Unternehmen baut. Website, SEO, Google Business Profile. Trilingual.',
+        'Webdesign und lokales SEO aus Berlin für kleine, inhabergeführte Unternehmen. Mehrsprachige Webseiten, Google Unternehmensprofil, DSGVO-konform.',
       heroEyebrow: 'STUDIO · BERLIN',
       heroTitleLines: ['Webseiten, auf die', 'man stolz sein kann.'],
       heroSubtitle:
         'Für die kleinen Berliner Geschäfte, die einen Kiez zusammenhalten. Wir bauen die Webseiten, die ihrer würdig sind.',
-      heroImageSrc: '/img/home/hero-altbau-kiez.jpg',
+      heroImageSrc: '/img/home/hero-altbau-kiez.webp',
       heroImageAlt:
         'Eine klassische Berliner Altbaustraße: ornamentale Fassade in Weiß und Orange, Café im Erdgeschoss mit roter Markise, Menschen an Außentischen, Bäume werfen Schatten aufs Kopfsteinpflaster.',
       statTitle: 'Zahlen, die wir mögen',
@@ -521,7 +537,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Wir verkaufen keine Werbekampagnen, die du nicht halten kannst, keine Dashboards, die du nicht liest, und kein Wachstum, das nicht zu Kund:innen wird. Wir bauen den Ort, an den die Leute kommen. Das ist das ganze Versprechen.',
       ],
       aboutReadMore: 'Studio-Philosophie lesen →',
-      aboutImageSrc: '/img/home/studio-notebook.jpg',
+      aboutImageSrc: '/img/home/studio-notebook.webp',
       aboutImageAlt:
         'Draufsicht auf einen kleinen Holztisch mit Lederheft, Stift und Kaffeetasse, beleuchtet durch das Lattenmuster der Jalousien.',
       ctaEyebrow: 'Gespräch starten',
@@ -530,9 +546,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Antwort innerhalb eines Werktags. Kein Verkaufsgespräch. Keine Folien. Nur eine Antwort in einem Absatz.',
     },
     services: {
-      title: 'Leistungen — breno-bar',
+      title: 'Webdesign, SEO und Google Unternehmensprofil aus Berlin — breno-bar',
       description:
-        'Drei Kernleistungen für inhabergeführte Unternehmen: Website-Erstellung, Suchmaschinen-Optimierung, Google Business Profile. Plus optionale Social-Media-Pflege.',
+        'Webdesign, lokales SEO und Google Unternehmensprofil für kleine Berliner Geschäfte. Einzeln verkauft. Kein Upsell, kein Druck auf einen Vertrag.',
       heroEyebrow: 'Leistungen',
       heroTitle: 'Drei Leistungen. Ein Studio. Kein Upsell.',
       heroSubtitle:
@@ -541,11 +557,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         website: {
           name: 'Website',
           shortTagline: 'Der erste Ort, an den dein nächster Kunde kommt.',
+          seoTitle: 'Webseite für kleine Unternehmen in Berlin — breno-bar',
+          seoDescription:
+            'Mehrsprachige Webseiten für Berliner Cafés, Restaurants, Salons und Handwerk. Schnell auch im schwächsten U-Bahn-Signal. In drei bis sechs Wochen online. DSGVO und Impressum inklusive.',
           heroEyebrow: 'Leistung · 01',
           heroTitle: 'Eine Website, die dir den nächsten Kunden bringt.',
           heroBody:
             'Die meisten deiner nächsten Kund:innen treffen dich auf einem Handy. Irgendwo an der Schönhauser Allee. Am U-Bahnsteig. Zwischen zwei Terminen. Was sie in diesen vier Sekunden sehen, entscheidet, ob sie reingehen oder weitergehen.',
-          heroImageSrc: '/img/services/website/hero-terrace.jpg',
+          heroImageSrc: '/img/services/website/hero-terrace.webp',
           heroImageAlt:
             'Ein Restaurant durch sein Schaufenster bei Nacht, goldenes Kronleuchterlicht, Gäste an Tischen, ein Kellner in Bewegung.',
           bullets: [
@@ -570,13 +589,16 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'Das Café, das leise seine Preise erhöht hat. Das Studio mit der Warteliste. Der Barber, der keine Walk-ins mehr annimmt. Geschäfte, die gut genug sind, um eine ruhigere, bessere Eingangstür zu brauchen.',
-          secondaryImageSrc: '/img/services/website/barista-pour.jpg',
+          secondaryImageSrc: '/img/services/website/barista-pour.webp',
           secondaryImageAlt:
             'Ein Barista in lederner Schürze, Seitenprofil, konzentriert beim Aufschäumen der Milch an der Espressomaschine.',
         },
         seo: {
           name: 'SEO',
           shortTagline: 'Die Seite, die jemand sieht, kurz bevor er dich anruft.',
+          seoTitle: 'Lokales SEO für kleine Berliner Unternehmen — breno-bar',
+          seoDescription:
+            'Geduldiges, lokales SEO über 90 Tage. Schema, On-Page, Google Search Console. Für die Bäckerei, den Salon, die Praxis, den Handwerker. Eine Notiz im Monat. Keine zwölf Dashboard-Tabs.',
           heroEyebrow: 'Leistung · 02',
           heroTitle: 'Gefunden von Menschen, die schon suchen.',
           heroBody:
@@ -603,16 +625,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'Die Bäckerei, der Salon, die Praxis, der Klempner. Jedes Geschäft, bei dem Kund:innen schon suchen. Sie müssen dich nur finden statt jemand anderen.',
-          heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
+          heroImageSrc: '/img/services/seo/hero-walking-phone.webp',
           heroImageAlt:
             'Ein Mann sitzt auf einem Bürgersteig, Hände um sein Handy, eine vorbeigehende Person verschwommen im Hintergrund.',
-          secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
+          secondaryImageSrc: '/img/services/seo/bakery-display.webp',
           secondaryImageAlt:
             'Draufsicht auf die Auslage einer Bäckerei, Croissants, Danishes mit roten Früchten, Keksgläser, Marmortresen, kleine Etiketten.',
         },
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'Die erste halbe Sekunde jeder lokalen Suche.',
+          seoTitle: 'Google Unternehmensprofil einrichten und pflegen, Berlin — breno-bar',
+          seoDescription:
+            'Verifizierte Inhaberschaft, geo-getaggte Fotos, monatliche Beiträge, Rezensionen innerhalb von 48 Stunden beantwortet. Das Profil, das die lokale Sichtbarkeit übernimmt.',
           heroEyebrow: 'Leistung · 03',
           heroTitle: 'Der Eintrag, der die lokale Suche macht.',
           heroBody:
@@ -639,10 +664,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             "Alle, die Kund:innen mit dem Wort 'in der Nähe' in der Suche finden. Das Studio, die Praxis, die Werkstatt, die Küche. Überall mit einer Tür oder einem Servicegebiet.",
-          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
+          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.webp',
           heroImageAlt:
             'Ein kleines Berliner Schaufenster. Grüne Doppeltüren, rotes Emailschild „Aseli — Berliner Original — seit 1921", Efeu an der Fassade.',
-          secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
+          secondaryImageSrc: '/img/services/google-business/mid-phone-map.webp',
           secondaryImageAlt:
             'Eine Hand hält ein Smartphone mit einer Navigations-Karte bei Nacht, umgeben von bunten Bokeh-Stadtlichtern.',
         },
@@ -650,6 +675,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           name: 'Social Media',
           shortTagline:
             'Zwei Beiträge pro Woche, in deiner Stimme, die dir den Dienstag nicht stehlen.',
+          seoTitle: 'Instagram-Betreuung für kleine Berliner Geschäfte — breno-bar',
+          seoDescription:
+            'Zwei Posts pro Woche, in deiner Stimme, aus deiner Woche heraus. DMs werktags beantwortet. Keine viralen Versprechen, keine gekauften Follower.',
           heroEyebrow: 'Leistung · 04 (optional)',
           heroTitle: 'Ein kleiner Social-Rhythmus, den du wirklich halten kannst.',
           heroBody:
@@ -676,19 +704,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'Der/die Eigentümer:in, der/die weiß, dass Social Media zählt. Und gleichzeitig weiß, dass er/sie nicht persönlich sonntagabends um neun postet.',
-          heroImageSrc: '/img/services/social-media/hero-florist.jpg',
+          heroImageSrc: '/img/services/social-media/hero-florist.webp',
           heroImageAlt:
             'Eine Floristin, gesehen durch hängende Pflanzen in der Tür ihres Ladens, ruhig arbeitend an einem Tisch mit geschnittenen Blumen.',
-          secondaryImageSrc: '/img/services/social-media/latte-overhead.jpg',
+          secondaryImageSrc: '/img/services/social-media/latte-overhead.webp',
           secondaryImageAlt:
             'Draufsicht auf vier Cappuccinos mit Blatt- und Herz-Latte-Art auf einem kleinen runden Holztisch.',
         },
       },
     },
     portfolio: {
-      title: 'Portfolio — breno-bar',
+      title: 'Ausgewählte Arbeiten, Berliner Webagentur — breno-bar',
       description:
-        'Ausgewählte Arbeiten — Demos lokaler Unternehmen und externe Projekte. Jeder Eintrag mit Live-Link und einer kurzen Fallstudie.',
+        'Neun Projekte aus Gastronomie, Beauty, Studio, Bildung und Recht. Mehrsprachig, schnell, DSGVO-konform. Jeder Eintrag mit Live-Link und kurzer Fallstudie.',
       heroEyebrow: 'Portfolio',
       heroTitle: 'Ausgewählte Arbeiten.',
       heroSubtitle:
@@ -703,14 +731,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       detailDescriptionPrefix: 'Fallstudie:',
     },
     about: {
-      title: 'Studio — breno-bar',
+      title: 'Über das Studio: Breno Ribeiro, Webdesigner in Berlin — breno-bar',
       description:
         'Ein kleines Berliner Studio, das Webseiten für inhabergeführte Unternehmen baut. Werkstatt-Philosophie: drei Leistungen, kein Upsell.',
       heroEyebrow: 'Studio',
       heroTitle: 'Ein kleines Studio mit einer langsamen Praxis.',
       heroLead:
         'breno-bar ist ein Paar Hände, in Berlin. Mehrsprachige Webseiten für inhabergeführte Unternehmen. Drei Leistungen, nicht dreißig, weil niemand dreißig brauchte.',
-      heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
+      heroImageSrc: '/img/about/berlin-altbau-dawn.webp',
       heroImageAlt:
         'Eine ruhige Berliner Straße in der Dämmerung. Kahle Baumreihen, Altbauten im Hintergrund, der Fernsehturm in der Ferne, keine Menschen, kein Verkehr.',
       sections: [
@@ -828,12 +856,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     home: {
       title: 'breno-bar — Sites dos quais a gente se orgulha.',
       description:
-        'Um pequeno estúdio berlinense que constrói sites para negócios liderados pelo dono. Site, SEO, Google Business Profile. Trilíngue.',
+        'Web designer brasileiro em Berlim, para pequenos negócios. Sites multilíngues, SEO local, Google Business Profile. Em português, alemão e inglês.',
       heroEyebrow: 'ESTÚDIO · BERLIM',
       heroTitleLines: ['Sites dos quais', 'a gente se orgulha.'],
       heroSubtitle:
         'Para os pequenos negócios em Berlim que dão vida ao bairro. A gente constrói os sites que eles merecem.',
-      heroImageSrc: '/img/home/hero-altbau-kiez.jpg',
+      heroImageSrc: '/img/home/hero-altbau-kiez.webp',
       heroImageAlt:
         'Uma rua clássica de Altbau berlinense: fachada ornamentada em branco e laranja, café no térreo com toldo vermelho, pessoas em mesas externas, árvores projetando sombras nos paralelepípedos.',
       statTitle: 'Números que a gente gosta',
@@ -857,7 +885,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'A gente não vende campanhas de anúncios que você não consegue sustentar, dashboards que você não consegue ler, ou crescimento que não vira cliente. A gente constrói o espaço onde as pessoas entram. É essa a proposta toda.',
       ],
       aboutReadMore: 'Ler a filosofia do estúdio →',
-      aboutImageSrc: '/img/home/studio-notebook.jpg',
+      aboutImageSrc: '/img/home/studio-notebook.webp',
       aboutImageAlt:
         'Vista de cima de uma pequena mesa de madeira com caderno de couro, caneta e xícara de café, iluminada pelo padrão das venezianas.',
       ctaEyebrow: 'Comece uma conversa',
@@ -866,9 +894,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Resposta dentro de um dia útil. Sem call comercial. Sem deck. Só uma resposta de um parágrafo.',
     },
     services: {
-      title: 'Serviços — breno-bar',
+      title: 'Site, SEO local e Google Business Profile em Berlim — breno-bar',
       description:
-        'Três serviços principais para negócios liderados pelo dono: criação de site, SEO, Google Business Profile. Mais gestão opcional de redes sociais.',
+        'Criação de site, SEO local e perfil Google Empresa para pequenos negócios em Berlim. Vendidos um de cada vez. Sem upsell.',
       heroEyebrow: 'Serviços',
       heroTitle: 'Três serviços. Um estúdio. Sem upsell.',
       heroSubtitle:
@@ -877,11 +905,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         website: {
           name: 'Site',
           shortTagline: 'O primeiro espaço onde seu próximo cliente vai entrar.',
+          seoTitle: 'Site para pequenos negócios em Berlim — breno-bar',
+          seoDescription:
+            'Sites multilíngues para restaurantes, cafés, salões e oficinas em Berlim. Rápidos até no pior sinal de U-Bahn. No ar em 3 a 6 semanas.',
           heroEyebrow: 'Serviço · 01',
           heroTitle: 'Um site que traz o próximo cliente.',
           heroBody:
             'A maioria dos seus próximos clientes vai te encontrar pelo celular. Em algum ponto da Schönhauser Allee. Esperando o U-Bahn. Entre duas reuniões. O que eles virem nesses quatro segundos decide se entram, ou seguem em frente.',
-          heroImageSrc: '/img/services/website/hero-terrace.jpg',
+          heroImageSrc: '/img/services/website/hero-terrace.webp',
           heroImageAlt:
             'Um restaurante visto pela janela da frente à noite, luz dourada do candelabro, clientes em volta das mesas, um garçom se movendo entre elas.',
           bullets: [
@@ -906,13 +937,16 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'O café que aumentou silenciosamente os preços. O estúdio com lista de espera. O barbeiro que parou de aceitar walk-ins. Negócios bons o bastante para precisar de uma porta de entrada mais tranquila e melhor.',
-          secondaryImageSrc: '/img/services/website/barista-pour.jpg',
+          secondaryImageSrc: '/img/services/website/barista-pour.webp',
           secondaryImageAlt:
             'Um barista de avental de couro, perfil lateral, concentrado em vaporizar o leite na máquina de espresso.',
         },
         seo: {
           name: 'SEO',
           shortTagline: 'A página que alguém vê pouco antes de te ligar.',
+          seoTitle: 'SEO local para pequenos negócios em Berlim — breno-bar',
+          seoDescription:
+            'SEO local paciente, ao longo de 90 dias. Schema, on-page, Google Search Console. Uma nota por mês, sem dashboards intermináveis.',
           heroEyebrow: 'Serviço · 02',
           heroTitle: 'Encontrado por quem já está procurando.',
           heroBody:
@@ -939,16 +973,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'A padaria, o salão, o dentista, o encanador. Qualquer negócio onde o cliente já está procurando. Eles só precisam te encontrar em vez de outra pessoa.',
-          heroImageSrc: '/img/services/seo/hero-walking-phone.jpg',
+          heroImageSrc: '/img/services/seo/hero-walking-phone.webp',
           heroImageAlt:
             'Um homem sentado na calçada urbana, mãos segurando um celular, um transeunte desfocado ao fundo.',
-          secondaryImageSrc: '/img/services/seo/bakery-display.jpg',
+          secondaryImageSrc: '/img/services/seo/bakery-display.webp',
           secondaryImageAlt:
             'Vista de cima da vitrine de uma padaria, croissants, danishes com frutas vermelhas, potes de biscoito, balcão de mármore, pequenas etiquetas.',
         },
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'O primeiro meio-segundo de toda busca local.',
+          seoTitle: 'Configuração e gestão do perfil Google Empresa em Berlim — breno-bar',
+          seoDescription:
+            'Posse verificada, fotos geolocalizadas, posts mensais, avaliações respondidas em até 48 horas. O perfil que faz o trabalho pesado da busca local.',
           heroEyebrow: 'Serviço · 03',
           heroTitle: 'O perfil que faz o trabalho pesado da busca local.',
           heroBody:
@@ -975,16 +1012,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             "Qualquer um que clientes encontram com a palavra 'perto' na busca. O estúdio, a clínica, a oficina, a cozinha. Qualquer lugar com uma porta ou área de atendimento.",
-          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.jpg',
+          heroImageSrc: '/img/services/google-business/hero-aseli-storefront.webp',
           heroImageAlt:
             'Uma pequena fachada berlinense. Portas verdes duplas, placa em esmalte vermelho com "Aseli — Berliner Original — desde 1921", hera subindo pela parede.',
-          secondaryImageSrc: '/img/services/google-business/mid-phone-map.jpg',
+          secondaryImageSrc: '/img/services/google-business/mid-phone-map.webp',
           secondaryImageAlt:
             'Uma mão segurando um smartphone com um mapa de navegação à noite, cercada por bokeh colorido das luzes da cidade.',
         },
         'social-media': {
           name: 'Redes sociais',
           shortTagline: 'Dois posts por semana, na sua voz, que não roubam sua terça-feira.',
+          seoTitle: 'Gestão de Instagram para pequenos negócios em Berlim — breno-bar',
+          seoDescription:
+            'Dois posts por semana, na sua voz, tirados da sua semana. DMs respondidas em dias úteis. Sem promessas de viralizar, sem seguidores comprados.',
           heroEyebrow: 'Serviço · 04 (opcional)',
           heroTitle: 'Um pequeno ritmo social que você consegue mesmo manter.',
           heroBody:
@@ -1011,19 +1051,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           ],
           bestFor:
             'O dono que sabe que rede social importa. E que também sabe que não vai ser ele postando às nove da noite num domingo.',
-          heroImageSrc: '/img/services/social-media/hero-florist.jpg',
+          heroImageSrc: '/img/services/social-media/hero-florist.webp',
           heroImageAlt:
             'Uma florista vista por entre plantas penduradas na porta da loja, trabalhando em silêncio em um balcão de flores cortadas.',
-          secondaryImageSrc: '/img/services/social-media/latte-overhead.jpg',
+          secondaryImageSrc: '/img/services/social-media/latte-overhead.webp',
           secondaryImageAlt:
             'Vista de cima de quatro cappuccinos com latte art em folha e coração, dispostos sobre uma pequena mesa redonda de madeira.',
         },
       },
     },
     portfolio: {
-      title: 'Portfólio — breno-bar',
+      title: 'Trabalhos selecionados: portfólio de web design em Berlim — breno-bar',
       description:
-        'Trabalhos selecionados — demos de negócios locais e projetos externos. Cada item inclui um link ao vivo e um curto estudo de caso.',
+        'Nove projetos, de restaurantes a salões, estúdios, educação e direito. Multilíngues, rápidos, em conformidade com DSGVO. Cada item inclui um link ao vivo e um curto estudo de caso.',
       heroEyebrow: 'Portfólio',
       heroTitle: 'Trabalhos selecionados.',
       heroSubtitle:
@@ -1038,14 +1078,14 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       detailDescriptionPrefix: 'Estudo de caso:',
     },
     about: {
-      title: 'Estúdio — breno-bar',
+      title: 'Sobre o estúdio: Breno Ribeiro, web designer em Berlim — breno-bar',
       description:
         'Um pequeno estúdio berlinense que constrói sites para negócios liderados pelo dono. Filosofia de ateliê: três serviços, sem upsell.',
       heroEyebrow: 'Estúdio',
       heroTitle: 'Um pequeno estúdio com uma prática lenta.',
       heroLead:
         'breno-bar é um par de mãos, em Berlim. Sites multilíngues para negócios liderados pelo dono. Três serviços, não trinta, porque ninguém precisava de trinta.',
-      heroImageSrc: '/img/about/berlin-altbau-dawn.jpg',
+      heroImageSrc: '/img/about/berlin-altbau-dawn.webp',
       heroImageAlt:
         'Uma rua berlinense silenciosa no amanhecer. Árvores sem folhas, prédios Altbau ao fundo, a Fernsehturm ao longe, sem pessoas, sem trânsito.',
       sections: [

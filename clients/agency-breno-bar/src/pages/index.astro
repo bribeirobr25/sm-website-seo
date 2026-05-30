@@ -15,56 +15,50 @@ const featured = getFeaturedPortfolio();
 <BaseLayout title={p.title} description={p.description} locale={locale} localePath="/">
   <Header locale={locale} localePath="/" />
   <main id="main">
-    {/* HERO */}
-    <section class="bg-hero-gradient">
-      <div class="container-page pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28 text-center">
-        <p class="text-xs sm:text-sm tracking-[0.18em] uppercase text-accent-deep font-medium mb-8">{p.heroEyebrow}</p>
-        <h1 class="font-display text-[clamp(3rem,8vw,7rem)] font-semibold text-text leading-[1.02] tracking-[-0.04em] max-w-4xl mx-auto">
+    {/* HERO — dark cinematic register: photo backdrop + Apple-blue glow + white type */}
+    <section class="hero-dark relative overflow-hidden">
+      {p.heroImageSrc && (
+        <img
+          src={p.heroImageSrc}
+          alt={p.heroImageAlt ?? ''}
+          width="2400"
+          height="1029"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="hero-dark__img"
+        />
+      )}
+      <div class="hero-dark__veil" aria-hidden="true"></div>
+      <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 lg:pt-44 lg:pb-40 text-center">
+        <p class="text-xs sm:text-sm tracking-[0.18em] uppercase text-accent font-medium mb-8">{p.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(3rem,8vw,7rem)] font-semibold text-white leading-[1.02] tracking-[-0.04em] max-w-4xl mx-auto">
           {p.heroTitleLines.map((line, i) => <span class="block reveal-rise" style={`animation-delay:${i * 50}ms`}>{line}</span>)}
         </h1>
-        <p class="mt-8 max-w-xl mx-auto text-lg sm:text-xl text-text-muted leading-[1.5]">{p.heroSubtitle}</p>
+        <p class="mt-8 max-w-xl mx-auto text-lg sm:text-xl text-white/85 leading-[1.5]">{p.heroSubtitle}</p>
         <div class="mt-12 flex flex-wrap gap-3 justify-center">
-          <a href="/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-base font-medium">Start a project</a>
-          <a href="/portfolio" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full border border-border text-text hover:border-text transition-colors text-base font-medium">See the work →</a>
+          <a href="/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium">Start a project</a>
+          <a href="/portfolio" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full border border-white/30 text-white hover:border-white/70 transition-colors text-base font-medium">See the work →</a>
         </div>
       </div>
     </section>
 
-    {p.heroImageSrc && (
-      <figure class="bg-hero-gradient pb-16 sm:pb-20">
-        <div class="container-page max-w-[1400px]">
-          <div class="aspect-[4/5] sm:aspect-[21/9] lg:aspect-[24/9] overflow-hidden rounded-[22px] bg-surface">
-            <img
-              src={p.heroImageSrc}
-              alt={p.heroImageAlt ?? ''}
-              width="2400"
-              height="1029"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-              class="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </figure>
-    )}
-
-    {/* STATS STRIP */}
-    <section class="border-y border-border bg-surface-elev">
+    {/* STATS STRIP — dark register, continues the cinematic opening */}
+    <section class="bg-inverted-surface">
       <div class="container-page py-16 sm:py-20">
-        <p class="text-center text-xs tracking-[0.18em] uppercase text-text-subtle font-medium mb-10">{p.statTitle}</p>
+        <p class="text-center text-xs tracking-[0.18em] uppercase text-accent font-medium mb-10">{p.statTitle}</p>
         <dl class="grid grid-cols-3 gap-6 max-w-3xl mx-auto text-center">
           <div>
-            <dt class="font-display text-5xl sm:text-6xl text-text font-semibold tabular tracking-[-0.04em]">{p.statLine1}</dt>
-            <dd class="mt-2 text-sm text-text-muted">{p.statLabel1}</dd>
+            <dt class="font-display text-5xl sm:text-6xl text-inverted-text font-semibold tabular tracking-[-0.04em]">{p.statLine1}</dt>
+            <dd class="mt-2 text-sm text-inverted-text-muted">{p.statLabel1}</dd>
           </div>
           <div>
-            <dt class="font-display text-5xl sm:text-6xl text-text font-semibold tabular tracking-[-0.04em]">{p.statLine2}</dt>
-            <dd class="mt-2 text-sm text-text-muted">{p.statLabel2}</dd>
+            <dt class="font-display text-5xl sm:text-6xl text-inverted-text font-semibold tabular tracking-[-0.04em]">{p.statLine2}</dt>
+            <dd class="mt-2 text-sm text-inverted-text-muted">{p.statLabel2}</dd>
           </div>
           <div>
-            <dt class="font-display text-5xl sm:text-6xl text-text font-semibold tabular tracking-[-0.04em]">{p.statLine3}</dt>
-            <dd class="mt-2 text-sm text-text-muted">{p.statLabel3}</dd>
+            <dt class="font-display text-5xl sm:text-6xl text-inverted-text font-semibold tabular tracking-[-0.04em]">{p.statLine3}</dt>
+            <dd class="mt-2 text-sm text-inverted-text-muted">{p.statLabel3}</dd>
           </div>
         </dl>
       </div>

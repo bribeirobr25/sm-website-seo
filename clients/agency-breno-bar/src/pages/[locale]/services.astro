@@ -24,11 +24,12 @@ const prefix = LOCALE_PREFIX[locale];
 <BaseLayout title={p.title} description={p.description} locale={locale} localePath="/services">
   <Header locale={locale} localePath="/services" />
   <main id="main">
-    <section class="bg-hero-gradient">
-      <div class="container-page py-24 sm:py-32 text-center max-w-3xl mx-auto">
-        <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium mb-6">{p.heroEyebrow}</p>
-        <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-text leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
-        <p class="mt-6 text-lg text-text-muted leading-[1.5]">{p.heroSubtitle}</p>
+    <section class="hero-dark relative overflow-hidden">
+      <div class="hero-dark__veil" aria-hidden="true"></div>
+      <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 text-center max-w-3xl mx-auto">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent font-medium mb-6">{p.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
+        <p class="mt-6 text-lg text-white/85 leading-[1.5]">{p.heroSubtitle}</p>
       </div>
     </section>
 
