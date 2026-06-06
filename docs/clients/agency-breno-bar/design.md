@@ -73,15 +73,19 @@
 
 ## Composition decision (per `DESIGN-BEST-PRACTICES.md §6.5` section-variation gate)
 
-**Home composition** (top-to-bottom):
+**Home composition** (top-to-bottom) — expanded 2026-06-04 by the inbound-funnel sprint (items in **bold** are new):
 1. Apple-centered hero (eyebrow + 2-line big h1 + 1-line subtitle + 2 CTA pills, on subtle radial gradient)
 2. Stat strip (3 numbers: 10 projects shipped · 6 verticals · 4 languages — tabular)
-3. Services section (4-up alternating-dark tile grid with "Service · NN" eyebrow)
-4. Portfolio sampler (3 featured cards with hero image + vertical + name + 2-line description)
-5. About teaser (2-column: heading + 2-paragraph ethos)
-6. Inverted CTA (pure-black bg with "Let's build yours." + single pill CTA)
+3. **PromiseStrip (F5)** — 4 measurable-commitment cards on `bg-surface` (DRAFT numbers)
+4. Services section (4-up alternating-dark tile grid with "Service · NN" eyebrow)
+5. Portfolio sampler (3 featured cards with hero image + vertical + name + 2-line description)
+6. **ReviewsWall (F7)** — 3 quote cards (DRAFT example reviews, visibly labelled)
+7. **TrustBadgeRow (F7)** — dark capability-claim strip (DSGVO / Berlin / WCAG / ownership)
+8. About teaser (2-column: heading + 2-paragraph ethos)
+9. **FAQ (F6)** — `<details>` accordion on `bg-surface` + FAQPage schema
+10. Inverted CTA (pure-black bg with "Let's build yours." + single pill CTA)
 
-This composition is **distinct from the universal-9 default and every existing demo**. Verified 2026-05-27 against all 7 demos.
+The original 6-section composition was **distinct from the universal-9 default and every existing demo** (verified 2026-05-27). The 2026-06-04 expansion keeps the light/dark rhythm and stays off the universal-9 ordering. New funnel pages (`/pricing`, `/website-check`, `/tools/*`, German `/webdesign-berlin/*`) reuse these section components — see per-client `CLAUDE.md`.
 
 ## Per-vertical alignment notes
 
@@ -90,8 +94,8 @@ Closest template: `docs/design/templates/professional-services.md` Archetype A.
 | Convention | Our approach | Justified deviation |
 |---|---|---|
 | Hero photograph of founder/team | None — single-color background + typography hero | Apple-style; agency voice is product, not personal |
-| Service-pricing table | Omitted | User-chose "no pricing" — every CTA = contact form |
-| Testimonials / client logos | Omitted | No real testimonials to ship; would feel inauthentic. Replaced with "stat strip" of 10 projects / 6 verticals / 4 languages |
+| Service-pricing table | ~~Omitted~~ → **added 2026-06-04** (`/pricing`, hybrid packages, DRAFT figures) | Stance reversed by the inbound-funnel sprint; see BRIEF.md |
+| Testimonials / client logos | Stat strip in v1; **ReviewsWall added 2026-06-04** with DRAFT example quotes | Still honours "no invented testimonials" — the examples are visibly labelled DRAFT and must be swapped for real Google reviews before indexing (BRIEF.md #9) |
 | Case-study deep-dive | Yes — 9 case-study pages | Aligns with the template's recommendation |
 | Calendly / appointment booking | Omitted | Contact form preferred — founder retains qualifying control |
 

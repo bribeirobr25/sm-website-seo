@@ -27,7 +27,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
 ---
 
 <BaseLayout
-  title="Service Agreement — internal"
+  title="Website Subscription Agreement — internal"
   description="Hidden contract template. Not for public consumption."
   locale={locale}
   noindex={true}
@@ -38,7 +38,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
       <div class="container-page py-3 sm:py-4 flex items-center justify-between gap-3">
         <div class="min-w-0 flex-1">
           <p class="text-[10px] sm:text-xs tracking-[0.18em] uppercase text-text-muted font-medium">Internal</p>
-          <p class="font-display text-base sm:text-xl font-semibold text-text leading-tight truncate">Service Agreement</p>
+          <p class="font-display text-base sm:text-xl font-semibold text-text leading-tight truncate">Website Subscription Agreement</p>
         </div>
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
           <span id="save-pill" class="hidden md:inline-flex items-center gap-1.5 text-xs text-text-muted px-3 py-1.5 rounded-full bg-surface border border-border" aria-live="polite">
@@ -65,6 +65,11 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
           </button>
         </div>
       </div>
+    </div>
+
+    {/* DRAFT WARNING — visible on screen AND printed (prints on every copy) */}
+    <div class="border-y-2 px-4 py-3" style="border-color: var(--color-error); background: #fff5f5;" role="alert">
+      <p class="container-page text-sm leading-relaxed font-medium text-text">{c.draftBanner}</p>
     </div>
 
     {/* FORM PANEL */}
@@ -666,14 +671,14 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
       const vatStatus = fd.get('vat_status') || 'kleinunternehmer';
 
       document.querySelector('.out-build-line').textContent =
-        strings.s3BuildFeeLine.replace('{eur}', build > 0 ? eur(build) : '€ — (no build fee)');
+        strings.s3BuildFeeLine.replace('{eur}', build > 0 ? eur(build) : '€ — (no buy-out)');
       document.querySelector('.out-retainer-line').textContent =
-        strings.s3RetainerLine.replace('{eur}', retainer > 0 ? eur(retainer) : '€ — (no retainer)');
+        strings.s3RetainerLine.replace('{eur}', retainer > 0 ? eur(retainer) : '€ — (no monthly fee entered)');
 
       if (vatStatus === 'kleinunternehmer') {
         document.querySelector('.out-vat-line').textContent = strings.s3VatKleinLine;
       } else {
-        const net = build + retainer * 12;
+        const net = retainer; // monthly subscription net; any one-time buy-out is invoiced separately
         const vat = net * 0.19;
         const gross = net + vat;
         document.querySelector('.out-vat-line').textContent = strings.s3VatRegularLine.replace('{net}', eur(net)).replace('{vat}', eur(vat)).replace('{gross}', eur(gross));

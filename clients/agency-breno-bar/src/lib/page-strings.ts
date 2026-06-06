@@ -251,7 +251,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           shortTagline: 'The page someone sees just before they call you.',
           seoTitle: 'Local SEO for small Berlin businesses — breno-bar',
           seoDescription:
-            "Quiet, patient local SEO over 90 days. Schema, on-page, Search Console. For the bakery, the salon, the dentist, the plumber. One monthly note. No 12-tab dashboards.",
+            'Quiet, patient local SEO over 90 days. Schema, on-page, Search Console. For the bakery, the salon, the dentist, the plumber. One monthly note. No 12-tab dashboards.',
           heroEyebrow: 'Service · 02',
           heroTitle: 'Found by the people already looking.',
           heroBody:
@@ -372,7 +372,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroEyebrow: 'Portfolio',
       heroTitle: 'Selected work.',
       heroSubtitle:
-        "A few rooms we have built. Some for businesses already running on Schönhauser Allee, some still in demo form on a quiet preview link, waiting for the owner to say yes. All of them have a live link below.",
+        'A few rooms we have built. Some for businesses already running on Schönhauser Allee, some still in demo form on a quiet preview link, waiting for the owner to say yes. All of them have a live link below.',
       visitLive: 'Visit live site',
       backToPortfolio: '← All projects',
       relatedCases: 'Other recent work',

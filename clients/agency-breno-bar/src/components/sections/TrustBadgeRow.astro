@@ -1,0 +1,28 @@
+---
+/**
+ * TrustBadgeRow (F7) — compact credibility strip.
+ * Prop-driven. Content from FUNNEL[locale].trustBadges. No invented awards —
+ * these are factual capability claims (GDPR, accessibility, Berlin, ownership),
+ * not third-party badges. Add real award badges here once earned.
+ */
+interface Props {
+  eyebrow?: string;
+  items: readonly string[];
+}
+const { eyebrow, items } = Astro.props;
+const check = 'M20 6 9 17l-5-5';
+---
+
+<section class="bg-inverted-surface" aria-label={eyebrow ?? 'Trust'}>
+  <div class="container-page py-10 sm:py-12">
+    {eyebrow && <p class="text-center text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{eyebrow}</p>}
+    <ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 list-none p-0">
+      {items.map((item) => (
+        <li class="inline-flex items-center gap-2 text-inverted-text text-sm font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-light shrink-0" aria-hidden="true"><path d={check}></path></svg>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

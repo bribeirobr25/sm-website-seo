@@ -1,0 +1,65 @@
+---
+/**
+ * Local-pages hub (F1) — German. Lists every vertical × Bezirk landing page.
+ * Internal-linking hub so the 24 programmatic pages are crawlable from one place.
+ * German-only by design (Berlin local-search intent) — not in the trilingual set.
+ */
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import ContactBar from '@/components/ui/ContactBar.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { BEZIRKE, LOCAL_HUB, VERTICALS } from '@/lib/local-pages';
+
+const locale = 'de' as const;
+const h = LOCAL_HUB;
+---
+
+<BaseLayout title={h.metaTitle} description={h.metaDescription} locale={locale}>
+  <Header locale={locale} localePath="/" />
+  <main id="main">
+    <section class="hero-dark relative overflow-hidden">
+      <div class="hero-dark__veil" aria-hidden="true"></div>
+      <div class="relative container-page pt-24 pb-20 sm:pt-32 sm:pb-24 max-w-3xl">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{h.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{h.heroTitle}</h1>
+        <p class="mt-6 text-xl text-white/85 leading-[1.5]">{h.heroSubtitle}</p>
+      </div>
+    </section>
+
+    <section class="section bg-bg">
+      <div class="container-page space-y-14">
+        {VERTICALS.map((v) => (
+          <div>
+            <h2 class="font-display text-2xl sm:text-3xl text-text font-semibold tracking-[-0.02em]">{v.pageNoun}</h2>
+            <p class="mt-2 text-sm text-text-muted">{h.bezirkeLabel}</p>
+            <ul class="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-3 list-none p-0">
+              {BEZIRKE.map((b) => (
+                <li>
+                  <a
+                    href={`/webdesign-berlin/${v.slug}-${b.slug}`}
+                    class="flex items-center justify-between gap-2 rounded-[14px] bg-surface border border-border px-4 py-3 min-h-[48px] text-text hover:border-text/30 hover:bg-surface-elev transition-colors text-sm font-medium"
+                  >
+                    <span>{v.name} · {b.name}</span>
+                    <span class="text-accent-deep" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="bg-inverted-bg text-inverted-text">
+      <div class="container-page py-24 sm:py-32 text-center">
+        <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] max-w-2xl mx-auto">Deine Branche nicht dabei?</h2>
+        <p class="mt-6 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">Wir bauen für jede inhabergeführte Berliner Branche. Schreib uns kurz, was du machst.</p>
+        <div class="mt-10">
+          <a href="/de/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-bg text-text hover:bg-accent hover:text-bg transition-colors text-base font-medium">{h.ctaButton}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+  <ContactBar locale={locale} />
+</BaseLayout>

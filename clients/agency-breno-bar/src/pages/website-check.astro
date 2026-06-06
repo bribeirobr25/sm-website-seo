@@ -1,0 +1,107 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import ContactBar from '@/components/ui/ContactBar.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { FUNNEL } from '@/lib/funnel';
+import { LOCALE_PREFIX } from '@/lib/site';
+
+const locale = 'en' as const;
+const prefix = LOCALE_PREFIX[locale];
+const w = FUNNEL[locale].websiteCheck;
+const contactHref = `${prefix}/contact`;
+const check = 'M20 6 9 17l-5-5';
+---
+
+<BaseLayout title={w.metaTitle} description={w.metaDescription} locale={locale} localePath="/website-check">
+  <Header locale={locale} localePath="/website-check" />
+  <main id="main">
+    <section class="hero-dark relative overflow-hidden">
+      <div class="hero-dark__veil" aria-hidden="true"></div>
+      <div class="relative container-page pt-24 pb-20 sm:pt-32 sm:pb-24 max-w-3xl">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{w.heroEyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{w.heroTitle}</h1>
+        <p class="mt-6 text-xl text-white/85 leading-[1.5]">{w.heroSubtitle}</p>
+        <div class="mt-10 inline-flex flex-col rounded-[22px] bg-white/10 border border-white/15 px-7 py-5 backdrop-blur-sm">
+          <span class="font-display text-3xl font-semibold text-white tabular">{w.priceLine}</span>
+          <span class="mt-1 text-sm text-white/75">{w.priceSub}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-bg" aria-labelledby="cover-heading">
+      <div class="container-page">
+        <div class="max-w-3xl mb-12">
+          <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{w.coverEyebrow}</p>
+          <h2 id="cover-heading" class="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl text-text font-semibold tracking-[-0.03em] leading-[1.06]">{w.coverHeading}</h2>
+          <p class="mt-5 text-lg text-text-muted leading-[1.5]">{w.coverBody}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-5">
+          {w.covers.map((it, i) => (
+            <div class="reveal-rise rounded-[22px] bg-surface border border-border p-7" style={`animation-delay:${i * 50}ms`}>
+              <h3 class="font-display text-xl font-semibold text-text tracking-[-0.01em]">{it.title}</h3>
+              <p class="mt-3 text-text-muted leading-relaxed">{it.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-surface" aria-labelledby="steps-heading">
+      <div class="container-page">
+        <div class="max-w-3xl mb-12">
+          <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{w.stepsEyebrow}</p>
+          <h2 id="steps-heading" class="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl text-text font-semibold tracking-[-0.03em] leading-[1.06]">{w.stepsHeading}</h2>
+        </div>
+        <ol class="grid sm:grid-cols-3 gap-5 list-none p-0">
+          {w.steps.map((it, i) => (
+            <li class="reveal-rise rounded-[22px] bg-surface-elev border border-border p-7" style={`animation-delay:${i * 50}ms`}>
+              <h3 class="font-display text-lg font-semibold text-text tracking-[-0.01em]">{it.title}</h3>
+              <p class="mt-3 text-sm text-text-muted leading-relaxed">{it.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section bg-bg">
+      <div class="container-page grid lg:grid-cols-2 gap-12">
+        <div>
+          <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{w.getEyebrow}</p>
+          <h2 class="mt-4 font-display text-3xl sm:text-4xl text-text font-semibold tracking-[-0.03em] leading-[1.06]">{w.getHeading}</h2>
+          <ul class="mt-8 space-y-3 list-none p-0">
+            {w.gets.map((g) => (
+              <li class="flex items-start gap-3 text-text leading-relaxed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-1" aria-hidden="true"><path d={check}></path></svg>
+                <span>{g}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="rounded-[22px] bg-surface border border-border p-8">
+          <h3 class="font-display text-xl font-semibold text-text tracking-[-0.01em]">{w.forHeading}</h3>
+          <ul class="mt-6 space-y-3 list-none p-0">
+            {w.forItems.map((it) => (
+              <li class="flex items-start gap-3 text-text-muted leading-relaxed">
+                <span class="text-accent-deep mt-1.5 shrink-0" aria-hidden="true">•</span>
+                <span>{it}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-inverted-bg text-inverted-text">
+      <div class="container-page py-24 sm:py-32 text-center">
+        <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] leading-[1.05] max-w-2xl mx-auto">{w.ctaHeading}</h2>
+        <p class="mt-6 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">{w.ctaBody}</p>
+        <div class="mt-10">
+          <a href={contactHref} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-bg text-text hover:bg-accent hover:text-bg transition-colors text-base font-medium">{w.ctaButton}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+  <ContactBar locale={locale} />
+</BaseLayout>

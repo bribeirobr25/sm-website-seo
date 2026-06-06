@@ -1,0 +1,57 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import SiteScanTool from '@/components/sections/SiteScanTool.astro';
+import ContactBar from '@/components/ui/ContactBar.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { LOCALE_PREFIX } from '@/lib/site';
+import { TOOLS } from '@/lib/tools';
+
+const locale = 'en' as const;
+const prefix = LOCALE_PREFIX[locale];
+const s = TOOLS[locale].scan;
+const contactHref = `${prefix}/contact`;
+const check = 'M20 6 9 17l-5-5';
+---
+
+<BaseLayout title={s.metaTitle} description={s.metaDescription} locale={locale} localePath="/tools/website-scan">
+  <Header locale={locale} localePath="/tools/website-scan" />
+  <main id="main">
+    <section class="hero-dark relative overflow-hidden">
+      <div class="hero-dark__veil" aria-hidden="true"></div>
+      <div class="relative container-page pt-24 pb-20 sm:pt-32 sm:pb-24 max-w-3xl">
+        <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{s.eyebrow}</p>
+        <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{s.title}</h1>
+        <p class="mt-6 text-xl text-white/85 leading-[1.5]">{s.subtitle}</p>
+      </div>
+    </section>
+
+    <SiteScanTool locale={locale} />
+
+    <section class="section bg-surface">
+      <div class="container-page max-w-3xl">
+        <h2 class="font-display text-2xl font-semibold text-text tracking-[-0.02em]">{s.checksHeading}</h2>
+        <ul class="mt-6 grid sm:grid-cols-2 gap-x-10 gap-y-3 list-none p-0">
+          {s.checks.map((c) => (
+            <li class="flex items-start gap-3 text-text leading-relaxed">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-1" aria-hidden="true"><path d={check}></path></svg>
+              <span>{c}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-inverted-bg text-inverted-text">
+      <div class="container-page py-20 sm:py-28 text-center">
+        <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-[1.06] max-w-2xl mx-auto">{s.ctaHeading}</h2>
+        <p class="mt-5 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">{s.ctaBody}</p>
+        <div class="mt-9">
+          <a href={contactHref} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-bg text-text hover:bg-accent hover:text-bg transition-colors text-base font-medium">{s.ctaButton}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+  <ContactBar locale={locale} />
+</BaseLayout>

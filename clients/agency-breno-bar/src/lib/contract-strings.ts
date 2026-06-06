@@ -3,11 +3,15 @@
  *
  * Used by `src/pages/contract.astro` (EN) + `src/pages/[locale]/contract.astro` (DE).
  *
- * **LEGAL CAVEAT:** This template is a STARTING POINT drafted by an LLM with B2B
- * service-agreement conventions in mind. It is NOT lawyer-reviewed. Before
- * material use, have a Berlin-licensed Rechtsanwalt review the German text for
- * § 307 BGB AGB-Kontrolle, AVV cross-references, and jurisdiction-specific
- * protections. Cost of one review: ~€150–400. Worth it before client #3.
+ * **LEGAL CAVEAT — NOT lawyer-reviewed.** v2.0-DRAFT, reworked 2026-06-06 by an
+ * LLM for the agency's monthly-subscription model ("Website-Abo"): § 3 = monthly
+ * fee + optional one-time buy-out (no build fee); § 4 = cancellation takes the
+ * site offline (only content/data/domain handed over, not the build); § 5 = the
+ * website is LICENSED for the subscription term, not transferred. The page renders
+ * `draftBanner` as a printed red warning. Before ANY use, a Berlin-licensed
+ * Rechtsanwalt must finalize the German text: legal classification (Dienst-/
+ * Mietvertrag), § 307 BGB AGB-Kontrolle, Widerrufsrecht for consumers, the § 5
+ * licence + buy-out mechanics, and the AVV (Art. 28 GDPR) cross-reference.
  */
 
 export type LocaleEnDe = 'en' | 'de';
@@ -22,21 +26,21 @@ export const SERVICE_SCOPES: Record<LocaleEnDe, ServiceScope[]> = {
   en: [
     {
       slug: 'website',
-      name: 'Website creation',
+      name: 'Website subscription',
       defaultScope:
-        "Multi-page marketing website on Astro 6 or Next.js. Up to 12 pages. Multilingual (DE + EN by default; additional locales priced separately). Deployment on Vercel under the Client's account, with the domain in the Client's name and the codebase on the Client's GitHub. Includes cookie banner, privacy policy, and imprint pages drafted to the Client's business. WCAG 2.2 AA, mobile-first, Lighthouse > 90 mobile/desktop at launch.",
+        "Multi-page marketing website on Astro 6 or Next.js, built, hosted, and maintained by the Agency as part of the monthly subscription. Up to 12 pages. Multilingual (DE + EN by default; additional locales priced separately). The domain is registered in the Client's name. The website is deployed on the Agency's infrastructure; its source code and design remain the Agency's intellectual property and are licensed to the Client for the duration of the subscription (see § 5; an optional one-time buy-out is available). Includes cookie banner, privacy policy, and imprint pages drafted to the Client's business. WCAG 2.2 AA, mobile-first, Lighthouse > 90 mobile/desktop at launch.",
     },
     {
       slug: 'seo',
       name: 'Search-engine optimisation',
       defaultScope:
-        "On-page SEO + schema.org markup + Google Search Console and Bing Webmaster Tools setup under the Client's account. Initial audit with prioritised fix list. Monthly retainer includes: monthly report (impressions, position, conversions) with concrete next-step recommendations; quarterly keyword review; technical-SEO maintenance. No backlink purchases. No black-hat tactics.",
+        "On-page SEO + schema.org markup + Google Search Console and Bing Webmaster Tools setup under the Client's account. Initial audit with prioritised fix list. The monthly subscription includes: monthly report (impressions, position, conversions) with concrete next-step recommendations; quarterly keyword review; technical-SEO maintenance. No backlink purchases. No black-hat tactics.",
     },
     {
       slug: 'gbp',
       name: 'Google Business Profile',
       defaultScope:
-        'Setup, verification, and category/sub-category fit of the GBP listing. Service-area calibration, attributes, opening hours including holidays, geo-tagged photo uploads. Monthly retainer includes: 2 posts/month, all reviews responded to within 48 h, photo refresh, Q&A maintenance, quarterly insights review. Vanity review redirect (/review on Client domain) configured.',
+        'Setup, verification, and category/sub-category fit of the GBP listing. Service-area calibration, attributes, opening hours including holidays, geo-tagged photo uploads. The monthly subscription includes: 2 posts/month, all reviews responded to within 48 h, photo refresh, Q&A maintenance, quarterly insights review. Vanity review redirect (/review on Client domain) configured.',
     },
     {
       slug: 'social',
@@ -48,21 +52,21 @@ export const SERVICE_SCOPES: Record<LocaleEnDe, ServiceScope[]> = {
   de: [
     {
       slug: 'website',
-      name: 'Website-Erstellung',
+      name: 'Website-Abo',
       defaultScope:
-        'Mehrseitige Marketing-Website auf Astro 6 oder Next.js. Bis zu 12 Seiten. Mehrsprachig (DE + EN als Standard; weitere Sprachen separat berechnet). Deployment auf Vercel unter dem Konto des Auftraggebers, mit der Domain auf den Namen des Auftraggebers und der Codebasis auf dem GitHub-Konto des Auftraggebers. Inklusive Cookie-Banner, Datenschutzerklärung und Impressum, jeweils auf das Unternehmen des Auftraggebers angepasst. WCAG 2.2 AA, Mobile-First, Lighthouse > 90 Mobile/Desktop bei Launch.',
+        'Mehrseitige Marketing-Website auf Astro 6 oder Next.js, von der Agentur im Rahmen des Monats-Abos erstellt, gehostet und gepflegt. Bis zu 12 Seiten. Mehrsprachig (DE + EN als Standard; weitere Sprachen separat berechnet). Die Domain wird auf den Namen des Auftraggebers registriert. Die Website wird auf der Infrastruktur der Agentur betrieben; Quellcode und Design bleiben geistiges Eigentum der Agentur und werden dem Auftraggeber für die Dauer des Abos lizenziert (siehe § 5; optionale einmalige Ablöse verfügbar). Inklusive Cookie-Banner, Datenschutzerklärung und Impressum, jeweils auf das Unternehmen des Auftraggebers angepasst. WCAG 2.2 AA, Mobile-First, Lighthouse > 90 Mobile/Desktop bei Launch.',
     },
     {
       slug: 'seo',
       name: 'Suchmaschinen-Optimierung',
       defaultScope:
-        'On-Page-SEO + Schema.org-Markup + Einrichtung der Google Search Console und Bing Webmaster Tools unter dem Konto des Auftraggebers. Initial-Audit mit priorisierter Fix-Liste. Monatlicher Retainer enthält: monatlichen Report (Impressionen, Position, Conversions) mit konkreten nächsten Schritten; quartalsweise Keyword-Review; technische SEO-Pflege. Keine Backlink-Käufe. Keine Black-Hat-Taktiken.',
+        'On-Page-SEO + Schema.org-Markup + Einrichtung der Google Search Console und Bing Webmaster Tools unter dem Konto des Auftraggebers. Initial-Audit mit priorisierter Fix-Liste. Das monatliche Abo enthält: monatlichen Report (Impressionen, Position, Conversions) mit konkreten nächsten Schritten; quartalsweise Keyword-Review; technische SEO-Pflege. Keine Backlink-Käufe. Keine Black-Hat-Taktiken.',
     },
     {
       slug: 'gbp',
       name: 'Google Business Profile',
       defaultScope:
-        'Einrichtung, Verifizierung und passende Kategorie-Auswahl des GBP-Eintrags. Service-Area-Kalibrierung, Attribute, Öffnungszeiten inkl. Feiertage, geo-getaggte Foto-Uploads. Monatlicher Retainer enthält: 2 Beiträge/Monat, jede Bewertung innerhalb 48 h beantwortet, Foto-Aktualisierung, Q&A-Pflege, quartalsweise Insights-Review. Vanity-Bewertungs-Link (/bewertung auf Auftraggeber-Domain) eingerichtet.',
+        'Einrichtung, Verifizierung und passende Kategorie-Auswahl des GBP-Eintrags. Service-Area-Kalibrierung, Attribute, Öffnungszeiten inkl. Feiertage, geo-getaggte Foto-Uploads. Das monatliche Abo enthält: 2 Beiträge/Monat, jede Bewertung innerhalb 48 h beantwortet, Foto-Aktualisierung, Q&A-Pflege, quartalsweise Insights-Review. Vanity-Bewertungs-Link (/bewertung auf Auftraggeber-Domain) eingerichtet.',
     },
     {
       slug: 'social',
@@ -179,10 +183,10 @@ export interface ContractStrings {
 export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
   en: {
     draftBanner:
-      'DRAFT — this template has not been reviewed by a Rechtsanwalt. Before using for client #3 or any contract value above €5,000, have a Berlin-licensed lawyer review the DE version. This banner is hidden when printed.',
-    pageTitle: 'Service Agreement — fill, print, sign',
+      '⚠ DRAFT — NOT LAWYER-REVIEWED. Reworked 2026-06-06 for the agency’s monthly-subscription model ("Website-Abo", €219/€390/€570/mo, no setup) by an automated tool, not a Rechtsanwalt. The subscription clauses — § 3 (monthly fee + optional one-time buy-out), § 4 (cancellation → site offline), § 5 (the website is LICENSED for the subscription term, not transferred) — must be reviewed and finalised by a Berlin-licensed lawyer before any signing: legal classification (Dienst-/Mietvertrag), § 307 BGB AGB-Kontrolle, Widerrufsrecht where the Client is a consumer, the IP-licence + buy-out mechanics, and the AVV cross-reference. Do not sign as-is. (This DRAFT warning is shown on screen and on every printed copy.)',
+    pageTitle: 'Website Subscription Agreement — fill, print, sign',
     pageSubtitle:
-      "Type in the client details below. Output renders inline. Then Cmd/Ctrl+P → Save as PDF, or print A4 directly. Two pages, B2B service agreement with the agency's standard terms.",
+      "Type in the client details below. Output renders inline. Then Cmd/Ctrl+P → Save as PDF, or print A4 directly. A B2B website-subscription agreement (Website-Abo) with the agency's standard terms.",
     printButton: 'Print / Save as PDF',
     printHint:
       'Tip: in the print dialog, set margins to "Default" and disable headers/footers for a clean A4. Both pages should fit without scaling.',
@@ -207,10 +211,10 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     scopeEditableLabel: 'Scope (editable per deal):',
 
     pricingLabel: 'Pricing',
-    buildFee: 'One-time build fee',
-    retainerFee: 'Monthly retainer',
+    buildFee: 'Optional one-time buy-out fee (Ablöse)',
+    retainerFee: 'Monthly subscription fee',
     retainerFeeHint:
-      'If multiple services have monthly retainers, enter the combined total here. Per-service breakdown shows in the agreement.',
+      'The plan price (e.g. €219 / €390 / €570). Covers the § 2 services plus hosting, maintenance, updates, and support. Leave the buy-out blank unless a buy-out is agreed.',
     vatLabel: 'VAT handling',
     vatKleinunternehmer: 'Kleinunternehmer (§ 19 UStG) — no VAT charged',
     vatRegular: 'Regular VAT — 19 % MwSt added to every line',
@@ -222,8 +226,9 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     goLiveHint:
       'For Website service only. SEO/GBP/Social do not have a "go-live" — the retainer starts on the start date.',
 
-    contractTitleH1: 'Service Agreement',
-    contractSubtitle: 'between Agency and Client — for the services listed in § 2',
+    contractTitleH1: 'Website Subscription Agreement',
+    contractSubtitle:
+      'between Agency and Client — a monthly subscription for the services listed in § 2',
 
     agencyHeading: 'Agency',
     clientHeading: 'Client',
@@ -232,7 +237,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     s1Heading: '§ 1   Subject of the Agreement',
     s1Body:
-      'The Agency provides the Client with the services selected in § 2. The Client retains ownership of all content, domain, and resulting deployed work product. The Agency retains rights to its reusable design patterns, components, and accumulated agency know-how. Both Parties are merchants under §§ 14, 343 ff. HGB; consumer-protection rules do not apply.',
+      'The Agency builds, hosts, maintains, and supports the website and any further services selected in § 2 for the Client, as an ongoing monthly subscription (Dauerschuldverhältnis). The Client owns its content, its data, and its domain. The website itself — its source code, design, and hosting — is provided as a licensed service for the duration of the subscription and is NOT transferred to the Client on a one-time basis (see § 5; an optional one-time buy-out is available under § 3). The Agency retains the rights to its reusable design patterns, components, and accumulated know-how. The Parties act as merchants under §§ 14, 343 ff. HGB; where the Client is a consumer (§ 13 BGB), mandatory consumer-protection rules — including the right of withdrawal (Widerrufsrecht) — apply and prevail. [Counsel to confirm the legal classification and the consumer carve-outs.]',
 
     s2Heading: '§ 2   Services',
     s2Intro: 'The following services are included in this Agreement:',
@@ -242,35 +247,35 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     s3Heading: '§ 3   Compensation and Payment Terms',
     s3BuildFeeLine:
-      'One-time build fee: {eur} net. Payable in two instalments: 50 % within 14 days of signature; 50 % within 14 days of project go-live (website only) or first calendar month of service delivery (SEO, GBP, Social).',
+      'Optional one-time buy-out (Ablöse): {eur} net. No buy-out fee is owed unless separately agreed. If the Client wishes to take over the website to host and run it independently, then upon payment of the buy-out fee the Agency grants the Client the rights to the deployed work product set out in § 5.',
     s3BuildFeeSplit:
-      'The Agency issues separate invoices for each instalment, each due net 14 days.',
+      'Any agreed buy-out fee is invoiced separately and due net 14 days; until it is paid in full, the rights under § 5 do not pass.',
     s3RetainerLine:
-      'Monthly retainer: {eur} net per month, invoiced on the 1st of each calendar month and due net 14 days. First retainer invoice issued on the project start date (§ 4) regardless of whether services have begun on that date.',
+      'Monthly subscription fee: {eur} net per month, billed in advance on the 1st of each calendar month and due net 14 days by SEPA transfer. The fee covers the § 2 services plus hosting, maintenance, security updates, and support for as long as the subscription runs. There is no separate set-up or build fee.',
     s3PaymentTerms:
       "Payment is due by SEPA bank transfer to the Agency's account stated on each invoice. Late payment triggers statutory interest under § 288 BGB plus a € 40 reminder fee per § 288 (5) BGB. The Agency may suspend services if any invoice remains unpaid for 14 days after due date, until paid in full (§ 4 Termination).",
     s3PaymentDefault: 'Late payment: § 288 BGB statutory interest + € 40 reminder fee.',
     s3VatKleinLine:
       'Pursuant to § 19 UStG, the Agency does not charge VAT (Umsatzsteuer). All amounts above are final.',
     s3VatRegularLine:
-      'Net total: {net}. VAT 19 %: {vat}. Gross total: {gross}. VAT is added to each invoice. The Client confirms it is entitled to deduct input VAT (Vorsteuerabzug).',
+      'Per month: net {net} + 19 % VAT {vat} = {gross} gross. VAT is shown separately on each monthly invoice; any one-time buy-out (§ 3) is invoiced with VAT separately. The Client confirms it is entitled to deduct input VAT (Vorsteuerabzug).',
 
     s4Heading: '§ 4   Term and Termination',
     s4Start: 'This Agreement begins on {date} ("Start Date").',
     s4MinimumTerm:
-      "If a monthly retainer is included in § 3, the minimum retainer term is three (3) calendar months from the Start Date. After the minimum term, the retainer continues month-to-month and may be terminated by either Party with thirty (30) days' written notice to the end of any calendar month.",
+      "The subscription runs on a monthly basis with no minimum term. Either Party may terminate it in text form (§ 126b BGB) with fourteen (14) days' notice to the end of any calendar month. [Counsel to confirm whether a minimum term or a different notice period is desired.]",
     s4Notice:
       'Notice of termination must be delivered in text form (§ 126b BGB) — email is sufficient. The address for notice is the email on the cover page of this Agreement.',
     s4ImmediateTermination:
       'Either Party may terminate this Agreement for cause without notice if (a) the other Party is in material breach and fails to cure within 14 days of written demand, or (b) the Client is more than 14 days late on any invoice. The Agency may suspend services during any cure period.',
     s4HandoverObligation:
-      'Upon termination for any reason, the Agency hands over to the Client: domain ownership transfer, GitHub repo ownership transfer, Vercel project transfer, GBP listing transfer, Search Console verification transfer. Handover obligations survive termination by 30 days.',
+      "Upon termination for any reason, the Agency provides the Client within thirty (30) days: (a) a full export of the Client's content and data, and (b) transfer or release of the domain, which is registered in the Client's name. The Client's licence to use the website (§ 5) then ends and the managed website is taken offline. The Agency does NOT transfer the source code, design, hosting, or any repository unless the Client has paid the one-time buy-out (§ 3, § 5). Where the Client subscribed to SEO or Google Business Profile, the Agency also releases the Search Console / Google Business Profile access held in the Client's name.",
 
     s5Heading: '§ 5   Intellectual Property',
     s5ClientOwns:
-      'The Client owns: (a) the deployed website and all content provided by the Client; (b) the GitHub repository created for the Client; (c) the registered domain; (d) the Google Business Profile listing; (e) any photographs, copy, or logos provided to the Agency. The Client receives a perpetual, worldwide, transferable licence to the deployed work product.',
+      "The Client owns, and may export at any time: (a) all content, text, photographs, and logos the Client provides; (b) the Client's own data (e.g. contact-form submissions); (c) the domain, registered in the Client's name; (d) where applicable, the Google Business Profile listing held in the Client's name. For the duration of the subscription the Agency grants the Client a non-exclusive, non-transferable licence to use the deployed website. This licence ends automatically on termination. The deployed website — its source code, design, and templates — is and remains the Agency's intellectual property and is NOT transferred to the Client, unless the Client purchases the one-time buy-out under § 3, upon which the Agency grants the Client a perpetual, worldwide licence to — or, as separately agreed, assignment of — the deployed work product.",
     s5AgencyKeeps:
-      "The Agency retains all rights to its reusable design patterns, component library, code scaffolds, documentation system, and any general agency know-how not specific to the Client's business. The Client gains no rights to these underlying patterns; the Agency may continue to build similar work for other clients in similar or different verticals.",
+      "The Agency retains all rights to its reusable design patterns, component library, code scaffolds, documentation system, and any general agency know-how not specific to the Client's business. The website delivered under the subscription is licensed, not sold; absent a buy-out (§ 3), title to the underlying code and design does not pass to the Client. The Agency may continue to build similar work for other clients in similar or different verticals.",
 
     s6Heading: '§ 6   Liability',
     s6LiabilityCap:
@@ -303,14 +308,14 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     signatureDateLabel: 'Date',
     signatureLineLabel: 'Signature',
 
-    footerNote: 'Service Agreement v1.0 · Generated from agency template · Page',
+    footerNote: 'Website Subscription Agreement v2.0-DRAFT (not lawyer-reviewed) · Page',
   },
   de: {
     draftBanner:
-      'ENTWURF — diese Vorlage wurde noch nicht von einem Rechtsanwalt geprüft. Vor Verwendung für den dritten Kunden oder bei Vertragswerten über € 5.000 sollte die deutsche Version von einer Berliner Anwaltskanzlei geprüft werden. Dieser Hinweis wird beim Druck ausgeblendet.',
-    pageTitle: 'Dienstleistungsvertrag — ausfüllen, drucken, unterschreiben',
+      '⚠ ENTWURF — NICHT ANWALTLICH GEPRÜFT. Am 06.06.2026 für das Monats-Abo-Modell der Agentur überarbeitet ("Website-Abo", 219/390/570 €/Monat, keine Einrichtung) — durch ein automatisiertes Tool, nicht durch einen Rechtsanwalt. Die Abo-Klauseln — § 3 (Monatsgebühr + optionale Ablöse), § 4 (Kündigung → Seite offline), § 5 (die Website wird für die Abo-Laufzeit LIZENZIERT, nicht übertragen) — müssen vor jeder Unterzeichnung von einer Berliner Anwaltskanzlei geprüft und finalisiert werden: rechtliche Einordnung (Dienst-/Mietvertrag), AGB-Kontrolle nach § 307 BGB, Widerrufsrecht bei Verbrauchern, die Lizenz- und Ablöse-Mechanik sowie der AVV-Verweis. Nicht in dieser Form unterzeichnen. (Dieser ENTWURF-Hinweis erscheint am Bildschirm und auf jeder gedruckten Kopie.)',
+    pageTitle: 'Website-Abo-Vertrag — ausfüllen, drucken, unterschreiben',
     pageSubtitle:
-      'Mandantendaten unten eintragen. Die Ausgabe rendert sofort. Dann Cmd/Strg+P → als PDF speichern oder direkt A4 drucken. Zwei Seiten, B2B-Dienstleistungsvertrag mit den Standardbedingungen der Agentur.',
+      'Mandantendaten unten eintragen. Die Ausgabe rendert sofort. Dann Cmd/Strg+P → als PDF speichern oder direkt A4 drucken. Ein B2B-Website-Abo-Vertrag mit den Standardbedingungen der Agentur.',
     printButton: 'Drucken / Als PDF speichern',
     printHint:
       'Tipp: im Druckdialog Ränder auf "Standard" stellen und Kopf-/Fußzeilen ausblenden für sauberes A4. Beide Seiten passen ohne Skalierung.',
@@ -336,10 +341,10 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     scopeEditableLabel: 'Leistungsumfang (pro Mandat bearbeitbar):',
 
     pricingLabel: 'Vergütung',
-    buildFee: 'Einmalige Aufbaugebühr',
-    retainerFee: 'Monatlicher Retainer',
+    buildFee: 'Optionale einmalige Ablöse',
+    retainerFee: 'Monatliche Abo-Gebühr',
     retainerFeeHint:
-      'Wenn mehrere Leistungen Retainer haben, hier den Gesamtbetrag eintragen. Die Aufschlüsselung erscheint im Vertrag.',
+      'Der Plan-Preis (z. B. 219 / 390 / 570 €). Deckt die Leistungen aus § 2 plus Hosting, Pflege, Updates und Support. Ablöse leer lassen, sofern keine Ablöse vereinbart ist.',
     vatLabel: 'Umsatzsteuer-Regelung',
     vatKleinunternehmer: 'Kleinunternehmer (§ 19 UStG) — keine Umsatzsteuer',
     vatRegular: 'Regelbesteuerung — 19 % MwSt auf jede Position',
@@ -351,8 +356,9 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     goLiveHint:
       'Nur für Website-Leistung. SEO/GBP/Social haben keinen "Go-Live" — der Retainer beginnt am Projektbeginn.',
 
-    contractTitleH1: 'Dienstleistungsvertrag',
-    contractSubtitle: 'zwischen Agentur und Mandant — für die in § 2 aufgeführten Leistungen',
+    contractTitleH1: 'Website-Abo-Vertrag',
+    contractSubtitle:
+      'zwischen Agentur und Mandant — ein Monats-Abo für die in § 2 aufgeführten Leistungen',
 
     agencyHeading: 'Agentur',
     clientHeading: 'Mandant',
@@ -361,7 +367,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     s1Heading: '§ 1   Vertragsgegenstand',
     s1Body:
-      'Die Agentur erbringt für den Mandanten die in § 2 ausgewählten Leistungen. Der Mandant behält das Eigentum an allen Inhalten, der Domain und am hergestellten Werk. Die Agentur behält die Rechte an ihren wiederverwendbaren Design-Mustern, Komponenten und allgemeinem Agentur-Know-how. Beide Parteien sind Kaufleute im Sinne der §§ 14, 343 ff. HGB; verbraucherschützende Vorschriften finden keine Anwendung.',
+      'Die Agentur erstellt, hostet, pflegt und betreut die Website sowie etwaige weitere in § 2 ausgewählte Leistungen für den Mandanten als laufendes Monats-Abo (Dauerschuldverhältnis). Dem Mandanten gehören seine Inhalte, seine Daten und seine Domain. Die Website selbst — Quellcode, Design und Hosting — wird als lizenzierte Leistung für die Dauer des Abos bereitgestellt und NICHT einmalig auf den Mandanten übertragen (siehe § 5; eine optionale einmalige Ablöse ist nach § 3 verfügbar). Die Agentur behält die Rechte an ihren wiederverwendbaren Design-Mustern, Komponenten und allgemeinem Know-how. Die Parteien handeln als Kaufleute im Sinne der §§ 14, 343 ff. HGB; soweit der Mandant Verbraucher (§ 13 BGB) ist, gelten zwingende verbraucherschützende Vorschriften — einschließlich des Widerrufsrechts — und gehen vor. [Einordnung und Verbraucher-Ausnahmen anwaltlich zu bestätigen.]',
 
     s2Heading: '§ 2   Leistungen',
     s2Intro: 'Folgende Leistungen sind Gegenstand dieses Vertrages:',
@@ -371,35 +377,35 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     s3Heading: '§ 3   Vergütung und Zahlungsbedingungen',
     s3BuildFeeLine:
-      'Einmalige Aufbaugebühr: {eur} netto. Zahlbar in zwei Raten: 50 % binnen 14 Tagen nach Unterzeichnung; 50 % binnen 14 Tagen nach Projekt-Go-Live (nur Website) bzw. nach Beginn des ersten Leistungsmonats (SEO, GBP, Social).',
+      'Optionale einmalige Ablöse: {eur} netto. Eine Ablöse ist nur geschuldet, wenn sie gesondert vereinbart wird. Möchte der Mandant die Website übernehmen, um sie eigenständig zu betreiben, räumt die Agentur dem Mandanten nach Zahlung der Ablöse die in § 5 genannten Rechte am hergestellten Werk ein.',
     s3BuildFeeSplit:
-      'Die Agentur stellt jede Rate als separate Rechnung mit Zahlungsziel netto 14 Tage.',
+      'Eine vereinbarte Ablöse wird gesondert in Rechnung gestellt, zahlbar netto 14 Tage; bis zur vollständigen Zahlung gehen die Rechte nach § 5 nicht über.',
     s3RetainerLine:
-      'Monatlicher Retainer: {eur} netto pro Monat, abgerechnet zum 1. jedes Kalendermonats mit Zahlungsziel netto 14 Tage. Die erste Retainer-Rechnung wird zum Projektbeginn (§ 4) gestellt, unabhängig davon, ob die Leistungserbringung zu diesem Datum bereits aufgenommen wurde.',
+      'Monatliche Abo-Gebühr: {eur} netto pro Monat, im Voraus zum 1. jedes Kalendermonats abgerechnet, zahlbar netto 14 Tage per SEPA-Überweisung. Die Gebühr deckt die Leistungen aus § 2 sowie Hosting, Pflege, Sicherheits-Updates und Support für die gesamte Laufzeit des Abos. Es fällt keine gesonderte Einrichtungs- oder Aufbaugebühr an.',
     s3PaymentTerms:
       'Zahlungen erfolgen per SEPA-Überweisung auf das auf der jeweiligen Rechnung angegebene Konto der Agentur. Bei Zahlungsverzug fallen die gesetzlichen Verzugszinsen nach § 288 BGB sowie eine Mahnpauschale von € 40 nach § 288 Abs. 5 BGB an. Die Agentur ist berechtigt, ihre Leistungen auszusetzen, wenn eine Rechnung mehr als 14 Tage nach Fälligkeit unbezahlt bleibt, bis zur vollständigen Begleichung (siehe § 4 Kündigung).',
     s3PaymentDefault: 'Verzug: Zinsen nach § 288 BGB + € 40 Mahnpauschale.',
     s3VatKleinLine:
       'Gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Sämtliche oben genannten Beträge sind endgültig.',
     s3VatRegularLine:
-      'Nettosumme: {net}. USt 19 %: {vat}. Bruttosumme: {gross}. Die Umsatzsteuer wird auf jeder Rechnung separat ausgewiesen. Der Mandant bestätigt, zum Vorsteuerabzug berechtigt zu sein.',
+      'Pro Monat: netto {net} + 19 % USt {vat} = {gross} brutto. Die USt wird auf jeder monatlichen Rechnung separat ausgewiesen; eine etwaige einmalige Ablöse (§ 3) wird mit USt gesondert berechnet. Der Mandant bestätigt, zum Vorsteuerabzug berechtigt zu sein.',
 
     s4Heading: '§ 4   Laufzeit und Kündigung',
     s4Start: 'Dieser Vertrag beginnt am {date} („Vertragsbeginn").',
     s4MinimumTerm:
-      'Sofern ein monatlicher Retainer nach § 3 vereinbart ist, beträgt die Mindestlaufzeit drei (3) Kalendermonate ab Vertragsbeginn. Nach Ablauf der Mindestlaufzeit verlängert sich der Retainer monatlich und kann von beiden Parteien mit einer Frist von dreißig (30) Tagen zum Ende eines jeden Kalendermonats in Textform gekündigt werden.',
+      'Das Abo läuft monatlich ohne Mindestlaufzeit. Beide Parteien können es in Textform (§ 126b BGB) mit einer Frist von vierzehn (14) Tagen zum Ende eines jeden Kalendermonats kündigen. [Ob eine Mindestlaufzeit oder eine andere Frist gewünscht ist, anwaltlich zu bestätigen.]',
     s4Notice:
       'Die Kündigung erfolgt in Textform (§ 126b BGB) — E-Mail genügt. Maßgeblich ist die auf der Titelseite dieses Vertrages genannte E-Mail-Adresse.',
     s4ImmediateTermination:
       'Beide Parteien können den Vertrag aus wichtigem Grund fristlos kündigen, wenn (a) die andere Partei eine wesentliche Pflicht verletzt und diese trotz Aufforderung mit einer Frist von 14 Tagen nicht behebt, oder (b) der Mandant mit einer Rechnungsforderung mehr als 14 Tage in Verzug ist. Während der Heilungsfrist darf die Agentur ihre Leistungen aussetzen.',
     s4HandoverObligation:
-      'Nach Vertragsende übergibt die Agentur dem Mandanten: Domain-Inhaberschaft, GitHub-Repo-Inhaberschaft, Vercel-Projekt-Übergabe, GBP-Listing-Übergabe, Search-Console-Verifizierung. Übergabepflichten gelten 30 Tage über das Vertragsende hinaus.',
+      'Nach Vertragsende stellt die Agentur dem Mandanten binnen dreißig (30) Tagen bereit: (a) einen vollständigen Export der Inhalte und Daten des Mandanten sowie (b) die Übertragung bzw. Freigabe der Domain, die auf den Namen des Mandanten registriert ist. Das Nutzungsrecht des Mandanten an der Website (§ 5) endet sodann und die betreute Website geht offline. Die Agentur überträgt Quellcode, Design, Hosting oder ein Repository NICHT, es sei denn, der Mandant hat die einmalige Ablöse (§ 3, § 5) gezahlt. Hat der Mandant SEO oder Google Business Profile abonniert, gibt die Agentur zusätzlich die auf den Namen des Mandanten geführten Search-Console-/Google-Business-Profile-Zugänge frei.',
 
     s5Heading: '§ 5   Geistiges Eigentum',
     s5ClientOwns:
-      'Der Mandant ist Inhaber von: (a) der bereitgestellten Website und allen vom Mandanten beigesteuerten Inhalten; (b) dem für den Mandanten angelegten GitHub-Repository; (c) der registrierten Domain; (d) dem Google-Business-Profile-Eintrag; (e) allen vom Mandanten zur Verfügung gestellten Fotos, Texten oder Logos. Der Mandant erhält eine zeitlich, räumlich und inhaltlich unbeschränkte, übertragbare Lizenz an dem hergestellten Werk.',
+      'Dem Mandanten gehören, jederzeit exportierbar: (a) alle von ihm bereitgestellten Inhalte, Texte, Fotos und Logos; (b) die eigenen Daten des Mandanten (z. B. Kontaktformular-Einsendungen); (c) die auf seinen Namen registrierte Domain; (d) ggf. der auf seinen Namen geführte Google-Business-Profile-Eintrag. Für die Dauer des Abos räumt die Agentur dem Mandanten ein einfaches, nicht übertragbares Nutzungsrecht an der bereitgestellten Website ein. Dieses Nutzungsrecht endet automatisch mit Vertragsende. Die bereitgestellte Website — Quellcode, Design und Templates — ist und bleibt geistiges Eigentum der Agentur und wird NICHT auf den Mandanten übertragen, es sei denn, der Mandant erwirbt die einmalige Ablöse nach § 3; in diesem Fall räumt die Agentur dem Mandanten ein unbeschränktes, räumlich unbegrenztes Nutzungsrecht am hergestellten Werk ein — bzw., sofern gesondert vereinbart, überträgt sie es.',
     s5AgencyKeeps:
-      'Die Agentur behält alle Rechte an ihren wiederverwendbaren Design-Mustern, ihrer Komponenten-Bibliothek, ihren Code-Scaffolds, ihrem Dokumentationssystem und allem allgemeinen Agentur-Know-how, das nicht spezifisch für das Geschäft des Mandanten ist. Der Mandant erwirbt keine Rechte an diesen zugrundeliegenden Mustern; die Agentur darf ähnliche Werke für andere Mandanten in gleichen oder anderen Branchen erstellen.',
+      'Die Agentur behält alle Rechte an ihren wiederverwendbaren Design-Mustern, ihrer Komponenten-Bibliothek, ihren Code-Scaffolds, ihrem Dokumentationssystem und allem allgemeinen Agentur-Know-how, das nicht spezifisch für das Geschäft des Mandanten ist. Die im Abo bereitgestellte Website wird lizenziert, nicht verkauft; ohne Ablöse (§ 3) geht das Eigentum an zugrundeliegendem Code und Design nicht auf den Mandanten über. Die Agentur darf ähnliche Werke für andere Mandanten in gleichen oder anderen Branchen erstellen.',
 
     s6Heading: '§ 6   Haftung',
     s6LiabilityCap:
@@ -432,6 +438,6 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     signatureDateLabel: 'Datum',
     signatureLineLabel: 'Unterschrift',
 
-    footerNote: 'Dienstleistungsvertrag v1.0 · Erstellt aus Agentur-Vorlage · Seite',
+    footerNote: 'Website-Abo-Vertrag v2.0-ENTWURF (nicht anwaltlich geprüft) · Seite',
   },
 };

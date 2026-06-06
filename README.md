@@ -7,7 +7,7 @@
 → **[`CLAUDE.md`](./CLAUDE.md)** is the master entry point. It documents:
 - The agency's three services (website / GBP / SEO) + five product types + three stack tiers
 - The cold-outreach business model
-- The standards-doc map (18 rules docs under `docs/design/`)
+- The standards-doc map (20 rules docs under `docs/design/`)
 - The "how to start a new client project" workflow
 
 Every Claude Code session for client or agency-template work should read it first.
@@ -23,12 +23,13 @@ docs/
 │   ├── RUNBOOK-real-browser-audit.md  Manual workflow for headless-blocked sites
 │   ├── cafedelcorso.md         Active prospect intake (gastronomy)
 │   └── laudam.md               Active prospect intake (professional-services)
+├── benchmark/                  Competitor captures + analysis + inbound-funnel roadmap (e.g. icreateyoursite.com)
 ├── clients/
 │   └── archived/               Read-only worked examples of populated per-client docs
-├── design/                     18 standards docs + 12 vertical templates + canonical impls
+├── design/                     20 standards docs + 12 vertical templates + canonical impls
 │   ├── *.md                    TECH · DESIGN-BEST-PRACTICES · SEO · LEGAL · KPI · …
 │   ├── templates/              12 per-vertical templates (gastronomy / beauty / trades / …)
-│   ├── components/             8 canonical UI/UX component spec sheets
+│   ├── components/             32 component spec sheets + 6 universal primitives
 │   │   └── _impl/              Working Astro + React implementations
 │   ├── _impl/                  Non-component canonical code (lib · layouts · configs · legal pages)
 │   └── local_business_website_benchmark_report.md  12-vertical benchmark research

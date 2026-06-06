@@ -1,12 +1,19 @@
 ---
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
+import Faq from '@/components/sections/Faq.astro';
+import PromiseStrip from '@/components/sections/PromiseStrip.astro';
+import ReviewsWall from '@/components/sections/ReviewsWall.astro';
+import TrustBadgeRow from '@/components/sections/TrustBadgeRow.astro';
+import ContactBar from '@/components/ui/ContactBar.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { FUNNEL } from '@/lib/funnel';
 import { PAGE_STRINGS } from '@/lib/page-strings';
 import { getFeaturedPortfolio } from '@/lib/portfolio';
+import { faqPageSchema } from '@/lib/seo/schema';
 import { SERVICE_SLUGS } from '@/lib/services';
-import { heroSrcset } from '@/lib/srcset';
 import { LOCALE_PREFIX, type Locale } from '@/lib/site';
+import { heroSrcset } from '@/lib/srcset';
 
 export async function getStaticPaths() {
   return [
@@ -24,9 +31,11 @@ const sp = PAGE_STRINGS[locale].services.services;
 const t = PAGE_STRINGS[locale];
 const prefix = LOCALE_PREFIX[locale];
 const featured = getFeaturedPortfolio();
+const f = FUNNEL[locale];
+const faqSchema = faqPageSchema(f.homeFaq.items);
 ---
 
-<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/">
+<BaseLayout title={p.title} description={p.description} locale={locale} localePath="/" extraSchema={faqSchema}>
   <Header locale={locale} localePath="/" />
   <main id="main">
     <section class="hero-dark relative overflow-hidden">
@@ -77,6 +86,8 @@ const featured = getFeaturedPortfolio();
         </dl>
       </div>
     </section>
+
+    <PromiseStrip eyebrow={f.promises.eyebrow} title={f.promises.title} note={f.promises.note} items={f.promises.items} />
 
     <section class="section bg-bg" aria-labelledby="services-heading">
       <div class="container-page">
@@ -145,6 +156,9 @@ const featured = getFeaturedPortfolio();
       </div>
     </section>
 
+    <ReviewsWall eyebrow={f.reviews.eyebrow} title={f.reviews.title} body={f.reviews.body} draftNote={f.reviews.draftNote} items={f.reviews.items} />
+    <TrustBadgeRow eyebrow={f.trustBadges.eyebrow} items={f.trustBadges.items} />
+
     <section class="section bg-bg" aria-labelledby="about-heading">
       <div class="container-page">
         <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -179,6 +193,8 @@ const featured = getFeaturedPortfolio();
       </div>
     </section>
 
+    <Faq eyebrow={f.homeFaq.eyebrow} title={f.homeFaq.title} items={f.homeFaq.items} surface={true} />
+
     <section class="bg-inverted-bg text-inverted-text">
       <div class="container-page py-24 sm:py-32 text-center">
         <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{p.ctaEyebrow}</p>
@@ -191,4 +207,5 @@ const featured = getFeaturedPortfolio();
     </section>
   </main>
   <Footer locale={locale} />
+  <ContactBar locale={locale} />
 </BaseLayout>

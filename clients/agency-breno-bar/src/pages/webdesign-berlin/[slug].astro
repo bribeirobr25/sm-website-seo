@@ -1,0 +1,133 @@
+---
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+/**
+ * Local landing page (F1) — German, vertical × Bezirk. Data-driven from
+ * LOCAL_PAGES. Each page composes a UNIQUE vertical body + UNIQUE Bezirk framing
+ * (anti-slop: no find-and-replace city swaps). Emits Service + FAQPage JSON-LD.
+ */
+import Faq from '@/components/sections/Faq.astro';
+import ContactBar from '@/components/ui/ContactBar.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { LOCAL_PAGES } from '@/lib/local-pages';
+import { faqPageSchema, localServiceSchema } from '@/lib/seo/schema';
+import { SITE } from '@/lib/site';
+
+export async function getStaticPaths() {
+  return LOCAL_PAGES.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+interface Props {
+  page: (typeof LOCAL_PAGES)[number];
+}
+const { page } = Astro.props;
+const { vertical: v, bezirk: b } = page;
+const locale = 'de' as const;
+const check = 'M20 6 9 17l-5-5';
+
+const pageTitle = `${v.pageNoun} in ${b.name}`;
+const metaDescription = `${v.pageNoun} in ${b.name} — schnell, mobil-first und DSGVO-konform, mit lokalem SEO und Google-Unternehmensprofil. Festpreis-Angebot vorab.`;
+const url = `${SITE.url}/webdesign-berlin/${page.slug}`;
+
+// Service + FAQPage schema, combined in one @graph (emitted via extraSchema).
+const serviceSchema = localServiceSchema({
+  serviceName: `${v.pageNoun} ${b.name}`,
+  serviceType: v.serviceType,
+  description: metaDescription,
+  areaName: b.name,
+  url,
+});
+const faqSchema = faqPageSchema(v.faq);
+const extraSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [serviceSchema, faqSchema],
+};
+
+// Same-vertical, other-Bezirk cross-links (unique internal links per page).
+const related = LOCAL_PAGES.filter((p) => p.vertical.slug === v.slug && p.bezirk.slug !== b.slug);
+---
+
+<BaseLayout title={pageTitle} description={metaDescription} locale={locale} extraSchema={extraSchema}>
+  <Header locale={locale} localePath="/" />
+  <main id="main">
+    <section class="hero-dark relative overflow-hidden">
+      <div class="hero-dark__veil" aria-hidden="true"></div>
+      <div class="relative container-page pt-24 pb-20 sm:pt-32 sm:pb-24 max-w-3xl">
+        <nav aria-label="Brotkrumen" class="mb-6 text-sm text-white/70">
+          <a href="/webdesign-berlin" class="hover:text-white transition-colors">Webdesign Berlin</a>
+          <span class="mx-2" aria-hidden="true">/</span>
+          <span class="text-white">{b.name}</span>
+        </nav>
+        <h1 class="font-display text-[clamp(2.25rem,5.5vw,4.5rem)] font-semibold text-white leading-[1.05] tracking-[-0.03em]">{pageTitle}</h1>
+        <p class="mt-6 text-xl text-white/85 leading-[1.5]">{v.lead}</p>
+        <div class="mt-9">
+          <a href="/de/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium">Kostenloses Erstgespräch</a>
+        </div>
+      </div>
+    </section>
+
+    {/* INTRO — Bezirk-specific framing */}
+    <section class="section bg-bg">
+      <div class="container-page max-w-3xl">
+        <p class="text-lg text-text-muted leading-[1.6]">{b.intro}</p>
+        <p class="mt-5 text-lg text-text leading-[1.6]">{b.localPara}</p>
+      </div>
+    </section>
+
+    {/* SERVICES — vertical-specific deliverables */}
+    <section class="section bg-surface" aria-labelledby="leistungen-heading">
+      <div class="container-page">
+        <h2 id="leistungen-heading" class="font-display text-3xl sm:text-4xl text-text font-semibold tracking-[-0.03em] leading-[1.06] max-w-2xl">Was wir für {v.name} in {b.name} bauen</h2>
+        <ul class="mt-10 grid sm:grid-cols-2 gap-x-10 gap-y-4 list-none p-0 max-w-4xl">
+          {v.services.map((s) => (
+            <li class="flex items-start gap-3 text-text leading-relaxed">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-1" aria-hidden="true"><path d={check}></path></svg>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* BODY — vertical-specific prose */}
+    <section class="section bg-bg">
+      <div class="container-page max-w-3xl space-y-6">
+        {v.body.map((para) => <p class="text-lg text-text-muted leading-[1.6]">{para}</p>)}
+      </div>
+    </section>
+
+    {/* FAQ */}
+    <Faq eyebrow="Häufige Fragen" title={`${v.name} in ${b.name} — kurz erklärt`} items={v.faq} surface={true} />
+
+    {/* CROSS-LINKS — same vertical, other Bezirke */}
+    <section class="section bg-bg">
+      <div class="container-page">
+        <h2 class="font-display text-2xl text-text font-semibold tracking-[-0.02em]">{v.name} auch in anderen Bezirken</h2>
+        <ul class="mt-6 flex flex-wrap gap-3 list-none p-0">
+          {related.map((r) => (
+            <li>
+              <a href={`/webdesign-berlin/${r.slug}`} class="inline-flex items-center gap-1.5 rounded-full bg-surface border border-border px-4 py-2 min-h-[44px] text-sm text-text hover:border-text/30 transition-colors">
+                {r.bezirk.name} <span class="text-accent-deep" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-inverted-bg text-inverted-text">
+      <div class="container-page py-24 sm:py-32 text-center">
+        <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] max-w-2xl mx-auto">{v.pageNoun} in {b.name}?</h2>
+        <p class="mt-6 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">Erzähl uns kurz von deinem Betrieb. Wir melden uns innerhalb eines Werktags — mit ehrlichem Rat, nicht mit Verkaufsdruck.</p>
+        <div class="mt-10">
+          <a href="/de/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-bg text-text hover:bg-accent hover:text-bg transition-colors text-base font-medium">Kontakt aufnehmen</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+  <ContactBar locale={locale} />
+</BaseLayout>

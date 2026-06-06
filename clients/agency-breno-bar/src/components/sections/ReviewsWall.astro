@@ -1,0 +1,45 @@
+---
+/**
+ * ReviewsWall (F7) — "wall of love" testimonial grid.
+ * Prop-driven. Content from FUNNEL[locale].reviews.
+ *
+ * IMPORTANT: the agency does not invent testimonials. While `items` carry DRAFT
+ * authors, `draftNote` is rendered visibly so nobody mistakes them for real
+ * client quotes. Replace with real Google reviews (author-confirmed) at launch,
+ * then drop the note. No `aggregateRating` schema is emitted — self-serving
+ * rating markup is policy-banned (SEO.md §5.3).
+ */
+import type { Review } from '@/lib/funnel';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  body?: string;
+  draftNote?: string;
+  items: readonly Review[];
+}
+const { eyebrow, title, body, draftNote, items } = Astro.props;
+---
+
+<section class="section bg-bg" aria-labelledby="reviews-heading">
+  <div class="container-page">
+    <div class="max-w-2xl mb-12">
+      <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{eyebrow}</p>
+      <h2 id="reviews-heading" class="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl text-text font-semibold tracking-[-0.03em] leading-[1.06]">{title}</h2>
+      {body && <p class="mt-5 text-lg text-text-muted leading-[1.5]">{body}</p>}
+    </div>
+    <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 list-none p-0">
+      {items.map((r, i) => (
+        <li class="reveal-rise rounded-[22px] bg-surface border border-border p-7 flex flex-col" style={`animation-delay:${i * 50}ms`}>
+          <p class="text-accent-deep text-sm tracking-[0.1em]" aria-hidden="true">★★★★★</p>
+          <blockquote class="mt-4 text-text leading-[1.6] flex-1">{r.quote}</blockquote>
+          <footer class="mt-6 pt-5 border-t border-border">
+            <p class="text-sm font-medium text-text">{r.author}</p>
+            <p class="text-xs text-text-muted mt-0.5">{r.role}</p>
+          </footer>
+        </li>
+      ))}
+    </ul>
+    {draftNote && <p class="mt-6 text-xs text-text-muted italic">{draftNote}</p>}
+  </div>
+</section>

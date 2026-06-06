@@ -1,0 +1,66 @@
+---
+/**
+ * PricingTiers (F2) — monthly-subscription package cards ("Website-Abo").
+ * Prop-driven. Content from FUNNEL[locale].pricing.tiers + .ui. The "popular"
+ * tier gets the accent treatment + badge. CTA points at the contact page
+ * (ctaHref) — no payment is taken on-site. Pure monthly, no setup fee.
+ */
+import type { PackageTier } from '@/lib/funnel';
+
+interface Props {
+  tiers: readonly PackageTier[];
+  ui: { popular: string };
+  ctaHref: string;
+}
+const { tiers, ui, ctaHref } = Astro.props;
+const check = 'M20 6 9 17l-5-5';
+---
+
+<div class="grid lg:grid-cols-3 gap-6 items-start">
+  {tiers.map((tier) => (
+    <div
+      class:list={[
+        'reveal-rise relative rounded-[22px] p-8 flex flex-col h-full border',
+        tier.popular
+          ? 'bg-surface-elev border-accent shadow-elev lg:-mt-2'
+          : 'bg-surface-elev border-border',
+      ]}
+    >
+      {tier.popular && (
+        <span class="absolute -top-3 left-8 inline-flex items-center rounded-full bg-accent text-bg text-xs font-medium px-3 py-1">
+          {ui.popular}
+        </span>
+      )}
+      <div>
+        <h2 class="font-display text-2xl font-semibold text-text tracking-[-0.02em]">{tier.name}</h2>
+        <p class="mt-2 text-sm text-text-muted">{tier.tagline}</p>
+      </div>
+      <div class="mt-6">
+        <p class="flex items-baseline gap-1">
+          <span class="font-display text-4xl font-semibold text-text tracking-[-0.03em] tabular">{tier.price}</span>
+          <span class="text-base text-text-muted">{tier.priceSuffix}</span>
+        </p>
+        <p class="mt-1 text-xs text-text-muted">{tier.priceNote}</p>
+      </div>
+      <ul class="mt-7 space-y-3 list-none p-0 flex-1">
+        {tier.features.map((f) => (
+          <li class="flex items-start gap-2.5 text-sm text-text leading-relaxed">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-0.5" aria-hidden="true"><path d={check}></path></svg>
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+      <a
+        href={ctaHref}
+        class:list={[
+          'mt-8 inline-flex items-center justify-center w-full px-6 py-3 min-h-[48px] rounded-full text-base font-medium transition-colors',
+          tier.popular
+            ? 'bg-accent text-bg hover:bg-accent-deep'
+            : 'bg-text text-bg hover:bg-accent-deep',
+        ]}
+      >
+        {tier.cta}
+      </a>
+    </div>
+  ))}
+</div>

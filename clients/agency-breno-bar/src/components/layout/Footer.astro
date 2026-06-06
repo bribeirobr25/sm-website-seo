@@ -4,7 +4,9 @@
  * 4 columns at desktop, stacks on mobile. Apple-clean: thin border, generous spacing.
  * All copy locale-driven via SITE.i18n[locale].chrome.
  */
+import { FUNNEL } from '@/lib/funnel';
 import { LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
+import { TOOLS } from '@/lib/tools';
 
 interface Props {
   locale?: Locale;
@@ -17,9 +19,13 @@ const prefix = LOCALE_PREFIX[locale];
 
 const navLinks = [
   { href: `${prefix}/services`, label: t.nav.services },
+  { href: `${prefix}/pricing`, label: FUNNEL[locale].ui.pricingNav },
   { href: `${prefix}/portfolio`, label: t.nav.portfolio },
+  { href: `${prefix}/tools`, label: TOOLS[locale].hub.eyebrow },
   { href: `${prefix}/about`, label: t.nav.about },
   { href: `${prefix}/contact`, label: t.nav.contact },
+  // German-only local-SEO hub (Berlin-market landing pages).
+  ...(locale === 'de' ? [{ href: '/webdesign-berlin', label: 'Webdesign Berlin' }] : []),
 ];
 
 const legalLinks = [

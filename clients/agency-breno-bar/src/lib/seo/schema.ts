@@ -190,6 +190,51 @@ export function businessSchema(locale: Locale = 'en'): Record<string, unknown> {
   };
 }
 
+/**
+ * FAQPage JSON-LD (F6). Pass plain-text Q&A pairs; emitted via BaseLayout
+ * `extraSchema`. Per SEO.md §schema — only mark up FAQs actually visible on the
+ * page. Keep ≤ ~8 entries to avoid spammy-markup signals.
+ */
+export function faqPageSchema(
+  items: ReadonlyArray<{ q: string; a: string }>,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((it) => ({
+      '@type': 'Question',
+      name: it.q,
+      acceptedAnswer: { '@type': 'Answer', text: it.a },
+    })),
+  };
+}
+
+/**
+ * Local landing-page Service schema (F1). A `Service` provided by the agency,
+ * scoped to a Berlin Bezirk (`areaServed`). `provider` references the existing
+ * ProfessionalService @id so the graph stays connected. Combine with
+ * `faqPageSchema` on the page (pass an array to extraSchema → emit both).
+ */
+export function localServiceSchema(input: {
+  serviceName: string;
+  serviceType: string;
+  description: string;
+  areaName: string;
+  url: string;
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: input.serviceName,
+    serviceType: input.serviceType,
+    description: input.description,
+    url: input.url,
+    provider: { '@id': `${SITE.url}/#business` },
+    areaServed: { '@type': 'City', name: input.areaName },
+    inLanguage: 'de-DE',
+  };
+}
+
 /** Per-portfolio-detail CreativeWork schema. Locale-aware. */
 export function portfolioCaseSchema(input: {
   title: string;

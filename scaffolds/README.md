@@ -67,7 +67,7 @@ See `docs/design/CHECKLIST.md` §0 Pre-flight for the per-client setup steps bef
 
 ## Canonical components
 
-The 8 agency-canonical components from the 24-site UI/UX reference study live at `docs/design/components/_impl/`. Scaffolds do NOT auto-include them — each client opts in per the matching `docs/design/components/[component].md` §1 per-vertical applicability table. Declare the chosen imports in the per-client `docs/clients/[slug]/CLAUDE.md` "Imported components" table per `TECH.md` §20.
+The 32 canonical components + 6 universal primitives live at `docs/design/components/_impl/` (authoritative tiered index: `docs/design/components/README.md`). Scaffolds do NOT auto-include the 32 — each client opts in per the matching `docs/design/components/[component].md` §1 per-vertical applicability table. Declare the chosen imports in the per-client `docs/clients/[slug]/CLAUDE.md` "Imported components" table per `TECH.md` §20.
 
 ## Build validation gate
 

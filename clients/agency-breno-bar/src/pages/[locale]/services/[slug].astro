@@ -4,8 +4,8 @@ import Header from '@/components/layout/Header.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { PAGE_STRINGS } from '@/lib/page-strings';
 import { SERVICE_SLUGS, type ServiceSlug, getRelatedPortfolio } from '@/lib/services';
-import { heroSrcset } from '@/lib/srcset';
 import { LOCALE_PREFIX, type Locale } from '@/lib/site';
+import { heroSrcset } from '@/lib/srcset';
 
 export async function getStaticPaths() {
   const locales: Locale[] = ['de', 'pt-br'];

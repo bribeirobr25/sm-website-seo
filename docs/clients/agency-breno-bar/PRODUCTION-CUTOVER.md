@@ -22,6 +22,9 @@ Status legend: `[DONE]` shipped and live · `[PENDING DOMAIN]` waiting for `bren
 | §1.8 | GBP listing claim with production URL | `[PENDING DOMAIN]` |
 | §1.9 | HSTS preload-list submission at `hstspreload.org` (one-way door) | `[PENDING DOMAIN]` |
 | §2.1–§2.9 | Per-page meta refinements (titles + descriptions, 3 locales) | `[DONE]` (deployed 2026-05-30) |
+| §2.11 | **Inbound-funnel pages** (pricing · website-check · tools · 24 German local pages) added 2026-06-04 — meta titles/descriptions written; keyword-audit treatment is a follow-up | `[FOLLOW-UP]` (see §2.11) |
+| §1.x | **Funnel DRAFT items** (prices · promise numbers · reviews · WhatsApp number · website-check price+scheduling) | `[PENDING OWNER]` — `BRIEF.md` #7–#13 |
+| §1.4 | Analytics should also track tool/funnel conversions (scan run, gbp lead, pricing→contact) | `[PENDING DOMAIN]` |
 | §3.1 | `knowsAbout` 8 EN → 22 trilingual | `[DONE]` |
 | §3.2 | `serviceType` 4 EN → 12 trilingual | `[DONE]` |
 | §3.3 | `businessSchema(locale)` locale-aware description | `[DONE]` |
@@ -418,6 +421,19 @@ Descriptions stay as-is, the current copy is good.
 ### 2.10. `/contact`, `/privacy`, `/imprint`
 
 No SEO action. Contact is a conversion page (not a query target), legal pages are utility (also not query targets). Current setup is correct.
+
+---
+
+### 2.11. Inbound-funnel pages (added 2026-06-04) `[FOLLOW-UP]`
+
+The 2026-06-04 inbound-funnel sprint (full rationale: `docs/benchmark/_analysis.md`) added pages that already ship meta titles/descriptions + schema but have **not** had the per-page keyword audit §2.1–§2.10 received. They become indexable automatically at the §1.2 global `noindex` flip. Follow-up before/shortly after cutover:
+
+- **`/pricing` (×3)** — target "Webdesign Preise Berlin", "website cost Berlin", "Webagentur Kosten". FAQPage schema already emitted.
+- **`/website-check` (×3)** — target "Website Check", "Google Business Check", "Website Beratung Berlin".
+- **`/tools`, `/tools/website-scan`, `/tools/gbp-check` (×3)** — lead-magnet/utility intent ("Website Speed Test", "DSGVO Check", "Google Unternehmensprofil prüfen"). Consider whether tools should be `index` or `noindex` (thin-utility risk) — decide at cutover.
+- **`/webdesign-berlin` + 24 `/webdesign-berlin/[slug]` (German only)** — the **core local-SEO play**: target "[Vertical]-Website [Bezirk]" (e.g. "Friseur Website Kreuzberg", "Restaurant Website Mitte"). `Service` + `FAQPage` schema + `BreadcrumbList` already emitted; genuinely differentiated copy (anti-slop). **Highest-priority keyword surface** — these are the pages built to rank locally. Verify no thin-content/duplicate flags post-index.
+- **Two new SSR endpoints** (`api/site-scan`, `api/gbp-check`) — confirm function timeouts/limits on the production Vercel plan (PSI can be slow; see `_analysis.md` deployment note) and that `RESEND_*` (gbp lead) + optional `PAGESPEED_API_KEY` are set.
+- **Funnel DRAFT values** (prices, promise numbers, reviews, WhatsApp number) must be owner-confirmed before indexing — `BRIEF.md` open questions #7–#13.
 
 ---
 

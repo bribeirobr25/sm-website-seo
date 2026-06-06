@@ -58,7 +58,7 @@ See `docs/design/CHECKLIST.md` §0 Pre-flight for the per-client setup steps bef
 
 ## Canonical components — opt-in imports
 
-The 8 agency-canonical components live at `docs/design/components/_impl/`. Each ships both Astro and React (`.tsx`) variants where applicable. Import only the ones the client's vertical calls for per `docs/design/components/[component].md` §1.
+The 32 agency-canonical components live at `docs/design/components/_impl/`. Each ships both Astro and React (`.tsx`) variants where applicable. Import only the ones the client's vertical calls for per `docs/design/components/[component].md` §1.
 
 ## Tier 3 isn't right?
 

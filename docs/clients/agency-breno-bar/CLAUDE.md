@@ -22,11 +22,13 @@ cd clients/agency-breno-bar
 pnpm install
 pnpm dev                                                  # http://localhost:4321
 pnpm validate                                             # lint + 32+125-key translation parity + build
-pnpm build                                                # 51 static + 1 SSR (api/contact)
+pnpm build                                                # 104 static + 3 SSR (api/contact, api/site-scan, api/gbp-check)
 PATH=$HOME/.nvm/versions/node/v21.7.3/bin:$PATH vercel --prod --yes
 ```
 
-## Page tree (51 static + 1 SSR — 3 locales × 17 pages-per-locale + lone endpoint)
+## Page tree (104 static + 3 SSR)
+
+> Expanded 2026-06-04 by the inbound-funnel sprint — see the dedicated section at the end of this file + `docs/benchmark/_analysis.md`. The trilingual marketing core below is unchanged; the funnel routes (pricing · website-check · tools · the German `webdesign-berlin` local pages) are additive.
 
 EN at root · DE at `/de/...` · pt-BR at `/pt-br/...`:
 
@@ -48,7 +50,8 @@ EN at root · DE at `/de/...` · pt-BR at `/pt-br/...`:
 - `src/lib/page-strings.ts` — `PAGE_STRINGS` per-page content (125 keys × 3 locales)
 - `src/lib/portfolio.ts` — 9 entries × trilingual `imageAlt` + `shortDescription` + `longDescription`. `featured: true` on 3 entries (bonsai-kodama, restaurant-adele, yoga-atem-studio) — home grid surfaces those three.
 - `src/lib/services.ts` — service-slug taxonomy + portfolio cross-references
-- `src/lib/seo/schema.ts` — `businessSchema()` + `portfolioCaseSchema()`
+- `src/lib/seo/schema.ts` — `businessSchema()` + `portfolioCaseSchema()` + (2026-06-04) `faqPageSchema()` + `localServiceSchema()`
+- **(2026-06-04 inbound-funnel)** `src/lib/funnel.ts` — trilingual `FUNNEL` content (promises · reviews · trust badges · home FAQ · pricing · website-check) · `src/lib/tools.ts` — trilingual `TOOLS` content (scan + gbp + hub) · `src/lib/local-pages.ts` — **German-only** `VERTICALS` × `BEZIRKE` → `LOCAL_PAGES` · `src/lib/contact-channels.ts` — hidden WhatsApp/phone config (F8). All four use compile-time `Record<Locale,…>` parity (like `portfolio.ts`), so they stay OUT of the `validate-translations` runtime check.
 - `src/styles/tokens.css` — Apple-inspired palette (#fbfbfd / #1d1d1f / #0071e3) + 22-px radii + Apple-restrained shadows
 - `src/styles/global.css` — Inter-tuned typography + reveal-on-scroll (`animation-timeline: view()`) + bg-hero-gradient + bg-noise utilities
 
@@ -66,9 +69,16 @@ Before flipping `noindex` to allow indexing:
 | Berlin Anmeldung address (street + Bezirk + PLZ) | `src/lib/site.ts` `address.*` | DRAFT |
 | USt-IdNr (Finanzamt nach Anmeldung) | `src/lib/site.ts` `legal.taxId` | DRAFT |
 | Domain — real `breno-bar.com` with MX + Resend verification | Vercel Domains + Resend dashboard | DRAFT |
-| Resend `RESEND_API_KEY` + `RESEND_FROM` env vars | Vercel project env vars | DRAFT (form returns 503 until set) |
+| Resend `RESEND_API_KEY` + `RESEND_FROM` env vars | Vercel project env vars | DRAFT (contact + gbp-check forms return 503 until set) |
+| **(funnel) Subscription prices** | `src/lib/funnel.ts` `pricing.tiers[].price` | ✅ CONFIRMED 2026-06-06 — €219/€390/€570 per month, no setup |
+| **(funnel) Lawyer to FINALIZE subscription legal docs** — the `/contract` + `/de/contract` template (`contract-strings.ts`) is **reworked to a DRAFT subscription version (v2.0-DRAFT)**: § 3 monthly + optional buy-out, § 4 cancel→offline, § 5 licence-not-transfer; page shows a printed red "DRAFT — NOT LAWYER-REVIEWED" banner · plus AGB · Datenschutz · buy-out contract | German lawyer | 🔴 REQUIRED before charging — DRAFT, not finalized legal text |
+| **(funnel) Public promise numbers** (preview/load/response time) | `src/lib/funnel.ts` `promises.items` | DRAFT — confirm we commit to these publicly |
+| **(funnel) Real Google reviews** (replace example quotes) | `src/lib/funnel.ts` `reviews.items` | DRAFT — clearly labelled examples; never ship invented testimonials |
+| **(funnel) Micro-product price + scheduling/payment** | `src/lib/funnel.ts` `websiteCheck.priceLine` | DRAFT — €120 placeholder; no scheduling/payment tool wired |
+| **(F8) Real WhatsApp Business number + `visible` flip** | `src/lib/contact-channels.ts` | DRAFT — placeholder number, `visible: false` |
+| **(funnel) `PAGESPEED_API_KEY`** (optional, scan tool headroom) | Vercel project env vars | OPTIONAL — PSI works keyless at low quota |
 
-The phone number was intentionally removed (`phone: null`, `dataControllerPhone: null`). Agency operates email-first.
+**Contact channels (updated 2026-06-04):** `SITE.phone` stays `null` (schema emits no `telephone`). WhatsApp + click-to-call are now **wired but hidden** via `src/lib/contact-channels.ts` (`CONTACT_CHANNELS.visible: false`) + `src/components/ui/ContactBar.astro` (renders nothing while hidden, mounted on every page). DRAFT placeholder numbers; flip `visible: true` + set a real number to surface a sitewide WhatsApp/phone CTA. See F8 in the inbound-funnel section below.
 
 ## Imported components
 
@@ -83,6 +93,19 @@ The agency site uses no canonical components from `docs/design/components/_impl/
 
 The scaffold's `DemoBanner` was deliberately REMOVED from `BaseLayout.astro` for the agency build — the demo-disclosure pattern (`BEISPIEL — Demo-Website von sm-website-seo. ...`) doesn't apply to the agency's own marketing site.
 
+**(2026-06-04) Bespoke reusable section components** added by the inbound-funnel sprint — all prop-driven, no hard-coded copy (content comes from `funnel.ts` / `tools.ts`):
+
+| Component | Used by | Notes |
+|---|---|---|
+| `sections/PromiseStrip` | home | F5 measurable-commitment stat row |
+| `sections/Faq` | home · pricing · local pages | F6 — native `<details>` accordion; page emits `faqPageSchema` via BaseLayout `extraSchema` (keep items in sync) |
+| `sections/ReviewsWall` | home | F7 — DRAFT example quotes, `draftNote` always rendered; no `aggregateRating` |
+| `sections/TrustBadgeRow` | home | F7 — factual capability claims, not invented awards |
+| `sections/PricingTiers` | pricing | F2 — monthly-subscription cards (`price` + `priceSuffix` + `priceNote`, no setup); tier name is `h2` (avoids `h1→h3` skip) |
+| `sections/SiteScanTool` | tools/website-scan | F3b — form + live results, posts to `/api/site-scan`; Safari `::-webkit-details-marker` handled |
+| `sections/GbpCheckTool` | tools/gbp-check | F3a — self-check list (static value) + hardened lead form to `/api/gbp-check` |
+| `ui/ContactBar` | every page | F8 — WhatsApp/phone, **renders nothing while `CONTACT_CHANNELS.visible === false`** |
+
 ## Per-client i18n conventions
 
 - **Reference locale:** EN (root). Validation pivots on EN.
@@ -95,3 +118,21 @@ The scaffold's `DemoBanner` was deliberately REMOVED from `BaseLayout.astro` for
 - `noindex` until DRAFT items resolve. Per root `CLAUDE.md` "Demo discipline" rule.
 - `robots.txt` ships as `Disallow: /` (scaffold default). Flip at production cutover.
 - Sentry `sendDefaultPii: false` enforced in `sentry.{client,server}.config.mjs`.
+
+## Inbound-funnel sprint (2026-06-04)
+
+Built from the `icreateyoursite.com` competitor benchmark — full rationale + roadmap at `docs/benchmark/_analysis.md`, backlog at `docs/audit/private/PENDING.md` ("2026-06-04 inbound-funnel backlog", items `F1`–`F9`). All additive; the trilingual marketing core is unchanged. Everything stays `noindex`; concrete commitments (prices, promise numbers, reviews, WhatsApp number) are **DRAFT** pending owner sign-off (see the DRAFT table above).
+
+**New routes**
+
+- **F2 — `/pricing`** (×3 locales) — **pure-monthly subscription ("Website-Abo")**: Start €219 · Growth €390 · Complete €570/mo, NO setup fee. The site is a managed subscription (client owns domain/content/data; build licensed while subscribed; optional one-time buy-out), stated **honestly** — deliberately NOT iCreate's "you own everything" ambiguity (UWG + §305c/§307 BGB risk in DE). "Most Chosen" anchor, rental terms, FAQPage schema, nav-linked. *(Pricing published 2026-06-04; pivoted to subscription + repriced 2026-06-06. AGB/Datenschutz/buy-out contract need a lawyer — see BRIEF.md.)*
+- **F4 — `/website-check`** (×3) — paid 1:1 "Website & Google check" micro-product. CTA routes to `/contact`.
+- **F3 — `/tools`, `/tools/website-scan`, `/tools/gbp-check`** (×3) — free lead-magnet tools. `website-scan` → `/api/site-scan` (Google PSI + security-header + tracker checks, graceful degradation without `PAGESPEED_API_KEY`). `gbp-check` → `/api/gbp-check` (guided self-check + hardened lead capture; no paid Places API; 503 without Resend).
+- **F1 — `/webdesign-berlin` + `/webdesign-berlin/[slug]`** — **German-only** local-SEO landing pages: 4 verticals (gastronomie · friseur · praxis · handwerk) × 6 Bezirke (mitte · kreuzberg · neukoelln · prenzlauer-berg · friedrichshain · charlottenburg) = **24 pages** + hub. Genuinely differentiated per-axis copy (anti-slop), `Service`+`FAQPage` schema, breadcrumb, cross-links. NOT in the trilingual set (own data module, excluded from the parity validator); German chrome via `locale='de'`, no hreflang. Footer link shown only on DE.
+- **F5/F6/F7** — home-page additions: PromiseStrip, ReviewsWall + TrustBadgeRow, FAQ (with FAQPage schema).
+- **F8** — WhatsApp/phone wired but hidden (see Contact channels note above).
+- **F9 (AI productized line)** — deferred per plan; not built.
+
+**Two new SSR endpoints** (`prerender = false`, mirror `api/contact.ts` hardening — honeypot/rate-limit/validation/Sentry-no-PII/graceful 503): `api/site-scan.ts`, `api/gbp-check.ts`. Env: optional `PAGESPEED_API_KEY` documented in `.env.example`.
+
+**Patterns worth backporting** (triage per root `CLAUDE.md` "audit whether it belongs in the scaffold"): the prop-driven `Faq` + `faqPageSchema` pairing and the hidden-channel `ContactBar`/`contact-channels.ts` flag pattern are generic enough to consider for the scaffold; the data-driven local-pages route group is a reusable local-SEO recipe.

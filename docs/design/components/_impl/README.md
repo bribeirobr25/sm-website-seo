@@ -1,6 +1,6 @@
 # docs/design/components/_impl/
 
-**Working code that backs each component spec sheet.** Each `.astro` / `.tsx` file in this directory is the canonical reference implementation for one of the 8 components in the agency's UI/UX library.
+**Working code that backs each component spec sheet.** Each `.astro` / `.tsx` file in this directory is the canonical reference implementation for one of the **32 canonical components + 6 universal primitives** in the agency's UI/UX library. The authoritative tiered index (what each component is, which tier, build-dependency graph, skip-list) lives in **[`../README.md`](../README.md)** — this file only documents the `_impl/` directory's conventions.
 
 ## Convention
 
@@ -21,30 +21,9 @@ The leading underscore prefix `_impl/` follows the same convention as `_demo/`: 
 3. Override the visual-identity comment block at the top of each file with the client's palette mapping
 4. Record the import in the client's `docs/clients/[slug]/CLAUDE.md` "Imported components" table per `TECH.md` §20
 
-## Component index — 8 canonical + 5 universal primitives
+## Component index
 
-### 8 agency-canonical components
-
-| Component | Astro | React (Tier 3) | Spec |
-|---|---|---|---|
-| Half-pill CTA | `HalfPillCTA.astro` | — | `../half-pill-cta.md` |
-| LABEL(N) header | `LabelCountHeader.astro` | — | `../label-count-header.md` |
-| Hours-in-nav | `HoursInNav.astro` | — | `../hours-in-nav.md` |
-| Stat callouts | `StatCallouts.astro` | — | `../stat-callouts.md` |
-| Alternating section bg | `Section.astro` | — | `../alternating-section-bg.md` |
-| Marquee CTA | `MarqueeCTA.astro` | — | `../marquee-cta.md` |
-| Eyebrow display hero ⚠ | `EyebrowDisplayHero.astro` | — | `../eyebrow-display-hero.md` |
-| SplitText | `SplitText.astro` | — | `../per-character-split.md` |
-
-### 5 universal primitives (no individual spec sheet — they are the agency baseline)
-
-| Primitive | Astro | React | Notes |
-|---|---|---|---|
-| Button | `Button.astro` | `Button.tsx` | Variants: primary / secondary / ghost. Darken-on-hover only (WCAG). |
-| CookieBanner | `CookieBanner.astro` | `CookieBanner.tsx` | Consent-first, "Reject all" parity per `LEGAL.md` §Cookie consent banner |
-| ConsentBootstrap | — | `ConsentBootstrap.tsx` | Tier 3 only — PostHog mount + consent re-apply on page reloads |
-| Placeholder | `Placeholder.astro` | `Placeholder.tsx` | DRAFT-tagged slot for real photos at scaffold time |
-| ShareButton | `ShareButton.astro` | `ShareButton.tsx` | WhatsApp / Facebook / X / IG / Copy-link per `SOCIAL-SHARING.md` |
+The full, current index — **32 canonical components across 6 tiers + 6 universal primitives**, with the build-dependency graph, buy-don't-build table, and skip-list — is maintained in **[`../README.md`](../README.md)** (single source of truth). To find a component's working file: open its spec sheet `../[component-name].md` §8 "Implementation pointer", which names the `.astro` / `.tsx` file here. This file is intentionally NOT a second index, to avoid the drift that left the old 8-component table stale.
 
 ## History
 

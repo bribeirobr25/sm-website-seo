@@ -1,0 +1,128 @@
+---
+import type { Locale } from '@/lib/site';
+/**
+ * GbpCheckTool (F3a) — guided self-check list + lead-capture form.
+ * Shared by EN + localized tool pages. Posts to /api/gbp-check (hardened).
+ * The checklist renders statically, so visitors get value even if the form
+ * endpoint is gated (503 without Resend).
+ */
+import { TOOLS } from '@/lib/tools';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const g = TOOLS[locale].gbp;
+const inputCls =
+  'w-full px-4 py-3 min-h-[48px] rounded-md border border-border bg-bg text-text placeholder:text-text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus:border-accent transition-colors';
+---
+
+<section class="section bg-bg">
+  <div class="container-page grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+    {/* Self-check list (static value) */}
+    <div>
+      <h2 class="font-display text-2xl font-semibold text-text tracking-[-0.02em]">{g.checklistHeading}</h2>
+      <ul class="mt-6 space-y-3 list-none p-0">
+        {g.checklist.map((c) => (
+          <li class="flex items-start gap-3 text-text leading-relaxed">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-1" aria-hidden="true"><path d="m9 11 3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <span>{c}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Lead-capture form */}
+    <form id="gbp-form" class="rounded-[22px] bg-surface border border-border p-7 space-y-5" novalidate data-locale={locale}>
+      <div class="absolute -left-[9999px]" aria-hidden="true">
+        <label for="gbp-gotcha">Don't fill this field</label>
+        <input type="text" name="_gotcha" id="gbp-gotcha" tabindex="-1" autocomplete="off" />
+      </div>
+      <input type="hidden" name="_locale" value={locale} />
+      <input type="hidden" name="_ts" id="gbp-ts" />
+
+      <div>
+        <label for="gbp-business" class="block text-sm font-medium text-text mb-2">{g.nameLabel}</label>
+        <input type="text" id="gbp-business" name="business" required minlength="2" maxlength="160" placeholder={g.namePlaceholder} class={inputCls} />
+      </div>
+      <div>
+        <label for="gbp-city" class="block text-sm font-medium text-text mb-2">{g.cityLabel}</label>
+        <input type="text" id="gbp-city" name="city" maxlength="120" placeholder={g.cityPlaceholder} class={inputCls} />
+      </div>
+      <div>
+        <label for="gbp-website" class="block text-sm font-medium text-text mb-2">{g.websiteLabel}</label>
+        <input type="url" id="gbp-website" name="website" maxlength="2048" placeholder={g.websitePlaceholder} class={inputCls} />
+      </div>
+      <div>
+        <label for="gbp-email" class="block text-sm font-medium text-text mb-2">{g.emailLabel}</label>
+        <input type="email" id="gbp-email" name="email" required maxlength="320" placeholder={g.emailPlaceholder} class={inputCls} />
+      </div>
+
+      <button type="submit" id="gbp-submit" class="inline-flex items-center justify-center w-full px-7 py-3 min-h-[52px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-base font-medium disabled:opacity-60 disabled:cursor-wait">
+        <span id="gbp-submit-label">{g.submit}</span>
+      </button>
+      <p class="text-xs text-text-muted leading-relaxed">{g.privacyNote}</p>
+
+      <div
+        id="gbp-status"
+        role="status"
+        aria-live="polite"
+        class="hidden rounded-md p-4 text-sm bg-surface-elev border border-border"
+        data-running={g.running}
+        data-success-title={g.successTitle}
+        data-success-body={g.successBody}
+        data-error={g.errorBody}
+      ></div>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('gbp-form') as HTMLFormElement | null;
+  const submit = document.getElementById('gbp-submit') as HTMLButtonElement | null;
+  const submitLabel = document.getElementById('gbp-submit-label');
+  const statusEl = document.getElementById('gbp-status') as HTMLDivElement | null;
+  const tsField = document.getElementById('gbp-ts') as HTMLInputElement | null;
+  if (tsField) tsField.value = Date.now().toString();
+  const defaultLabel = submitLabel?.textContent ?? '';
+
+  function show(kind: 'success' | 'error', errMsg?: string) {
+    if (!statusEl) return;
+    const title = kind === 'success' ? statusEl.dataset.successTitle ?? '' : '';
+    const body =
+      kind === 'success'
+        ? statusEl.dataset.successBody ?? ''
+        : errMsg || statusEl.dataset.error || '';
+    statusEl.innerHTML = title
+      ? `<p class="font-semibold text-text">${title}</p><p class="mt-1 text-text-muted">${body}</p>`
+      : `<p class="text-text-muted">${body}</p>`;
+    statusEl.classList.remove('hidden');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form || !submit) return;
+    submit.disabled = true;
+    if (submitLabel) submitLabel.textContent = statusEl?.dataset.running ?? defaultLabel;
+    statusEl?.classList.add('hidden');
+    try {
+      const res = await fetch('/api/gbp-check', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+      if (res.ok) {
+        show('success');
+        form.reset();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        show('error', data?.error);
+      }
+    } catch {
+      show('error');
+    } finally {
+      submit.disabled = false;
+      if (submitLabel) submitLabel.textContent = defaultLabel;
+    }
+  });
+</script>

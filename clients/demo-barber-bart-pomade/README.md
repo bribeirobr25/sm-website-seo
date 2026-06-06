@@ -50,18 +50,7 @@ See `docs/design/CHECKLIST.md` §0 Pre-flight for the per-client setup steps bef
 
 ## Canonical components — opt-in imports
 
-The 8 agency-canonical components live at `docs/design/components/_impl/`:
-
-- `HalfPillCTA.astro` — booking / reservation / quote CTA
-- `LabelCountHeader.astro` — `LABEL (N)` monospace catalog header
-- `HoursInNav.astro` — two-line nav with opening hours
-- `StatCallouts.astro` — big-number social proof
-- `Section.astro` — alternating-bg section primitive
-- `MarqueeCTA.astro` — marquee-on-hover CTA
-- `EyebrowDisplayHero.astro` — ⚠ portfolio-only (SEO restriction)
-- `SplitText.astro` — per-character animation primitive
-
-Import only the ones the client's vertical calls for per `docs/design/components/[component].md` §1. Each spec sheet documents per-vertical applicability and required tokens.
+The **32 canonical components + 6 universal primitives** live at `docs/design/components/_impl/`. The authoritative tiered index, build-dependency graph, and per-vertical applicability are in `docs/design/components/README.md` — import only what the client's vertical calls for per each `docs/design/components/[component].md` §1.
 
 ## Tier 2 isn't enough?
 
