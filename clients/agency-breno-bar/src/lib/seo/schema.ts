@@ -1,15 +1,15 @@
 /**
- * Schema.org JSON-LD generator — breno-bar agency.
+ * Schema.org JSON-LD generator, breno-bar agency.
  *
- * Primary @type: ProfessionalService (most-specific fit per SEO.md §5 — small
+ * Primary @type: ProfessionalService (most-specific fit per SEO.md §5, small
  * web agency providing services; ProfessionalService rolls up under
  * LocalBusiness so we get local-pack eligibility for free).
  *
  * Adds a Person node for the founder (Breno Ribeiro) per SEO.md §5
- * "recommended for solo operators" — small studio means founder identity
+ * "recommended for solo operators", small studio means founder identity
  * is the brand.
  *
- * NO `aggregateRating` — self-serving rating policy-banned per SEO.md §5.3.
+ * NO `aggregateRating`, self-serving rating policy-banned per SEO.md §5.3.
  */
 
 import { LOCALES, LOCALE_LANG, type Locale, SITE } from '../site';
@@ -51,7 +51,7 @@ export function businessSchema(locale: Locale = 'en'): Record<string, unknown> {
     `${SITE.url}/img/og-default.png`,
   ];
 
-  // Founder — Person node, links to the business
+  // Founder, Person node, links to the business
   const person: Record<string, unknown> = {
     '@type': 'Person',
     '@id': personId,
@@ -61,7 +61,7 @@ export function businessSchema(locale: Locale = 'en'): Record<string, unknown> {
     sameAs,
   };
 
-  // ProfessionalService — primary type
+  // ProfessionalService, primary type
   const business: Record<string, unknown> = {
     '@type': 'ProfessionalService',
     '@id': businessId,
@@ -139,36 +139,36 @@ export function businessSchema(locale: Locale = 'en'): Record<string, unknown> {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'Website creation',
+            name: 'Web Design',
             description:
-              'Multi-page, multilingual marketing website with cookie consent + legal pages, deployed on Vercel.',
+              'Custom, mobile-friendly, multilingual marketing website that turns visitors into new clients. Cookie consent + legal pages, deployed on Vercel.',
           },
         },
         {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'Search engine optimization',
+            name: 'SEO and Local Listing',
             description:
-              'Local SEO — keyword research, on-page, schema markup, Google Search Console + Bing Webmaster Tools.',
+              'Local SEO plus listings on Google, Google Maps, Apple Maps and more, so clients find you first. Keyword research, on-page, schema markup, Google Search Console.',
           },
         },
         {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'Google Business Profile',
+            name: 'E-Commerce and Business Email',
             description:
-              'Setup + monthly optimization of the GBP listing — photos, posts, reviews, Q&A, hours, services.',
+              'An online store selling your products or services 24/7 with secure checkout, plus professional email on your own domain that builds trust.',
           },
         },
         {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'Social media management',
+            name: 'AI Solutions and Booking System',
             description:
-              'Light-touch Instagram + Facebook posting cadence for owner-led businesses with no dedicated marketing staff.',
+              'Chatbots, automation, a booking system and AI tools that save owner-led businesses time and capture more inquiries.',
           },
         },
       ],
@@ -192,7 +192,7 @@ export function businessSchema(locale: Locale = 'en'): Record<string, unknown> {
 
 /**
  * FAQPage JSON-LD (F6). Pass plain-text Q&A pairs; emitted via BaseLayout
- * `extraSchema`. Per SEO.md §schema — only mark up FAQs actually visible on the
+ * `extraSchema`. Per SEO.md §schema, only mark up FAQs actually visible on the
  * page. Keep ≤ ~8 entries to avoid spammy-markup signals.
  */
 export function faqPageSchema(

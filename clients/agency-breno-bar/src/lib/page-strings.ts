@@ -5,7 +5,7 @@
  * (index + per-entry chrome) · about · contact · imprint · privacy.
  *
  * Trilingual: EN (reference) · DE · pt-BR. Validated by
- * `scripts/validate-translations.mjs` — every locale must declare the same keys
+ * `scripts/validate-translations.mjs`, every locale must declare the same keys
  * as EN at runtime.
  *
  * Register decisions (per the build plan):
@@ -20,7 +20,7 @@ import type { Locale } from './site';
 export interface ServiceStrings {
   name: string;
   shortTagline: string; // 1-line in the services overview card
-  /** Optional <title> override for the detail page. Falls back to `${name} — breno-bar`. */
+  /** Optional <title> override for the detail page. Falls back to `${name}, breno-bar`. */
   seoTitle?: string;
   /** Optional meta description for the detail page. Falls back to `shortTagline`. */
   seoDescription?: string;
@@ -81,6 +81,16 @@ export interface PageStrings {
     heroTitle: string;
     heroSubtitle: string;
     services: Record<ServiceSlug, ServiceStrings>;
+    /** Public offering cards for the home + services overview. Some offerings
+     *  (e-commerce, AI) have no detail page yet, `href`/`linkLabel` omitted. */
+    catalog: {
+      name: string;
+      tagline: string;
+      href?: string;
+      linkLabel?: string;
+      imgSrc: string;
+      imgAlt: string;
+    }[];
   };
   portfolio: {
     title: string;
@@ -159,17 +169,17 @@ export interface PageStrings {
 export const PAGE_STRINGS: Record<Locale, PageStrings> = {
   en: {
     home: {
-      title: 'breno-bar — Websites worth being proud of.',
+      title: 'breno-bar · Websites that bring you customers',
       description:
-        'A small Berlin web agency for owner-led businesses. Multilingual website design, local SEO, Google Business Profile. English, German, Portuguese.',
+        'A Berlin web agency for owner-led businesses. Web design, local SEO and Google Maps listing, online stores, business email, and AI tools. English, German, Portuguese.',
       heroEyebrow: 'STUDIO · BERLIN',
-      heroTitleLines: ['Websites worth', 'being proud of.'],
+      heroTitleLines: ['Websites that bring', 'you customers.'],
       heroSubtitle:
-        'For the small Berlin businesses that hold a Kiez together. We build the websites worthy of them.',
+        'For all Berlin businesses that hold a Kiez together. We build the websites worthy of them.',
       heroImageSrc: '/img/home/hero-altbau-kiez.webp',
       heroImageAlt:
         'A classic Berlin Altbau street: ornate facade in white and orange, ground-floor café with red awning, people at outdoor tables, trees casting shadows on the cobblestones.',
-      statTitle: 'Numbers we like',
+      statTitle: 'Our numbers',
       statLine1: '10',
       statLine2: '6',
       statLine3: '4',
@@ -177,12 +187,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       statLabel2: 'verticals served',
       statLabel3: 'languages spoken',
       servicesEyebrow: 'Services',
-      servicesHeading: 'Three things, done well.',
+      servicesHeading: 'Everything your business needs online.',
       servicesBody:
-        "The website. The search result. The Google profile. Done by the same hands, with the same care. Social media if you really want it. We'll tell you when you don't.",
-      portfolioEyebrow: 'Selected work',
-      portfolioHeading: 'A few we like.',
-      portfolioAllLink: 'See all projects →',
+        "Web design, local search, an online store, and the AI tools that save you time. Done by the same hands, with the same care. You pick what you need. We'll tell you when you don't need the rest.",
+      portfolioEyebrow: 'Our Work',
+      portfolioHeading: "A look at some of the websites we've built across every industry.",
+      portfolioAllLink: 'See all →',
       aboutEyebrow: 'About',
       aboutHeading: 'A small studio. No upsell.',
       aboutBody: [
@@ -199,18 +209,18 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Reply within one business day. No sales call. No decks. Just a one-paragraph answer.',
     },
     services: {
-      title: 'Web design, SEO and Google Business Profile services in Berlin — breno-bar',
+      title: 'Web design, SEO, e-commerce and AI for Berlin businesses, breno-bar',
       description:
-        'Web design, local SEO, and Google Business Profile setup for small Berlin businesses. Sold one at a time. No upsell, no retainer pressure.',
+        'Web design, local SEO and listings, e-commerce and business email, plus AI and booking tools for small Berlin businesses. Everything your business needs online, from one studio.',
       heroEyebrow: 'Services',
-      heroTitle: 'Three services. One studio. No upsell.',
+      heroTitle: 'Everything your business needs online.',
       heroSubtitle:
-        'Three small services, sold the way a Berlin shopkeeper sells anything. One at a time. No obligation to buy the next.',
+        'From the website that wins your next customer to the SEO, e-commerce and AI tools behind it. Picked for your business, never bolted on.',
       services: {
         website: {
-          name: 'Website',
-          shortTagline: 'The first room your next customer will walk into.',
-          seoTitle: 'Small business website design in Berlin — breno-bar',
+          name: 'Web Design',
+          shortTagline: 'Custom, mobile-friendly, turning visitors into new clients.',
+          seoTitle: 'Small business website design in Berlin, breno-bar',
           seoDescription:
             'Multilingual websites for Berlin restaurants, cafés, salons, and trades. Fast on the worst U-Bahn signal. Live in 3 to 6 weeks. DSGVO and Impressum included.',
           heroEyebrow: 'Service · 01',
@@ -247,9 +257,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             'A barista in a leather apron, side profile, focused on pouring milk from a steel pitcher at the espresso machine.',
         },
         seo: {
-          name: 'SEO',
-          shortTagline: 'The page someone sees just before they call you.',
-          seoTitle: 'Local SEO for small Berlin businesses — breno-bar',
+          name: 'SEO and Local Listing',
+          shortTagline: 'Google, Google Maps, Apple Maps and more. Clients find you first.',
+          seoTitle: 'Local SEO for small Berlin businesses, breno-bar',
           seoDescription:
             'Quiet, patient local SEO over 90 days. Schema, on-page, Search Console. For the bakery, the salon, the dentist, the plumber. One monthly note. No 12-tab dashboards.',
           heroEyebrow: 'Service · 02',
@@ -288,7 +298,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'The first half-second of every local search.',
-          seoTitle: 'Google Business Profile setup and management in Berlin — breno-bar',
+          seoTitle: 'Google Business Profile setup and management in Berlin, breno-bar',
           seoDescription:
             'Verified ownership, geo-tagged photos, monthly posts, reviews answered within 48 hours. The listing that does the local-search heavy lifting.',
           heroEyebrow: 'Service · 03',
@@ -319,7 +329,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             "Anyone customers find with the word 'nearby' in the search. The studio, the clinic, the workshop, the kitchen. Anywhere with a door or a service area.",
           heroImageSrc: '/img/services/google-business/hero-aseli-storefront.webp',
           heroImageAlt:
-            'A small Berlin shopfront. Green double doors, red enamel signage reading "Aseli — Berliner Original — seit 1921", ivy climbing the facade.',
+            'A small Berlin shopfront. Green double doors, red enamel signage reading "Aseli, Berliner Original, seit 1921", ivy climbing the facade.',
           secondaryImageSrc: '/img/services/google-business/mid-phone-map.webp',
           secondaryImageAlt:
             'A hand holding a smartphone displaying a navigation map at night, surrounded by colourful city-light bokeh.',
@@ -327,7 +337,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'social-media': {
           name: 'Social media',
           shortTagline: "Two posts a week, in your voice, that don't take your Tuesday.",
-          seoTitle: 'Instagram management for small Berlin businesses — breno-bar',
+          seoTitle: 'Instagram management for small Berlin businesses, breno-bar',
           seoDescription:
             'Two posts a week, in your voice, drawn from your week. DMs answered on weekdays. No viral promises, no bought followers. Optional, not a retainer trap.',
           heroEyebrow: 'Service · 04 (optional)',
@@ -364,9 +374,40 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             'Overhead view of four cappuccinos with leaf and heart latte art arranged on a small round wooden table.',
         },
       },
+      catalog: [
+        {
+          name: 'Web Design',
+          tagline: 'Custom, mobile-friendly, converting visitors into new clients.',
+          href: '/services/website',
+          linkLabel: 'Explore Websites →',
+          imgSrc: '/img/services/website/hero-terrace.webp',
+          imgAlt: 'A restaurant seen through its window at night, golden light, diners at tables.',
+        },
+        {
+          name: 'SEO and Local Listing',
+          tagline: 'Google, Google Maps, Apple Maps, and more. Clients find you first.',
+          href: '/services/seo',
+          linkLabel: 'About SEO →',
+          imgSrc: '/img/services/seo/hero-walking-phone.webp',
+          imgAlt: 'A person on a city sidewalk cradling a phone, a passerby blurred behind.',
+        },
+        {
+          name: 'E-Commerce and Business Email',
+          tagline:
+            'An online store selling your products or services 24/7 with secure checkout, plus professional email that builds trust.',
+          imgSrc: '/img/services/google-business/hero-aseli-storefront.webp',
+          imgAlt: 'A small Berlin shopfront with green double doors and red enamel signage.',
+        },
+        {
+          name: 'AI Solutions, Booking System and More',
+          tagline: 'Chatbots, automation, a booking system, and AI tools for your business.',
+          imgSrc: '/img/services/social-media/hero-florist.webp',
+          imgAlt: 'A florist working at a counter of cut flowers, seen through hanging plants.',
+        },
+      ],
     },
     portfolio: {
-      title: 'Selected work: Berlin web agency portfolio — breno-bar',
+      title: 'Selected work: Berlin web agency portfolio, breno-bar',
       description:
         'Nine projects across restaurants, cafés, salons, studios, education, and legal. Multilingual, fast, DSGVO-ready. Each entry includes a live link and a short case study.',
       heroEyebrow: 'Portfolio',
@@ -379,11 +420,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       stackLabel: 'Type',
       servicesLabel: 'Services',
       verticalLabel: 'Vertical',
-      detailTitleSuffix: 'Portfolio — breno-bar',
+      detailTitleSuffix: 'Portfolio, breno-bar',
       detailDescriptionPrefix: 'Case study:',
     },
     about: {
-      title: 'About the studio: Breno Ribeiro, web designer in Berlin — breno-bar',
+      title: 'About the studio: Breno Ribeiro, web designer in Berlin, breno-bar',
       description:
         'A small Berlin studio building websites for owner-led businesses. Workshop philosophy: three services, no upsell.',
       heroEyebrow: 'About',
@@ -414,7 +455,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       foundedNote: 'Founded 2026 by Breno Ribeiro in Berlin.',
     },
     contact: {
-      title: 'Contact — breno-bar',
+      title: 'Contact, breno-bar',
       description: 'Start a conversation. Reply within one business day.',
       heroEyebrow: 'Contact',
       heroTitle: "Let's talk.",
@@ -443,7 +484,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Your message is sent via Resend (EU servers). We never share your data and we delete inquiries 12 months after the last reply.',
     },
     privacy: {
-      title: 'Privacy policy — breno-bar',
+      title: 'Privacy policy, breno-bar',
       description: 'GDPR/DSGVO privacy policy for breno-bar. Operated from the EU.',
       headingSuffix: 'Privacy policy',
       lastUpdated: 'Last updated: May 27, 2026',
@@ -487,7 +528,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     imprint: {
-      title: 'Legal notice — breno-bar',
+      title: 'Legal notice, breno-bar',
       description: 'Information required under § 5 TMG (German Telemedia Act).',
       headingSuffix: 'Legal notice',
       intro: 'Information required under § 5 TMG (German Telemedia Act).',
@@ -506,17 +547,17 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
   },
   de: {
     home: {
-      title: 'breno-bar — Webseiten, auf die man stolz sein kann.',
+      title: 'breno-bar · Webseiten, die dir Kund:innen bringen',
       description:
-        'Webdesign und lokales SEO aus Berlin für kleine, inhabergeführte Unternehmen. Mehrsprachige Webseiten, Google Unternehmensprofil, DSGVO-konform.',
+        'Berliner Webagentur für inhabergeführte Unternehmen. Webdesign, lokales SEO und Eintrag bei Google Maps und Apple Maps, Online-Shops, Business-E-Mail und KI-Tools. Englisch, Deutsch, Portugiesisch.',
       heroEyebrow: 'STUDIO · BERLIN',
-      heroTitleLines: ['Webseiten, auf die', 'man stolz sein kann.'],
+      heroTitleLines: ['Webseiten, die dir', 'Kund:innen bringen.'],
       heroSubtitle:
-        'Für die kleinen Berliner Geschäfte, die einen Kiez zusammenhalten. Wir bauen die Webseiten, die ihrer würdig sind.',
+        'Für alle Berliner Geschäfte, die einen Kiez zusammenhalten. Wir bauen die Webseiten, die ihrer würdig sind.',
       heroImageSrc: '/img/home/hero-altbau-kiez.webp',
       heroImageAlt:
         'Eine klassische Berliner Altbaustraße: ornamentale Fassade in Weiß und Orange, Café im Erdgeschoss mit roter Markise, Menschen an Außentischen, Bäume werfen Schatten aufs Kopfsteinpflaster.',
-      statTitle: 'Zahlen, die wir mögen',
+      statTitle: 'Unsere Zahlen',
       statLine1: '10',
       statLine2: '6',
       statLine3: '4',
@@ -524,12 +565,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       statLabel2: 'Branchen bedient',
       statLabel3: 'Sprachen gesprochen',
       servicesEyebrow: 'Leistungen',
-      servicesHeading: 'Drei Dinge, gut gemacht.',
+      servicesHeading: 'Alles, was dein Geschäft online braucht.',
       servicesBody:
-        'Die Website. Das Suchergebnis. Das Google-Profil. Von denselben Händen, mit derselben Sorgfalt. Social Media, falls du es wirklich willst. Wir sagen dir, wann nicht.',
-      portfolioEyebrow: 'Ausgewählte Arbeiten',
-      portfolioHeading: 'Ein paar, die uns gefallen.',
-      portfolioAllLink: 'Alle Projekte ansehen →',
+        'Webdesign, lokale Suche, ein Online-Shop und die KI-Tools, die dir Zeit sparen. Von denselben Händen, mit derselben Sorgfalt. Du wählst, was du brauchst. Den Rest sparen wir uns.',
+      portfolioEyebrow: 'Unsere Arbeiten',
+      portfolioHeading: 'Ein Blick auf einige Websites, die wir branchenübergreifend gebaut haben.',
+      portfolioAllLink: 'Alle ansehen →',
       aboutEyebrow: 'Studio',
       aboutHeading: 'Ein kleines Studio. Kein Upsell.',
       aboutBody: [
@@ -546,18 +587,18 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Antwort innerhalb eines Werktags. Kein Verkaufsgespräch. Keine Folien. Nur eine Antwort in einem Absatz.',
     },
     services: {
-      title: 'Webdesign, SEO und Google Unternehmensprofil aus Berlin — breno-bar',
+      title: 'Webdesign, SEO, Online-Shop und KI für Berliner Geschäfte, breno-bar',
       description:
-        'Webdesign, lokales SEO und Google Unternehmensprofil für kleine Berliner Geschäfte. Einzeln verkauft. Kein Upsell, kein Druck auf einen Vertrag.',
+        'Webdesign, lokales SEO und Einträge, Online-Shop und Business-E-Mail sowie KI- und Buchungstools für kleine Berliner Geschäfte. Alles, was dein Geschäft online braucht, aus einem Studio.',
       heroEyebrow: 'Leistungen',
-      heroTitle: 'Drei Leistungen. Ein Studio. Kein Upsell.',
+      heroTitle: 'Alles, was dein Geschäft online braucht.',
       heroSubtitle:
-        'Drei kleine Leistungen, verkauft so, wie ein Berliner Geschäft alles verkauft. Eine nach der anderen. Ohne Pflicht, die nächste zu nehmen.',
+        'Von der Webseite, die deine nächste Kundschaft gewinnt, bis zu SEO, Online-Shop und KI-Tools dahinter. Für dein Geschäft ausgewählt, nie aufgezwungen.',
       services: {
         website: {
-          name: 'Website',
-          shortTagline: 'Der erste Ort, an den dein nächster Kunde kommt.',
-          seoTitle: 'Webseite für kleine Unternehmen in Berlin — breno-bar',
+          name: 'Webdesign',
+          shortTagline: 'Individuell, mobil-optimiert, macht aus Besuchern neue Kund:innen.',
+          seoTitle: 'Webseite für kleine Unternehmen in Berlin, breno-bar',
           seoDescription:
             'Mehrsprachige Webseiten für Berliner Cafés, Restaurants, Salons und Handwerk. Schnell auch im schwächsten U-Bahn-Signal. In drei bis sechs Wochen online. DSGVO und Impressum inklusive.',
           heroEyebrow: 'Leistung · 01',
@@ -594,9 +635,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             'Ein Barista in lederner Schürze, Seitenprofil, konzentriert beim Aufschäumen der Milch an der Espressomaschine.',
         },
         seo: {
-          name: 'SEO',
-          shortTagline: 'Die Seite, die jemand sieht, kurz bevor er dich anruft.',
-          seoTitle: 'Lokales SEO für kleine Berliner Unternehmen — breno-bar',
+          name: 'SEO und lokale Einträge',
+          shortTagline: 'Google, Google Maps, Apple Maps und mehr. Kund:innen finden dich zuerst.',
+          seoTitle: 'Lokales SEO für kleine Berliner Unternehmen, breno-bar',
           seoDescription:
             'Geduldiges, lokales SEO über 90 Tage. Schema, On-Page, Google Search Console. Für die Bäckerei, den Salon, die Praxis, den Handwerker. Eine Notiz im Monat. Keine zwölf Dashboard-Tabs.',
           heroEyebrow: 'Leistung · 02',
@@ -635,7 +676,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'Die erste halbe Sekunde jeder lokalen Suche.',
-          seoTitle: 'Google Unternehmensprofil einrichten und pflegen, Berlin — breno-bar',
+          seoTitle: 'Google Unternehmensprofil einrichten und pflegen, Berlin, breno-bar',
           seoDescription:
             'Verifizierte Inhaberschaft, geo-getaggte Fotos, monatliche Beiträge, Rezensionen innerhalb von 48 Stunden beantwortet. Das Profil, das die lokale Sichtbarkeit übernimmt.',
           heroEyebrow: 'Leistung · 03',
@@ -666,7 +707,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             "Alle, die Kund:innen mit dem Wort 'in der Nähe' in der Suche finden. Das Studio, die Praxis, die Werkstatt, die Küche. Überall mit einer Tür oder einem Servicegebiet.",
           heroImageSrc: '/img/services/google-business/hero-aseli-storefront.webp',
           heroImageAlt:
-            'Ein kleines Berliner Schaufenster. Grüne Doppeltüren, rotes Emailschild „Aseli — Berliner Original — seit 1921", Efeu an der Fassade.',
+            'Ein kleines Berliner Schaufenster. Grüne Doppeltüren, rotes Emailschild „Aseli, Berliner Original, seit 1921", Efeu an der Fassade.',
           secondaryImageSrc: '/img/services/google-business/mid-phone-map.webp',
           secondaryImageAlt:
             'Eine Hand hält ein Smartphone mit einer Navigations-Karte bei Nacht, umgeben von bunten Bokeh-Stadtlichtern.',
@@ -675,7 +716,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           name: 'Social Media',
           shortTagline:
             'Zwei Beiträge pro Woche, in deiner Stimme, die dir den Dienstag nicht stehlen.',
-          seoTitle: 'Instagram-Betreuung für kleine Berliner Geschäfte — breno-bar',
+          seoTitle: 'Instagram-Betreuung für kleine Berliner Geschäfte, breno-bar',
           seoDescription:
             'Zwei Posts pro Woche, in deiner Stimme, aus deiner Woche heraus. DMs werktags beantwortet. Keine viralen Versprechen, keine gekauften Follower.',
           heroEyebrow: 'Leistung · 04 (optional)',
@@ -712,9 +753,44 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             'Draufsicht auf vier Cappuccinos mit Blatt- und Herz-Latte-Art auf einem kleinen runden Holztisch.',
         },
       },
+      catalog: [
+        {
+          name: 'Webdesign',
+          tagline:
+            'Individuell, mobil-first und gebaut, um Besucher:innen zu neuen Kund:innen zu machen.',
+          href: '/services/website',
+          linkLabel: 'Websites entdecken →',
+          imgSrc: '/img/services/website/hero-terrace.webp',
+          imgAlt: 'Ein Restaurant durch sein Fenster bei Nacht, goldenes Licht, Gäste an Tischen.',
+        },
+        {
+          name: 'SEO und lokale Einträge',
+          tagline: 'Google, Google Maps, Apple Maps und mehr. Kund:innen finden zuerst dich.',
+          href: '/services/seo',
+          linkLabel: 'Mehr zu SEO →',
+          imgSrc: '/img/services/seo/hero-walking-phone.webp',
+          imgAlt:
+            'Eine Person auf dem Gehweg, das Handy in den Händen, eine Passantin verschwommen dahinter.',
+        },
+        {
+          name: 'Online-Shop und Business-E-Mail',
+          tagline:
+            'Ein Online-Shop, der deine Produkte oder Leistungen rund um die Uhr verkauft, mit sicherem Checkout, plus professionelle E-Mail, die Vertrauen schafft.',
+          imgSrc: '/img/services/google-business/hero-aseli-storefront.webp',
+          imgAlt:
+            'Ein kleines Berliner Ladengeschäft mit grüner Doppeltür und rotem Emaille-Schild.',
+        },
+        {
+          name: 'KI-Lösungen, Buchungssystem und mehr',
+          tagline: 'Chatbots, Automatisierung, ein Buchungssystem und KI-Tools für dein Geschäft.',
+          imgSrc: '/img/services/social-media/hero-florist.webp',
+          imgAlt:
+            'Eine Floristin an einem Tisch mit geschnittenen Blumen, gesehen durch hängende Pflanzen.',
+        },
+      ],
     },
     portfolio: {
-      title: 'Ausgewählte Arbeiten, Berliner Webagentur — breno-bar',
+      title: 'Ausgewählte Arbeiten, Berliner Webagentur, breno-bar',
       description:
         'Neun Projekte aus Gastronomie, Beauty, Studio, Bildung und Recht. Mehrsprachig, schnell, DSGVO-konform. Jeder Eintrag mit Live-Link und kurzer Fallstudie.',
       heroEyebrow: 'Portfolio',
@@ -727,11 +803,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       stackLabel: 'Art',
       servicesLabel: 'Leistungen',
       verticalLabel: 'Branche',
-      detailTitleSuffix: 'Portfolio — breno-bar',
+      detailTitleSuffix: 'Portfolio, breno-bar',
       detailDescriptionPrefix: 'Fallstudie:',
     },
     about: {
-      title: 'Über das Studio: Breno Ribeiro, Webdesigner in Berlin — breno-bar',
+      title: 'Über das Studio: Breno Ribeiro, Webdesigner in Berlin, breno-bar',
       description:
         'Ein kleines Berliner Studio, das Webseiten für inhabergeführte Unternehmen baut. Werkstatt-Philosophie: drei Leistungen, kein Upsell.',
       heroEyebrow: 'Studio',
@@ -762,7 +838,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       foundedNote: 'Gegründet 2026 von Breno Ribeiro in Berlin.',
     },
     contact: {
-      title: 'Kontakt — breno-bar',
+      title: 'Kontakt, breno-bar',
       description: 'Starte ein Gespräch. Antwort innerhalb eines Werktags.',
       heroEyebrow: 'Kontakt',
       heroTitle: 'Reden wir.',
@@ -791,7 +867,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Deine Nachricht wird per Resend (EU-Server) versendet. Wir geben deine Daten nicht weiter und löschen Anfragen 12 Monate nach der letzten Antwort.',
     },
     privacy: {
-      title: 'Datenschutzerklärung — breno-bar',
+      title: 'Datenschutzerklärung, breno-bar',
       description: 'DSGVO-konforme Datenschutzerklärung für breno-bar. Betrieben aus der EU.',
       headingSuffix: 'Datenschutzerklärung',
       lastUpdated: 'Stand: 27. Mai 2026',
@@ -835,7 +911,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     imprint: {
-      title: 'Impressum — breno-bar',
+      title: 'Impressum, breno-bar',
       description: 'Angaben gemäß § 5 TMG.',
       headingSuffix: 'Impressum',
       intro: 'Angaben gemäß § 5 TMG.',
@@ -854,17 +930,17 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
   },
   'pt-br': {
     home: {
-      title: 'breno-bar — Sites dos quais a gente se orgulha.',
+      title: 'breno-bar · Sites que trazem clientes para você',
       description:
-        'Web designer brasileiro em Berlim, para pequenos negócios. Sites multilíngues, SEO local, Google Business Profile. Em português, alemão e inglês.',
+        'Agência web em Berlim para negócios com dono presente. Web design, SEO local e perfil no Google Maps e Apple Maps, lojas online, e-mail profissional e ferramentas de IA. Em português, alemão e inglês.',
       heroEyebrow: 'ESTÚDIO · BERLIM',
-      heroTitleLines: ['Sites dos quais', 'a gente se orgulha.'],
+      heroTitleLines: ['Sites que trazem', 'clientes para você.'],
       heroSubtitle:
-        'Para os pequenos negócios em Berlim que dão vida ao bairro. A gente constrói os sites que eles merecem.',
+        'Para todos os negócios em Berlim que dão vida ao bairro. A gente constrói os sites que eles merecem.',
       heroImageSrc: '/img/home/hero-altbau-kiez.webp',
       heroImageAlt:
         'Uma rua clássica de Altbau berlinense: fachada ornamentada em branco e laranja, café no térreo com toldo vermelho, pessoas em mesas externas, árvores projetando sombras nos paralelepípedos.',
-      statTitle: 'Números que a gente gosta',
+      statTitle: 'Nossos números',
       statLine1: '10',
       statLine2: '6',
       statLine3: '4',
@@ -872,12 +948,12 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       statLabel2: 'segmentos atendidos',
       statLabel3: 'idiomas falados',
       servicesEyebrow: 'Serviços',
-      servicesHeading: 'Três coisas, bem feitas.',
+      servicesHeading: 'Tudo que o seu negócio precisa online.',
       servicesBody:
-        'O site. O resultado de busca. O perfil do Google. Pelas mesmas mãos, com o mesmo cuidado. Redes sociais se você realmente quiser. A gente avisa quando não.',
-      portfolioEyebrow: 'Trabalhos selecionados',
-      portfolioHeading: 'Alguns que a gente gosta.',
-      portfolioAllLink: 'Ver todos os projetos →',
+        'Web design, busca local, uma loja online e as ferramentas de IA que economizam seu tempo. Pelas mesmas mãos, com o mesmo cuidado. Você escolhe o que precisa. A gente avisa quando não precisa do resto.',
+      portfolioEyebrow: 'Nossos trabalhos',
+      portfolioHeading: 'Uma amostra dos sites que a gente construiu em todos os segmentos.',
+      portfolioAllLink: 'Ver todos →',
       aboutEyebrow: 'Estúdio',
       aboutHeading: 'Um pequeno estúdio. Sem upsell.',
       aboutBody: [
@@ -894,18 +970,19 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Resposta dentro de um dia útil. Sem call comercial. Sem deck. Só uma resposta de um parágrafo.',
     },
     services: {
-      title: 'Site, SEO local e Google Business Profile em Berlim — breno-bar',
+      title: 'Web design, SEO, e-commerce e IA para negócios em Berlim, breno-bar',
       description:
-        'Criação de site, SEO local e perfil Google Empresa para pequenos negócios em Berlim. Vendidos um de cada vez. Sem upsell.',
+        'Web design, SEO local e presença em mapas, e-commerce e e-mail profissional, além de IA e sistema de agendamento para pequenos negócios em Berlim. Tudo que o seu negócio precisa online, de um só estúdio.',
       heroEyebrow: 'Serviços',
-      heroTitle: 'Três serviços. Um estúdio. Sem upsell.',
+      heroTitle: 'Tudo que o seu negócio precisa online.',
       heroSubtitle:
-        'Três pequenos serviços, vendidos como um comerciante berlinense vende qualquer coisa. Um de cada vez. Sem obrigação de comprar o próximo.',
+        'Do site que conquista seu próximo cliente ao SEO, e-commerce e ferramentas de IA por trás dele. Escolhidos para o seu negócio, nunca empurrados.',
       services: {
         website: {
-          name: 'Site',
-          shortTagline: 'O primeiro espaço onde seu próximo cliente vai entrar.',
-          seoTitle: 'Site para pequenos negócios em Berlim — breno-bar',
+          name: 'Web Design',
+          shortTagline:
+            'Sob medida, adaptado ao celular, transformando visitantes em novos clientes.',
+          seoTitle: 'Site para pequenos negócios em Berlim, breno-bar',
           seoDescription:
             'Sites multilíngues para restaurantes, cafés, salões e oficinas em Berlim. Rápidos até no pior sinal de U-Bahn. No ar em 3 a 6 semanas.',
           heroEyebrow: 'Serviço · 01',
@@ -942,9 +1019,10 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             'Um barista de avental de couro, perfil lateral, concentrado em vaporizar o leite na máquina de espresso.',
         },
         seo: {
-          name: 'SEO',
-          shortTagline: 'A página que alguém vê pouco antes de te ligar.',
-          seoTitle: 'SEO local para pequenos negócios em Berlim — breno-bar',
+          name: 'SEO e presença local',
+          shortTagline:
+            'Google, Google Maps, Apple Maps e mais. Os clientes encontram você primeiro.',
+          seoTitle: 'SEO local para pequenos negócios em Berlim, breno-bar',
           seoDescription:
             'SEO local paciente, ao longo de 90 dias. Schema, on-page, Google Search Console. Uma nota por mês, sem dashboards intermináveis.',
           heroEyebrow: 'Serviço · 02',
@@ -983,7 +1061,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'O primeiro meio-segundo de toda busca local.',
-          seoTitle: 'Configuração e gestão do perfil Google Empresa em Berlim — breno-bar',
+          seoTitle: 'Configuração e gestão do perfil Google Empresa em Berlim, breno-bar',
           seoDescription:
             'Posse verificada, fotos geolocalizadas, posts mensais, avaliações respondidas em até 48 horas. O perfil que faz o trabalho pesado da busca local.',
           heroEyebrow: 'Serviço · 03',
@@ -1014,7 +1092,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             "Qualquer um que clientes encontram com a palavra 'perto' na busca. O estúdio, a clínica, a oficina, a cozinha. Qualquer lugar com uma porta ou área de atendimento.",
           heroImageSrc: '/img/services/google-business/hero-aseli-storefront.webp',
           heroImageAlt:
-            'Uma pequena fachada berlinense. Portas verdes duplas, placa em esmalte vermelho com "Aseli — Berliner Original — desde 1921", hera subindo pela parede.',
+            'Uma pequena fachada berlinense. Portas verdes duplas, placa em esmalte vermelho com "Aseli, Berliner Original, desde 1921", hera subindo pela parede.',
           secondaryImageSrc: '/img/services/google-business/mid-phone-map.webp',
           secondaryImageAlt:
             'Uma mão segurando um smartphone com um mapa de navegação à noite, cercada por bokeh colorido das luzes da cidade.',
@@ -1022,7 +1100,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'social-media': {
           name: 'Redes sociais',
           shortTagline: 'Dois posts por semana, na sua voz, que não roubam sua terça-feira.',
-          seoTitle: 'Gestão de Instagram para pequenos negócios em Berlim — breno-bar',
+          seoTitle: 'Gestão de Instagram para pequenos negócios em Berlim, breno-bar',
           seoDescription:
             'Dois posts por semana, na sua voz, tirados da sua semana. DMs respondidas em dias úteis. Sem promessas de viralizar, sem seguidores comprados.',
           heroEyebrow: 'Serviço · 04 (opcional)',
@@ -1059,9 +1137,44 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
             'Vista de cima de quatro cappuccinos com latte art em folha e coração, dispostos sobre uma pequena mesa redonda de madeira.',
         },
       },
+      catalog: [
+        {
+          name: 'Web Design',
+          tagline:
+            'Sob medida, mobile-first e feito para transformar visitantes em novos clientes.',
+          href: '/services/website',
+          linkLabel: 'Conhecer os sites →',
+          imgSrc: '/img/services/website/hero-terrace.webp',
+          imgAlt: 'Um restaurante visto pela janela à noite, luz dourada, clientes nas mesas.',
+        },
+        {
+          name: 'SEO e presença local',
+          tagline: 'Google, Google Maps, Apple Maps e mais. Os clientes encontram você primeiro.',
+          href: '/services/seo',
+          linkLabel: 'Sobre SEO →',
+          imgSrc: '/img/services/seo/hero-walking-phone.webp',
+          imgAlt: 'Uma pessoa na calçada segurando o celular, um transeunte desfocado ao fundo.',
+        },
+        {
+          name: 'E-Commerce e e-mail profissional',
+          tagline:
+            'Uma loja online vendendo seus produtos ou serviços 24 horas com checkout seguro, mais e-mail profissional que passa confiança.',
+          imgSrc: '/img/services/google-business/hero-aseli-storefront.webp',
+          imgAlt:
+            'Uma pequena loja berlinense com portas duplas verdes e letreiro esmaltado vermelho.',
+        },
+        {
+          name: 'Soluções de IA, sistema de agendamento e mais',
+          tagline:
+            'Chatbots, automação, um sistema de agendamento e ferramentas de IA para o seu negócio.',
+          imgSrc: '/img/services/social-media/hero-florist.webp',
+          imgAlt:
+            'Uma florista em uma mesa de flores cortadas, vista por entre plantas penduradas.',
+        },
+      ],
     },
     portfolio: {
-      title: 'Trabalhos selecionados: portfólio de web design em Berlim — breno-bar',
+      title: 'Trabalhos selecionados: portfólio de web design em Berlim, breno-bar',
       description:
         'Nove projetos, de restaurantes a salões, estúdios, educação e direito. Multilíngues, rápidos, em conformidade com DSGVO. Cada item inclui um link ao vivo e um curto estudo de caso.',
       heroEyebrow: 'Portfólio',
@@ -1074,11 +1187,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       stackLabel: 'Tipo',
       servicesLabel: 'Serviços',
       verticalLabel: 'Segmento',
-      detailTitleSuffix: 'Portfólio — breno-bar',
+      detailTitleSuffix: 'Portfólio, breno-bar',
       detailDescriptionPrefix: 'Estudo de caso:',
     },
     about: {
-      title: 'Sobre o estúdio: Breno Ribeiro, web designer em Berlim — breno-bar',
+      title: 'Sobre o estúdio: Breno Ribeiro, web designer em Berlim, breno-bar',
       description:
         'Um pequeno estúdio berlinense que constrói sites para negócios liderados pelo dono. Filosofia de ateliê: três serviços, sem upsell.',
       heroEyebrow: 'Estúdio',
@@ -1109,7 +1222,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       foundedNote: 'Fundado em 2026 por Breno Ribeiro em Berlim.',
     },
     contact: {
-      title: 'Contato — breno-bar',
+      title: 'Contato, breno-bar',
       description: 'Comece uma conversa. Resposta dentro de um dia útil.',
       heroEyebrow: 'Contato',
       heroTitle: 'Vamos conversar.',
@@ -1138,7 +1251,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Sua mensagem é enviada via Resend (servidores na UE). Nunca compartilhamos seus dados e deletamos solicitações 12 meses após a última resposta.',
     },
     privacy: {
-      title: 'Política de privacidade — breno-bar',
+      title: 'Política de privacidade, breno-bar',
       description:
         'Política de privacidade conforme o GDPR/DSGVO da breno-bar. Operado a partir da UE.',
       headingSuffix: 'Política de privacidade',
@@ -1183,7 +1296,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     imprint: {
-      title: 'Informações legais — breno-bar',
+      title: 'Informações legais, breno-bar',
       description: 'Informações obrigatórias conforme § 5 TMG (lei alemã).',
       headingSuffix: 'Informações legais',
       intro: 'Informações obrigatórias conforme § 5 TMG (Telemediengesetz alemão).',

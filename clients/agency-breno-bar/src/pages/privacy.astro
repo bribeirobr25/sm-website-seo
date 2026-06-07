@@ -9,7 +9,7 @@ const locale = 'en' as const;
 const p = PAGE_STRINGS[locale].privacy;
 
 const processorsList = SITE.legal.processors
-  .map((proc) => `• ${proc.name} — ${proc.purpose} (Location: ${proc.location})`)
+  .map((proc) => `• ${proc.name}, ${proc.purpose} (Location: ${proc.location})`)
   .join('\n');
 
 function resolve(body: string): string {

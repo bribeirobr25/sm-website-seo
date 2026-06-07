@@ -1,5 +1,5 @@
 /**
- * Local landing pages (F1 — icreateyoursite benchmark borrow).
+ * Local landing pages (F1, icreateyoursite benchmark borrow).
  *
  * Vertical × Berlin-Bezirk programmatic pages, e.g. "Friseur-Website in Kreuzberg".
  *
@@ -9,7 +9,7 @@
  * i18n parity validator. The site's main marketing pages stay trilingual.
  *
  * ANTI-SLOP (per DESIGN-BEST-PRACTICES.md §6.5 + CLAUDE.md portfolio-diversity):
- * iCreate's location pages are find-and-replace clones — a thin-content risk we
+ * iCreate's location pages are find-and-replace clones, a thin-content risk we
  * must NOT copy. Differentiation here comes from TWO axes of genuinely distinct
  * prose: every Bezirk has a unique `intro` + `localPara` (real neighbourhood
  * character), and every vertical has a unique `lead` + `body` + `faq`. Each of
@@ -24,9 +24,9 @@
 export interface Bezirk {
   slug: string;
   name: string;
-  /** Unique neighbourhood character — 1–2 sentences, no two alike. */
+  /** Unique neighbourhood character, 1–2 sentences, no two alike. */
   intro: string;
-  /** Why local search matters specifically here — 1–2 sentences. */
+  /** Why local search matters specifically here, 1–2 sentences. */
   localPara: string;
 }
 
@@ -38,7 +38,7 @@ export interface Vertical {
   pageNoun: string;
   /** schema.org serviceType string. */
   serviceType: string;
-  /** Vertical pain / hook — unique per vertical. */
+  /** Vertical pain / hook, unique per vertical. */
   lead: string;
   /** 6 concrete deliverables for this vertical. */
   services: string[];
@@ -76,13 +76,13 @@ export const BEZIRKE: Bezirk[] = [
     intro:
       'Neukölln ist vielfältig und im Wandel: vom Reuterkiez bis zur Sonnenallee mischen sich Sprachen, Generationen und Gründer:innen, die gerade ihren ersten Laden eröffnen.',
     localPara:
-      'Mehrsprachige Inhalte und ein sauberer Google-Eintrag sind hier kein Extra, sondern Pflicht — so erreichst du die ganze Nachbarschaft, nicht nur die Hälfte.',
+      'Mehrsprachige Inhalte und ein sauberer Google-Eintrag sind hier kein Extra, sondern Pflicht, so erreichst du die ganze Nachbarschaft, nicht nur die Hälfte.',
   },
   {
     slug: 'prenzlauer-berg',
     name: 'Prenzlauer Berg',
     intro:
-      'Prenzlauer Berg ist Altbau, Kollwitzplatz und eine Kundschaft, die Qualität schätzt und bereit ist, dafür zu zahlen — aber vorher gründlich vergleicht.',
+      'Prenzlauer Berg ist Altbau, Kollwitzplatz und eine Kundschaft, die Qualität schätzt und bereit ist, dafür zu zahlen, aber vorher gründlich vergleicht.',
     localPara:
       'Wer hier gefunden werden will, braucht mehr als einen Eintrag: Bewertungen, klare Leistungen und eine Seite, die das Versprechen einlöst, das die Bewertungen geben.',
   },
@@ -92,7 +92,7 @@ export const BEZIRKE: Bezirk[] = [
     intro:
       'Friedrichshain ist jung, digital und schnell: rund um Boxhagener Platz und RAW-Gelände wird zuerst auf dem Handy gesucht und dann entschieden.',
     localPara:
-      'Eine mobil-first gebaute, schnelle Seite ist hier kein Bonus — sie ist der Unterschied zwischen einem Klick und einem Absprung zur Konkurrenz im selben Block.',
+      'Eine mobil-first gebaute, schnelle Seite ist hier kein Bonus, sie ist der Unterschied zwischen einem Klick und einem Absprung zur Konkurrenz im selben Block.',
   },
   {
     slug: 'charlottenburg',
@@ -100,7 +100,7 @@ export const BEZIRKE: Bezirk[] = [
     intro:
       'Charlottenburg ist gesetzter und kaufkräftig: zwischen Ku’damm und Stuttgarter Platz erwarten Kund:innen Seriosität, Verlässlichkeit und einen professionellen ersten Eindruck.',
     localPara:
-      'Hier zahlt eine ruhige, professionelle Website direkt auf Vertrauen ein — und ein gepflegtes Google-Profil entscheidet, wer den Termin bekommt.',
+      'Hier zahlt eine ruhige, professionelle Website direkt auf Vertrauen ein, und ein gepflegtes Google-Profil entscheidet, wer den Termin bekommt.',
   },
 ];
 
@@ -110,7 +110,7 @@ export const VERTICALS: Vertical[] = [
     name: 'Gastronomie',
     pageNoun: 'Restaurant- & Café-Website',
     serviceType: 'Webdesign für Gastronomie',
-    lead: 'Gäste entscheiden in Sekunden — meist auf dem Handy, oft hungrig. Deine Seite muss Speisekarte, Öffnungszeiten und den Weg zu dir sofort zeigen.',
+    lead: 'Gäste entscheiden in Sekunden, meist auf dem Handy, oft hungrig. Deine Seite muss Speisekarte, Öffnungszeiten und den Weg zu dir sofort zeigen.',
     services: [
       'Speisekarte, die auf dem Handy sofort lesbar ist',
       'Öffnungszeiten, Reservierung & Anfahrt prominent',
@@ -120,8 +120,8 @@ export const VERTICALS: Vertical[] = [
       'Mehrsprachig (DE/EN) für Gäste aus aller Welt',
     ],
     body: [
-      'Die meisten Gäste schauen sich eine Speisekarte heute auf dem Handy an, bevor sie kommen. Wenn deine Karte ein PDF ist, das erst geladen und gezoomt werden muss, sind sie schon weg. Wir bauen Karten, die direkt lesbar sind — schnell, klar, ohne Download.',
-      'Genauso wichtig: Öffnungszeiten, Reservierung und Anfahrt. Diese drei Dinge gehören nach oben, nicht ins Kleingedruckte. Und dein Google-Eintrag muss dieselben Informationen zeigen — denn die Hälfte der Gäste landet zuerst auf der Karte, nicht auf der Website.',
+      'Die meisten Gäste schauen sich eine Speisekarte heute auf dem Handy an, bevor sie kommen. Wenn deine Karte ein PDF ist, das erst geladen und gezoomt werden muss, sind sie schon weg. Wir bauen Karten, die direkt lesbar sind, schnell, klar, ohne Download.',
+      'Genauso wichtig: Öffnungszeiten, Reservierung und Anfahrt. Diese drei Dinge gehören nach oben, nicht ins Kleingedruckte. Und dein Google-Eintrag muss dieselben Informationen zeigen, denn die Hälfte der Gäste landet zuerst auf der Karte, nicht auf der Website.',
       'Dazu kommen Fotos, die den Ort verkaufen, und Schema-Markup, das Google deine Gerichte und Zeiten verstehen lässt. So tauchst du auf, wenn jemand in der Nähe „essen gehen“ sucht.',
     ],
     faq: [
@@ -131,7 +131,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: 'Aktualisiert ihr auch die Speisekarte?',
-        a: 'Mit dem optionalen Pflegeplan ja — du schickst Änderungen, wir setzen sie zeitnah um. Alternativ bauen wir die Karte so, dass du sie selbst pflegen kannst.',
+        a: 'Mit dem optionalen Pflegeplan ja, du schickst Änderungen, wir setzen sie zeitnah um. Alternativ bauen wir die Karte so, dass du sie selbst pflegen kannst.',
       },
       {
         q: 'Bekomme ich auch ein Google-Unternehmensprofil?',
@@ -148,7 +148,7 @@ export const VERTICALS: Vertical[] = [
     name: 'Friseur',
     pageNoun: 'Friseur- & Salon-Website',
     serviceType: 'Webdesign für Friseure und Salons',
-    lead: 'Im Salongeschäft zählt der erste Eindruck — online wie im Stuhl. Deine Seite soll Stil zeigen und das Buchen so einfach wie möglich machen.',
+    lead: 'Im Salongeschäft zählt der erste Eindruck, online wie im Stuhl. Deine Seite soll Stil zeigen und das Buchen so einfach wie möglich machen.',
     services: [
       'Online-Terminbuchung oder Buchungs-Link',
       'Leistungen & Preise klar dargestellt',
@@ -158,8 +158,8 @@ export const VERTICALS: Vertical[] = [
       'Mobil-first, weil hier fast alle vom Handy buchen',
     ],
     body: [
-      'Ein Salon verkauft Stil — und die Website ist das erste Stück davon, das Kund:innen sehen. Wir bauen Seiten, die deine Handschrift zeigen: ruhige Typografie, gute Fotos deiner Arbeiten, und ein Look, der zu deinem Salon passt statt zu einer Vorlage.',
-      'Der wichtigste Knopf ist „Termin buchen“. Ob über ein eigenes Buchungssystem oder einen Link zu Treatwell oder Booksy — wir machen das Buchen auf dem Handy so leicht wie möglich, denn genau dort entscheiden sich die meisten.',
+      'Ein Salon verkauft Stil, und die Website ist das erste Stück davon, das Kund:innen sehen. Wir bauen Seiten, die deine Handschrift zeigen: ruhige Typografie, gute Fotos deiner Arbeiten, und ein Look, der zu deinem Salon passt statt zu einer Vorlage.',
+      'Der wichtigste Knopf ist „Termin buchen“. Ob über ein eigenes Buchungssystem oder einen Link zu Treatwell oder Booksy, wir machen das Buchen auf dem Handy so leicht wie möglich, denn genau dort entscheiden sich die meisten.',
       'Bewertungen und ein gepflegtes Google-Profil runden das Bild ab: Sie sind im Salongeschäft oft der Grund, warum jemand bei dir bucht und nicht beim Laden zwei Straßen weiter.',
     ],
     faq: [
@@ -169,7 +169,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: 'Kann ich meine Preise selbst ändern?',
-        a: 'Ja. Wir bauen die Leistungs- und Preisliste so, dass du sie selbst pflegen kannst — oder wir übernehmen das im Pflegeplan.',
+        a: 'Ja. Wir bauen die Leistungs- und Preisliste so, dass du sie selbst pflegen kannst, oder wir übernehmen das im Pflegeplan.',
       },
       {
         q: 'Zeigt ihr meine Arbeiten?',
@@ -196,14 +196,14 @@ export const VERTICALS: Vertical[] = [
       'Google-Profil & lokale Auffindbarkeit',
     ],
     body: [
-      'Bei Gesundheitsthemen entscheidet Vertrauen. Eine Praxis-Website muss in den ersten Sekunden seriös und ruhig wirken — kein Marktgeschrei, sondern Klarheit: Was bietet ihr an, wann habt ihr offen, wie kommt man zu euch und wie vereinbart man einen Termin.',
-      'Wir nehmen Barrierefreiheit ernst (WCAG 2.2 AA), weil eure Patient:innen jedes Alter und jede Fähigkeit haben. Und wir bauen DSGVO-konform — Cookie-Banner, Datenschutzerklärung und Formulare, die Patientendaten respektvoll behandeln.',
+      'Bei Gesundheitsthemen entscheidet Vertrauen. Eine Praxis-Website muss in den ersten Sekunden seriös und ruhig wirken, kein Marktgeschrei, sondern Klarheit: Was bietet ihr an, wann habt ihr offen, wie kommt man zu euch und wie vereinbart man einen Termin.',
+      'Wir nehmen Barrierefreiheit ernst (WCAG 2.2 AA), weil eure Patient:innen jedes Alter und jede Fähigkeit haben. Und wir bauen DSGVO-konform, Cookie-Banner, Datenschutzerklärung und Formulare, die Patientendaten respektvoll behandeln.',
       'Terminbuchung lösen wir passend zu eurer Praxis: ein schlankes Anfrage-Formular oder die Anbindung an Doctolib, wenn ihr es schon nutzt. Dazu ein gepflegtes Google-Profil, damit ihr in der lokalen Suche auftaucht.',
     ],
     faq: [
       {
         q: 'Ist die Seite DSGVO-konform?',
-        a: 'Ja, von Grund auf. Consent-first Cookie-Banner, Datenschutzerklärung, Impressum und Formulare, die Daten sparsam und sicher verarbeiten — das ist bei uns Standard, kein Aufpreis.',
+        a: 'Ja, von Grund auf. Consent-first Cookie-Banner, Datenschutzerklärung, Impressum und Formulare, die Daten sparsam und sicher verarbeiten, das ist bei uns Standard, kein Aufpreis.',
       },
       {
         q: 'Können Patient:innen online einen Termin anfragen?',
@@ -211,7 +211,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: 'Ist die Seite barrierefrei?',
-        a: 'Ja. Wir bauen nach WCAG 2.2 AA — gute Kontraste, Tastatur-Bedienung, lesbare Schriftgrößen. Gerade im Gesundheitsbereich ist das wichtig.',
+        a: 'Ja. Wir bauen nach WCAG 2.2 AA, gute Kontraste, Tastatur-Bedienung, lesbare Schriftgrößen. Gerade im Gesundheitsbereich ist das wichtig.',
       },
       {
         q: 'Könnt ihr eine bestehende Praxis-Website modernisieren?',
@@ -224,19 +224,19 @@ export const VERTICALS: Vertical[] = [
     name: 'Handwerk',
     pageNoun: 'Handwerker-Website',
     serviceType: 'Webdesign für Handwerksbetriebe',
-    lead: 'Aufträge kommen heute über Google, nicht über die Gelben Seiten. Deine Seite muss zeigen, was du kannst — und das Anfragen kinderleicht machen.',
+    lead: 'Aufträge kommen heute über Google, nicht über die Gelben Seiten. Deine Seite muss zeigen, was du kannst, und das Anfragen kinderleicht machen.',
     services: [
       'Leistungen & Einsatzgebiet klar benannt',
       'Referenzen mit Vorher-Nachher-Fotos',
       'Anfrage-Formular & Klick-zum-Anrufen',
       'Lokales SEO fürs Einsatzgebiet',
       'Google-Profil mit Bewertungen',
-      'Schnell und mobil — auch auf der Baustelle',
+      'Schnell und mobil, auch auf der Baustelle',
     ],
     body: [
-      'Wer einen Handwerker sucht, sucht heute bei Google — und ruft den an, der zuerst auftaucht und vertrauenswürdig wirkt. Eine klare Seite mit deinen Leistungen, deinem Einsatzgebiet und echten Referenzen macht genau diesen Unterschied.',
+      'Wer einen Handwerker sucht, sucht heute bei Google, und ruft den an, der zuerst auftaucht und vertrauenswürdig wirkt. Eine klare Seite mit deinen Leistungen, deinem Einsatzgebiet und echten Referenzen macht genau diesen Unterschied.',
       'Vorher-Nachher-Fotos sind dein stärkstes Argument. Wir setzen sie in Szene und machen das Anfragen einfach: ein kurzes Formular und ein „Jetzt anrufen“-Button, der auf dem Handy direkt wählt.',
-      'Dazu lokales SEO für dein Einsatzgebiet und ein gepflegtes Google-Profil mit Bewertungen — damit du in deinem Kiez und den Nachbarbezirken gefunden wirst, wenn jemand dringend Hilfe braucht.',
+      'Dazu lokales SEO für dein Einsatzgebiet und ein gepflegtes Google-Profil mit Bewertungen, damit du in deinem Kiez und den Nachbarbezirken gefunden wirst, wenn jemand dringend Hilfe braucht.',
     ],
     faq: [
       {
@@ -249,7 +249,7 @@ export const VERTICALS: Vertical[] = [
       },
       {
         q: 'Werde ich in meinem Einsatzgebiet gefunden?',
-        a: 'Dafür ist die Seite gemacht. Wir optimieren lokales SEO und dein Google-Profil auf dein Einsatzgebiet — also die Bezirke, in denen du arbeitest.',
+        a: 'Dafür ist die Seite gemacht. Wir optimieren lokales SEO und dein Google-Profil auf dein Einsatzgebiet, also die Bezirke, in denen du arbeitest.',
       },
       {
         q: 'Was kostet so eine Seite?',
@@ -273,11 +273,11 @@ export function getLocalPage(slug: string): LocalPage | undefined {
 
 /** Hub-page copy (German). */
 export const LOCAL_HUB = {
-  metaTitle: 'Webdesign in Berlin — nach Branche & Bezirk',
+  metaTitle: 'Webdesign in Berlin, nach Branche & Bezirk',
   metaDescription:
-    'Webdesign, lokales SEO und Google-Unternehmensprofil für Berliner Betriebe — nach Branche und Bezirk. Gastronomie, Friseur, Praxis und Handwerk in Mitte, Kreuzberg, Neukölln und mehr.',
+    'Webdesign, lokales SEO und Google-Unternehmensprofil für Berliner Betriebe, nach Branche und Bezirk. Gastronomie, Friseur, Praxis und Handwerk in Mitte, Kreuzberg, Neukölln und mehr.',
   heroEyebrow: 'Webdesign Berlin',
-  heroTitle: 'Websites für Berliner Betriebe — in deinem Kiez.',
+  heroTitle: 'Websites für Berliner Betriebe, in deinem Kiez.',
   heroSubtitle:
     'Wir bauen schnelle, mehrsprachige Websites und kümmern uns um lokales SEO und dein Google-Profil. Such dir deine Branche und deinen Bezirk.',
   verticalsHeading: 'Branchen',

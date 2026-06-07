@@ -1,20 +1,20 @@
 import * as Sentry from '@sentry/astro';
 /**
- * Contact-form endpoint — POST /api/contact
+ * Contact-form endpoint, POST /api/contact
  *
  * Hardened per docs/design/FORMS.md:
  *   - Honeypot field `_gotcha` (bots fill, humans don't)
  *   - Min-fill-time check (5 s) via `_ts` hidden field
- *   - IP-keyed rate limit (1 req per 30 s) — in-memory; upgrade to Upstash for
+ *   - IP-keyed rate limit (1 req per 30 s), in-memory; upgrade to Upstash for
  *     production volume
  *   - Length + format validation on every field
  *   - HTML-escape user content before email send
- *   - Sends via Resend (EU servers) — see INTEGRATIONS.md §Resend
+ *   - Sends via Resend (EU servers), see INTEGRATIONS.md §Resend
  *   - On send failure, captures to Sentry without PII
- *   - Returns 503 if RESEND_API_KEY is unset — caller renders the
+ *   - Returns 503 if RESEND_API_KEY is unset, caller renders the
  *     "Service temporarily unavailable" message; demo deploys without the key.
  *
- * Notification email sent to NOTIFICATION_EMAIL (REQUIRED env var — no fallback).
+ * Notification email sent to NOTIFICATION_EMAIL (REQUIRED env var, no fallback).
  * Reply-To header set to the visitor's address so direct-reply works in Gmail.
  */
 import type { APIRoute } from 'astro';
@@ -71,7 +71,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Honeypot
     if (fd.get('_gotcha')) {
-      // Silent success — don't tell the bot why it failed
+      // Silent success, don't tell the bot why it failed
       return new Response(JSON.stringify({ ok: true }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
@@ -113,7 +113,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Resend integration — gated on API key. Without it, return 503 so the
+    // Resend integration, gated on API key. Without it, return 503 so the
     // form can render a friendly "Service temporarily unavailable" message.
     const apiKey = import.meta.env.RESEND_API_KEY;
     if (!apiKey) {
@@ -146,7 +146,7 @@ export const POST: APIRoute = async ({ request }) => {
       to: notifyTo,
       replyTo: email,
       subject: `[breno-bar] New inquiry from ${name} (${locale})`,
-      // IP intentionally NOT logged in the email body — DSGVO data-minimisation.
+      // IP intentionally NOT logged in the email body, DSGVO data-minimisation.
       // Rate-limit keeps the IP in server memory for `RATE_LIMIT_MS` only, never persisted.
       text: `Name:    ${name}\nEmail:   ${email}\nLocale:  ${locale}\n\nMessage:\n${message}`,
       html: `
@@ -181,11 +181,11 @@ export const POST: APIRoute = async ({ request }) => {
       await resend.emails.send({
         from: `breno-bar <${fromAddress}>`,
         to: email,
-        subject: 'We received your message — breno-bar',
-        text: `Hi ${name},\n\nThanks for reaching out. We received your message and will reply within one business day.\n\nIf you don't hear back, check your spam folder or write to ${notifyTo} directly.\n\n— breno-bar\nBerlin`,
+        subject: 'We received your message, breno-bar',
+        text: `Hi ${name},\n\nThanks for reaching out. We received your message and will reply within one business day.\n\nIf you don't hear back, check your spam folder or write to ${notifyTo} directly.\n\n, breno-bar\nBerlin`,
       });
     } catch (autoErr) {
-      // Auto-confirmation failure is non-fatal — log it but still report success to the user
+      // Auto-confirmation failure is non-fatal, log it but still report success to the user
       Sentry.captureException(autoErr, { tags: { source: 'contact-form-autoconfirm' } });
     }
 

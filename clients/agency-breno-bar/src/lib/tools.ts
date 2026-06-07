@@ -1,5 +1,5 @@
 /**
- * Free lead-magnet tools (F3 — icreateyoursite benchmark borrow).
+ * Free lead-magnet tools (F3, icreateyoursite benchmark borrow).
  *
  * Trilingual UI strings for the two tools + their hub. Typed Record<Locale, …>
  * (compile-time parity), kept out of PAGE_STRINGS like funnel.ts.
@@ -8,7 +8,7 @@
  *   F3b  Website scan           → PageSpeed (Google PSI API) + header/DSGVO hints.
  *
  * Endpoints degrade gracefully without API keys (see api/site-scan.ts,
- * api/gbp-check.ts). Nothing here makes legal claims — results are hints, not
+ * api/gbp-check.ts). Nothing here makes legal claims, results are hints, not
  * Rechtsberatung, and the pages say so.
  */
 
@@ -81,7 +81,7 @@ export interface ToolsContent {
 export const TOOLS: Record<Locale, ToolsContent> = {
   en: {
     hub: {
-      metaTitle: 'Free tools — website scan & Google check',
+      metaTitle: 'Free tools, website scan & Google check',
       metaDescription:
         'Two free tools for Berlin businesses: scan your website for speed and GDPR hints, and get a guided Google Business Profile check.',
       eyebrow: 'Free tools',
@@ -97,13 +97,13 @@ export const TOOLS: Record<Locale, ToolsContent> = {
         {
           href: '/tools/gbp-check',
           name: 'Google Business check',
-          desc: 'A guided checklist for your Google listing — plus a tailored review by email.',
+          desc: 'A guided checklist for your Google listing, plus a tailored review by email.',
           cta: 'Check my listing',
         },
       ],
     },
     scan: {
-      metaTitle: 'Free website scan — speed, SEO & GDPR hints',
+      metaTitle: 'Free website scan, speed, SEO & GDPR hints',
       metaDescription:
         'Scan any website for PageSpeed, SEO, accessibility, and GDPR/security hints. Free, instant, no account.',
       eyebrow: 'Website scan',
@@ -135,7 +135,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
       labelBestPractices: 'Best practices',
       labelSecurity: 'Security headers',
       labelHttps: 'HTTPS',
-      disclaimer: 'Hints only — not legal advice. A green score is a good sign, not a guarantee.',
+      disclaimer: 'Hints only, not legal advice. A green score is a good sign, not a guarantee.',
     },
     gbp: {
       metaTitle: 'Free Google Business Profile check',
@@ -144,7 +144,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
       eyebrow: 'Google Business check',
       title: 'Is your Google listing pulling its weight?',
       subtitle:
-        'Half your customers find you on the map first. Tell us your business and we’ll send a tailored review — and you can self-check with the list below right now.',
+        'Half your customers find you on the map first. Tell us your business and we’ll send a tailored review, and you can self-check with the list below right now.',
       nameLabel: 'Business name',
       namePlaceholder: 'Your business',
       cityLabel: 'City / Bezirk',
@@ -168,7 +168,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
       ],
       successTitle: 'On its way.',
       successBody:
-        'Thanks — we’ll send your tailored Google Business review within one business day.',
+        'Thanks, we’ll send your tailored Google Business review within one business day.',
       errorBody: 'Something went wrong. Please try again, or email us directly.',
       ctaHeading: 'Want us to manage it?',
       ctaBody: 'Google Business setup and monthly management are part of what we do.',
@@ -177,7 +177,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
   },
   de: {
     hub: {
-      metaTitle: 'Kostenlose Tools — Website-Scan & Google-Check',
+      metaTitle: 'Kostenlose Tools, Website-Scan & Google-Check',
       metaDescription:
         'Zwei kostenlose Tools für Berliner Betriebe: Website auf Tempo und DSGVO-Hinweise scannen und einen geführten Google-Unternehmensprofil-Check machen.',
       eyebrow: 'Kostenlose Tools',
@@ -194,13 +194,13 @@ export const TOOLS: Record<Locale, ToolsContent> = {
         {
           href: '/de/tools/gbp-check',
           name: 'Google-Unternehmens-Check',
-          desc: 'Eine geführte Checkliste für deinen Google-Eintrag — plus eine maßgeschneiderte Auswertung per E-Mail.',
+          desc: 'Eine geführte Checkliste für deinen Google-Eintrag, plus eine maßgeschneiderte Auswertung per E-Mail.',
           cta: 'Eintrag prüfen',
         },
       ],
     },
     scan: {
-      metaTitle: 'Kostenloser Website-Scan — Tempo, SEO & DSGVO-Hinweise',
+      metaTitle: 'Kostenloser Website-Scan, Tempo, SEO & DSGVO-Hinweise',
       metaDescription:
         'Jede Website auf PageSpeed, SEO, Barrierefreiheit und DSGVO-/Sicherheits-Hinweise scannen. Kostenlos, sofort, ohne Konto.',
       eyebrow: 'Website-Scan',
@@ -233,7 +233,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
       labelSecurity: 'Sicherheits-Header',
       labelHttps: 'HTTPS',
       disclaimer:
-        'Nur Hinweise — keine Rechtsberatung. Ein grüner Wert ist ein gutes Zeichen, keine Garantie.',
+        'Nur Hinweise, keine Rechtsberatung. Ein grüner Wert ist ein gutes Zeichen, keine Garantie.',
     },
     gbp: {
       metaTitle: 'Kostenloser Google-Unternehmensprofil-Check',
@@ -242,7 +242,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
       eyebrow: 'Google-Unternehmens-Check',
       title: 'Zieht dein Google-Eintrag sein Gewicht?',
       subtitle:
-        'Die Hälfte deiner Kund:innen findet dich zuerst auf der Karte. Nenn uns deinen Betrieb und wir schicken eine maßgeschneiderte Auswertung — und mit der Liste unten kannst du dich gleich selbst prüfen.',
+        'Die Hälfte deiner Kund:innen findet dich zuerst auf der Karte. Nenn uns deinen Betrieb und wir schicken eine maßgeschneiderte Auswertung, und mit der Liste unten kannst du dich gleich selbst prüfen.',
       nameLabel: 'Name des Betriebs',
       namePlaceholder: 'Dein Betrieb',
       cityLabel: 'Stadt / Bezirk',
@@ -266,7 +266,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
       ],
       successTitle: 'Unterwegs.',
       successBody:
-        'Danke — wir schicken deine maßgeschneiderte Google-Auswertung innerhalb eines Werktags.',
+        'Danke, wir schicken deine maßgeschneiderte Google-Auswertung innerhalb eines Werktags.',
       errorBody: 'Etwas ist schiefgelaufen. Bitte versuch es erneut oder schreib uns direkt.',
       ctaHeading: 'Sollen wir das übernehmen?',
       ctaBody:
@@ -276,7 +276,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
   },
   'pt-br': {
     hub: {
-      metaTitle: 'Ferramentas grátis — scan de site & check do Google',
+      metaTitle: 'Ferramentas grátis, scan de site & check do Google',
       metaDescription:
         'Duas ferramentas grátis para negócios em Berlim: escaneie seu site em busca de velocidade e alertas de GDPR e faça um check guiado do Perfil da Empresa no Google.',
       eyebrow: 'Ferramentas grátis',
@@ -292,13 +292,13 @@ export const TOOLS: Record<Locale, ToolsContent> = {
         {
           href: '/pt-br/tools/gbp-check',
           name: 'Check do Google',
-          desc: 'Uma lista guiada para o seu perfil no Google — mais uma análise sob medida por e-mail.',
+          desc: 'Uma lista guiada para o seu perfil no Google, mais uma análise sob medida por e-mail.',
           cta: 'Verificar perfil',
         },
       ],
     },
     scan: {
-      metaTitle: 'Scan de site grátis — velocidade, SEO e alertas de GDPR',
+      metaTitle: 'Scan de site grátis, velocidade, SEO e alertas de GDPR',
       metaDescription:
         'Escaneie qualquer site para PageSpeed, SEO, acessibilidade e alertas de GDPR/segurança. Grátis, na hora, sem conta.',
       eyebrow: 'Scan de site',
@@ -331,7 +331,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
       labelSecurity: 'Cabeçalhos de segurança',
       labelHttps: 'HTTPS',
       disclaimer:
-        'Apenas indícios — não é aconselhamento jurídico. Uma nota verde é bom sinal, não garantia.',
+        'Apenas indícios, não é aconselhamento jurídico. Uma nota verde é bom sinal, não garantia.',
     },
     gbp: {
       metaTitle: 'Check grátis do Perfil da Empresa no Google',
@@ -340,7 +340,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
       eyebrow: 'Check do Google',
       title: 'Seu perfil no Google está trabalhando por você?',
       subtitle:
-        'Metade dos seus clientes encontra você primeiro no mapa. Diga seu negócio e enviamos uma análise sob medida — e com a lista abaixo você já se autoavalia agora.',
+        'Metade dos seus clientes encontra você primeiro no mapa. Diga seu negócio e enviamos uma análise sob medida, e com a lista abaixo você já se autoavalia agora.',
       nameLabel: 'Nome do negócio',
       namePlaceholder: 'Seu negócio',
       cityLabel: 'Cidade / bairro',
@@ -363,7 +363,7 @@ export const TOOLS: Record<Locale, ToolsContent> = {
         'Você adicionou serviços, produtos e uma descrição atualizada?',
       ],
       successTitle: 'A caminho.',
-      successBody: 'Obrigado — enviaremos sua análise sob medida do Google em até um dia útil.',
+      successBody: 'Obrigado, enviaremos sua análise sob medida do Google em até um dia útil.',
       errorBody: 'Algo deu errado. Tente novamente ou escreva direto para nós.',
       ctaHeading: 'Quer que a gente cuide disso?',
       ctaBody: 'Configurar e gerenciar o Perfil da Empresa no Google faz parte do que fazemos.',

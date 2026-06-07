@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '@/lib/site';
 /**
- * SiteScanTool (F3b) — form + live results for /api/site-scan.
+ * SiteScanTool (F3b), form + live results for /api/site-scan.
  * Shared by the EN + localized tool pages. Locale-driven via TOOLS[locale].scan.
  */
 import { TOOLS } from '@/lib/tools';
@@ -87,7 +87,7 @@ const i18n = {
     return 'text-error';
   }
   function chip(label: string, v: number | null): string {
-    const display = v === null ? '—' : String(v);
+    const display = v === null ? ', ' : String(v);
     return `<div class="rounded-[18px] bg-surface border border-border p-5 text-center">
       <div class="font-display text-4xl font-semibold tabular ${scoreColor(v)}">${display}</div>
       <div class="mt-1 text-xs text-text-muted">${label}</div>

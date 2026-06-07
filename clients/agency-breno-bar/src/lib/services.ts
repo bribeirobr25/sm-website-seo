@@ -1,5 +1,5 @@
 /**
- * Services taxonomy — 4 canonical agency offerings.
+ * Services taxonomy, 4 canonical agency offerings.
  *
  * Service prose (name, body, bullets) lives in PAGE_STRINGS[locale].services
  * for i18n parity. This module just declares slugs + portfolio relationships.
@@ -9,7 +9,17 @@ import { PORTFOLIO } from './portfolio';
 
 export type ServiceSlug = 'website' | 'seo' | 'google-business' | 'social-media';
 
-export const SERVICE_SLUGS: ServiceSlug[] = ['website', 'seo', 'google-business', 'social-media'];
+/**
+ * Slugs that have a standalone /services/[slug] detail page.
+ *
+ * The public offering catalog (home + /services overview) is now the 4-card
+ * `PAGE_STRINGS[locale].services.catalog` (Web Design · SEO and Local Listing ·
+ * E-Commerce and Business Email · AI Solutions and Booking). Only the first two
+ * ship a detail page today; `google-business` + `social-media` remain in the
+ * type + prose Record for portfolio tagging + future reinstatement, but no
+ * longer generate a page.
+ */
+export const SERVICE_SLUGS: ServiceSlug[] = ['website', 'seo'];
 
 // PortfolioEntry.services uses 'gbp' + 'social'; map to URL slugs here.
 function entryHasService(entry: (typeof PORTFOLIO)[number], slug: ServiceSlug): boolean {

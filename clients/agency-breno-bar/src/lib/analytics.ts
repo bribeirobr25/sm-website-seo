@@ -1,10 +1,10 @@
 /**
- * Consent-gated event tracking — wraps GA4 + Clarity + (future) PostHog
+ * Consent-gated event tracking, wraps GA4 + Clarity + (future) PostHog
  * behind a single `track()` helper.
  *
  * Per KPI.md §Event naming convention: canonical event names + required
  * parameters (source_page, source_section, locale). Components import
- * EVENTS constants — never inline string literals.
+ * EVENTS constants, never inline string literals.
  *
  * No PII in event parameters. Per LEGAL.md §Rules at a glance.
  */
@@ -41,13 +41,13 @@ function getRequiredParams(): EventParams {
 export function track(eventName: EventName, params: EventParams = {}): void {
   if (!hasConsent('analytics')) {
     // Pre-consent: silently drop the event. Consent events themselves
-    // are essential-category (no analytics-consent required) — see below.
+    // are essential-category (no analytics-consent required), see below.
     return;
   }
 
   const fullParams = { ...getRequiredParams(), ...params };
 
-  // GA4 via gtag (script-blocked until consent — loads via type="text/plain")
+  // GA4 via gtag (script-blocked until consent, loads via type="text/plain")
   const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
   if (typeof gtag === 'function') {
     gtag('event', eventName, fullParams);
@@ -66,7 +66,7 @@ export function track(eventName: EventName, params: EventParams = {}): void {
 /**
  * Essential-category events that fire regardless of analytics consent
  * (consent_given, consent_rejected). They are emitted to Sentry breadcrumbs
- * if Sentry is loaded — never to GA4/Clarity (those require consent).
+ * if Sentry is loaded, never to GA4/Clarity (those require consent).
  */
 export function trackEssential(
   eventName: typeof EVENTS.CONSENT_GIVEN | typeof EVENTS.CONSENT_REJECTED,

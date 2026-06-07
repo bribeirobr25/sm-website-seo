@@ -1,8 +1,8 @@
 ---
 /**
- * Faq (F6) — accessible accordion using native <details>/<summary>.
+ * Faq (F6), accessible accordion using native <details>/<summary>.
  * Prop-driven. The FAQPage JSON-LD is emitted separately by the page via
- * BaseLayout `extraSchema` + `faqPageSchema(items)` — keep the two in sync by
+ * BaseLayout `extraSchema` + `faqPageSchema(items)`, keep the two in sync by
  * passing the SAME items array to both.
  *
  * Native <details> = keyboard-operable + screen-reader-friendly with zero JS.
@@ -13,7 +13,7 @@ interface Props {
   eyebrow?: string;
   title?: string;
   items: readonly Faq[];
-  /** bg variant — defaults to base bg; pass 'surface' to sit on a gray section. */
+  /** bg variant, defaults to base bg; pass 'surface' to sit on a gray section. */
   surface?: boolean;
 }
 const { eyebrow, title, items, surface = false } = Astro.props;

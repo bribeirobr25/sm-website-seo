@@ -1,12 +1,12 @@
 ---
 /**
- * ContactBar (F8) — floating WhatsApp + click-to-call.
+ * ContactBar (F8), floating WhatsApp + click-to-call.
  *
  * WIRED BUT HIDDEN: renders NOTHING while CONTACT_CHANNELS.visible === false
  * (the current state). The markup, links, and styling are complete; flipping
  * the flag in src/lib/contact-channels.ts (after a real number is set) makes it
  * appear sitewide with no further work. Mounted on pages already so the wiring
- * is in place — it simply produces no output today.
+ * is in place, it simply produces no output today.
  */
 import { CONTACT_CHANNELS, phoneHref, whatsappHref } from '@/lib/contact-channels';
 import type { Locale } from '@/lib/site';

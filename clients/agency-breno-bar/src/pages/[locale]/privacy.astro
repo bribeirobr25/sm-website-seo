@@ -20,7 +20,7 @@ const p = PAGE_STRINGS[locale].privacy;
 
 const locationLabel = locale === 'de' ? 'Standort' : 'Localização';
 const processorsList = SITE.legal.processors
-  .map((proc) => `• ${proc.name} — ${proc.purpose} (${locationLabel}: ${proc.location})`)
+  .map((proc) => `• ${proc.name}, ${proc.purpose} (${locationLabel}: ${proc.location})`)
   .join('\n');
 
 function resolve(body: string): string {

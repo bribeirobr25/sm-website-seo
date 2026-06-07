@@ -1,5 +1,5 @@
 /**
- * Site-wide constants — Configuration-as-Code per TECH.md §Configuration-as-Code.
+ * Site-wide constants, Configuration-as-Code per TECH.md §Configuration-as-Code.
  *
  * **Setup steps for new client:**
  * 1. Rename this file to `site.ts`.
@@ -8,7 +8,7 @@
  * 4. Cross-reference unresolved DRAFT items in `docs/clients/[slug]/BRIEF.md`
  *    §Open questions so the agency-level PENDING.md aggregator can track them.
  *
- * Reference shapes — see `docs/clients/archived/reference-solo-barber/`
+ * Reference shapes, see `docs/clients/archived/reference-solo-barber/`
  * (Tier 2 BR-LGPD example) and `docs/clients/archived/reference-studio-booking/`
  * (Tier 3 DE-DSGVO example) for full populated worked examples.
  */
@@ -22,16 +22,16 @@ export const SITE = {
   foundedYear: 2024, // TODO
 
   // Domain + URLs
-  url: 'https://example.com', // DRAFT — owner confirm domain before production
+  url: 'https://example.com', // DRAFT, owner confirm domain before production
   locale: 'en-US', // TODO: 'pt-BR' | 'de-DE' | 'pt-PT' | 'en-US' per `docs/design/I18N.md`
 
   // Contact
   phone: '+10000000000', // DRAFT
   phoneDisplay: '+1 000 000 0000',
   whatsapp: '10000000000', // wa.me/<number>
-  email: 'TODO@example.com', // DRAFT — data-controller contact for legal compliance
+  email: 'TODO@example.com', // DRAFT, data-controller contact for legal compliance
 
-  // Address — adapt per client jurisdiction (DE / BR / PT / US)
+  // Address, adapt per client jurisdiction (DE / BR / PT / US)
   address: {
     street: 'TODO street', // DRAFT
     neighborhood: 'TODO neighborhood',
@@ -43,11 +43,11 @@ export const SITE = {
   },
 
   geo: {
-    lat: 0.0, // DRAFT — verify against Google Maps
+    lat: 0.0, // DRAFT, verify against Google Maps
     lng: 0.0,
   },
 
-  // Hours — use 24h format. UI formats per locale.
+  // Hours, use 24h format. UI formats per locale.
   hours: [
     { day: 'Sun', open: null, close: null },
     { day: 'Mon', open: '09:00', close: '18:00' },
@@ -58,7 +58,7 @@ export const SITE = {
     { day: 'Sat', open: null, close: null },
   ],
 
-  // Services — owner-confirmed prices marked confirmed: true; else DRAFT.
+  // Services, owner-confirmed prices marked confirmed: true; else DRAFT.
   services: [
     {
       slug: 'todo-service-1',
@@ -70,14 +70,14 @@ export const SITE = {
     },
   ],
 
-  // Booking platform deep-link (if applicable — Trinks / Treatwell / Booksy / Doctolib / Mindbody / OpenTable)
+  // Booking platform deep-link (if applicable, Trinks / Treatwell / Booksy / Doctolib / Mindbody / OpenTable)
   booking: {
     provider: 'todo' as const,
     url: 'TODO: deep-link URL',
     label: 'TODO: button label',
   },
 
-  // Reviews — pre-approved drafts; gated until owner approval.
+  // Reviews, pre-approved drafts; gated until owner approval.
   reviews: {
     aggregateRating: 0.0,
     reviewCount: 0,
@@ -85,13 +85,13 @@ export const SITE = {
     featured: [],
   },
 
-  // Legal — populate per client jurisdiction via `docs/design/LEGAL.md` mapping
+  // Legal, populate per client jurisdiction via `docs/design/LEGAL.md` mapping
   // DE: Impressum (TMG §5) + Datenschutzerklärung (DSGVO)
   // BR: Política de Privacidade (LGPD) + Razão Social / CNPJ / MEI
   // PT: NIF + CAE + Livro de Reclamações link (RGPD)
   // US: Privacy choices + GPC (CCPA/CPRA)
   legal: {
-    // Example DE fields — adapt for the actual jurisdiction:
+    // Example DE fields, adapt for the actual jurisdiction:
     // legalEntity: 'TODO: full legal entity name',
     // taxId: 'TODO: USt-IdNr / CNPJ / MEI / NIF',
     dataControllerEmail: 'TODO@example.com',
@@ -109,7 +109,7 @@ export const SITE = {
     facebook: null,
   },
 
-  // KPI contract — per `docs/design/KPI.md` §KPI contract block
+  // KPI contract, per `docs/design/KPI.md` §KPI contract block
   // Per-vertical defaults from `docs/design/templates/[vertical].md` §11.1
   kpis: [
     // {
@@ -120,17 +120,17 @@ export const SITE = {
     // },
   ],
 
-  // i18n — REQUIRED by BaseLayout + CookieBanner + DemoBanner.
+  // i18n, REQUIRED by BaseLayout + CookieBanner + DemoBanner.
   // The `consent` block is locale-driven per LEGAL.md §Cookie consent banner spec
   // (DSGVO/LGPD/RGPD parity). The `tagline` becomes the default page description
   // + OG description when not overridden by a page-level prop.
   // Customize per client + per jurisdiction. Add more keys (nav, cta, sections)
-  // as needed — `Header.astro` / `Footer.astro` / page components pull from here.
+  // as needed, `Header.astro` / `Footer.astro` / page components pull from here.
   i18n: {
     de: {
       tagline: 'TODO: einzeiliges Wertversprechen auf Deutsch.',
       consent: {
-        title: 'Cookies — bitte um deine Zustimmung.',
+        title: 'Cookies, bitte um deine Zustimmung.',
         bodyBefore:
           'Wir verwenden essentielle Cookies, damit die Seite funktioniert. Mit deiner Zustimmung auch anonymisierte Analyse-Cookies. Mehr in unserer ',
         privacyLinkLabel: 'Datenschutzerklärung',
@@ -140,12 +140,12 @@ export const SITE = {
         reject: 'Alle ablehnen',
         manage: 'Cookie-Einstellungen verwalten',
       },
-      demoBanner: 'BEISPIEL — Demo-Phase. Echte Inhalte folgen mit echtem Material.',
+      demoBanner: 'BEISPIEL, Demo-Phase. Echte Inhalte folgen mit echtem Material.',
     },
     en: {
       tagline: 'TODO: one-line value prop in English.',
       consent: {
-        title: 'Cookies — please confirm your preference.',
+        title: 'Cookies, please confirm your preference.',
         bodyBefore:
           'We use essential cookies so the site works. With your consent we also use anonymised analytics. More in our ',
         privacyLinkLabel: 'privacy policy',
@@ -155,13 +155,13 @@ export const SITE = {
         reject: 'Reject all',
         manage: 'Manage cookie preferences',
       },
-      demoBanner: 'EXAMPLE — demo phase. Real content to follow with real material.',
+      demoBanner: 'EXAMPLE, demo phase. Real content to follow with real material.',
     },
   },
 } as const;
 
 // -----------------------------------------------------------------------------
-// Locale helpers — agency-baseline.
+// Locale helpers, agency-baseline.
 //
 // The scaffold ships with 2 locales (DE + EN). Clients can EXTEND to ES /
 // PT-BR / further locales by:
@@ -177,13 +177,13 @@ export const SITE = {
 //
 // Why these helpers matter even at 2 locales: they let `BaseLayout.astro`
 // emit hreflang + x-default by iterating `LOCALES` instead of branching on
-// `locale === 'de' ? ... : ...` — so widening to 3+ locales never requires
+// `locale === 'de' ? ... : ...`, so widening to 3+ locales never requires
 // touching the layout.
 // -----------------------------------------------------------------------------
 
 export type Locale = 'de' | 'en';
 
-/** BCP-47 language tag per locale — used for `<html lang>`, `og:locale`, hreflang. */
+/** BCP-47 language tag per locale, used for `<html lang>`, `og:locale`, hreflang. */
 export const LOCALE_LANG: Record<Locale, string> = {
   de: 'de-DE',
   en: 'en-US',

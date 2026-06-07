@@ -1,10 +1,9 @@
 /**
- * Site-wide constants — breno-bar agency (the agency's own marketing site).
+ * Site-wide constants, breno-bar agency (the agency's own marketing site).
  *
  * Trilingual: EN (root) + DE (/de/) + PT-BR (/pt-br/) per docs/design/I18N.md §17.
  *
- * Demo discipline: noindex until promoted. Per `CLAUDE.md` working principle —
- * never flip during portfolio phase.
+ * Demo discipline: noindex until promoted. Per `CLAUDE.md` working principle,  * never flip during portfolio phase.
  */
 
 export type Locale = 'en' | 'de' | 'pt-br';
@@ -27,26 +26,26 @@ export const SITE = {
   // Brand
   name: 'breno-bar',
   shortName: 'breno-bar',
-  tagline: 'Websites worth being proud of.',
+  tagline: 'Websites that bring you customers.',
   founder: 'Breno Ribeiro',
   foundedYear: 2026,
 
-  // Domain + URLs — demo subdomain for now; flip canonical when real domain arrives
+  // Domain + URLs, demo subdomain for now; flip canonical when real domain arrives
   url: 'https://agency-breno-bar.vercel.app',
   locale: 'en-US' as const,
 
   // Contact
-  // `email` is the PUBLIC display address — shown on every page + the mailto target.
+  // `email` is the PUBLIC display address, shown on every page + the mailto target.
   // `formNotificationEmail` is the BACKEND inbox that the contact form actually delivers to.
   // For real email-routing on hello@breno-bar.com you'll need a domain MX + forwarding rule
-  // or Resend inbound — until then the form endpoint sends notifications directly to the gmail.
-  phone: null, // intentionally hidden — phone CTAs not part of agency's contact-form-first stance
+  // or Resend inbound, until then the form endpoint sends notifications directly to the gmail.
+  phone: null, // intentionally hidden, phone CTAs not part of agency's contact-form-first stance
   phoneDisplay: null,
   email: 'hello@breno-bar.com', // public display + mailto target
   formNotificationEmail: 'breno.ribeirobr@gmail.com', // backend inbox; Resend NOTIFICATION_EMAIL env-var overrides
   formFromAddress: 'hello@breno-bar.com', // Resend From: header (requires domain verified in Resend before sending)
 
-  // Address — Berlin studio (DRAFT — replace with confirmed Anmeldung address)
+  // Address, Berlin studio (DRAFT, replace with confirmed Anmeldung address)
   address: {
     street: 'TODO: Berlin Anmeldung address',
     neighborhood: 'TODO: Bezirk',
@@ -61,12 +60,12 @@ export const SITE = {
     lng: 13.405,
   },
 
-  // Hours — by appointment (Apple-style "we'll get back to you")
+  // Hours, by appointment (Apple-style "we'll get back to you")
   hours: {
     appointment: 'By appointment',
   },
 
-  // Legal — DE jurisdiction (Berlin-based Einzelunternehmer)
+  // Legal, DE jurisdiction (Berlin-based Einzelunternehmer)
   legal: {
     legalEntity: 'Breno Ribeiro, Einzelunternehmer',
     legalRepresentatives: 'Breno Ribeiro',
@@ -86,14 +85,14 @@ export const SITE = {
     ],
   },
 
-  // Social — confirmed from user
+  // Social, confirmed from user
   social: {
     linkedin: 'https://www.linkedin.com/in/bribeirobr/',
     x: 'https://x.com/bribeiro_br',
     github: null,
   },
 
-  // KPI contract — per KPI.md §KPI contract block, Type 2 defaults
+  // KPI contract, per KPI.md §KPI contract block, Type 2 defaults
   kpis: [
     {
       name: 'Contact-form submission rate',
@@ -115,10 +114,10 @@ export const SITE = {
     },
   ],
 
-  // i18n strings — trilingual per docs/design/I18N.md §17
+  // i18n strings, trilingual per docs/design/I18N.md §17
   i18n: {
     en: {
-      tagline: 'Websites worth being proud of.',
+      tagline: 'Websites that bring you customers.',
       nav: {
         home: 'Home',
         services: 'Services',
@@ -135,7 +134,7 @@ export const SITE = {
         backToTop: 'Back to top',
       },
       consent: {
-        title: 'Cookies — please confirm your preference.',
+        title: 'Cookies, please confirm your preference.',
         bodyBefore:
           'We use essential cookies so the site works. With your consent we also use anonymised analytics so we know which pages get read. More in our ',
         privacyLinkLabel: 'privacy policy',
@@ -145,7 +144,7 @@ export const SITE = {
         reject: 'Reject all',
         manage: 'Manage preferences',
       },
-      demoBanner: 'PORTFOLIO — agency studio demo. The form is wired; the email is real.',
+      demoBanner: 'PORTFOLIO, agency studio demo. The form is wired; the email is real.',
       chrome: {
         skipToContent: 'Skip to content',
         menuOpen: 'Open menu',
@@ -157,11 +156,11 @@ export const SITE = {
         legalHeading: 'Legal',
         contactHeading: 'Contact',
         followHeading: 'Follow',
-        closingNote: 'A small studio in Berlin. Three services. No upsell.',
+        closingNote: 'A small studio in Berlin. Everything your business needs online. No upsell.',
       },
     },
     de: {
-      tagline: 'Webseiten, auf die man stolz sein kann.',
+      tagline: 'Webseiten, die dir Kund:innen bringen.',
       nav: {
         home: 'Start',
         services: 'Leistungen',
@@ -178,7 +177,7 @@ export const SITE = {
         backToTop: 'Nach oben',
       },
       consent: {
-        title: 'Cookies — bitte um deine Zustimmung.',
+        title: 'Cookies, bitte um deine Zustimmung.',
         bodyBefore:
           'Wir verwenden essentielle Cookies, damit die Seite funktioniert. Mit deiner Zustimmung auch anonymisierte Analyse-Cookies, damit wir wissen, welche Seiten gelesen werden. Mehr in unserer ',
         privacyLinkLabel: 'Datenschutzerklärung',
@@ -189,7 +188,7 @@ export const SITE = {
         manage: 'Einstellungen verwalten',
       },
       demoBanner:
-        'PORTFOLIO — Studio-Demo der Agentur. Das Formular ist verbunden; die E-Mail ist echt.',
+        'PORTFOLIO, Studio-Demo der Agentur. Das Formular ist verbunden; die E-Mail ist echt.',
       chrome: {
         skipToContent: 'Zum Inhalt springen',
         menuOpen: 'Menü öffnen',
@@ -201,11 +200,12 @@ export const SITE = {
         legalHeading: 'Rechtliches',
         contactHeading: 'Kontakt',
         followHeading: 'Folgen',
-        closingNote: 'Ein kleines Studio in Berlin. Drei Leistungen. Kein Upsell.',
+        closingNote:
+          'Ein kleines Studio in Berlin. Alles, was dein Geschäft online braucht. Kein Upsell.',
       },
     },
     'pt-br': {
-      tagline: 'Sites dos quais a gente se orgulha.',
+      tagline: 'Sites que trazem clientes para você.',
       nav: {
         home: 'Início',
         services: 'Serviços',
@@ -222,7 +222,7 @@ export const SITE = {
         backToTop: 'Voltar ao topo',
       },
       consent: {
-        title: 'Cookies — confirme sua preferência, por favor.',
+        title: 'Cookies, confirme sua preferência, por favor.',
         bodyBefore:
           'Usamos cookies essenciais para o site funcionar. Com seu consentimento, também usamos cookies analíticos anônimos para saber quais páginas são lidas. Saiba mais em nossa ',
         privacyLinkLabel: 'política de privacidade',
@@ -233,7 +233,7 @@ export const SITE = {
         manage: 'Gerenciar preferências',
       },
       demoBanner:
-        'PORTFÓLIO — demo do estúdio da agência. O formulário está ligado; o e-mail é real.',
+        'PORTFÓLIO, demo do estúdio da agência. O formulário está ligado; o e-mail é real.',
       chrome: {
         skipToContent: 'Pular para o conteúdo',
         menuOpen: 'Abrir menu',
@@ -245,7 +245,8 @@ export const SITE = {
         legalHeading: 'Informações legais',
         contactHeading: 'Contato',
         followHeading: 'Acompanhe',
-        closingNote: 'Um pequeno estúdio em Berlim. Três serviços. Sem upsell.',
+        closingNote:
+          'Um pequeno estúdio em Berlim. Tudo que o seu negócio precisa online. Sem upsell.',
       },
     },
   },

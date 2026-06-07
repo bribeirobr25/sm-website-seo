@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/astro';
 /**
- * GBP-check lead endpoint (F3a) — POST /api/gbp-check
+ * GBP-check lead endpoint (F3a), POST /api/gbp-check
  *
  * A specialised, hardened lead-capture form (same protections as the contact
  * endpoint): honeypot, min-fill-time, IP rate-limit, validation, HTML-escape,
@@ -8,7 +8,7 @@ import * as Sentry from '@sentry/astro';
  * page regardless; this captures the request for a tailored manual review.
  *
  * No Google Places API key is used (avoids per-call cost). If/when a key is
- * added, this can be enriched server-side — the page contract stays the same.
+ * added, this can be enriched server-side, the page contract stays the same.
  * Fail-closed: 503 if Resend isn't configured (demo deploys without the key).
  */
 import type { APIRoute } from 'astro';
@@ -93,7 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
       from: `breno-bar GBP check <${fromAddress}>`,
       to: notifyTo,
       replyTo: email,
-      subject: `[breno-bar] GBP check request — ${business} (${locale})`,
+      subject: `[breno-bar] GBP check request, ${business} (${locale})`,
       text: `Business: ${business}\nCity:     ${city}\nWebsite:  ${website}\nEmail:    ${email}\nLocale:   ${locale}`,
       html: `
         <h2 style="font-family: -apple-system, sans-serif; margin: 0 0 16px;">Google Business check request</h2>

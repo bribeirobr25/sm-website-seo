@@ -1,5 +1,5 @@
 /**
- * Portfolio entries — 9 live projects displayed on /portfolio.
+ * Portfolio entries, 9 live projects displayed on /portfolio.
  *
  * Each entry has slug, live URL, thumbnail, locale-keyed name/description, and
  * a `vertical` + `services` tag set for filter chips. The `description` is

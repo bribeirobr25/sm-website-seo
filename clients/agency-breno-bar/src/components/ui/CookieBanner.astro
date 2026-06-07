@@ -1,14 +1,14 @@
 ---
 /**
- * CookieBanner — universal consent banner.
- * Per LEGAL.md §Cookie consent banner — universal spec (DSGVO / LGPD / RGPD / CCPA).
+ * CookieBanner, universal consent banner.
+ * Per LEGAL.md §Cookie consent banner, universal spec (DSGVO / LGPD / RGPD / CCPA).
  *
  * Renders on first visit if no consent record exists. The banner offers:
  *   - Accept all (functional + analytics + marketing)
- *   - Reject all (essential only) — equal prominence per parity rule
+ *   - Reject all (essential only), equal prominence per parity rule
  *   - Cookie policy link → SITE.i18n[locale].consent.privacyLinkHref
  *
- * **i18n**: all copy pulled from SITE.i18n[locale].consent — never hardcode
+ * **i18n**: all copy pulled from SITE.i18n[locale].consent, never hardcode
  * strings here. Per-jurisdiction privacy URL is also locale-keyed.
  * The footer "Manage cookie preferences" link re-opens the banner via the
  * `consent:reopen` custom event.

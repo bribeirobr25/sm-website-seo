@@ -1,6 +1,6 @@
 ---
 /**
- * Base layout — ships with: localized title/description, canonical URL, OG + Twitter,
+ * Base layout, ships with: localized title/description, canonical URL, OG + Twitter,
  * JSON-LD schema injection, BreadcrumbList auto-derivation, hreflang alternate
  * (driven by LOCALES from site.ts so N-locale builds need zero layout changes),
  * DemoBanner, locale-aware CookieBanner.
@@ -45,7 +45,7 @@ const {
   title = SITE.name,
   description,
   ogImage = `${SITE.url}/img/og-default.png`,
-  // Demo phase: ALWAYS noindex. Per CLAUDE.md "Demo discipline" — never flip during portfolio phase.
+  // Demo phase: ALWAYS noindex. Per CLAUDE.md "Demo discipline", never flip during portfolio phase.
   noindex = true,
   locale = 'en',
   localePath,
@@ -74,7 +74,7 @@ const localePrefixSegments = LOCALES.map((l) => LOCALE_PREFIX[l].replace(/^\//, 
   Boolean,
 );
 
-// BreadcrumbList JSON-LD per SEO.md §schema — skip on home (single-segment).
+// BreadcrumbList JSON-LD per SEO.md §schema, skip on home (single-segment).
 // Derives from URL path: /en/page → [Home → Page], /datenschutz → [Home → Privacy].
 function deriveBreadcrumbs(pathname: string, pageTitle: string) {
   const cleanPath = pathname.replace(/\/$/, '');
@@ -132,7 +132,7 @@ const breadcrumbSchema = breadcrumbItems
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE.name} — ${t.tagline}`} />
+    <meta property="og:image:alt" content={`${SITE.name}, ${t.tagline}`} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={ogLocale} />
@@ -152,7 +152,7 @@ const breadcrumbSchema = breadcrumbItems
 
     <!--
       Analytics tags are consent-gated via type="text/plain" pattern.
-      Per LEGAL.md §Cookie consent banner — universal spec.
+      Per LEGAL.md §Cookie consent banner, universal spec.
       TODO: replace G-XXXXXX with the real GA4 measurement ID at production cutover.
     -->
     <script

@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/astro';
 /**
- * Website-scan endpoint (F3b) — POST /api/site-scan  { url }
+ * Website-scan endpoint (F3b), POST /api/site-scan  { url }
  *
  * Returns PageSpeed (Google PSI) category scores plus a light server-side check
  * of HTTPS, security headers (per SECURITY.md), and obvious pre-consent trackers
@@ -110,7 +110,7 @@ export const POST: APIRoute = async ({ request }) => {
         psiOk = true;
       }
     } catch {
-      // PSI unreachable — fall through with header/tracker checks only.
+      // PSI unreachable, fall through with header/tracker checks only.
     }
 
     // --- Server-side header + tracker check ---
@@ -135,7 +135,7 @@ export const POST: APIRoute = async ({ request }) => {
         if (html.includes(sig)) trackers.push(sig);
       }
     } catch {
-      // Page fetch failed — return what PSI gave us, if anything.
+      // Page fetch failed, return what PSI gave us, if anything.
       if (!psiOk) {
         return json({ error: 'Could not reach that site. Check the URL and try again.' }, 502);
       }
