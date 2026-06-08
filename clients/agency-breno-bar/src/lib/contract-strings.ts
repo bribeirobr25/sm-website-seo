@@ -29,25 +29,25 @@ export const SERVICE_SCOPES: Record<LocaleEnDe, ServiceScope[]> = {
       slug: 'website',
       name: 'Website subscription',
       defaultScope:
-        "Multi-page marketing website on Astro 6 or Next.js, built, hosted, and maintained by the Agency as part of the monthly subscription. Up to 12 pages. Multilingual (DE + EN by default; additional locales priced separately). The domain is registered in the Client's name. The website is deployed on the Agency's infrastructure; its source code and design remain the Agency's intellectual property and are licensed to the Client for the duration of the subscription (see § 5; an optional one-time buy-out is available). Includes cookie banner, privacy policy, and imprint pages drafted to the Client's business. WCAG 2.2 AA, mobile-first, Lighthouse > 90 mobile/desktop at launch.",
+        "A custom, multi-page website built around the Client's brand, hosted and kept up to date by the Agency as part of the subscription. Up to 12 pages, in German and English (more languages on request). The domain is registered in the Client's name. Includes the cookie banner and the legal pages every site needs, written for the Client's business. Fast on mobile, accessible, and built to be found and to convert.",
     },
     {
       slug: 'seo',
       name: 'SEO and Local Listing',
       defaultScope:
-        "On-page SEO + schema.org markup + Google Search Console setup under the Client's account, plus local listings on Google Business Profile, Apple Maps, Bing Places and the relevant directories so the Client is found first. Initial audit with prioritised fix list. The monthly subscription includes: monthly report (impressions, position, conversions) with concrete next-step recommendations; quarterly keyword review; technical-SEO maintenance; listing accuracy + review monitoring. No backlink purchases. No black-hat tactics.",
+        'Getting the Client found on Google, Google Maps, Apple Maps and the directories that matter, with the right keywords for the business and its neighbourhood. Includes setup, a clear monthly report with concrete next steps, a regular keyword review, and ongoing upkeep of listings and reviews. No bought links, no tricks.',
     },
     {
       slug: 'ecommerce',
       name: 'E-Commerce and Business Email',
       defaultScope:
-        "An online store selling the Client's products or services with secure checkout (Stripe or equivalent), product/catalogue management, and order notifications. Professional email on the Client's own domain (mailbox setup + SPF/DKIM/DMARC). The monthly subscription includes hosting, security updates, and checkout/email maintenance. Payment-processor fees, transaction fees, and mailbox licence costs are billed to the Client at cost or paid directly by the Client.",
+        "An online store to sell the Client's products or services around the clock, with secure checkout, easy product management, and order notifications, plus a professional email address on the Client's own domain. The subscription covers hosting, security, and upkeep; payment-provider and mailbox fees are billed at cost or paid by the Client directly.",
     },
     {
       slug: 'ai',
       name: 'AI Solutions, Booking System and More',
       defaultScope:
-        "AI and automation tools fitted to the Client's business: website chatbot, booking/appointment system, and task automation. Scope agreed per use case before build. The monthly subscription includes hosting, monitoring, and maintenance of the agreed tools. Third-party AI/API usage fees above the included allowance are billed to the Client at cost.",
+        "Practical AI and automation fitted to the Client's business: a website chatbot, an online booking or appointment system, and time-saving automations, each agreed with the Client before it is built. The subscription covers hosting and upkeep; any third-party AI usage above the included allowance is billed at cost.",
     },
   ],
   de: [
@@ -55,25 +55,25 @@ export const SERVICE_SCOPES: Record<LocaleEnDe, ServiceScope[]> = {
       slug: 'website',
       name: 'Website-Abo',
       defaultScope:
-        'Mehrseitige Marketing-Website auf Astro 6 oder Next.js, von der Agentur im Rahmen des Monats-Abos erstellt, gehostet und gepflegt. Bis zu 12 Seiten. Mehrsprachig (DE + EN als Standard; weitere Sprachen separat berechnet). Die Domain wird auf den Namen des Auftraggebers registriert. Die Website wird auf der Infrastruktur der Agentur betrieben; Quellcode und Design bleiben geistiges Eigentum der Agentur und werden dem Auftraggeber für die Dauer des Abos lizenziert (siehe § 5; optionale einmalige Ablöse verfügbar). Inklusive Cookie-Banner, Datenschutzerklärung und Impressum, jeweils auf das Unternehmen des Auftraggebers angepasst. WCAG 2.2 AA, Mobile-First, Lighthouse > 90 Mobile/Desktop bei Launch.',
+        'Eine individuelle, mehrseitige Website rund um die Marke des Auftraggebers, von der Agentur im Rahmen des Abos gehostet und aktuell gehalten. Bis zu 12 Seiten, auf Deutsch und Englisch (weitere Sprachen auf Anfrage). Die Domain wird auf den Namen des Auftraggebers registriert. Inklusive Cookie-Banner und der rechtlichen Pflichtseiten, auf das Unternehmen des Auftraggebers zugeschnitten. Schnell auf dem Handy, barrierearm und auf Sichtbarkeit ausgelegt.',
     },
     {
       slug: 'seo',
       name: 'SEO und lokale Einträge',
       defaultScope:
-        'On-Page-SEO + Schema.org-Markup + Einrichtung der Google Search Console unter dem Konto des Auftraggebers, dazu lokale Einträge bei Google Unternehmensprofil, Apple Maps, Bing Places und den relevanten Verzeichnissen, damit der Auftraggeber zuerst gefunden wird. Initial-Audit mit priorisierter Fix-Liste. Das monatliche Abo enthält: monatlichen Report (Impressionen, Position, Conversions) mit konkreten nächsten Schritten; quartalsweise Keyword-Review; technische SEO-Pflege; Pflege der Einträge + Bewertungs-Monitoring. Keine Backlink-Käufe. Keine Black-Hat-Taktiken.',
+        'Der Auftraggeber wird auf Google, Google Maps, Apple Maps und in den relevanten Verzeichnissen gefunden, mit den passenden Suchbegriffen für das Geschäft und seinen Kiez. Inklusive Einrichtung, monatlichem Report mit konkreten nächsten Schritten, regelmäßiger Keyword-Review und laufender Pflege von Einträgen und Bewertungen. Keine gekauften Links, keine Tricks.',
     },
     {
       slug: 'ecommerce',
       name: 'Online-Shop und Business-E-Mail',
       defaultScope:
-        'Ein Online-Shop, der die Produkte oder Leistungen des Auftraggebers mit sicherem Checkout (Stripe oder gleichwertig) verkauft, inkl. Produkt-/Katalog-Verwaltung und Bestellbenachrichtigungen. Professionelle E-Mail auf der eigenen Domain des Auftraggebers (Postfach-Einrichtung + SPF/DKIM/DMARC). Das monatliche Abo enthält Hosting, Sicherheitsupdates sowie Checkout- und E-Mail-Pflege. Gebühren des Zahlungsdienstleisters, Transaktionsgebühren und Postfach-Lizenzkosten werden dem Auftraggeber zum Selbstkostenpreis berechnet oder direkt vom Auftraggeber getragen.',
+        'Ein Online-Shop, der die Produkte oder Leistungen des Auftraggebers rund um die Uhr verkauft, mit sicherem Checkout, einfacher Produktverwaltung und Bestellbenachrichtigungen, dazu eine professionelle E-Mail-Adresse auf der eigenen Domain. Das Abo deckt Hosting, Sicherheit und Pflege; Gebühren des Zahlungsanbieters und für das Postfach werden zum Selbstkostenpreis berechnet oder direkt vom Auftraggeber getragen.',
     },
     {
       slug: 'ai',
       name: 'KI-Lösungen, Buchungssystem und mehr',
       defaultScope:
-        'KI- und Automatisierungstools, passend zum Geschäft des Auftraggebers: Website-Chatbot, Buchungs-/Terminsystem und Aufgaben-Automatisierung. Umfang je Anwendungsfall vor dem Bau vereinbart. Das monatliche Abo enthält Hosting, Monitoring und Pflege der vereinbarten Tools. Drittanbieter-KI-/API-Gebühren über dem enthaltenen Kontingent werden dem Auftraggeber zum Selbstkostenpreis berechnet.',
+        'Praktische KI und Automatisierung, passend zum Geschäft des Auftraggebers: ein Website-Chatbot, ein Online-Buchungs- bzw. Terminsystem und zeitsparende Automatisierungen, jeweils vor dem Bau mit dem Auftraggeber abgestimmt. Das Abo deckt Hosting und Pflege; Drittanbieter-KI-Nutzung über dem enthaltenen Kontingent wird zum Selbstkostenpreis berechnet.',
     },
   ],
 };
@@ -96,8 +96,12 @@ export interface ContractStrings {
   clientPostalCode: string;
   clientCity: string;
   clientEmail: string;
+  clientPhone: string;
   clientUstId: string;
   clientUstHint: string;
+
+  planLabel: string;
+  planHint: string;
 
   servicesLabel: string;
   servicesHint: string;
@@ -136,6 +140,8 @@ export interface ContractStrings {
   s2Intro: string;
   s2NoServicesSelected: string;
   s2ScopeIntroLabel: string;
+  /** Template, replace `{plan}` / `{price}` with the selected plan name + price. */
+  s2PlanLine: string;
 
   s3Heading: string;
   /** Template, replace `{eur}` with the formatted amount at render time. */
@@ -152,6 +158,7 @@ export interface ContractStrings {
   s4Heading: string;
   /** Template, replace `{date}` with the formatted start date. */
   s4Start: string;
+  s4StartNote: string;
   s4MinimumTerm: string;
   s4Notice: string;
   s4ImmediateTermination: string;
@@ -206,20 +213,25 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     clientPostalCode: 'PLZ',
     clientCity: 'City',
     clientEmail: 'Email',
+    clientPhone: 'Phone',
     clientUstId: 'VAT ID (USt-IdNr)',
     clientUstHint:
       'Leave blank if the client is Kleinunternehmer under § 19 UStG and has no VAT ID.',
 
+    planLabel: 'Plan',
+    planHint:
+      'Pick a plan. It ticks the included services and fills the monthly price and buy-out below; you can still adjust them.',
+
     servicesLabel: 'Services',
     servicesHint:
-      "Tick what the client is hiring. Scope text below each pre-fills with the agency's default but is editable for client-specific overrides.",
+      'Picked automatically from the plan. Tick or untick to adjust; the scope text under each is editable per deal.',
     scopeEditableLabel: 'Scope (editable per deal):',
 
     pricingLabel: 'Pricing',
-    buildFee: 'Optional one-time buy-out fee (Ablöse)',
+    buildFee: 'One-time buy-out (≈ 18 months of the plan)',
     retainerFee: 'Monthly subscription fee',
     retainerFeeHint:
-      'The plan price (e.g. €219 / €390 / €570). Covers the § 2 services plus hosting, maintenance, updates, and support. Leave the buy-out blank unless a buy-out is agreed.',
+      'Filled automatically from the selected plan (€219 / €390 / €570). Covers the § 2 services plus hosting, maintenance, updates, and support.',
     vatLabel: 'VAT handling',
     vatKleinunternehmer: 'Kleinunternehmer (§ 19 UStG), no VAT charged',
     vatRegular: 'Regular VAT, 19 % MwSt added to every line',
@@ -246,17 +258,17 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     s1Heading: '§ 1   Subject of the Agreement',
     s1Body:
-      'The Agency builds, hosts, maintains, and supports the Client’s website, plus any other services selected in § 2, as an ongoing monthly subscription. The Client owns its content, data, and domain. The website itself, its code, design, and hosting, is licensed for as long as the subscription runs and is not transferred to the Client (see § 5; an optional one-time buy-out is in § 3). The Agency keeps the rights to its reusable design patterns and know-how. If the Client is a consumer (§ 13 BGB), statutory consumer rights, including the right of withdrawal, apply and prevail.',
+      'The Agency builds, hosts, maintains, and supports the Client’s website, plus any other services selected in § 2, as an ongoing monthly subscription. The Client owns its content, data, and domain. The website itself, its code, design, and hosting, is licensed for as long as the subscription runs and is not transferred to the Client (see § 5; an optional one-time buy-out, equivalent to 18 months of the monthly fee, is in § 3). The Agency keeps the rights to its reusable design patterns and know-how. If the Client is a consumer (§ 13 BGB), statutory consumer rights, including the right of withdrawal, apply and prevail.',
 
     s2Heading: '§ 2   Services',
     s2Intro: 'The Client is hiring the Agency for:',
-    s2NoServicesSelected:
-      '⚠ No services selected, return to the form and tick at least one service.',
+    s2NoServicesSelected: '⚠ No plan selected. Return to the form and choose a plan.',
     s2ScopeIntroLabel: 'Scope:',
+    s2PlanLine: 'Selected plan: {plan} ({price}), included services:',
 
     s3Heading: '§ 3   Compensation and Payment Terms',
     s3BuildFeeLine:
-      'Optional one-time buy-out: {eur} net. None is owed unless separately agreed. Once it is paid, the Agency transfers to the Client the rights to the delivered website set out in § 5.',
+      'Optional one-time buy-out: {eur} net, equivalent to 18 months of the monthly fee. It is owed only if the Client chooses to take the website outright. Once it is paid, the Agency transfers to the Client the rights to the delivered website set out in § 5.',
     s3BuildFeeSplit:
       'Any buy-out is invoiced separately, due within 14 days; the § 5 rights pass only once it is paid in full.',
     s3RetainerLine:
@@ -271,6 +283,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     s4Heading: '§ 4   Term and Termination',
     s4Start: 'This Agreement starts on {date}.',
+    s4StartNote: 'Your project will be started within 3 business days.',
     s4MinimumTerm:
       'The subscription is monthly, with no minimum term. Either Party may cancel in text form (§ 126b BGB) with 14 days’ notice to the end of any calendar month.',
     s4Notice:
@@ -340,20 +353,25 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     clientPostalCode: 'PLZ',
     clientCity: 'Stadt',
     clientEmail: 'E-Mail',
+    clientPhone: 'Telefon',
     clientUstId: 'USt-IdNr',
     clientUstHint:
       'Leer lassen, wenn der Mandant Kleinunternehmer nach § 19 UStG ist und keine USt-IdNr hat.',
 
+    planLabel: 'Plan',
+    planHint:
+      'Plan wählen. Er kreuzt die enthaltenen Leistungen an und füllt Monatspreis und Ablöse unten aus; anpassen ist weiterhin möglich.',
+
     servicesLabel: 'Leistungen',
     servicesHint:
-      'Ankreuzen, was der Mandant bucht. Der Leistungsumfang darunter ist mit der Standard-Beschreibung der Agentur vorbelegt und für mandanten-spezifische Anpassungen bearbeitbar.',
+      'Automatisch aus dem Plan gewählt. Zum Anpassen an- oder abwählen; der Leistungsumfang darunter ist pro Mandat bearbeitbar.',
     scopeEditableLabel: 'Leistungsumfang (pro Mandat bearbeitbar):',
 
     pricingLabel: 'Vergütung',
-    buildFee: 'Optionale einmalige Ablöse',
+    buildFee: 'Einmalige Ablöse (≈ 18 Monate des Plans)',
     retainerFee: 'Monatliche Abo-Gebühr',
     retainerFeeHint:
-      'Der Plan-Preis (z. B. 219 / 390 / 570 €). Deckt die Leistungen aus § 2 plus Hosting, Pflege, Updates und Support. Ablöse leer lassen, sofern keine Ablöse vereinbart ist.',
+      'Automatisch aus dem gewählten Plan gefüllt (219 / 390 / 570 €). Deckt die Leistungen aus § 2 plus Hosting, Pflege, Updates und Support.',
     vatLabel: 'Umsatzsteuer-Regelung',
     vatKleinunternehmer: 'Kleinunternehmer (§ 19 UStG), keine Umsatzsteuer',
     vatRegular: 'Regelbesteuerung, 19 % MwSt auf jede Position',
@@ -380,17 +398,17 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     s1Heading: '§ 1   Vertragsgegenstand',
     s1Body:
-      'Die Agentur erstellt, hostet, pflegt und betreut die Website des Mandanten sowie etwaige weitere in § 2 ausgewählte Leistungen als laufendes Monats-Abo. Dem Mandanten gehören seine Inhalte, seine Daten und seine Domain. Die Website selbst, Quellcode, Design und Hosting, wird für die Dauer des Abos lizenziert und nicht auf den Mandanten übertragen (siehe § 5; eine optionale einmalige Ablöse ist in § 3 geregelt). Die Agentur behält die Rechte an ihren wiederverwendbaren Design-Mustern und ihrem Know-how. Ist der Mandant Verbraucher (§ 13 BGB), gelten zwingende verbraucherschützende Vorschriften einschließlich des Widerrufsrechts und gehen vor.',
+      'Die Agentur erstellt, hostet, pflegt und betreut die Website des Mandanten sowie etwaige weitere in § 2 ausgewählte Leistungen als laufendes Monats-Abo. Dem Mandanten gehören seine Inhalte, seine Daten und seine Domain. Die Website selbst, Quellcode, Design und Hosting, wird für die Dauer des Abos lizenziert und nicht auf den Mandanten übertragen (siehe § 5; eine optionale einmalige Ablöse in Höhe von 18 Monaten der Monatsgebühr ist in § 3 geregelt). Die Agentur behält die Rechte an ihren wiederverwendbaren Design-Mustern und ihrem Know-how. Ist der Mandant Verbraucher (§ 13 BGB), gelten zwingende verbraucherschützende Vorschriften einschließlich des Widerrufsrechts und gehen vor.',
 
     s2Heading: '§ 2   Leistungen',
     s2Intro: 'Der Mandant beauftragt die Agentur mit:',
-    s2NoServicesSelected:
-      '⚠ Keine Leistung ausgewählt, bitte im Formular oben mindestens eine ankreuzen.',
+    s2NoServicesSelected: '⚠ Kein Plan ausgewählt. Bitte oben im Formular einen Plan wählen.',
     s2ScopeIntroLabel: 'Leistungsumfang:',
+    s2PlanLine: 'Gewählter Plan: {plan} ({price}), enthaltene Leistungen:',
 
     s3Heading: '§ 3   Vergütung und Zahlungsbedingungen',
     s3BuildFeeLine:
-      'Optionale einmalige Ablöse: {eur} netto. Geschuldet nur, wenn gesondert vereinbart. Nach Zahlung überträgt die Agentur dem Mandanten die in § 5 genannten Rechte an der bereitgestellten Website.',
+      'Optionale einmalige Ablöse: {eur} netto, entspricht 18 Monaten der Monatsgebühr. Nur geschuldet, wenn der Mandant die Website vollständig übernehmen möchte. Nach Zahlung überträgt die Agentur dem Mandanten die in § 5 genannten Rechte an der bereitgestellten Website.',
     s3BuildFeeSplit:
       'Eine Ablöse wird gesondert in Rechnung gestellt, zahlbar innerhalb von 14 Tagen; die Rechte nach § 5 gehen erst mit vollständiger Zahlung über.',
     s3RetainerLine:
@@ -405,6 +423,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     s4Heading: '§ 4   Laufzeit und Kündigung',
     s4Start: 'Dieser Vertrag beginnt am {date}.',
+    s4StartNote: 'Dein Projekt startet innerhalb von 3 Werktagen.',
     s4MinimumTerm:
       'Das Abo läuft monatlich, ohne Mindestlaufzeit. Beide Parteien können in Textform (§ 126b BGB) mit einer Frist von 14 Tagen zum Ende eines jeden Kalendermonats kündigen.',
     s4Notice:

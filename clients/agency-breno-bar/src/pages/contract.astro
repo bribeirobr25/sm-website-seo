@@ -14,22 +14,41 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { CONTRACT_STRINGS, SERVICE_SCOPES } from '@/lib/contract-strings';
+import { FUNNEL } from '@/lib/funnel';
 import { SITE } from '@/lib/site';
 
 const locale = 'en' as const;
 const c = CONTRACT_STRINGS[locale];
 const scopes = SERVICE_SCOPES[locale];
 
+// Subscription plans (match the /pricing page) + which contract services each includes.
+const BUYOUT_MONTHS = 18;
+const PLAN_SERVICES: Record<string, string[]> = {
+  start: ['website'],
+  growth: ['website', 'seo'],
+  complete: ['website', 'seo', 'ecommerce'],
+};
+const plans = FUNNEL[locale].pricing.tiers.map((t) => ({
+  id: t.id,
+  name: t.name,
+  priceLabel: `${t.price}${t.priceSuffix ?? ''}`,
+  priceNum: Number(t.price.replace(/[^0-9.]/g, '')),
+  services: PLAN_SERVICES[t.id] ?? [],
+}));
+
 const agencyAddressLine = [
   SITE.address.street,
   [SITE.address.postalCode, SITE.address.city].filter(Boolean).join(' '),
-  SITE.address.country,
+  SITE.address.neighborhood,
 ]
   .filter(Boolean)
   .join(', ');
 const taxId: string = SITE.legal.taxId;
-const taxIdDisplay =
-  !taxId || taxId.startsWith('TODO') ? 'USt-IdNr: pending' : `USt-IdNr: ${taxId}`;
+const taxIdDisplay = SITE.legal.kleinunternehmer
+  ? 'USt-IdNr: Kleinunternehmer § 19 UStG'
+  : !taxId || taxId.startsWith('TODO')
+    ? 'USt-IdNr: pending'
+    : `USt-IdNr: ${taxId}`;
 ---
 
 <BaseLayout
@@ -73,11 +92,6 @@ const taxIdDisplay =
       </div>
     </div>
 
-    {/* DRAFT WARNING, visible on screen AND printed (prints on every copy) */}
-    <div class="border-y-2 px-4 py-3" style="border-color: var(--color-error); background: #fff5f5;" role="alert">
-      <p class="container-page text-sm leading-relaxed font-medium text-text">{c.draftBanner}</p>
-    </div>
-
     {/* FORM PANEL */}
     <section id="form-panel" class="no-print bg-surface border-b border-border">
       <div class="container-page py-10 sm:py-14 max-w-4xl">
@@ -101,7 +115,7 @@ const taxIdDisplay =
                     <option value="e.K.">e.K.</option>
                     <option value="Einzelunternehmer">Einzelunternehmer</option>
                     <option value="Freiberufler">Freiberufler</option>
-                    <option value=", ">, (other)</option>
+                    <option value="other">other</option>
                   </select>
                 </label>
                 <label class="block">
@@ -144,18 +158,42 @@ const taxIdDisplay =
                   <input type="email" name="client_email" class="ag-input" autocomplete="email" />
                 </label>
                 <label class="block">
-                  <span class="form-label">{c.clientUstId} <span class="form-label__hint">(optional)</span></span>
-                  <input type="text" name="client_ust_idnr" placeholder="DE…" class="ag-input tabular" />
-                  <span class="form-hint">{c.clientUstHint}</span>
+                  <span class="form-label">{c.clientPhone}</span>
+                  <input type="tel" name="client_phone" class="ag-input tabular" autocomplete="tel" />
                 </label>
+              </div>
+
+              <label class="block">
+                <span class="form-label">{c.clientUstId} <span class="form-label__hint">(optional)</span></span>
+                <input type="text" name="client_ust_idnr" placeholder="DE…" class="ag-input tabular" />
+                <span class="form-hint">{c.clientUstHint}</span>
+              </label>
+            </div>
+          </fieldset>
+
+          {/* STEP 2, PLAN */}
+          <fieldset class="form-step">
+            <legend class="form-step__legend">
+              <span class="form-step__num" aria-hidden="true">2</span>
+              <span class="form-step__title">{c.planLabel}</span>
+            </legend>
+            <div class="form-step__body space-y-4">
+              <p class="text-sm text-text-muted leading-relaxed">{c.planHint}</p>
+              <div role="radiogroup" aria-label={c.planLabel} class="grid sm:grid-cols-3 gap-3">
+                {plans.map((p) => (
+                  <label class="vat-card">
+                    <input type="radio" name="plan" value={p.id} class="vat-card__input" />
+                    <span class="vat-card__label"><strong>{p.name}</strong> · {p.priceLabel}</span>
+                  </label>
+                ))}
               </div>
             </div>
           </fieldset>
 
-          {/* STEP 2, SERVICES */}
+          {/* STEP 3, SERVICES */}
           <fieldset class="form-step">
             <legend class="form-step__legend">
-              <span class="form-step__num" aria-hidden="true">2</span>
+              <span class="form-step__num" aria-hidden="true">3</span>
               <span class="form-step__title">{c.servicesLabel}</span>
             </legend>
             <div class="form-step__body space-y-4">
@@ -178,10 +216,10 @@ const taxIdDisplay =
             </div>
           </fieldset>
 
-          {/* STEP 3, PRICING */}
+          {/* STEP 4, PRICING */}
           <fieldset class="form-step">
             <legend class="form-step__legend">
-              <span class="form-step__num" aria-hidden="true">3</span>
+              <span class="form-step__num" aria-hidden="true">4</span>
               <span class="form-step__title">{c.pricingLabel}</span>
             </legend>
             <div class="form-step__body space-y-5">
@@ -219,14 +257,14 @@ const taxIdDisplay =
             </div>
           </fieldset>
 
-          {/* STEP 4, DATES */}
+          {/* STEP 5, DATES */}
           <fieldset class="form-step">
             <legend class="form-step__legend">
-              <span class="form-step__num" aria-hidden="true">4</span>
+              <span class="form-step__num" aria-hidden="true">5</span>
               <span class="form-step__title">{c.datesLabel}</span>
             </legend>
             <div class="form-step__body">
-              <div class="grid sm:grid-cols-3 gap-4">
+              <div class="grid sm:grid-cols-2 gap-4">
                 <label class="block">
                   <span class="form-label">{c.signatureDate}</span>
                   <input type="date" name="date_signature" class="ag-input tabular" />
@@ -234,11 +272,7 @@ const taxIdDisplay =
                 <label class="block">
                   <span class="form-label">{c.startDate}</span>
                   <input type="date" name="date_start" class="ag-input tabular" />
-                </label>
-                <label class="block">
-                  <span class="form-label">{c.goLiveDate} <span class="form-label__hint">(optional)</span></span>
-                  <input type="date" name="date_golive" class="ag-input tabular" />
-                  <span class="form-hint">{c.goLiveHint}</span>
+                  <span class="form-hint">{c.s4StartNote}</span>
                 </label>
               </div>
             </div>
@@ -278,6 +312,7 @@ const taxIdDisplay =
               <p class="text-[14px] text-text-muted"><span class="out-client-street">…</span></p>
               <p class="text-[14px] text-text-muted"><span class="out-client-postal-code">…</span> <span class="out-client-city">Berlin</span></p>
               <p class="text-[14px] text-text-muted out-client-email">…</p>
+              <p class="text-[14px] text-text-muted tabular out-client-phone-row">{c.clientPhone}: <span class="out-client-phone">…</span></p>
               <p class="text-[14px] text-text-muted tabular">USt-IdNr: <span class="out-client-ust-idnr">, </span></p>
               <p class="text-xs text-text-muted pt-2">{c.representedBy}: <span class="out-client-representative">…</span> (<span class="out-client-representative-role">…</span>)</p>
             </div>
@@ -298,6 +333,7 @@ const taxIdDisplay =
           <section class="contract-clause">
             <h2 class="contract-h2">{c.s2Heading}</h2>
             <p class="contract-p mb-3">{c.s2Intro}</p>
+            <p class="out-plan-line contract-p mb-3" style="font-weight:600;display:none;"></p>
             <div id="services-rendered" class="space-y-5 mt-4">
               <p class="out-no-services contract-p italic text-text-muted">{c.s2NoServicesSelected}</p>
             </div>
@@ -585,7 +621,7 @@ const taxIdDisplay =
     .contract-doc article { background: white; }
   </style>
 
-  <script is:inline define:vars={{ locale, scopes: SERVICE_SCOPES[locale], strings: CONTRACT_STRINGS[locale] }}>
+  <script is:inline define:vars={{ locale, scopes: SERVICE_SCOPES[locale], strings: CONTRACT_STRINGS[locale], plans, buyoutMonths: BUYOUT_MONTHS }}>
     const form = document.getElementById('contract-form');
     const formPanel = document.getElementById('form-panel');
     const toggleBtn = document.getElementById('toggle-form-btn');
@@ -593,7 +629,11 @@ const taxIdDisplay =
     const saveIndicator = document.getElementById('save-indicator');
 
     const STORAGE_KEY = `contract-form-${locale}`;
-    const today = new Date().toISOString().slice(0, 10);
+    // Local-date YYYY-MM-DD (avoids the UTC off-by-one that toISOString causes in +HH zones).
+    function ymd(d) {
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+    const today = ymd(new Date());
 
     let saved = {};
     try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
@@ -608,7 +648,17 @@ const taxIdDisplay =
         el.value = saved[el.name];
       }
     });
-    if (!saved.date_signature) form.querySelector('[name=date_signature]').value = today;
+    function addDays(dateStr, n) {
+      const d = new Date((dateStr || today) + 'T00:00:00');
+      if (isNaN(d.getTime())) return '';
+      d.setDate(d.getDate() + n);
+      return ymd(d);
+    }
+    const sigEl = form.querySelector('[name=date_signature]');
+    const startEl = form.querySelector('[name=date_start]');
+    if (!saved.date_signature) sigEl.value = today;
+    // Project start defaults to 5 days after the signature date.
+    if (!saved.date_start) startEl.value = addDays(sigEl.value, 5);
 
     function persist() {
       const data = {};
@@ -654,13 +704,26 @@ const taxIdDisplay =
       setText('.out-client-postal-code', fd.get('client_postal_code'));
       setText('.out-client-city', fd.get('client_city') || 'Berlin');
       setText('.out-client-email', fd.get('client_email'));
+      const phone = (fd.get('client_phone') || '').toString().trim();
+      document.querySelectorAll('.out-client-phone').forEach((el) => { el.textContent = phone || ', '; });
+      document.querySelectorAll('.out-client-phone-row').forEach((el) => { el.style.display = phone ? '' : 'none'; });
       setText('.out-client-ust-idnr', fd.get('client_ust_idnr') || ', (Kleinunternehmer § 19 UStG)');
+
+      const planId = fd.get('plan');
+      const plan = plans.find((p) => p.id === planId);
+      const planLineEl = document.querySelector('.out-plan-line');
+      if (plan) {
+        planLineEl.style.display = '';
+        planLineEl.textContent = strings.s2PlanLine.replace('{plan}', plan.name).replace('{price}', plan.priceLabel);
+      } else {
+        planLineEl.style.display = 'none';
+      }
 
       const selectedSlugs = scopes.filter((s) => fd.get('svc_' + s.slug) === 'on').map((s) => s.slug);
       const container = document.getElementById('services-rendered');
       const noServicesEl = container.querySelector('.out-no-services');
       container.querySelectorAll('.svc-block').forEach((el) => el.remove());
-      if (selectedSlugs.length === 0) {
+      if (!plan && selectedSlugs.length === 0) {
         noServicesEl.style.display = '';
       } else {
         noServicesEl.style.display = 'none';
@@ -696,11 +759,31 @@ const taxIdDisplay =
       }
 
       const startDate = fd.get('date_start');
-      document.querySelector('.out-start-line').textContent = strings.s4Start.replace('{date}', dateNice(startDate));
+      document.querySelector('.out-start-line').textContent =
+        strings.s4Start.replace('{date}', dateNice(startDate)) + ' ' + strings.s4StartNote;
+    }
+
+    // Selecting a plan ticks the included services and fills the price + buy-out.
+    function applyPlan(planId) {
+      const plan = plans.find((p) => p.id === planId);
+      if (!plan) return;
+      scopes.forEach((s) => {
+        const cb = form.querySelector('[name=svc_' + s.slug + ']');
+        if (cb) cb.checked = plan.services.includes(s.slug);
+      });
+      if (plan.priceNum) {
+        form.querySelector('[name=price_retainer]').value = String(plan.priceNum);
+        form.querySelector('[name=price_build]').value = String(plan.priceNum * buyoutMonths);
+      }
     }
 
     form.addEventListener('input', () => { render(); persist(); });
-    form.addEventListener('change', () => { render(); persist(); });
+    form.addEventListener('change', (e) => {
+      if (e.target && e.target.name === 'plan') applyPlan(e.target.value);
+      if (e.target && e.target.name === 'date_signature') startEl.value = addDays(e.target.value, 5);
+      render();
+      persist();
+    });
     render();
 
     printBtn.addEventListener('click', () => window.print());

@@ -45,14 +45,13 @@ export const SITE = {
   formNotificationEmail: 'breno.ribeirobr@gmail.com', // backend inbox; Resend NOTIFICATION_EMAIL env-var overrides
   formFromAddress: 'hello@breno-bar.com', // Resend From: header (requires domain verified in Resend before sending)
 
-  // Address, Berlin studio. Left empty until the confirmed Anmeldung address
-  // arrives; empty strings keep placeholder text out of the UI, schema, and contract.
+  // Address, Berlin studio (confirmed).
   address: {
-    street: '',
-    neighborhood: '',
+    street: 'Strausberger Pl. 11',
+    neighborhood: 'Friedrichshain-Kreuzberg',
     city: 'Berlin',
     state: 'Berlin',
-    postalCode: '',
+    postalCode: '10243',
     country: 'DE',
   },
 
@@ -68,9 +67,10 @@ export const SITE = {
 
   // Legal, DE jurisdiction (Berlin-based Einzelunternehmer)
   legal: {
-    legalEntity: 'Breno Ribeiro, Einzelunternehmer',
+    legalEntity: 'BAR Agency, Einzelunternehmer',
     legalRepresentatives: 'Breno Ribeiro',
-    taxId: '', // empty until the Finanzamt issues the USt-IdNr (a Kleinunternehmer may have none); the imprint VAT line is hidden while empty
+    taxId: '', // Kleinunternehmer § 19 UStG: no USt-IdNr, so the imprint VAT line stays hidden
+    kleinunternehmer: true, // § 19 UStG; the contract agency block shows this in place of a USt-IdNr
     registrationCourt: null, // Einzelunternehmer: not in HRB
     registrationNumber: null,
     dataControllerEmail: 'hello@breno-bar.com',
