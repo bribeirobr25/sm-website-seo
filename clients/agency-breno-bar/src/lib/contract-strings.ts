@@ -1,13 +1,14 @@
 /**
  * Contract template strings, locale-aware service scopes + clause text.
  *
- * Used by `src/pages/contract.astro` (EN) + `src/pages/[locale]/contract.astro` (DE).
+ * Used by `src/pages/contract.astro` (EN) + `src/pages/de/contract.astro` (DE).
  *
- * **LEGAL CAVEAT, NOT lawyer-reviewed.** v2.0-DRAFT, reworked 2026-06-06 by an
- * LLM for the agency's monthly-subscription model ("Website-Abo"): § 3 = monthly
- * fee + optional one-time buy-out (no build fee); § 4 = cancellation takes the
- * site offline (only content/data/domain handed over, not the build); § 5 = the
- * website is LICENSED for the subscription term, not transferred. The page renders
+ * **LEGAL CAVEAT, NOT lawyer-reviewed.** Monthly-subscription model ("Website-Abo"):
+ * § 3 = monthly fee + optional one-time buy-out (no build fee); § 4 = cancellation
+ * takes the site offline (only content/data/domain handed over, not the build); § 5
+ * = the website is LICENSED for the subscription term, not transferred. Rewritten in
+ * plain language 2026-06-08 (statutes kept, moved into parentheses) plus a top-of-
+ * document "In plain words" summary; legal substance unchanged. The page renders
  * `draftBanner` as a printed red warning. Before ANY use, a Berlin-licensed
  * Rechtsanwalt must finalize the German text: legal classification (Dienst-/
  * Mietvertrag), § 307 BGB AGB-Kontrolle, Widerrufsrecht for consumers, the § 5
@@ -124,6 +125,10 @@ export interface ContractStrings {
   agencyAddress: string; // Composite string built at render
   representedBy: string;
 
+  /** Plain-language summary shown above the formal clauses. */
+  plainSummaryLabel: string;
+  plainSummary: string;
+
   s1Heading: string;
   s1Body: string;
 
@@ -183,7 +188,7 @@ export interface ContractStrings {
 export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
   en: {
     draftBanner:
-      '⚠ DRAFT, NOT LAWYER-REVIEWED. Reworked 2026-06-06 for the agency’s monthly-subscription model ("Website-Abo", €219/€390/€570/mo, no setup) by an automated tool, not a Rechtsanwalt. The subscription clauses, § 3 (monthly fee + optional one-time buy-out), § 4 (cancellation → site offline), § 5 (the website is LICENSED for the subscription term, not transferred), must be reviewed and finalised by a Berlin-licensed lawyer before any signing: legal classification (Dienst-/Mietvertrag), § 307 BGB AGB-Kontrolle, Widerrufsrecht where the Client is a consumer, the IP-licence + buy-out mechanics, and the AVV cross-reference. Do not sign as-is. (This DRAFT warning is shown on screen and on every printed copy.)',
+      '⚠ Draft, not yet lawyer-reviewed. This subscription agreement was prepared by the agency and should be checked by a Berlin-licensed lawyer before signing. Until then, please do not treat it as final. (This note prints on every copy.)',
     pageTitle: 'Website Subscription Agreement, fill, print, sign',
     pageSubtitle:
       "Type in the client details below. Output renders inline. Then Cmd/Ctrl+P → Save as PDF, or print A4 directly. A B2B website-subscription agreement (Website-Abo) with the agency's standard terms.",
@@ -235,84 +240,88 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     agencyAddress: '', // composed at render
     representedBy: 'Represented by',
 
+    plainSummaryLabel: 'In plain words',
+    plainSummary:
+      'You pay one monthly fee; we design, build, host, and look after your website and the services in § 2. You own your content, your data, and your domain. Either of us can stop with 14 days’ notice to the end of a month. If you ever want to own the website outright, there is an optional one-time buy-out (§ 3). The formal terms below say all of this precisely; if anything reads unclear, ask before signing.',
+
     s1Heading: '§ 1   Subject of the Agreement',
     s1Body:
-      'The Agency builds, hosts, maintains, and supports the website and any further services selected in § 2 for the Client, as an ongoing monthly subscription (Dauerschuldverhältnis). The Client owns its content, its data, and its domain. The website itself, its source code, design, and hosting, is provided as a licensed service for the duration of the subscription and is NOT transferred to the Client on a one-time basis (see § 5; an optional one-time buy-out is available under § 3). The Agency retains the rights to its reusable design patterns, components, and accumulated know-how. The Parties act as merchants under §§ 14, 343 ff. HGB; where the Client is a consumer (§ 13 BGB), mandatory consumer-protection rules, including the right of withdrawal (Widerrufsrecht), apply and prevail. [Counsel to confirm the legal classification and the consumer carve-outs.]',
+      'The Agency builds, hosts, maintains, and supports the Client’s website, plus any other services selected in § 2, as an ongoing monthly subscription. The Client owns its content, data, and domain. The website itself, its code, design, and hosting, is licensed for as long as the subscription runs and is not transferred to the Client (see § 5; an optional one-time buy-out is in § 3). The Agency keeps the rights to its reusable design patterns and know-how. If the Client is a consumer (§ 13 BGB), statutory consumer rights, including the right of withdrawal, apply and prevail.',
 
     s2Heading: '§ 2   Services',
-    s2Intro: 'The following services are included in this Agreement:',
+    s2Intro: 'The Client is hiring the Agency for:',
     s2NoServicesSelected:
       '⚠ No services selected, return to the form and tick at least one service.',
     s2ScopeIntroLabel: 'Scope:',
 
     s3Heading: '§ 3   Compensation and Payment Terms',
     s3BuildFeeLine:
-      'Optional one-time buy-out (Ablöse): {eur} net. No buy-out fee is owed unless separately agreed. If the Client wishes to take over the website to host and run it independently, then upon payment of the buy-out fee the Agency grants the Client the rights to the deployed work product set out in § 5.',
+      'Optional one-time buy-out: {eur} net. None is owed unless separately agreed. Once it is paid, the Agency transfers to the Client the rights to the delivered website set out in § 5.',
     s3BuildFeeSplit:
-      'Any agreed buy-out fee is invoiced separately and due net 14 days; until it is paid in full, the rights under § 5 do not pass.',
+      'Any buy-out is invoiced separately, due within 14 days; the § 5 rights pass only once it is paid in full.',
     s3RetainerLine:
-      'Monthly subscription fee: {eur} net per month, billed in advance on the 1st of each calendar month and due net 14 days by SEPA transfer. The fee covers the § 2 services plus hosting, maintenance, security updates, and support for as long as the subscription runs. There is no separate set-up or build fee.',
+      'Monthly fee: {eur} net, billed in advance on the 1st of each month, due within 14 days by SEPA transfer. It covers the § 2 services plus hosting, maintenance, security updates, and support, for as long as the subscription runs. There is no separate set-up or build fee.',
     s3PaymentTerms:
-      "Payment is due by SEPA bank transfer to the Agency's account stated on each invoice. Late payment triggers statutory interest under § 288 BGB plus a € 40 reminder fee per § 288 (5) BGB. The Agency may suspend services if any invoice remains unpaid for 14 days after due date, until paid in full (§ 4 Termination).",
-    s3PaymentDefault: 'Late payment: § 288 BGB statutory interest + € 40 reminder fee.',
+      'Late payment carries statutory interest (§ 288 BGB) plus a € 40 fee. The Agency may pause services on any invoice unpaid 14 days past its due date, until it is settled (see § 4).',
+    s3PaymentDefault: 'Late payment: statutory interest (§ 288 BGB) + € 40 fee.',
     s3VatKleinLine:
-      'Pursuant to § 19 UStG, the Agency does not charge VAT (Umsatzsteuer). All amounts above are final.',
+      'As a small business under § 19 UStG, the Agency charges no VAT. The amounts above are final.',
     s3VatRegularLine:
-      'Per month: net {net} + 19 % VAT {vat} = {gross} gross. VAT is shown separately on each monthly invoice; any one-time buy-out (§ 3) is invoiced with VAT separately. The Client confirms it is entitled to deduct input VAT (Vorsteuerabzug).',
+      'Per month: {net} net + 19 % VAT {vat} = {gross} gross. VAT is shown separately on each invoice; any buy-out (§ 3) is invoiced with VAT separately.',
 
     s4Heading: '§ 4   Term and Termination',
-    s4Start: 'This Agreement begins on {date} ("Start Date").',
+    s4Start: 'This Agreement starts on {date}.',
     s4MinimumTerm:
-      "The subscription runs on a monthly basis with no minimum term. Either Party may terminate it in text form (§ 126b BGB) with fourteen (14) days' notice to the end of any calendar month. [Counsel to confirm whether a minimum term or a different notice period is desired.]",
+      'The subscription is monthly, with no minimum term. Either Party may cancel in text form (§ 126b BGB) with 14 days’ notice to the end of any calendar month.',
     s4Notice:
-      'Notice of termination must be delivered in text form (§ 126b BGB), email is sufficient. The address for notice is the email on the cover page of this Agreement.',
+      'Notice must be in text form (§ 126b BGB); email is enough, sent to the email on the cover page.',
     s4ImmediateTermination:
-      'Either Party may terminate this Agreement for cause without notice if (a) the other Party is in material breach and fails to cure within 14 days of written demand, or (b) the Client is more than 14 days late on any invoice. The Agency may suspend services during any cure period.',
+      'Either Party may end the Agreement immediately for good cause, for example an uncured material breach after 14 days’ written notice, or an invoice more than 14 days overdue. The Agency may pause services during any cure period.',
     s4HandoverObligation:
-      "Upon termination for any reason, the Agency provides the Client within thirty (30) days: (a) a full export of the Client's content and data, and (b) transfer or release of the domain, which is registered in the Client's name. The Client's licence to use the website (§ 5) then ends and the managed website is taken offline. The Agency does NOT transfer the source code, design, hosting, or any repository unless the Client has paid the one-time buy-out (§ 3, § 5). Where the Client subscribed to SEO or Google Business Profile, the Agency also releases the Search Console / Google Business Profile access held in the Client's name.",
+      'When the Agreement ends, within 30 days the Agency hands over a full export of the Client’s content and data and releases the domain (registered in the Client’s name). The Client’s licence to use the website (§ 5) then ends and the website goes offline. Code, design, and hosting are not transferred unless the one-time buy-out (§ 3) has been paid. Where SEO or Google Business Profile were included, the Agency also releases the related access held in the Client’s name.',
 
     s5Heading: '§ 5   Intellectual Property',
     s5ClientOwns:
-      "The Client owns, and may export at any time: (a) all content, text, photographs, and logos the Client provides; (b) the Client's own data (e.g. contact-form submissions); (c) the domain, registered in the Client's name; (d) where applicable, the Google Business Profile listing held in the Client's name. For the duration of the subscription the Agency grants the Client a non-exclusive, non-transferable licence to use the deployed website. This licence ends automatically on termination. The deployed website, its source code, design, and templates, is and remains the Agency's intellectual property and is NOT transferred to the Client, unless the Client purchases the one-time buy-out under § 3, upon which the Agency grants the Client a perpetual, worldwide licence to, or, as separately agreed, assignment of, the deployed work product.",
+      'The Client owns, and may export at any time: its content, text, photos, and logos; its own data (e.g. contact-form submissions); its domain, registered in the Client’s name; and, where set up, its Google Business Profile listing. While the subscription runs, the Client has a non-exclusive, non-transferable licence to use the website the Agency builds and hosts; this licence ends when the Agreement ends. The website’s code, design, and templates stay the Agency’s property and are not transferred, unless the Client pays the one-time buy-out (§ 3), which grants the Client a perpetual, worldwide licence to (or, if separately agreed, assignment of) the delivered website.',
     s5AgencyKeeps:
-      "The Agency retains all rights to its reusable design patterns, component library, code scaffolds, documentation system, and any general agency know-how not specific to the Client's business. The website delivered under the subscription is licensed, not sold; absent a buy-out (§ 3), title to the underlying code and design does not pass to the Client. The Agency may continue to build similar work for other clients in similar or different verticals.",
+      'The Agency keeps all rights to its reusable patterns, component library, and general know-how not specific to the Client’s business, and may build similar work for other clients. Absent a buy-out (§ 3), the website is licensed, not sold.',
 
     s6Heading: '§ 6   Liability',
     s6LiabilityCap:
-      "The Agency's aggregate liability under this Agreement is limited to the total fees actually paid by the Client to the Agency in the twelve (12) months immediately preceding the event giving rise to the claim. This cap applies whether the claim is in contract, tort, or otherwise.",
+      'The Agency’s total liability under this Agreement is capped at the fees the Client actually paid in the 12 months before the event giving rise to the claim, whether the claim is in contract, tort, or otherwise.',
     s6LiabilityExclusions:
-      'The liability cap does not apply to: (a) damages caused by gross negligence (grobe Fahrlässigkeit) or intent (Vorsatz) by the Agency; (b) personal injury or death; (c) any liability under the Produkthaftungsgesetz; (d) any other liability that cannot be limited under mandatory German law (§ 309 BGB).',
+      'This cap does not apply to intent or gross negligence by the Agency, personal injury or death, liability under the Produkthaftungsgesetz, or anything that cannot be limited under mandatory German law (§ 309 BGB).',
     s6Indemnification:
-      'The Client warrants that all content, photographs, trademarks, and copy provided to the Agency are owned by the Client or properly licensed. The Client indemnifies the Agency against any third-party claims arising from Client-provided content.',
+      'The Client confirms it owns or is properly licensed to use all content, photos, trademarks, and copy it provides, and covers the Agency against third-party claims arising from that content.',
 
     s7Heading: '§ 7   Data Protection and Confidentiality',
     s7DataAvv:
-      'Where the Agency processes personal data on behalf of the Client (e.g. contact-form submissions, analytics events), the Parties enter a separate data-processing agreement (Auftragsverarbeitungsvertrag, AVV) per Art. 28 GDPR. The current AVV template is available on request and forms part of this Agreement once signed.',
+      'Where the Agency processes personal data for the Client (e.g. contact-form submissions, analytics events), the Parties sign a separate data-processing agreement (Auftragsverarbeitungsvertrag, AVV) under Art. 28 GDPR, available on request, which becomes part of this Agreement once signed.',
     s7Confidentiality:
-      "Each Party treats the other's non-public business information as confidential. This survives termination by 24 months. The Agency may name the Client in its portfolio and reference the engagement publicly unless the Client opts out in writing.",
+      'Each Party keeps the other’s non-public business information confidential, for 24 months after the Agreement ends. The Agency may name the Client in its portfolio unless the Client opts out in writing.',
 
     s8Heading: '§ 8   Final Provisions',
     s8Jurisdiction:
-      'Place of jurisdiction is Berlin, Germany. German law applies, excluding the UN Convention on Contracts for the International Sale of Goods (CISG).',
+      'Place of jurisdiction is Berlin. German law applies, excluding the UN Sales Convention (CISG).',
     s8WrittenForm:
-      'Amendments to this Agreement require text form (§ 126b BGB), including any amendment to this written-form requirement. Side agreements have not been made.',
+      'Changes to this Agreement need text form (§ 126b BGB). There are no side agreements.',
     s8Severability:
-      'If any provision is held invalid, the remainder remains in force. Parties agree to replace any invalid provision with one that approximates the economic intent of the invalid provision (severability / salvatorische Klausel).',
+      'If a clause is invalid, the rest stays in force and is replaced by one closest to its intent (salvatorische Klausel).',
     s8LanguageBindingDe:
-      'This Agreement is executed in German. The German version is binding. An English translation is available for convenience only; in case of conflict, the German version prevails.',
+      'This Agreement is made in German; the German version is binding. Any English translation is for convenience only.',
     s8LanguageBindingEn:
-      'This Agreement is executed in English. The English version is binding. A German translation is available for convenience only; in case of conflict, the English version prevails.',
+      'This Agreement is made in English; the English version is binding. Any German translation is for convenience only.',
 
     signaturesHeading: 'Signatures',
     signaturePlace: 'Place',
     signatureDateLabel: 'Date',
     signatureLineLabel: 'Signature',
 
-    footerNote: 'Website Subscription Agreement v2.0-DRAFT (not lawyer-reviewed) · Page',
+    footerNote: 'Website Subscription Agreement, draft (not lawyer-reviewed) · Page',
   },
   de: {
     draftBanner:
-      '⚠ ENTWURF, NICHT ANWALTLICH GEPRÜFT. Am 06.06.2026 für das Monats-Abo-Modell der Agentur überarbeitet ("Website-Abo", 219/390/570 €/Monat, keine Einrichtung), durch ein automatisiertes Tool, nicht durch einen Rechtsanwalt. Die Abo-Klauseln, § 3 (Monatsgebühr + optionale Ablöse), § 4 (Kündigung → Seite offline), § 5 (die Website wird für die Abo-Laufzeit LIZENZIERT, nicht übertragen), müssen vor jeder Unterzeichnung von einer Berliner Anwaltskanzlei geprüft und finalisiert werden: rechtliche Einordnung (Dienst-/Mietvertrag), AGB-Kontrolle nach § 307 BGB, Widerrufsrecht bei Verbrauchern, die Lizenz- und Ablöse-Mechanik sowie der AVV-Verweis. Nicht in dieser Form unterzeichnen. (Dieser ENTWURF-Hinweis erscheint am Bildschirm und auf jeder gedruckten Kopie.)',
+      '⚠ Entwurf, noch nicht anwaltlich geprüft. Dieser Abo-Vertrag wurde von der Agentur erstellt und sollte vor der Unterzeichnung von einer Berliner Anwaltskanzlei geprüft werden. Bitte bis dahin nicht als endgültig betrachten. (Dieser Hinweis wird auf jeder Kopie gedruckt.)',
     pageTitle: 'Website-Abo-Vertrag, ausfüllen, drucken, unterschreiben',
     pageSubtitle:
       'Mandantendaten unten eintragen. Die Ausgabe rendert sofort. Dann Cmd/Strg+P → als PDF speichern oder direkt A4 drucken. Ein B2B-Website-Abo-Vertrag mit den Standardbedingungen der Agentur.',
@@ -365,79 +374,83 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     agencyAddress: '',
     representedBy: 'Vertreten durch',
 
+    plainSummaryLabel: 'In einfachen Worten',
+    plainSummary:
+      'Du zahlst eine monatliche Gebühr; wir gestalten, bauen, hosten und betreuen deine Website und die Leistungen aus § 2. Deine Inhalte, deine Daten und deine Domain gehören dir. Beide Seiten können mit 14 Tagen Frist zum Monatsende kündigen. Wenn du die Website irgendwann ganz besitzen möchtest, gibt es eine optionale einmalige Ablöse (§ 3). Die formalen Klauseln unten regeln all das genau; wenn etwas unklar ist, frag vor der Unterschrift nach.',
+
     s1Heading: '§ 1   Vertragsgegenstand',
     s1Body:
-      'Die Agentur erstellt, hostet, pflegt und betreut die Website sowie etwaige weitere in § 2 ausgewählte Leistungen für den Mandanten als laufendes Monats-Abo (Dauerschuldverhältnis). Dem Mandanten gehören seine Inhalte, seine Daten und seine Domain. Die Website selbst, Quellcode, Design und Hosting, wird als lizenzierte Leistung für die Dauer des Abos bereitgestellt und NICHT einmalig auf den Mandanten übertragen (siehe § 5; eine optionale einmalige Ablöse ist nach § 3 verfügbar). Die Agentur behält die Rechte an ihren wiederverwendbaren Design-Mustern, Komponenten und allgemeinem Know-how. Die Parteien handeln als Kaufleute im Sinne der §§ 14, 343 ff. HGB; soweit der Mandant Verbraucher (§ 13 BGB) ist, gelten zwingende verbraucherschützende Vorschriften, einschließlich des Widerrufsrechts, und gehen vor. [Einordnung und Verbraucher-Ausnahmen anwaltlich zu bestätigen.]',
+      'Die Agentur erstellt, hostet, pflegt und betreut die Website des Mandanten sowie etwaige weitere in § 2 ausgewählte Leistungen als laufendes Monats-Abo. Dem Mandanten gehören seine Inhalte, seine Daten und seine Domain. Die Website selbst, Quellcode, Design und Hosting, wird für die Dauer des Abos lizenziert und nicht auf den Mandanten übertragen (siehe § 5; eine optionale einmalige Ablöse ist in § 3 geregelt). Die Agentur behält die Rechte an ihren wiederverwendbaren Design-Mustern und ihrem Know-how. Ist der Mandant Verbraucher (§ 13 BGB), gelten zwingende verbraucherschützende Vorschriften einschließlich des Widerrufsrechts und gehen vor.',
 
     s2Heading: '§ 2   Leistungen',
-    s2Intro: 'Folgende Leistungen sind Gegenstand dieses Vertrages:',
+    s2Intro: 'Der Mandant beauftragt die Agentur mit:',
     s2NoServicesSelected:
       '⚠ Keine Leistung ausgewählt, bitte im Formular oben mindestens eine ankreuzen.',
     s2ScopeIntroLabel: 'Leistungsumfang:',
 
     s3Heading: '§ 3   Vergütung und Zahlungsbedingungen',
     s3BuildFeeLine:
-      'Optionale einmalige Ablöse: {eur} netto. Eine Ablöse ist nur geschuldet, wenn sie gesondert vereinbart wird. Möchte der Mandant die Website übernehmen, um sie eigenständig zu betreiben, räumt die Agentur dem Mandanten nach Zahlung der Ablöse die in § 5 genannten Rechte am hergestellten Werk ein.',
+      'Optionale einmalige Ablöse: {eur} netto. Geschuldet nur, wenn gesondert vereinbart. Nach Zahlung überträgt die Agentur dem Mandanten die in § 5 genannten Rechte an der bereitgestellten Website.',
     s3BuildFeeSplit:
-      'Eine vereinbarte Ablöse wird gesondert in Rechnung gestellt, zahlbar netto 14 Tage; bis zur vollständigen Zahlung gehen die Rechte nach § 5 nicht über.',
+      'Eine Ablöse wird gesondert in Rechnung gestellt, zahlbar innerhalb von 14 Tagen; die Rechte nach § 5 gehen erst mit vollständiger Zahlung über.',
     s3RetainerLine:
-      'Monatliche Abo-Gebühr: {eur} netto pro Monat, im Voraus zum 1. jedes Kalendermonats abgerechnet, zahlbar netto 14 Tage per SEPA-Überweisung. Die Gebühr deckt die Leistungen aus § 2 sowie Hosting, Pflege, Sicherheits-Updates und Support für die gesamte Laufzeit des Abos. Es fällt keine gesonderte Einrichtungs- oder Aufbaugebühr an.',
+      'Monatliche Gebühr: {eur} netto, im Voraus zum 1. jedes Monats abgerechnet, zahlbar innerhalb von 14 Tagen per SEPA-Überweisung. Sie deckt die Leistungen aus § 2 sowie Hosting, Pflege, Sicherheits-Updates und Support für die Laufzeit des Abos. Es fällt keine gesonderte Einrichtungs- oder Aufbaugebühr an.',
     s3PaymentTerms:
-      'Zahlungen erfolgen per SEPA-Überweisung auf das auf der jeweiligen Rechnung angegebene Konto der Agentur. Bei Zahlungsverzug fallen die gesetzlichen Verzugszinsen nach § 288 BGB sowie eine Mahnpauschale von € 40 nach § 288 Abs. 5 BGB an. Die Agentur ist berechtigt, ihre Leistungen auszusetzen, wenn eine Rechnung mehr als 14 Tage nach Fälligkeit unbezahlt bleibt, bis zur vollständigen Begleichung (siehe § 4 Kündigung).',
-    s3PaymentDefault: 'Verzug: Zinsen nach § 288 BGB + € 40 Mahnpauschale.',
+      'Bei Zahlungsverzug fallen gesetzliche Verzugszinsen (§ 288 BGB) sowie eine Mahnpauschale von € 40 an. Die Agentur darf ihre Leistungen aussetzen, wenn eine Rechnung mehr als 14 Tage nach Fälligkeit unbezahlt bleibt, bis zur Begleichung (siehe § 4).',
+    s3PaymentDefault: 'Verzug: gesetzliche Zinsen (§ 288 BGB) + € 40 Mahnpauschale.',
     s3VatKleinLine:
-      'Gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Sämtliche oben genannten Beträge sind endgültig.',
+      'Als Kleinunternehmer nach § 19 UStG berechnet die Agentur keine Umsatzsteuer. Die oben genannten Beträge sind endgültig.',
     s3VatRegularLine:
-      'Pro Monat: netto {net} + 19 % USt {vat} = {gross} brutto. Die USt wird auf jeder monatlichen Rechnung separat ausgewiesen; eine etwaige einmalige Ablöse (§ 3) wird mit USt gesondert berechnet. Der Mandant bestätigt, zum Vorsteuerabzug berechtigt zu sein.',
+      'Pro Monat: {net} netto + 19 % USt {vat} = {gross} brutto. Die USt wird auf jeder Rechnung separat ausgewiesen; eine etwaige Ablöse (§ 3) wird mit USt gesondert berechnet.',
 
     s4Heading: '§ 4   Laufzeit und Kündigung',
-    s4Start: 'Dieser Vertrag beginnt am {date} („Vertragsbeginn").',
+    s4Start: 'Dieser Vertrag beginnt am {date}.',
     s4MinimumTerm:
-      'Das Abo läuft monatlich ohne Mindestlaufzeit. Beide Parteien können es in Textform (§ 126b BGB) mit einer Frist von vierzehn (14) Tagen zum Ende eines jeden Kalendermonats kündigen. [Ob eine Mindestlaufzeit oder eine andere Frist gewünscht ist, anwaltlich zu bestätigen.]',
+      'Das Abo läuft monatlich, ohne Mindestlaufzeit. Beide Parteien können in Textform (§ 126b BGB) mit einer Frist von 14 Tagen zum Ende eines jeden Kalendermonats kündigen.',
     s4Notice:
-      'Die Kündigung erfolgt in Textform (§ 126b BGB), E-Mail genügt. Maßgeblich ist die auf der Titelseite dieses Vertrages genannte E-Mail-Adresse.',
+      'Die Kündigung erfolgt in Textform (§ 126b BGB); E-Mail genügt, an die auf der Titelseite genannte Adresse.',
     s4ImmediateTermination:
-      'Beide Parteien können den Vertrag aus wichtigem Grund fristlos kündigen, wenn (a) die andere Partei eine wesentliche Pflicht verletzt und diese trotz Aufforderung mit einer Frist von 14 Tagen nicht behebt, oder (b) der Mandant mit einer Rechnungsforderung mehr als 14 Tage in Verzug ist. Während der Heilungsfrist darf die Agentur ihre Leistungen aussetzen.',
+      'Beide Parteien können den Vertrag aus wichtigem Grund fristlos kündigen, etwa bei einer nicht behobenen wesentlichen Pflichtverletzung nach 14 Tagen schriftlicher Frist oder bei einer mehr als 14 Tage überfälligen Rechnung. Während einer Heilungsfrist darf die Agentur ihre Leistungen aussetzen.',
     s4HandoverObligation:
-      'Nach Vertragsende stellt die Agentur dem Mandanten binnen dreißig (30) Tagen bereit: (a) einen vollständigen Export der Inhalte und Daten des Mandanten sowie (b) die Übertragung bzw. Freigabe der Domain, die auf den Namen des Mandanten registriert ist. Das Nutzungsrecht des Mandanten an der Website (§ 5) endet sodann und die betreute Website geht offline. Die Agentur überträgt Quellcode, Design, Hosting oder ein Repository NICHT, es sei denn, der Mandant hat die einmalige Ablöse (§ 3, § 5) gezahlt. Hat der Mandant SEO oder Google Business Profile abonniert, gibt die Agentur zusätzlich die auf den Namen des Mandanten geführten Search-Console-/Google-Business-Profile-Zugänge frei.',
+      'Nach Vertragsende stellt die Agentur binnen 30 Tagen einen vollständigen Export der Inhalte und Daten des Mandanten bereit und gibt die Domain frei (auf den Namen des Mandanten registriert). Das Nutzungsrecht an der Website (§ 5) endet und die Website geht offline. Quellcode, Design und Hosting werden nicht übertragen, sofern nicht die einmalige Ablöse (§ 3) gezahlt wurde. Bei gebuchtem SEO oder Google Business Profile gibt die Agentur zusätzlich die zugehörigen, auf den Namen des Mandanten geführten Zugänge frei.',
 
     s5Heading: '§ 5   Geistiges Eigentum',
     s5ClientOwns:
-      'Dem Mandanten gehören, jederzeit exportierbar: (a) alle von ihm bereitgestellten Inhalte, Texte, Fotos und Logos; (b) die eigenen Daten des Mandanten (z. B. Kontaktformular-Einsendungen); (c) die auf seinen Namen registrierte Domain; (d) ggf. der auf seinen Namen geführte Google-Business-Profile-Eintrag. Für die Dauer des Abos räumt die Agentur dem Mandanten ein einfaches, nicht übertragbares Nutzungsrecht an der bereitgestellten Website ein. Dieses Nutzungsrecht endet automatisch mit Vertragsende. Die bereitgestellte Website, Quellcode, Design und Templates, ist und bleibt geistiges Eigentum der Agentur und wird NICHT auf den Mandanten übertragen, es sei denn, der Mandant erwirbt die einmalige Ablöse nach § 3; in diesem Fall räumt die Agentur dem Mandanten ein unbeschränktes, räumlich unbegrenztes Nutzungsrecht am hergestellten Werk ein, bzw., sofern gesondert vereinbart, überträgt sie es.',
+      'Dem Mandanten gehören, jederzeit exportierbar: seine Inhalte, Texte, Fotos und Logos; seine eigenen Daten (z. B. Kontaktformular-Einsendungen); seine auf seinen Namen registrierte Domain; und, sofern eingerichtet, sein Google-Business-Profile-Eintrag. Für die Dauer des Abos räumt die Agentur dem Mandanten ein einfaches, nicht übertragbares Nutzungsrecht an der bereitgestellten Website ein; dieses endet mit Vertragsende. Quellcode, Design und Templates bleiben Eigentum der Agentur und werden nicht übertragen, es sei denn, der Mandant zahlt die einmalige Ablöse (§ 3); in diesem Fall räumt die Agentur ihm ein unbeschränktes, räumlich unbegrenztes Nutzungsrecht ein (oder überträgt das Werk, sofern gesondert vereinbart).',
     s5AgencyKeeps:
-      'Die Agentur behält alle Rechte an ihren wiederverwendbaren Design-Mustern, ihrer Komponenten-Bibliothek, ihren Code-Scaffolds, ihrem Dokumentationssystem und allem allgemeinen Agentur-Know-how, das nicht spezifisch für das Geschäft des Mandanten ist. Die im Abo bereitgestellte Website wird lizenziert, nicht verkauft; ohne Ablöse (§ 3) geht das Eigentum an zugrundeliegendem Code und Design nicht auf den Mandanten über. Die Agentur darf ähnliche Werke für andere Mandanten in gleichen oder anderen Branchen erstellen.',
+      'Die Agentur behält alle Rechte an ihren wiederverwendbaren Mustern, ihrer Komponenten-Bibliothek und ihrem allgemeinen, nicht mandantenspezifischen Know-how und darf ähnliche Werke für andere Mandanten erstellen. Ohne Ablöse (§ 3) wird die Website lizenziert, nicht verkauft.',
 
     s6Heading: '§ 6   Haftung',
     s6LiabilityCap:
-      'Die Gesamthaftung der Agentur aus diesem Vertrag ist auf die Summe der Gebühren begrenzt, die der Mandant in den zwölf (12) Monaten vor dem haftungsbegründenden Ereignis tatsächlich an die Agentur gezahlt hat. Diese Begrenzung gilt für vertragliche, deliktische und jede andere Art von Anspruch.',
+      'Die Gesamthaftung der Agentur ist auf die Gebühren begrenzt, die der Mandant in den 12 Monaten vor dem haftungsbegründenden Ereignis tatsächlich gezahlt hat, unabhängig davon, ob der Anspruch vertraglich, deliktisch oder anderweitig besteht.',
     s6LiabilityExclusions:
-      'Die Haftungsbegrenzung gilt nicht für: (a) Schäden, die auf Vorsatz oder grober Fahrlässigkeit der Agentur beruhen; (b) Verletzung von Leben, Körper oder Gesundheit; (c) Ansprüche aus dem Produkthaftungsgesetz; (d) sonstige zwingende gesetzliche Haftungstatbestände, die nicht abdingbar sind (§ 309 BGB).',
+      'Die Begrenzung gilt nicht bei Vorsatz oder grober Fahrlässigkeit der Agentur, bei Verletzung von Leben, Körper oder Gesundheit, bei Ansprüchen aus dem Produkthaftungsgesetz oder bei sonstiger zwingender, nicht abdingbarer Haftung (§ 309 BGB).',
     s6Indemnification:
-      'Der Mandant versichert, dass alle der Agentur überlassenen Inhalte, Fotos, Marken und Texte in seinem Eigentum stehen oder ordnungsgemäß lizenziert sind. Der Mandant stellt die Agentur von Ansprüchen Dritter wegen mandantenseitig bereitgestellter Inhalte frei.',
+      'Der Mandant versichert, dass alle überlassenen Inhalte, Fotos, Marken und Texte ihm gehören oder ordnungsgemäß lizenziert sind, und stellt die Agentur von Ansprüchen Dritter wegen dieser Inhalte frei.',
 
     s7Heading: '§ 7   Datenschutz und Vertraulichkeit',
     s7DataAvv:
-      'Soweit die Agentur personenbezogene Daten im Auftrag des Mandanten verarbeitet (z. B. Kontaktformular-Einsendungen, Analytics-Events), schließen die Parteien einen separaten Auftragsverarbeitungsvertrag (AVV) nach Art. 28 DSGVO. Die aktuelle AVV-Vorlage ist auf Anfrage erhältlich und wird mit Unterzeichnung Bestandteil dieses Vertrages.',
+      'Soweit die Agentur personenbezogene Daten im Auftrag des Mandanten verarbeitet (z. B. Kontaktformular-Einsendungen, Analytics-Events), schließen die Parteien einen separaten Auftragsverarbeitungsvertrag (AVV) nach Art. 28 DSGVO, auf Anfrage erhältlich, der mit Unterzeichnung Bestandteil dieses Vertrages wird.',
     s7Confidentiality:
-      'Jede Partei behandelt nicht-öffentliche Geschäftsinformationen der anderen vertraulich. Diese Pflicht gilt 24 Monate über das Vertragsende hinaus. Die Agentur darf den Mandanten in ihrem Portfolio nennen und das Mandat öffentlich referenzieren, sofern der Mandant dem nicht in Textform widerspricht.',
+      'Jede Partei behandelt nicht-öffentliche Geschäftsinformationen der anderen vertraulich, für 24 Monate über das Vertragsende hinaus. Die Agentur darf den Mandanten in ihrem Portfolio nennen, sofern der Mandant dem nicht in Textform widerspricht.',
 
     s8Heading: '§ 8   Schlussbestimmungen',
     s8Jurisdiction:
-      'Gerichtsstand ist Berlin, Deutschland. Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts (CISG).',
+      'Gerichtsstand ist Berlin. Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts (CISG).',
     s8WrittenForm:
-      'Änderungen dieses Vertrages bedürfen der Textform (§ 126b BGB), einschließlich Änderungen an dieser Textformklausel selbst. Nebenabreden bestehen nicht.',
+      'Änderungen dieses Vertrages bedürfen der Textform (§ 126b BGB). Nebenabreden bestehen nicht.',
     s8Severability:
-      'Sollte eine Bestimmung dieses Vertrages unwirksam sein, bleiben die übrigen Bestimmungen wirksam. Die Parteien verpflichten sich, eine unwirksame Bestimmung durch eine wirksame zu ersetzen, die dem wirtschaftlichen Zweck der unwirksamen Bestimmung möglichst nahekommt (salvatorische Klausel).',
+      'Ist eine Klausel unwirksam, bleiben die übrigen wirksam und werden durch eine ersetzt, die ihrem Zweck am nächsten kommt (salvatorische Klausel).',
     s8LanguageBindingDe:
-      'Dieser Vertrag wird in deutscher Sprache geschlossen. Die deutsche Fassung ist maßgeblich. Eine englische Übersetzung steht aus Gefälligkeit zur Verfügung; im Konfliktfall geht die deutsche Fassung vor.',
+      'Dieser Vertrag wird in deutscher Sprache geschlossen; die deutsche Fassung ist maßgeblich. Eine englische Übersetzung dient nur der Gefälligkeit.',
     s8LanguageBindingEn:
-      'Dieser Vertrag wird in englischer Sprache geschlossen. Die englische Fassung ist maßgeblich. Eine deutsche Übersetzung steht aus Gefälligkeit zur Verfügung; im Konfliktfall geht die englische Fassung vor.',
+      'Dieser Vertrag wird in englischer Sprache geschlossen; die englische Fassung ist maßgeblich. Eine deutsche Übersetzung dient nur der Gefälligkeit.',
 
     signaturesHeading: 'Unterschriften',
     signaturePlace: 'Ort',
     signatureDateLabel: 'Datum',
     signatureLineLabel: 'Unterschrift',
 
-    footerNote: 'Website-Abo-Vertrag v2.0-ENTWURF (nicht anwaltlich geprüft) · Seite',
+    footerNote: 'Website-Abo-Vertrag, Entwurf (nicht anwaltlich geprüft) · Seite',
   },
 };

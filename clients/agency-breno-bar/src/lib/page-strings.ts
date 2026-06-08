@@ -116,6 +116,9 @@ export interface PageStrings {
     /** Optional photograph rendered below the hero copy. */
     heroImageSrc?: string;
     heroImageAlt?: string;
+    /** Lead paragraph opening the body, above the reasons grid. */
+    intro: string;
+    /** "Why choose us" reasons, rendered as a card grid. */
     sections: { title: string; body: string }[];
     foundedNote: string;
   };
@@ -426,30 +429,32 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     about: {
       title: 'About the studio: Breno Ribeiro, web designer in Berlin, breno-bar',
       description:
-        'A small Berlin studio building websites for owner-led businesses. Workshop philosophy: three services, no upsell.',
-      heroEyebrow: 'About',
-      heroTitle: 'A small studio with a slow practice.',
+        'A small Berlin studio building websites that bring owner-led businesses customers. Fair pricing, mobile-first, fast, and here after launch.',
+      heroEyebrow: 'Why choose us',
+      heroTitle: 'The Berlin web studio your business deserves.',
       heroLead:
-        'breno-bar is one set of hands, in Berlin. Trilingual websites for owner-led businesses. Three services, not thirty, because nobody needed thirty.',
+        "A good website matters. We think every Kiez business deserves one that actually brings customers, without agency prices and without being talked into things you'll never use. Our job is simple: give you the tools to be found, and to be called.",
       heroImageSrc: '/img/about/berlin-altbau-dawn.webp',
       heroImageAlt:
         'A quiet Berlin street at dawn. Altbau buildings catching the first warm light, no traffic, no people.',
+      intro:
+        'breno-bar is a small Berlin studio, one set of hands from the first sentence to launch. We know the practical work of building a site that earns its keep, in German, English, and other languages you need, and we keep the price within reach of an owner-run business. Everything stays in your name, on accounts you control.',
       sections: [
         {
-          title: 'Why small',
-          body: 'Most agencies grow until they need account managers, project managers, and meetings about meetings. The person who heard the first sentence is no longer the person doing the work. We chose not to grow that way. Every project is touched by the same hands, start to finish.',
+          title: 'Fair, honest pricing',
+          body: "One monthly price, hosting and updates included. No four-figure invoice before you've seen your first new customer.",
         },
         {
-          title: 'Why three services',
-          body: 'Website + SEO + Google Business Profile. That is most of what a small local business needs to be found and called. Social media is an optional fourth, if you want it. We will not build you an app. We will not run your ads. We will not write your newsletter. Plenty of good studios will.',
+          title: 'Built for the phone first',
+          body: 'Most of Berlin meets you on a screen, on the U-Bahn, between two meetings. Your site looks and works right on phones, tablets, and desktops.',
         },
         {
-          title: 'How we work',
-          body: 'A demo first, then a conversation. You see a working version of your site before you commit to a single euro. Everything we build stays in your name, on accounts you control. The domain stays in your name. Nothing rented from us. We like you free to find us back, not stuck with us.',
+          title: 'Live in weeks, not months',
+          body: 'A working preview in days, your site online in weeks. Bringing in customers while the season is still good.',
         },
         {
-          title: 'Languages',
-          body: "Berlin German and international English by default. Brazilian Portuguese, European Portuguese, and Spanish when your audience asks for them. Translation is cultural. A Kreuzberg café and a São Paulo padaria don't sound alike, even when they sell the same coffee.",
+          title: "We don't disappear after launch",
+          body: 'Updates, questions, the small technical things, all part of your monthly plan. Not a surprise invoice six months later.',
         },
       ],
       foundedNote: 'Founded 2026 by Breno Ribeiro in Berlin.',
@@ -809,30 +814,32 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     about: {
       title: 'Über das Studio: Breno Ribeiro, Webdesigner in Berlin, breno-bar',
       description:
-        'Ein kleines Berliner Studio, das Webseiten für inhabergeführte Unternehmen baut. Werkstatt-Philosophie: drei Leistungen, kein Upsell.',
-      heroEyebrow: 'Studio',
-      heroTitle: 'Ein kleines Studio mit einer langsamen Praxis.',
+        'Ein kleines Berliner Studio, das Webseiten baut, die inhabergeführten Geschäften Kund:innen bringen. Faire Preise, fürs Handy gebaut, schnell und auch nach dem Launch da.',
+      heroEyebrow: 'Warum wir',
+      heroTitle: 'Das Berliner Web-Studio, das dein Geschäft verdient.',
       heroLead:
-        'breno-bar ist ein Paar Hände, in Berlin. Mehrsprachige Webseiten für inhabergeführte Unternehmen. Drei Leistungen, nicht dreißig, weil niemand dreißig brauchte.',
+        'Eine gute Website zählt. Wir finden, jedes Kiez-Geschäft verdient eine, die wirklich Kund:innen bringt, ohne Agenturpreise und ohne dass dir Dinge aufgeschwatzt werden, die du nie brauchst. Unsere Aufgabe ist einfach: dir die Mittel geben, gefunden und angerufen zu werden.',
       heroImageSrc: '/img/about/berlin-altbau-dawn.webp',
       heroImageAlt:
         'Eine ruhige Berliner Straße in der Dämmerung. Kahle Baumreihen, Altbauten im Hintergrund, der Fernsehturm in der Ferne, keine Menschen, kein Verkehr.',
+      intro:
+        'breno-bar ist ein kleines Berliner Studio, ein Paar Hände vom ersten Satz bis zum Launch. Wir kennen die praktische Arbeit, eine Seite zu bauen, die sich lohnt, auf Deutsch, Englisch und weiteren Sprachen, die du brauchst, und wir halten den Preis im Rahmen für ein inhabergeführtes Geschäft. Alles bleibt auf deinen Namen, auf Konten, die du kontrollierst.',
       sections: [
         {
-          title: 'Warum klein',
-          body: 'Die meisten Agenturen wachsen, bis sie Account Manager, Projekt Manager und Meetings über Meetings brauchen. Die Person, die den ersten Satz gehört hat, ist nicht mehr die Person, die die Arbeit macht. Wir haben uns entschieden, nicht so zu wachsen. Jedes Projekt wird von denselben Händen berührt, von Anfang bis Ende.',
+          title: 'Faire, ehrliche Preise',
+          body: 'Ein monatlicher Preis, Hosting und Updates inklusive. Keine vierstellige Rechnung, bevor du deine ersten neuen Kund:innen gewonnen hast.',
         },
         {
-          title: 'Warum drei Leistungen',
-          body: 'Website + SEO + Google Business Profile. Das ist das meiste, was ein kleines lokales Geschäft braucht, um gefunden und angerufen zu werden. Social Media ist eine optionale Vierte, wenn du sie willst. Wir bauen dir keine App. Wir schalten dir keine Werbung. Wir schreiben deinen Newsletter nicht. Es gibt genug gute Studios dafür.',
+          title: 'Fürs Handy zuerst gebaut',
+          body: 'Die meisten in Berlin treffen dich auf einem Bildschirm, in der U-Bahn, zwischen zwei Terminen. Deine Seite sieht gut aus und funktioniert auf Handy, Tablet und Desktop.',
         },
         {
-          title: 'Wie wir arbeiten',
-          body: 'Erst eine Demo, dann ein Gespräch. Du siehst eine funktionierende Version deiner Seite, bevor du einen einzigen Euro versprichst. Alles, was wir bauen, bleibt auf deinen Namen, auf Konten, die du kontrollierst. Die Domain bleibt auf deinem Namen. Nichts von uns gemietet. Wir mögen es, wenn du uns aus freien Stücken wiederfindest, nicht weil du festhängst.',
+          title: 'In Wochen live, nicht in Monaten',
+          body: 'Eine funktionierende Vorschau in Tagen, deine Seite in Wochen online. Sie bringt dir Kund:innen, solange die Saison noch gut läuft.',
         },
         {
-          title: 'Sprachen',
-          body: 'Berliner Deutsch und internationales Englisch als Standard. Brasilianisches Portugiesisch, europäisches Portugiesisch und Spanisch, wenn deine Zielgruppe danach fragt. Übersetzung ist kulturell. Ein Kreuzberger Café und eine padaria in São Paulo klingen nicht gleich, auch wenn sie denselben Kaffee verkaufen.',
+          title: 'Wir verschwinden nach dem Launch nicht',
+          body: 'Updates, Fragen, die kleinen technischen Dinge, alles Teil deines Monatsplans. Keine Überraschungsrechnung sechs Monate später.',
         },
       ],
       foundedNote: 'Gegründet 2026 von Breno Ribeiro in Berlin.',
@@ -1193,30 +1200,32 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
     about: {
       title: 'Sobre o estúdio: Breno Ribeiro, web designer em Berlim, breno-bar',
       description:
-        'Um pequeno estúdio berlinense que constrói sites para negócios liderados pelo dono. Filosofia de ateliê: três serviços, sem upsell.',
-      heroEyebrow: 'Estúdio',
-      heroTitle: 'Um pequeno estúdio com uma prática lenta.',
+        'Um pequeno estúdio berlinense que constrói sites que trazem clientes para negócios liderados pelo dono. Preço justo, feito para o celular, rápido e presente depois do lançamento.',
+      heroEyebrow: 'Por que a gente',
+      heroTitle: 'O estúdio web de Berlim que o seu negócio merece.',
       heroLead:
-        'breno-bar é um par de mãos, em Berlim. Sites multilíngues para negócios liderados pelo dono. Três serviços, não trinta, porque ninguém precisava de trinta.',
+        'Um bom site importa. A gente acredita que todo negócio de bairro merece um que realmente traga clientes, sem preço de agência e sem te empurrarem coisas que você nunca vai usar. Nosso trabalho é simples: dar as ferramentas pra você ser encontrado, e ser procurado.',
       heroImageSrc: '/img/about/berlin-altbau-dawn.webp',
       heroImageAlt:
         'Uma rua berlinense silenciosa no amanhecer. Árvores sem folhas, prédios Altbau ao fundo, a Fernsehturm ao longe, sem pessoas, sem trânsito.',
+      intro:
+        'A breno-bar é um pequeno estúdio em Berlim, um par de mãos do primeiro papo até o lançamento. A gente conhece o trabalho prático de construir um site que se paga, em alemão, inglês e outros idiomas que você precisar, e mantém o preço ao alcance de um negócio liderado pelo dono. Tudo fica no seu nome, em contas que você controla.',
       sections: [
         {
-          title: 'Por que pequeno',
-          body: 'A maioria das agências cresce até precisar de account managers, project managers e reuniões sobre reuniões. A pessoa que ouviu a primeira frase não é mais a pessoa que faz o trabalho. A gente escolheu não crescer assim. Cada projeto é tocado pelas mesmas mãos, do começo ao fim.',
+          title: 'Preço justo e honesto',
+          body: 'Um preço mensal, com hospedagem e atualizações incluídas. Sem fatura de quatro dígitos antes de você ver o seu primeiro cliente novo.',
         },
         {
-          title: 'Por que três serviços',
-          body: 'Site + SEO + Google Business Profile. Isso é a maior parte do que um pequeno negócio local precisa para ser encontrado e procurado. Redes sociais é uma quarta opcional, se você quiser. A gente não vai construir seu app. Não vai gerir seus anúncios. Não vai escrever sua newsletter. Tem estúdio bom o bastante por aí pra isso.',
+          title: 'Feito primeiro para o celular',
+          body: 'A maior parte de Berlim te encontra numa tela, no metrô, entre duas reuniões. Seu site fica bonito e funciona direitinho no celular, no tablet e no computador.',
         },
         {
-          title: 'Como trabalhamos',
-          body: 'Primeiro uma demo, depois uma conversa. Você vê uma versão funcionando do seu site antes de prometer um único euro. Tudo o que a gente constrói fica no seu nome, em contas que você controla. O domínio permanece no seu nome. Nada alugado da gente. A gente gosta de ser reencontrado por escolha, não por dependência.',
+          title: 'No ar em semanas, não em meses',
+          body: 'Uma prévia funcionando em dias, seu site no ar em semanas. Trazendo clientes enquanto a temporada ainda está boa.',
         },
         {
-          title: 'Idiomas',
-          body: 'Alemão de Berlim e inglês internacional por padrão. Português brasileiro, português europeu e espanhol quando seu público pedir. Tradução é cultural. Um café de Kreuzberg e uma padaria de São Paulo não soam iguais, mesmo quando vendem o mesmo café.',
+          title: 'A gente não some depois do lançamento',
+          body: 'Atualizações, dúvidas, os pequenos detalhes técnicos, tudo parte do seu plano mensal. Sem fatura surpresa seis meses depois.',
         },
       ],
       foundedNote: 'Fundado em 2026 por Breno Ribeiro em Berlim.',

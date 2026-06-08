@@ -49,10 +49,12 @@ const country = locale === 'de' ? 'Deutschland' : 'Alemanha';
             <a href={`mailto:${SITE.email}`} class="text-accent-deep hover:underline underline-offset-4">{SITE.email}</a>
           </p>
         </section>
-        <section>
-          <h2 class="font-display text-xl font-semibold text-text">{p.vatHeading}</h2>
-          <p class="mt-3">{p.vatNote} {SITE.legal.taxId}</p>
-        </section>
+        {SITE.legal.taxId && (
+          <section>
+            <h2 class="font-display text-xl font-semibold text-text">{p.vatHeading}</h2>
+            <p class="mt-3">{p.vatNote} {SITE.legal.taxId}</p>
+          </section>
+        )}
         <section>
           <h2 class="font-display text-xl font-semibold text-text">{p.disputeHeading}</h2>
           <p class="mt-3">{p.disputeBody}</p>

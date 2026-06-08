@@ -45,13 +45,14 @@ export const SITE = {
   formNotificationEmail: 'breno.ribeirobr@gmail.com', // backend inbox; Resend NOTIFICATION_EMAIL env-var overrides
   formFromAddress: 'hello@breno-bar.com', // Resend From: header (requires domain verified in Resend before sending)
 
-  // Address, Berlin studio (DRAFT, replace with confirmed Anmeldung address)
+  // Address, Berlin studio. Left empty until the confirmed Anmeldung address
+  // arrives; empty strings keep placeholder text out of the UI, schema, and contract.
   address: {
-    street: 'TODO: Berlin Anmeldung address',
-    neighborhood: 'TODO: Bezirk',
+    street: '',
+    neighborhood: '',
     city: 'Berlin',
     state: 'Berlin',
-    postalCode: 'TODO: PLZ',
+    postalCode: '',
     country: 'DE',
   },
 
@@ -69,7 +70,7 @@ export const SITE = {
   legal: {
     legalEntity: 'Breno Ribeiro, Einzelunternehmer',
     legalRepresentatives: 'Breno Ribeiro',
-    taxId: 'TODO: DE-USt-IdNr (Finanzamt nach Anmeldung)', // DRAFT
+    taxId: '', // empty until the Finanzamt issues the USt-IdNr (a Kleinunternehmer may have none); the imprint VAT line is hidden while empty
     registrationCourt: null, // Einzelunternehmer: not in HRB
     registrationNumber: null,
     dataControllerEmail: 'hello@breno-bar.com',

@@ -20,10 +20,16 @@ const locale = 'en' as const;
 const c = CONTRACT_STRINGS[locale];
 const scopes = SERVICE_SCOPES[locale];
 
-const agencyAddressLine = `${SITE.address.street || ', '}, ${SITE.address.postalCode || ', '} ${SITE.address.city}, ${SITE.address.country}`;
-const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
-  ? 'USt-IdNr: pending'
-  : `USt-IdNr: ${SITE.legal.taxId}`;
+const agencyAddressLine = [
+  SITE.address.street,
+  [SITE.address.postalCode, SITE.address.city].filter(Boolean).join(' '),
+  SITE.address.country,
+]
+  .filter(Boolean)
+  .join(', ');
+const taxId: string = SITE.legal.taxId;
+const taxIdDisplay =
+  !taxId || taxId.startsWith('TODO') ? 'USt-IdNr: pending' : `USt-IdNr: ${taxId}`;
 ---
 
 <BaseLayout
@@ -278,6 +284,11 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
           </div>
         </header>
 
+        <div class="contract-summary mb-12 rounded-[14px] border border-border bg-surface p-6 sm:p-8">
+          <p class="text-[11px] uppercase tracking-[0.15em] text-text-muted font-semibold mb-3">{c.plainSummaryLabel}</p>
+          <p class="contract-p">{c.plainSummary}</p>
+        </div>
+
         <div class="space-y-10 contract-body">
           <section class="contract-clause">
             <h2 class="contract-h2">{c.s1Heading}</h2>
@@ -292,7 +303,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
             </div>
           </section>
 
-          <section class="contract-clause break-before-page">
+          <section class="contract-clause">
             <h2 class="contract-h2">{c.s3Heading}</h2>
             <ul class="contract-list">
               <li class="out-build-line">, </li>
@@ -552,6 +563,7 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
 
     @media print {
       .no-print { display: none !important; }
+      #cookie-banner { display: none !important; }
       body { background: white; }
       body > header, body > footer { display: none !important; }
       .contract-doc { padding-top: 0 !important; }
@@ -564,7 +576,6 @@ const taxIdDisplay = SITE.legal.taxId.startsWith('TODO')
       .contract-h2 { font-size: 12pt; margin-top: 14pt; }
       .contract-p, .contract-list > li { font-size: 10.5pt; line-height: 1.55; }
       h1 { font-size: 22pt; }
-      .break-before-page { break-before: page; page-break-before: always; }
       .contract-clause { break-inside: avoid; page-break-inside: avoid; }
       .contract-signatures { break-inside: avoid; page-break-inside: avoid; }
     }

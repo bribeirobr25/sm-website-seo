@@ -49,13 +49,16 @@ const startProject = locale === 'de' ? 'Projekt starten' : 'Começar um projeto'
     </section>
 
     <section class="section bg-bg">
-      <div class="container-page max-w-4xl space-y-16 sm:space-y-24">
-        {p.sections.map((s, i) => (
-          <article class="reveal-rise grid sm:grid-cols-[1fr_2fr] gap-8 sm:gap-16" style={`animation-delay:${i * 40}ms`}>
-            <h2 class="font-display text-2xl sm:text-3xl font-semibold text-text tracking-[-0.02em] leading-[1.15]">{s.title}</h2>
-            <p class="text-lg text-text-muted leading-[1.65]">{s.body}</p>
-          </article>
-        ))}
+      <div class="container-page max-w-4xl">
+        <p class="reveal-rise text-xl sm:text-2xl text-text leading-[1.5] tracking-[-0.01em] max-w-3xl">{p.intro}</p>
+        <div class="mt-14 sm:mt-20 grid sm:grid-cols-2 gap-5">
+          {p.sections.map((s, i) => (
+            <article class="reveal-rise rounded-[22px] bg-surface-elev border border-border p-8 sm:p-10" style={`animation-delay:${i * 50}ms`}>
+              <h2 class="font-display text-xl sm:text-2xl font-semibold text-text tracking-[-0.02em] leading-[1.15]">{s.title}</h2>
+              <p class="mt-4 text-text-muted leading-[1.65]">{s.body}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
 

@@ -327,7 +327,7 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       heroTitle: 'A clear-eyed look at your site, in one hour.',
       heroSubtitle:
         'A focused 1:1 video session. We go through your website and your Google listing live, then you walk away with a short, prioritized list of what to fix first.',
-      priceLine: 'DRAFT, €120 flat',
+      priceLine: '',
       priceSub: 'One hour + a written action list. No subscription, no upsell.',
       coverEyebrow: 'What we look at',
       coverHeading: 'The things that actually move the needle.',
@@ -607,7 +607,7 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       heroTitle: 'Ein klarer Blick auf deine Seite, in einer Stunde.',
       heroSubtitle:
         'Eine fokussierte 1:1-Videosession. Wir gehen Website und Google-Eintrag live durch, und du gehst mit einer kurzen, priorisierten Liste, was zuerst zu beheben ist.',
-      priceLine: 'ENTWURF, 120 € pauschal',
+      priceLine: '',
       priceSub: 'Eine Stunde + schriftliche To-do-Liste. Kein Abo, kein Upselling.',
       coverEyebrow: 'Was wir uns ansehen',
       coverHeading: 'Die Dinge, die wirklich etwas bewegen.',
@@ -887,7 +887,7 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       heroTitle: 'Um olhar honesto sobre o seu site, em uma hora.',
       heroSubtitle:
         'Uma sessão 1:1 por vídeo, focada. Passamos pelo seu site e pelo seu perfil no Google ao vivo, e você sai com uma lista curta e priorizada do que corrigir primeiro.',
-      priceLine: 'RASCUNHO, 120 € fixo',
+      priceLine: '',
       priceSub: 'Uma hora + lista de ações por escrito. Sem assinatura, sem empurrar serviço.',
       coverEyebrow: 'O que analisamos',
       coverHeading: 'As coisas que realmente fazem diferença.',
