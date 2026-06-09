@@ -44,8 +44,8 @@ export interface ContractStrings {
   planHint: string;
 
   pricingLabel: string;
-  buildFee: string;
   retainerFee: string;
+  /** Hint under the monthly-fee field; `{eur}` is replaced with the derived 18-month buy-out. */
   retainerFeeHint: string;
   vatLabel: string;
   vatKleinunternehmer: string;
@@ -149,13 +149,12 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     planLabel: 'Plan',
     planHint:
-      'Pick a plan. It fills the monthly fee and buy-out below, and § 2 lists exactly what that plan includes (straight from the pricing page).',
+      'Pick a plan. It fills the monthly fee below, and § 2 lists exactly what that plan includes (straight from the pricing page).',
 
     pricingLabel: 'Pricing',
-    buildFee: 'One-time buy-out (≈ 18 months of the plan)',
     retainerFee: 'Monthly subscription fee',
     retainerFeeHint:
-      'Filled automatically from the selected plan (€219 / €390 / €570). Covers the § 2 services plus hosting, maintenance, updates, and support.',
+      'Auto-filled from the selected plan. Optional one-time buy-out to own the site outright: {eur} (≈ 18 months of the plan).',
     vatLabel: 'VAT handling',
     vatKleinunternehmer: 'Kleinunternehmer (§ 19 UStG), no VAT charged',
     vatRegular: 'Regular VAT, 19 % MwSt added to every line',
@@ -275,13 +274,12 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     planLabel: 'Plan',
     planHint:
-      'Plan wählen. Er füllt Monatsgebühr und Ablöse unten, und § 2 listet genau das auf, was der Plan enthält (direkt von der Preisseite).',
+      'Plan wählen. Er füllt die Monatsgebühr unten, und § 2 listet genau das auf, was der Plan enthält (direkt von der Preisseite).',
 
     pricingLabel: 'Vergütung',
-    buildFee: 'Einmalige Ablöse (≈ 18 Monate des Plans)',
     retainerFee: 'Monatliche Abo-Gebühr',
     retainerFeeHint:
-      'Automatisch aus dem gewählten Plan gefüllt (219 / 390 / 570 €). Deckt die Leistungen aus § 2 plus Hosting, Pflege, Updates und Support.',
+      'Automatisch aus dem gewählten Plan. Optionale einmalige Ablöse, um die Website ganz zu übernehmen: {eur} (≈ 18 Monate des Plans).',
     vatLabel: 'Umsatzsteuer-Regelung',
     vatKleinunternehmer: 'Kleinunternehmer (§ 19 UStG), keine Umsatzsteuer',
     vatRegular: 'Regelbesteuerung, 19 % MwSt auf jede Position',

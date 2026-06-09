@@ -183,23 +183,14 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
               <span class="form-step__title">{c.pricingLabel}</span>
             </legend>
             <div class="form-step__body space-y-5">
-              <div class="grid sm:grid-cols-2 gap-4">
-                <label class="block">
-                  <span class="form-label">{c.buildFee}</span>
-                  <div class="ag-input-currency">
-                    <span class="ag-input-currency__symbol" aria-hidden="true">€</span>
-                    <input type="number" name="price_build" min="0" step="0.01" placeholder="0,00" class="ag-input ag-input--currency tabular" inputmode="decimal" />
-                  </div>
-                </label>
-                <label class="block">
-                  <span class="form-label">{c.retainerFee}</span>
-                  <div class="ag-input-currency">
-                    <span class="ag-input-currency__symbol" aria-hidden="true">€</span>
-                    <input type="number" name="price_retainer" min="0" step="0.01" placeholder="0,00" class="ag-input ag-input--currency tabular" inputmode="decimal" />
-                  </div>
-                  <span class="form-hint">{c.retainerFeeHint}</span>
-                </label>
-              </div>
+              <label class="block sm:max-w-xs">
+                <span class="form-label">{c.retainerFee}</span>
+                <div class="ag-input-currency">
+                  <span class="ag-input-currency__symbol" aria-hidden="true">€</span>
+                  <input type="number" name="price_retainer" min="0" step="0.01" placeholder="0,00" class="ag-input ag-input--currency tabular" inputmode="decimal" />
+                </div>
+                <span class="form-hint out-retainer-hint">{c.retainerFeeHint}</span>
+              </label>
 
               <div>
                 <span class="form-label" id="vat-label">{c.vatLabel}</span>
@@ -687,14 +678,18 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
         noServicesEl.style.display = '';
       }
 
-      const build = parseFloat(fd.get('price_build') || '0');
       const retainer = parseFloat(fd.get('price_retainer') || '0');
+      // Ablöse = immer 18 Monatsgebühren (abgeleitet, kein Eingabefeld).
+      const build = retainer * buyoutMonths;
       const vatStatus = fd.get('vat_status') || 'kleinunternehmer';
 
       document.querySelector('.out-build-line').textContent =
         strings.s3BuildFeeLine.replace('{eur}', build > 0 ? eur(build) : '€, (keine Ablöse)');
       document.querySelector('.out-retainer-line').textContent =
         strings.s3RetainerLine.replace('{eur}', retainer > 0 ? eur(retainer) : '€, (keine Abo-Gebühr)');
+      // Ablöse als kleiner Hinweis unter dem Gebühren-Feld (kein Eingabefeld).
+      document.querySelector('.out-retainer-hint').textContent =
+        strings.retainerFeeHint.replace('{eur}', retainer > 0 ? eur(build) : '—');
 
       if (vatStatus === 'kleinunternehmer') {
         document.querySelector('.out-vat-line').textContent = strings.s3VatKleinLine;
@@ -717,7 +712,6 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
       if (!plan) return;
       if (plan.priceNum) {
         form.querySelector('[name=price_retainer]').value = String(plan.priceNum);
-        form.querySelector('[name=price_build]').value = String(plan.priceNum * buyoutMonths);
       }
     }
 
