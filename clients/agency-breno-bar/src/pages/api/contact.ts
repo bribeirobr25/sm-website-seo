@@ -142,15 +142,15 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Send notification to the studio inbox
     const sendResult = await resend.emails.send({
-      from: `breno-bar contact <${fromAddress}>`,
+      from: `BAR Agency contact <${fromAddress}>`,
       to: notifyTo,
       replyTo: email,
-      subject: `[breno-bar] New inquiry from ${name} (${locale})`,
+      subject: `[BAR Agency] New inquiry from ${name} (${locale})`,
       // IP intentionally NOT logged in the email body, DSGVO data-minimisation.
       // Rate-limit keeps the IP in server memory for `RATE_LIMIT_MS` only, never persisted.
       text: `Name:    ${name}\nEmail:   ${email}\nLocale:  ${locale}\n\nMessage:\n${message}`,
       html: `
-        <h2 style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0 0 16px;">New inquiry via breno-bar</h2>
+        <h2 style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0 0 16px;">New inquiry via BAR Agency</h2>
         <table style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; line-height: 1.6;" cellpadding="0" cellspacing="0">
           <tr><td style="color: #6e6e73; padding-right: 16px;">Name</td><td><strong>${escapeHtml(name)}</strong></td></tr>
           <tr><td style="color: #6e6e73; padding-right: 16px;">Email</td><td><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
@@ -179,10 +179,10 @@ export const POST: APIRoute = async ({ request }) => {
     // Optional auto-confirmation to the visitor
     try {
       await resend.emails.send({
-        from: `breno-bar <${fromAddress}>`,
+        from: `BAR Agency <${fromAddress}>`,
         to: email,
-        subject: 'We received your message, breno-bar',
-        text: `Hi ${name},\n\nThanks for reaching out. We received your message and will reply within one business day.\n\nIf you don't hear back, check your spam folder or write to ${notifyTo} directly.\n\n, breno-bar\nBerlin`,
+        subject: 'We received your message, BAR Agency',
+        text: `Hi ${name},\n\nThanks for reaching out. We received your message and will reply within one business day.\n\nIf you don't hear back, check your spam folder or write to ${notifyTo} directly.\n\n, BAR Agency\nBerlin`,
       });
     } catch (autoErr) {
       // Auto-confirmation failure is non-fatal, log it but still report success to the user

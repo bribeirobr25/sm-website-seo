@@ -90,10 +90,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     const resend = new Resend(apiKey);
     const sendResult = await resend.emails.send({
-      from: `breno-bar GBP check <${fromAddress}>`,
+      from: `BAR Agency GBP check <${fromAddress}>`,
       to: notifyTo,
       replyTo: email,
-      subject: `[breno-bar] GBP check request, ${business} (${locale})`,
+      subject: `[BAR Agency] GBP check request, ${business} (${locale})`,
       text: `Business: ${business}\nCity:     ${city}\nWebsite:  ${website}\nEmail:    ${email}\nLocale:   ${locale}`,
       html: `
         <h2 style="font-family: -apple-system, sans-serif; margin: 0 0 16px;">Google Business check request</h2>

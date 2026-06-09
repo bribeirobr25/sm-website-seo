@@ -43,12 +43,24 @@ const check = 'M20 6 9 17l-5-5';
         <p class="mt-1 text-xs text-text-muted">{tier.priceNote}</p>
       </div>
       <ul class="mt-7 space-y-3 list-none p-0 flex-1">
-        {tier.features.map((f) => (
-          <li class="flex items-start gap-2.5 text-sm text-text leading-relaxed">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-0.5" aria-hidden="true"><path d={check}></path></svg>
-            <span>{f}</span>
-          </li>
-        ))}
+        {tier.features.map((f) => {
+          const label = typeof f === 'string' ? f : f.label;
+          const note = typeof f === 'string' ? null : f.note;
+          return (
+            <li class="flex items-start gap-2.5 text-sm text-text leading-relaxed">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-0.5" aria-hidden="true"><path d={check}></path></svg>
+              <span>
+                {label}
+                {note && (
+                  <button type="button" class="info-tip" aria-label={note} aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                    <span class="info-tip__bubble" role="tooltip">{note}</span>
+                  </button>
+                )}
+              </span>
+            </li>
+          );
+        })}
       </ul>
       <a
         href={ctaHref}
@@ -64,3 +76,75 @@ const check = 'M20 6 9 17l-5-5';
     </div>
   ))}
 </div>
+
+<style>
+  .info-tip {
+    position: relative;
+    display: inline-flex;
+    vertical-align: -2px;
+    margin-left: 4px;
+    color: var(--color-text-subtle);
+    cursor: help;
+    background: none;
+    border: 0;
+    padding: 2px;
+  }
+  .info-tip:hover,
+  .info-tip:focus-visible {
+    color: var(--color-accent-deep);
+  }
+  .info-tip__bubble {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 220px;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.45;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.18);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease;
+    z-index: 30;
+    pointer-events: none;
+  }
+  .info-tip:hover .info-tip__bubble,
+  .info-tip:focus-within .info-tip__bubble,
+  .info-tip[aria-expanded='true'] .info-tip__bubble {
+    opacity: 1;
+    visibility: visible;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .info-tip__bubble {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // ⓘ tooltips: hover/focus via CSS; click/tap toggles for touch devices.
+  const tips = document.querySelectorAll('.info-tip');
+  tips.forEach((tip) => {
+    tip.addEventListener('click', (e) => {
+      e.preventDefault();
+      const open = tip.getAttribute('aria-expanded') === 'true';
+      tips.forEach((t) => t.setAttribute('aria-expanded', 'false'));
+      tip.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if (!(e.target as Element)?.closest?.('.info-tip')) {
+      tips.forEach((t) => t.setAttribute('aria-expanded', 'false'));
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') tips.forEach((t) => t.setAttribute('aria-expanded', 'false'));
+  });
+</script>

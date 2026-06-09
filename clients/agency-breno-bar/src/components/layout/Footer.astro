@@ -1,6 +1,6 @@
 ---
 /**
- * Footer, breno-bar agency.
+ * Footer, BAR Agency agency.
  * 4 columns at desktop, stacks on mobile. Apple-clean: thin border, generous spacing.
  * All copy locale-driven via SITE.i18n[locale].chrome.
  */
@@ -19,9 +19,9 @@ const prefix = LOCALE_PREFIX[locale];
 
 const navLinks = [
   { href: `${prefix}/services`, label: t.nav.services },
+  { href: `${prefix}/tools`, label: TOOLS[locale].hub.eyebrow },
   { href: `${prefix}/pricing`, label: FUNNEL[locale].ui.pricingNav },
   { href: `${prefix}/portfolio`, label: t.nav.portfolio },
-  { href: `${prefix}/tools`, label: TOOLS[locale].hub.eyebrow },
   { href: `${prefix}/about`, label: t.nav.about },
   { href: `${prefix}/contact`, label: t.nav.contact },
   // German-only local-SEO hub (Berlin-market landing pages).

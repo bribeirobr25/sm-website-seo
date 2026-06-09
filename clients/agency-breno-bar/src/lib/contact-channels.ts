@@ -32,9 +32,9 @@ export const CONTACT_CHANNELS = {
 } as const;
 
 const WA_PREFILL: Record<Locale, string> = {
-  en: "Hi breno-bar, I'd like to talk about a website.",
-  de: 'Hallo breno-bar, ich möchte über eine Website sprechen.',
-  'pt-br': 'Olá breno-bar, gostaria de falar sobre um site.',
+  en: "Hi BAR Agency, I'd like to talk about a website.",
+  de: 'Hallo BAR Agency, ich möchte über eine Website sprechen.',
+  'pt-br': 'Olá BAR Agency, gostaria de falar sobre um site.',
 };
 
 /** wa.me deep link with a locale-appropriate prefilled message. */

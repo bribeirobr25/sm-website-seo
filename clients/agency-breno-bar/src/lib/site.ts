@@ -24,8 +24,8 @@ export const LOCALES: Locale[] = ['en', 'de', 'pt-br'];
 
 export const SITE = {
   // Brand
-  name: 'breno-bar',
-  shortName: 'breno-bar',
+  name: 'BAR Agency',
+  shortName: 'BAR Agency',
   tagline: 'Websites that bring you customers.',
   founder: 'Breno Ribeiro',
   foundedYear: 2026,

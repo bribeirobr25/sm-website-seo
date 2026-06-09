@@ -1,9 +1,21 @@
-# breno-bar — per-client CLAUDE.md
+# BAR Agency — per-client CLAUDE.md
 
 **Status:** AGENCY-SELF marketing site. This is the agency's own studio website — not a paying-client demo.
 Live URL: https://agency-breno-bar.vercel.app (noindex until legal DRAFT items resolve).
+**Brand display name is "BAR Agency"** (rebranded 2026-06-09 from "breno-bar"). The folder slug (`clients/agency-breno-bar/`), the Vercel URL (`agency-breno-bar.vercel.app`), and the email (`hello@breno-bar.com`) keep the `breno-bar` form — those are infra/contact identifiers, not the display brand. `SITE.name`/`shortName` = "BAR Agency"; `SITE.legal.legalEntity` = "BAR Agency, Einzelunternehmer".
 
 **Inherits:** repo-root `CLAUDE.md` and every rule in `docs/design/`. No matching per-vertical template — the agency itself is `professional-services` with an Apple-inspired premium register that's deliberately distinct from every other demo built on the same library.
+
+## 2026-06-09 — rebrand + catalog/pricing/contract overhaul
+
+- **Rebrand → BAR Agency** across header logo, footer, titles, schema, email templates, WhatsApp prefills (domain/email/Vercel URL unchanged). New **favicon** ("BAR" on blackish-blue `#0c1a2b`, SVG + ico + apple-touch) and new **OG card** (`/img/og-default.png` — BAR Agency + tagline on blackish-blue; replaced the scaffold placeholder).
+- **Tagline** → "Websites that bring you customers." (was "Websites worth being proud of.").
+- **4-offering catalog** (Web Design · SEO and Local Listing · E-Commerce and Business Email · AI Solutions/Booking) on the home + `/services` overview. Only Web Design + SEO ship a `/services/[slug]` detail page; `google-business` + `social-media` are retired as standalone pages (kept in the type for portfolio tagging).
+- **Pricing** (`funnel.ts`): every plan is **bilingual DE+EN** with extra languages a **+€36/mo per-language** ⓘ-tooltip add-on, business email **+€12/mo per-mailbox** add-on; numeric content-update limits (10/20/40 per mo, no "unlimited"); e-commerce/booking/AI tiered in; WCAG (not ADA), GDPR framing. NO "account manager/same-day/team" (honest, solo-studio positioning). Tooltips: hover + tap/click, in `PricingTiers.astro`.
+- **Contract `/contract` is now plan-driven and reads from `/pricing` as the single source of truth.** § 2 mirrors the selected plan's FUNNEL feature list verbatim (incl. its "Everything in X, plus:" line); the old `SERVICE_SCOPES` mechanism + 4-checkbox Services step were deleted. The **draft/lawyer red banner was removed** per owner request (the "not lawyer-reviewed" caveat is therefore no longer on-document — still true). Phone field added; dates auto-fill (signature = today, start = +5 days); go-live removed; sticky toolbar fixed to `top-0`.
+- **Portfolio**: Eiscafé Bellini (gastronomy/gelateria) replaced myPlanny.
+- **`/tools`** added to the header nav (2nd, between Services and Pricing) + footer.
+- **About** page reworked to a "Why choose us" hero + 4-reason grid (EN/DE/PT-BR).
 
 ## Stack
 
@@ -34,8 +46,8 @@ EN at root · DE at `/de/...` · pt-BR at `/pt-br/...`:
 
 - `/` — Apple-style hero + stats strip (10 / 6 / 4) + 4-tile alternating-dark services + 3 featured portfolio + about teaser + dark-bg CTA
 - `/services` — overview of 4 services (alternating dark/light tiles)
-- `/services/[slug]` × 4 — Website · SEO · Google Business Profile · Social Media
-- `/portfolio` — 9-entry grid (6 internal demos + diBoaS + bible-tt + myPlanny)
+- `/services` overview — the 4-offering catalog (Web Design · SEO and Local Listing · E-Commerce and Business Email · AI Solutions/Booking). `/services/[slug]` detail pages exist only for **Web Design + SEO** (×2); `google-business`/`social-media` are retired as standalone pages (still in `ServiceSlug` for portfolio tagging).
+- `/portfolio` — 9-entry grid (6 internal demos + diBoaS + bible-tt + Eiscafé Bellini)
 - `/portfolio/[slug]` × 9 — case-study with hero screenshot + stack/vertical/services aside + 3 related
 - `/about` — workshop ethos (4 sections)
 - `/contact` — Resend-wired form + alternatives (email, LinkedIn, X)
@@ -66,15 +78,15 @@ Before flipping `noindex` to allow indexing:
 
 | Field | Location | Status |
 |---|---|---|
-| Berlin Anmeldung address (street + Bezirk + PLZ) | `src/lib/site.ts` `address.*` | DRAFT |
-| USt-IdNr (Finanzamt nach Anmeldung) | `src/lib/site.ts` `legal.taxId` | DRAFT |
+| Berlin Anmeldung address (street + Bezirk + PLZ) | `src/lib/site.ts` `address.*` | ✅ CONFIRMED 2026-06-09 — Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg |
+| USt-IdNr (Finanzamt nach Anmeldung) | `src/lib/site.ts` `legal.taxId` | ✅ RESOLVED 2026-06-09 — **Kleinunternehmer § 19 UStG** (no USt-IdNr; `legal.kleinunternehmer: true`; imprint VAT section auto-hidden, contract shows the Kleinunternehmer line) |
 | Domain — real `breno-bar.com` with MX + Resend verification | Vercel Domains + Resend dashboard | DRAFT |
 | Resend `RESEND_API_KEY` + `RESEND_FROM` env vars | Vercel project env vars | DRAFT (contact + gbp-check forms return 503 until set) |
 | **(funnel) Subscription prices** | `src/lib/funnel.ts` `pricing.tiers[].price` | ✅ CONFIRMED 2026-06-06 — €219/€390/€570 per month, no setup |
-| **(funnel) Lawyer to FINALIZE subscription legal docs** — the `/contract` + `/de/contract` template (`contract-strings.ts`) is **reworked to a DRAFT subscription version (v2.0-DRAFT)**: § 3 monthly + optional buy-out, § 4 cancel→offline, § 5 licence-not-transfer; page shows a printed red "DRAFT — NOT LAWYER-REVIEWED" banner · plus AGB · Datenschutz · buy-out contract | German lawyer | 🔴 REQUIRED before charging — DRAFT, not finalized legal text |
+| **(funnel) Lawyer to FINALIZE subscription legal docs** — the plan-driven `/contract` + `/de/contract` (`contract-strings.ts`, plain-language subscription clauses § 3 monthly + optional 18-month buy-out, § 4 cancel→offline, § 5 licence-not-transfer; § 2 reads the selected plan from `/pricing`) · plus AGB · Datenschutz · buy-out contract. NOTE: the on-document "DRAFT — not lawyer-reviewed" red banner was **removed 2026-06-09** per owner request, so the contract no longer self-warns — the legal text is still unreviewed. | German lawyer | 🔴 REQUIRED before charging — not finalized legal text |
 | **(funnel) Public promise numbers** (preview/load/response time) | `src/lib/funnel.ts` `promises.items` | DRAFT — confirm we commit to these publicly |
 | **(funnel) Real Google reviews** (replace example quotes) | `src/lib/funnel.ts` `reviews.items` | DRAFT — clearly labelled examples; never ship invented testimonials |
-| **(funnel) Micro-product price + scheduling/payment** | `src/lib/funnel.ts` `websiteCheck.priceLine` | DRAFT — €120 placeholder; no scheduling/payment tool wired |
+| **(funnel) Micro-product price + scheduling/payment** | `src/lib/funnel.ts` `websiteCheck.priceLine` | DRAFT — `priceLine` now **empty** (the "DRAFT, €120" placeholder was removed from the UI 2026-06-08; the `/website-check` price chip shows only the sub-line); no scheduling/payment tool wired |
 | **(F8) Real WhatsApp Business number + `visible` flip** | `src/lib/contact-channels.ts` | DRAFT — placeholder number, `visible: false` |
 | **(funnel) `PAGESPEED_API_KEY`** (optional, scan tool headroom) | Vercel project env vars | OPTIONAL — PSI works keyless at low quota |
 

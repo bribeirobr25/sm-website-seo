@@ -1,5 +1,5 @@
 /**
- * Schema.org JSON-LD generator, breno-bar agency.
+ * Schema.org JSON-LD generator, BAR Agency agency.
  *
  * Primary @type: ProfessionalService (most-specific fit per SEO.md §5, small
  * web agency providing services; ProfessionalService rolls up under

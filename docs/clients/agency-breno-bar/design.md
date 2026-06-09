@@ -1,4 +1,4 @@
-# breno-bar — design.md
+# BAR Agency — design.md
 
 **Project:** agency-self marketing site
 **Vertical:** professional-services (agency / studio)
@@ -109,9 +109,8 @@ Closest template: `docs/design/templates/professional-services.md` Archetype A.
 
 ## OG image
 
-Currently the scaffold `og-default.png` placeholder. **Pre-launch DRAFT** — needs:
-- 1200 × 630 custom OG card with "Websites worth being proud of." + breno-bar wordmark + Apple-near-white bg + Apple-blue accent
-- Optionally: per-locale OG variants (`og-de.png`, `og-pt-br.png`) with translated headline
+✅ **Done 2026-06-09:** `og-default.png` is now a 1200 × 630 BAR Agency card — "Websites that bring you customers." + "BAR Agency" wordmark + "WEB DESIGN · SEO · BERLIN" eyebrow on the blackish-blue (`#0c1a2b`) brand background with an Apple-blue accent bar (matches the new favicon). Replaced the scaffold placeholder.
+- Optionally (still open): per-locale OG variants (`og-de.png`, `og-pt-br.png`) with translated headline, or dynamic `@vercel/og` per-page cards.
 
 ## Accessibility verification (WCAG 2.2 AA)
 

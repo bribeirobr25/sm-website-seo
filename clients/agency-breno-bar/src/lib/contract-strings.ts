@@ -1,85 +1,25 @@
 /**
- * Contract template strings, locale-aware service scopes + clause text.
+ * Contract template strings, locale-aware clause text (EN + DE).
  *
  * Used by `src/pages/contract.astro` (EN) + `src/pages/de/contract.astro` (DE).
+ * § 2 (services) is filled at runtime from the selected /pricing plan's feature
+ * list (FUNNEL pricing tiers) — the single source of truth — so the contract can
+ * never drift from the pricing page.
  *
  * **LEGAL CAVEAT, NOT lawyer-reviewed.** Monthly-subscription model ("Website-Abo"):
  * § 3 = monthly fee + optional one-time buy-out (no build fee); § 4 = cancellation
  * takes the site offline (only content/data/domain handed over, not the build); § 5
- * = the website is LICENSED for the subscription term, not transferred. Rewritten in
- * plain language 2026-06-08 (statutes kept, moved into parentheses) plus a top-of-
- * document "In plain words" summary; legal substance unchanged. The page renders
- * `draftBanner` as a printed red warning. Before ANY use, a Berlin-licensed
- * Rechtsanwalt must finalize the German text: legal classification (Dienst-/
- * Mietvertrag), § 307 BGB AGB-Kontrolle, Widerrufsrecht for consumers, the § 5
- * licence + buy-out mechanics, and the AVV (Art. 28 GDPR) cross-reference.
+ * = the website is LICENSED for the subscription term, not transferred. Plain-language
+ * clauses (statutes in parentheses) + a top "In plain words" summary; legal substance
+ * unchanged. Before ANY use, a Berlin-licensed Rechtsanwalt must finalize the German
+ * text: legal classification (Dienst-/Mietvertrag), § 307 BGB AGB-Kontrolle,
+ * Widerrufsrecht for consumers, the § 5 licence + buy-out mechanics, and the AVV
+ * (Art. 28 GDPR) cross-reference.
  */
 
 export type LocaleEnDe = 'en' | 'de';
 
-export interface ServiceScope {
-  slug: 'website' | 'seo' | 'ecommerce' | 'ai';
-  name: string;
-  defaultScope: string;
-}
-
-export const SERVICE_SCOPES: Record<LocaleEnDe, ServiceScope[]> = {
-  en: [
-    {
-      slug: 'website',
-      name: 'Website subscription',
-      defaultScope:
-        "A custom, multi-page website built around the Client's brand, hosted and kept up to date by the Agency as part of the subscription. Up to 12 pages, in German and English (more languages on request). The domain is registered in the Client's name. Includes the cookie banner and the legal pages every site needs, written for the Client's business. Fast on mobile, accessible, and built to be found and to convert.",
-    },
-    {
-      slug: 'seo',
-      name: 'SEO and Local Listing',
-      defaultScope:
-        'Getting the Client found on Google, Google Maps, Apple Maps and the directories that matter, with the right keywords for the business and its neighbourhood. Includes setup, a clear monthly report with concrete next steps, a regular keyword review, and ongoing upkeep of listings and reviews. No bought links, no tricks.',
-    },
-    {
-      slug: 'ecommerce',
-      name: 'E-Commerce and Business Email',
-      defaultScope:
-        "An online store to sell the Client's products or services around the clock, with secure checkout, easy product management, and order notifications, plus a professional email address on the Client's own domain. The subscription covers hosting, security, and upkeep; payment-provider and mailbox fees are billed at cost or paid by the Client directly.",
-    },
-    {
-      slug: 'ai',
-      name: 'AI Solutions, Booking System and More',
-      defaultScope:
-        "Practical AI and automation fitted to the Client's business: a website chatbot, an online booking or appointment system, and time-saving automations, each agreed with the Client before it is built. The subscription covers hosting and upkeep; any third-party AI usage above the included allowance is billed at cost.",
-    },
-  ],
-  de: [
-    {
-      slug: 'website',
-      name: 'Website-Abo',
-      defaultScope:
-        'Eine individuelle, mehrseitige Website rund um die Marke des Auftraggebers, von der Agentur im Rahmen des Abos gehostet und aktuell gehalten. Bis zu 12 Seiten, auf Deutsch und Englisch (weitere Sprachen auf Anfrage). Die Domain wird auf den Namen des Auftraggebers registriert. Inklusive Cookie-Banner und der rechtlichen Pflichtseiten, auf das Unternehmen des Auftraggebers zugeschnitten. Schnell auf dem Handy, barrierearm und auf Sichtbarkeit ausgelegt.',
-    },
-    {
-      slug: 'seo',
-      name: 'SEO und lokale Einträge',
-      defaultScope:
-        'Der Auftraggeber wird auf Google, Google Maps, Apple Maps und in den relevanten Verzeichnissen gefunden, mit den passenden Suchbegriffen für das Geschäft und seinen Kiez. Inklusive Einrichtung, monatlichem Report mit konkreten nächsten Schritten, regelmäßiger Keyword-Review und laufender Pflege von Einträgen und Bewertungen. Keine gekauften Links, keine Tricks.',
-    },
-    {
-      slug: 'ecommerce',
-      name: 'Online-Shop und Business-E-Mail',
-      defaultScope:
-        'Ein Online-Shop, der die Produkte oder Leistungen des Auftraggebers rund um die Uhr verkauft, mit sicherem Checkout, einfacher Produktverwaltung und Bestellbenachrichtigungen, dazu eine professionelle E-Mail-Adresse auf der eigenen Domain. Das Abo deckt Hosting, Sicherheit und Pflege; Gebühren des Zahlungsanbieters und für das Postfach werden zum Selbstkostenpreis berechnet oder direkt vom Auftraggeber getragen.',
-    },
-    {
-      slug: 'ai',
-      name: 'KI-Lösungen, Buchungssystem und mehr',
-      defaultScope:
-        'Praktische KI und Automatisierung, passend zum Geschäft des Auftraggebers: ein Website-Chatbot, ein Online-Buchungs- bzw. Terminsystem und zeitsparende Automatisierungen, jeweils vor dem Bau mit dem Auftraggeber abgestimmt. Das Abo deckt Hosting und Pflege; Drittanbieter-KI-Nutzung über dem enthaltenen Kontingent wird zum Selbstkostenpreis berechnet.',
-    },
-  ],
-};
-
 export interface ContractStrings {
-  draftBanner: string;
   pageTitle: string;
   pageSubtitle: string;
   printButton: string;
@@ -103,10 +43,6 @@ export interface ContractStrings {
   planLabel: string;
   planHint: string;
 
-  servicesLabel: string;
-  servicesHint: string;
-  scopeEditableLabel: string;
-
   pricingLabel: string;
   buildFee: string;
   retainerFee: string;
@@ -118,8 +54,6 @@ export interface ContractStrings {
   datesLabel: string;
   signatureDate: string;
   startDate: string;
-  goLiveDate: string;
-  goLiveHint: string;
 
   // Contract body
   contractTitleH1: string;
@@ -139,18 +73,15 @@ export interface ContractStrings {
   s2Heading: string;
   s2Intro: string;
   s2NoServicesSelected: string;
-  s2ScopeIntroLabel: string;
   /** Template, replace `{plan}` / `{price}` with the selected plan name + price. */
   s2PlanLine: string;
 
   s3Heading: string;
   /** Template, replace `{eur}` with the formatted amount at render time. */
   s3BuildFeeLine: string;
-  s3BuildFeeSplit: string;
   /** Template, replace `{eur}` with the formatted retainer amount. */
   s3RetainerLine: string;
   s3PaymentTerms: string;
-  s3PaymentDefault: string;
   s3VatKleinLine: string;
   /** Template, replace `{net}` / `{vat}` / `{gross}` with formatted amounts. */
   s3VatRegularLine: string;
@@ -194,8 +125,6 @@ export interface ContractStrings {
 
 export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
   en: {
-    draftBanner:
-      '⚠ Draft, not yet lawyer-reviewed. This subscription agreement was prepared by the agency and should be checked by a Berlin-licensed lawyer before signing. Until then, please do not treat it as final. (This note prints on every copy.)',
     pageTitle: 'Website Subscription Agreement, fill, print, sign',
     pageSubtitle:
       "Type in the client details below. Output renders inline. Then Cmd/Ctrl+P → Save as PDF, or print A4 directly. A B2B website-subscription agreement (Website-Abo) with the agency's standard terms.",
@@ -220,12 +149,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     planLabel: 'Plan',
     planHint:
-      'Pick a plan. It ticks the included services and fills the monthly price and buy-out below; you can still adjust them.',
-
-    servicesLabel: 'Services',
-    servicesHint:
-      'Picked automatically from the plan. Tick or untick to adjust; the scope text under each is editable per deal.',
-    scopeEditableLabel: 'Scope (editable per deal):',
+      'Pick a plan. It fills the monthly fee and buy-out below, and § 2 lists exactly what that plan includes (straight from the pricing page).',
 
     pricingLabel: 'Pricing',
     buildFee: 'One-time buy-out (≈ 18 months of the plan)',
@@ -239,9 +163,6 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     datesLabel: 'Dates',
     signatureDate: 'Signature date',
     startDate: 'Project start',
-    goLiveDate: 'Expected go-live',
-    goLiveHint:
-      'For Website service only. SEO/GBP/Social do not have a "go-live", the retainer starts on the start date.',
 
     contractTitleH1: 'Website Subscription Agreement',
     contractSubtitle:
@@ -263,19 +184,15 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     s2Heading: '§ 2   Services',
     s2Intro: 'The Client is hiring the Agency for:',
     s2NoServicesSelected: '⚠ No plan selected. Return to the form and choose a plan.',
-    s2ScopeIntroLabel: 'Scope:',
-    s2PlanLine: 'Selected plan: {plan} ({price}), included services:',
+    s2PlanLine: 'Selected plan: {plan} ({price}). The subscription includes:',
 
     s3Heading: '§ 3   Compensation and Payment Terms',
     s3BuildFeeLine:
       'Optional one-time buy-out: {eur} net, equivalent to 18 months of the monthly fee. It is owed only if the Client chooses to take the website outright. Once it is paid, the Agency transfers to the Client the rights to the delivered website set out in § 5.',
-    s3BuildFeeSplit:
-      'Any buy-out is invoiced separately, due within 14 days; the § 5 rights pass only once it is paid in full.',
     s3RetainerLine:
       'Monthly fee: {eur} net, billed in advance on the 1st of each month, due within 14 days by SEPA transfer. It covers the § 2 services plus hosting, maintenance, security updates, and support, for as long as the subscription runs. There is no separate set-up or build fee.',
     s3PaymentTerms:
       'Late payment carries statutory interest (§ 288 BGB) plus a € 40 fee. The Agency may pause services on any invoice unpaid 14 days past its due date, until it is settled (see § 4).',
-    s3PaymentDefault: 'Late payment: statutory interest (§ 288 BGB) + € 40 fee.',
     s3VatKleinLine:
       'As a small business under § 19 UStG, the Agency charges no VAT. The amounts above are final.',
     s3VatRegularLine:
@@ -333,8 +250,6 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     footerNote: 'Website Subscription Agreement, draft (not lawyer-reviewed) · Page',
   },
   de: {
-    draftBanner:
-      '⚠ Entwurf, noch nicht anwaltlich geprüft. Dieser Abo-Vertrag wurde von der Agentur erstellt und sollte vor der Unterzeichnung von einer Berliner Anwaltskanzlei geprüft werden. Bitte bis dahin nicht als endgültig betrachten. (Dieser Hinweis wird auf jeder Kopie gedruckt.)',
     pageTitle: 'Website-Abo-Vertrag, ausfüllen, drucken, unterschreiben',
     pageSubtitle:
       'Mandantendaten unten eintragen. Die Ausgabe rendert sofort. Dann Cmd/Strg+P → als PDF speichern oder direkt A4 drucken. Ein B2B-Website-Abo-Vertrag mit den Standardbedingungen der Agentur.',
@@ -360,12 +275,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     planLabel: 'Plan',
     planHint:
-      'Plan wählen. Er kreuzt die enthaltenen Leistungen an und füllt Monatspreis und Ablöse unten aus; anpassen ist weiterhin möglich.',
-
-    servicesLabel: 'Leistungen',
-    servicesHint:
-      'Automatisch aus dem Plan gewählt. Zum Anpassen an- oder abwählen; der Leistungsumfang darunter ist pro Mandat bearbeitbar.',
-    scopeEditableLabel: 'Leistungsumfang (pro Mandat bearbeitbar):',
+      'Plan wählen. Er füllt Monatsgebühr und Ablöse unten, und § 2 listet genau das auf, was der Plan enthält (direkt von der Preisseite).',
 
     pricingLabel: 'Vergütung',
     buildFee: 'Einmalige Ablöse (≈ 18 Monate des Plans)',
@@ -379,9 +289,6 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     datesLabel: 'Termine',
     signatureDate: 'Unterzeichnungsdatum',
     startDate: 'Projektbeginn',
-    goLiveDate: 'Geplanter Go-Live',
-    goLiveHint:
-      'Nur für Website-Leistung. SEO/GBP/Social haben keinen "Go-Live", der Retainer beginnt am Projektbeginn.',
 
     contractTitleH1: 'Website-Abo-Vertrag',
     contractSubtitle:
@@ -403,19 +310,15 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     s2Heading: '§ 2   Leistungen',
     s2Intro: 'Der Mandant beauftragt die Agentur mit:',
     s2NoServicesSelected: '⚠ Kein Plan ausgewählt. Bitte oben im Formular einen Plan wählen.',
-    s2ScopeIntroLabel: 'Leistungsumfang:',
-    s2PlanLine: 'Gewählter Plan: {plan} ({price}), enthaltene Leistungen:',
+    s2PlanLine: 'Gewählter Plan: {plan} ({price}). Das Abo umfasst:',
 
     s3Heading: '§ 3   Vergütung und Zahlungsbedingungen',
     s3BuildFeeLine:
       'Optionale einmalige Ablöse: {eur} netto, entspricht 18 Monaten der Monatsgebühr. Nur geschuldet, wenn der Mandant die Website vollständig übernehmen möchte. Nach Zahlung überträgt die Agentur dem Mandanten die in § 5 genannten Rechte an der bereitgestellten Website.',
-    s3BuildFeeSplit:
-      'Eine Ablöse wird gesondert in Rechnung gestellt, zahlbar innerhalb von 14 Tagen; die Rechte nach § 5 gehen erst mit vollständiger Zahlung über.',
     s3RetainerLine:
       'Monatliche Gebühr: {eur} netto, im Voraus zum 1. jedes Monats abgerechnet, zahlbar innerhalb von 14 Tagen per SEPA-Überweisung. Sie deckt die Leistungen aus § 2 sowie Hosting, Pflege, Sicherheits-Updates und Support für die Laufzeit des Abos. Es fällt keine gesonderte Einrichtungs- oder Aufbaugebühr an.',
     s3PaymentTerms:
       'Bei Zahlungsverzug fallen gesetzliche Verzugszinsen (§ 288 BGB) sowie eine Mahnpauschale von € 40 an. Die Agentur darf ihre Leistungen aussetzen, wenn eine Rechnung mehr als 14 Tage nach Fälligkeit unbezahlt bleibt, bis zur Begleichung (siehe § 4).',
-    s3PaymentDefault: 'Verzug: gesetzliche Zinsen (§ 288 BGB) + € 40 Mahnpauschale.',
     s3VatKleinLine:
       'Als Kleinunternehmer nach § 19 UStG berechnet die Agentur keine Umsatzsteuer. Die oben genannten Beträge sind endgültig.',
     s3VatRegularLine:

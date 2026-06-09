@@ -43,7 +43,8 @@ export interface PackageTier {
   priceSuffix: string; // e.g. '/mo'
   priceNote: string; // e.g. 'No setup fee · cancel anytime'
   popular: boolean;
-  features: string[];
+  /** Plain bullet, or a bullet with an ⓘ tooltip note (e.g. add-on pricing). */
+  features: Array<string | { label: string; note: string }>;
   cta: string;
 }
 
@@ -171,8 +172,8 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           a: 'Most small-business sites go live within two to three weeks once we have your content. You see a working preview within the first week and we refine it together from there.',
         },
         {
-          q: 'Do you build in German, English, and Portuguese?',
-          a: 'Yes. We’re a trilingual studio. Most Berlin clients launch in German and English; Brazilian-community businesses add Portuguese. Translations are written by us, not run through a machine.',
+          q: 'Which languages do you build in?',
+          a: 'German and English come as standard on every plan. More languages, like Portuguese or Spanish, can be added for €36/mo each, written by us, not run through a machine.',
         },
         {
           q: 'Do I own my website?',
@@ -209,13 +210,21 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: false,
           cta: 'Start here',
           features: [
-            'One-page custom site',
-            'Mobile-first, fast, accessible',
+            'Custom one-page website, mobile-first & fast',
+            {
+              label: 'Bilingual: German + English',
+              note: 'More languages (e.g. Portuguese, Spanish) can be added for €36/mo each.',
+            },
+            {
+              label: '1 business email on your domain',
+              note: 'Extra mailboxes can be added for €12/mo each.',
+            },
             'Contact form to your inbox',
             'Domain, SSL & EU hosting included',
-            'Basic on-page SEO',
             'GDPR cookie banner + legal pages',
-            'Updates, backups & support included',
+            'Basic on-page SEO, WCAG 2.2 AA accessible',
+            '10 content updates / month',
+            'Backups, uptime monitoring & support',
           ],
         },
         {
@@ -228,13 +237,18 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: true,
           cta: 'Choose Growth',
           features: [
-            'Up to 5 custom pages',
-            'Bilingual (DE + EN)',
+            'Everything in Start, plus:',
+            'Up to 5 custom pages, premium design',
+            {
+              label: '3 business emails on your domain',
+              note: 'Extra mailboxes can be added for €12/mo each.',
+            },
             'Local SEO + schema markup',
-            'Google Business Profile setup',
-            'Contact form + spam protection',
-            'Monthly updates & backups',
-            'Analytics + Search Console',
+            'Google Business Profile: setup, posts & review replies',
+            'Simple online store or booking system',
+            '1 SEO article / month',
+            '20 content updates / month',
+            'Analytics, Search Console + monthly report',
           ],
         },
         {
@@ -247,13 +261,19 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: false,
           cta: 'Go Complete',
           features: [
-            'Everything in Growth',
-            'Trilingual (DE + EN + PT-BR)',
-            'Booking or simple e-commerce',
-            'Ongoing SEO + content help',
-            'Google Business management',
-            'Priority support',
-            'Quarterly performance review',
+            'Everything in Growth, plus:',
+            'Up to 12 pages',
+            {
+              label: '5 business emails on your domain',
+              note: 'Extra mailboxes can be added for €12/mo each.',
+            },
+            'Full online store or booking system',
+            'AI chatbot or automation',
+            'Ongoing SEO strategy + 2 articles / month',
+            'Google Business management (reviews, posts, Q&A)',
+            'Advanced analytics dashboard',
+            '40 content updates / month',
+            'Priority support + quarterly review',
           ],
         },
       ],
@@ -451,8 +471,8 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           a: 'Die meisten Seiten für kleine Unternehmen gehen innerhalb von zwei bis drei Wochen live, sobald wir deine Inhalte haben. In der ersten Woche siehst du eine funktionierende Vorschau, die wir gemeinsam verfeinern.',
         },
         {
-          q: 'Baut ihr auf Deutsch, Englisch und Portugiesisch?',
-          a: 'Ja. Wir sind ein dreisprachiges Studio. Die meisten Berliner Kund:innen starten auf Deutsch und Englisch; Unternehmen der brasilianischen Community ergänzen Portugiesisch. Übersetzungen schreiben wir selbst, nicht maschinell.',
+          q: 'In welchen Sprachen baut ihr?',
+          a: 'Deutsch und Englisch sind in jedem Plan Standard. Weitere Sprachen wie Portugiesisch oder Spanisch kommen für je 36 €/Mon. dazu, von uns geschrieben, nicht maschinell.',
         },
         {
           q: 'Gehört mir meine Website?',
@@ -489,13 +509,21 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: false,
           cta: 'Hier starten',
           features: [
-            'One-Page-Seite, individuell',
-            'Mobile-first, schnell, barrierefrei',
+            'Individuelle One-Page-Website, mobil-first & schnell',
+            {
+              label: 'Zweisprachig: Deutsch + Englisch',
+              note: 'Weitere Sprachen (z. B. Portugiesisch, Spanisch) für je 36 €/Mon.',
+            },
+            {
+              label: '1 Business-E-Mail auf deiner Domain',
+              note: 'Weitere Postfächer für je 12 €/Mon.',
+            },
             'Kontaktformular ins Postfach',
             'Domain, SSL & EU-Hosting inklusive',
-            'Basis-On-Page-SEO',
             'DSGVO-Cookie-Banner + Rechtstexte',
-            'Updates, Backups & Support inklusive',
+            'Basis-On-Page-SEO, WCAG 2.2 AA barrierearm',
+            '10 Inhaltsänderungen / Monat',
+            'Backups, Uptime-Monitoring & Support',
           ],
         },
         {
@@ -508,13 +536,18 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: true,
           cta: 'Wachstum wählen',
           features: [
-            'Bis zu 5 individuelle Seiten',
-            'Zweisprachig (DE + EN)',
+            'Alles aus Start, plus:',
+            'Bis zu 5 individuelle Seiten, Premium-Design',
+            {
+              label: '3 Business-E-Mails auf deiner Domain',
+              note: 'Weitere Postfächer für je 12 €/Mon.',
+            },
             'Lokales SEO + Schema-Markup',
-            'Google-Unternehmensprofil einrichten',
-            'Kontaktformular + Spam-Schutz',
-            'Monatliche Updates & Backups',
-            'Analytics + Search Console',
+            'Google-Unternehmensprofil: Einrichtung, Beiträge & Bewertungsantworten',
+            'Einfacher Online-Shop oder Buchungssystem',
+            '1 SEO-Artikel / Monat',
+            '20 Inhaltsänderungen / Monat',
+            'Analytics, Search Console + Monatsreport',
           ],
         },
         {
@@ -527,13 +560,19 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: false,
           cta: 'Komplett nehmen',
           features: [
-            'Alles aus Wachstum',
-            'Dreisprachig (DE + EN + PT-BR)',
-            'Buchung oder einfacher Shop',
-            'Laufendes SEO + Content-Hilfe',
-            'Google-Unternehmensprofil-Pflege',
-            'Priorisierter Support',
-            'Quartals-Performance-Review',
+            'Alles aus Wachstum, plus:',
+            'Bis zu 12 Seiten',
+            {
+              label: '5 Business-E-Mails auf deiner Domain',
+              note: 'Weitere Postfächer für je 12 €/Mon.',
+            },
+            'Vollständiger Online-Shop oder Buchungssystem',
+            'KI-Chatbot oder Automatisierung',
+            'Laufende SEO-Strategie + 2 Artikel / Monat',
+            'Google-Unternehmensprofil-Pflege (Bewertungen, Beiträge, Q&A)',
+            'Erweitertes Analytics-Dashboard',
+            '40 Inhaltsänderungen / Monat',
+            'Priorisierter Support + Quartals-Review',
           ],
         },
       ],
@@ -731,8 +770,8 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           a: 'A maioria dos sites de pequenos negócios entra no ar em duas a três semanas assim que temos seu conteúdo. Você vê uma prévia funcional na primeira semana e refinamos juntos a partir daí.',
         },
         {
-          q: 'Vocês criam em alemão, inglês e português?',
-          a: 'Sim. Somos um estúdio trilíngue. A maioria dos clientes de Berlim lança em alemão e inglês; negócios da comunidade brasileira acrescentam português. As traduções são escritas por nós, não por máquina.',
+          q: 'Em quais idiomas vocês criam?',
+          a: 'Alemão e inglês são padrão em todos os planos. Mais idiomas, como português ou espanhol, entram por 36 €/mês cada, escritos por nós, não por máquina.',
         },
         {
           q: 'O site é meu?',
@@ -769,13 +808,21 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: false,
           cta: 'Começar aqui',
           features: [
-            'Site de uma página, sob medida',
-            'Mobile-first, rápido, acessível',
+            'Site de uma página sob medida, mobile-first e rápido',
+            {
+              label: 'Bilíngue: alemão + inglês',
+              note: 'Mais idiomas (ex.: português, espanhol) por 36 €/mês cada.',
+            },
+            {
+              label: '1 e-mail profissional no seu domínio',
+              note: 'Caixas de e-mail adicionais por 12 €/mês cada.',
+            },
             'Formulário de contato para seu e-mail',
             'Domínio, SSL e hospedagem na UE inclusos',
-            'SEO on-page básico',
             'Banner de cookies GDPR + páginas legais',
-            'Atualizações, backups e suporte inclusos',
+            'SEO on-page básico, acessível (WCAG 2.2 AA)',
+            '10 alterações de conteúdo / mês',
+            'Backups, monitoramento de uptime e suporte',
           ],
         },
         {
@@ -788,13 +835,18 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: true,
           cta: 'Escolher Crescimento',
           features: [
-            'Até 5 páginas sob medida',
-            'Bilíngue (DE + EN)',
+            'Tudo do Início, mais:',
+            'Até 5 páginas sob medida, design premium',
+            {
+              label: '3 e-mails profissionais no seu domínio',
+              note: 'Caixas de e-mail adicionais por 12 €/mês cada.',
+            },
             'SEO local + marcação schema',
-            'Configuração do Perfil da Empresa no Google',
-            'Formulário + proteção anti-spam',
-            'Atualizações e backups mensais',
-            'Analytics + Search Console',
+            'Perfil da Empresa no Google: configuração, posts e respostas a avaliações',
+            'Loja online simples ou sistema de agendamento',
+            '1 artigo de SEO / mês',
+            '20 alterações de conteúdo / mês',
+            'Analytics, Search Console + relatório mensal',
           ],
         },
         {
@@ -807,13 +859,19 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
           popular: false,
           cta: 'Ir de Completo',
           features: [
-            'Tudo do Crescimento',
-            'Trilíngue (DE + EN + PT-BR)',
-            'Agendamento ou e-commerce simples',
-            'SEO contínuo + ajuda com conteúdo',
-            'Gestão do Perfil da Empresa no Google',
-            'Suporte prioritário',
-            'Revisão de desempenho trimestral',
+            'Tudo do Crescimento, mais:',
+            'Até 12 páginas',
+            {
+              label: '5 e-mails profissionais no seu domínio',
+              note: 'Caixas de e-mail adicionais por 12 €/mês cada.',
+            },
+            'Loja online completa ou sistema de agendamento',
+            'Chatbot de IA ou automação',
+            'Estratégia de SEO contínua + 2 artigos / mês',
+            'Gestão do Perfil da Empresa no Google (avaliações, posts, Q&A)',
+            'Dashboard avançado de analytics',
+            '40 alterações de conteúdo / mês',
+            'Suporte prioritário + revisão trimestral',
           ],
         },
       ],

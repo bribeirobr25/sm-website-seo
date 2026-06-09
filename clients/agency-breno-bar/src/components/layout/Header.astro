@@ -1,6 +1,7 @@
 ---
 import { FUNNEL } from '@/lib/funnel';
 import { LOCALES, LOCALE_PREFIX, type Locale, SITE } from '@/lib/site';
+import { TOOLS } from '@/lib/tools';
 
 interface Props {
   locale?: Locale;
@@ -14,6 +15,7 @@ const prefix = LOCALE_PREFIX[locale];
 
 const nav = [
   { href: `${prefix}/services`, label: t.nav.services },
+  { href: `${prefix}/tools`, label: TOOLS[locale].hub.eyebrow },
   { href: `${prefix}/pricing`, label: FUNNEL[locale].ui.pricingNav },
   { href: `${prefix}/portfolio`, label: t.nav.portfolio },
   { href: `${prefix}/about`, label: t.nav.about },

@@ -6,27 +6,25 @@
  * localStorage auto-save, 44 px touch targets, 15 px body floor on rendered doc).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { CONTRACT_STRINGS, SERVICE_SCOPES } from '@/lib/contract-strings';
+import { CONTRACT_STRINGS } from '@/lib/contract-strings';
 import { FUNNEL } from '@/lib/funnel';
 import { SITE } from '@/lib/site';
 
 const locale = 'de' as const;
 const c = CONTRACT_STRINGS[locale];
-const scopes = SERVICE_SCOPES[locale];
 
-// Subscription plans (match the /pricing page) + which contract services each includes.
+// The /pricing tiers are the SINGLE SOURCE OF TRUTH for what each plan includes.
+// §2 mirrors the selected plan's /pricing feature list exactly (incl. its
+// "Alles aus X, plus:" line), so the contract can never drift from pricing.
 const BUYOUT_MONTHS = 18;
-const PLAN_SERVICES: Record<string, string[]> = {
-  start: ['website'],
-  growth: ['website', 'seo'],
-  complete: ['website', 'seo', 'ecommerce'],
-};
+const featText = (f: string | { label: string; note: string }): string =>
+  typeof f === 'string' ? f : f.label;
 const plans = FUNNEL[locale].pricing.tiers.map((t) => ({
   id: t.id,
   name: t.name,
   priceLabel: `${t.price}${t.priceSuffix ?? ''}`,
   priceNum: Number(t.price.replace(/[^0-9.]/g, '')),
-  services: PLAN_SERVICES[t.id] ?? [],
+  features: t.features.map(featText),
 }));
 
 const agencyAddressLine = [
@@ -51,7 +49,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
   noindex={true}
 >
   <main id="main" class="bg-bg min-h-screen">
-    <div class="no-print sticky top-[64px] z-20 bg-bg/90 backdrop-blur-xl border-b border-border">
+    <div class="no-print sticky top-0 z-20 bg-bg/90 backdrop-blur-xl border-b border-border">
       <div class="container-page py-3 sm:py-4 flex items-center justify-between gap-3">
         <div class="min-w-0 flex-1">
           <p class="text-[10px] sm:text-xs tracking-[0.18em] uppercase text-text-muted font-medium">Intern</p>
@@ -182,31 +180,6 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
           <fieldset class="form-step">
             <legend class="form-step__legend">
               <span class="form-step__num" aria-hidden="true">3</span>
-              <span class="form-step__title">{c.servicesLabel}</span>
-            </legend>
-            <div class="form-step__body space-y-4">
-              <p class="text-sm text-text-muted leading-relaxed">{c.servicesHint}</p>
-
-              <div class="grid sm:grid-cols-2 gap-3">
-                {scopes.map((s) => (
-                  <div class="svc-card">
-                    <label class="svc-card__head">
-                      <input type="checkbox" name={`svc_${s.slug}`} class="svc-toggle h-5 w-5 accent-accent shrink-0" data-slug={s.slug} />
-                      <span class="svc-card__name">{s.name}</span>
-                    </label>
-                    <div class="svc-card__scope">
-                      <span class="form-label form-label--mini">{c.scopeEditableLabel}</span>
-                      <textarea name={`scope_${s.slug}`} rows="4" class="ag-input text-sm leading-relaxed">{s.defaultScope}</textarea>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </fieldset>
-
-          <fieldset class="form-step">
-            <legend class="form-step__legend">
-              <span class="form-step__num" aria-hidden="true">4</span>
               <span class="form-step__title">{c.pricingLabel}</span>
             </legend>
             <div class="form-step__body space-y-5">
@@ -246,7 +219,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
 
           <fieldset class="form-step">
             <legend class="form-step__legend">
-              <span class="form-step__num" aria-hidden="true">5</span>
+              <span class="form-step__num" aria-hidden="true">4</span>
               <span class="form-step__title">{c.datesLabel}</span>
             </legend>
             <div class="form-step__body">
@@ -318,9 +291,9 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
             <h2 class="contract-h2">{c.s2Heading}</h2>
             <p class="contract-p mb-3">{c.s2Intro}</p>
             <p class="out-plan-line contract-p mb-3" style="font-weight:600;display:none;"></p>
-            <div id="services-rendered" class="space-y-5 mt-4">
-              <p class="out-no-services contract-p italic text-text-muted">{c.s2NoServicesSelected}</p>
-            </div>
+            <ul id="services-rendered" class="contract-list">
+              <li class="out-no-services contract-p italic text-text-muted">{c.s2NoServicesSelected}</li>
+            </ul>
           </section>
 
           <section class="contract-clause">
@@ -605,7 +578,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
     .contract-doc article { background: white; }
   </style>
 
-  <script is:inline define:vars={{ locale, scopes: SERVICE_SCOPES[locale], strings: CONTRACT_STRINGS[locale], plans, buyoutMonths: BUYOUT_MONTHS }}>
+  <script is:inline define:vars={{ locale, strings: CONTRACT_STRINGS[locale], plans, buyoutMonths: BUYOUT_MONTHS }}>
     const form = document.getElementById('contract-form');
     const formPanel = document.getElementById('form-panel');
     const toggleBtn = document.getElementById('toggle-form-btn');
@@ -695,32 +668,23 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
       const planId = fd.get('plan');
       const plan = plans.find((p) => p.id === planId);
       const planLineEl = document.querySelector('.out-plan-line');
+      const container = document.getElementById('services-rendered');
+      const noServicesEl = container.querySelector('.out-no-services');
+      container.querySelectorAll('.feat-item').forEach((el) => el.remove());
       if (plan) {
         planLineEl.style.display = '';
         planLineEl.textContent = strings.s2PlanLine.replace('{plan}', plan.name).replace('{price}', plan.priceLabel);
+        noServicesEl.style.display = 'none';
+        // §2 wird direkt aus dem gewählten /pricing-Plan gefüllt — der Quelle der Wahrheit.
+        plan.features.forEach((feat) => {
+          const li = document.createElement('li');
+          li.className = 'feat-item';
+          li.textContent = feat;
+          container.appendChild(li);
+        });
       } else {
         planLineEl.style.display = 'none';
-      }
-
-      const selectedSlugs = scopes.filter((s) => fd.get('svc_' + s.slug) === 'on').map((s) => s.slug);
-      const container = document.getElementById('services-rendered');
-      const noServicesEl = container.querySelector('.out-no-services');
-      container.querySelectorAll('.svc-block').forEach((el) => el.remove());
-      if (!plan && selectedSlugs.length === 0) {
         noServicesEl.style.display = '';
-      } else {
-        noServicesEl.style.display = 'none';
-        selectedSlugs.forEach((slug, i) => {
-          const s = scopes.find((sc) => sc.slug === slug);
-          const scopeText = (fd.get('scope_' + slug) || s.defaultScope).toString();
-          const block = document.createElement('div');
-          block.className = 'svc-block';
-          block.innerHTML = `
-            <h3 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--color-text);margin:0 0 6px 0;">${i + 1}. ${s.name}</h3>
-            <p class="contract-p" style="margin:0;"><span style="font-weight:500;">${strings.s2ScopeIntroLabel}</span> ${scopeText.replace(/[<>]/g, '')}</p>
-          `;
-          container.appendChild(block);
-        });
       }
 
       const build = parseFloat(fd.get('price_build') || '0');
@@ -746,14 +710,11 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
         strings.s4Start.replace('{date}', dateNice(startDate)) + ' ' + strings.s4StartNote;
     }
 
-    // Plan-Auswahl kreuzt die enthaltenen Leistungen an und füllt Preis + Ablöse.
+    // Plan-Auswahl füllt Monatsgebühr + Ablöse; § 2 spiegelt die /pricing-Features
+    // des Plans (in render() gerendert).
     function applyPlan(planId) {
       const plan = plans.find((p) => p.id === planId);
       if (!plan) return;
-      scopes.forEach((s) => {
-        const cb = form.querySelector('[name=svc_' + s.slug + ']');
-        if (cb) cb.checked = plan.services.includes(s.slug);
-      });
       if (plan.priceNum) {
         form.querySelector('[name=price_retainer]').value = String(plan.priceNum);
         form.querySelector('[name=price_build]').value = String(plan.priceNum * buyoutMonths);

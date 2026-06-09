@@ -1,8 +1,8 @@
-# breno-bar — BRIEF
+# BAR Agency — BRIEF
 
-**Project:** agency-self marketing site
-**Status:** Demo-deployed at https://agency-breno-bar.vercel.app (noindex). Pre-production: legal DRAFT items + domain + Resend env vars pending, plus inbound-funnel DRAFT items (#7–#13 below).
-**Built:** 2026-05-27 · **Inbound-funnel sprint:** 2026-06-04 (see `docs/benchmark/_analysis.md`)
+**Project:** agency-self marketing site (display brand: **BAR Agency**; folder/URL/email keep the `breno-bar` form)
+**Status:** Demo-deployed at https://agency-breno-bar.vercel.app (noindex). Pre-production: domain + Resend env vars + lawyer sign-off pending (address + USt-IdNr now resolved — see DRAFT table).
+**Built:** 2026-05-27 · **Inbound-funnel sprint:** 2026-06-04 · **Rebrand + pricing/contract overhaul:** 2026-06-09 (see the per-client `CLAUDE.md` 2026-06-09 section)
 
 ## Owner / data controller
 
@@ -14,12 +14,14 @@
 
 ## Business positioning
 
-International-premium voice ("Websites worth being proud of."), Apple-inspired register. Three services for owner-led businesses:
+Voice "Websites that bring you customers." (was "Websites worth being proud of."), Apple-inspired register. **4-offering catalog** for owner-led businesses (rebranded 2026-06-09):
 
-1. **Website** — multilingual marketing site deployed on infrastructure the client controls
-2. **SEO** — local SEO with schema, Search Console, monthly retainer reports
-3. **Google Business Profile** — setup + monthly optimization
-4. **Social media** (optional) — light-touch IG + Facebook cadence
+1. **Web Design** — custom, mobile-first marketing site (detail page `/services/website`)
+2. **SEO and Local Listing** — Google/Maps/Apple Maps + directories (detail page `/services/seo`)
+3. **E-Commerce and Business Email** — online store + professional email (no detail page; tiered in plans)
+4. **AI Solutions, Booking System and More** — chatbot/automation/booking (no detail page; top-tier plan)
+
+Plans are **bilingual DE+EN** by default; extra languages are a **+€36/mo per-language** add-on, business email a **+€12/mo per-mailbox** add-on (both shown as ⓘ tooltips on `/pricing`). Custom software stays quote-per-project, not bundled. No "account manager / same-day / team" claims (honest solo-studio positioning).
 
 **Pricing (updated 2026-06-06):** the earlier "no pricing on site" stance was reversed by the inbound-funnel sprint, and the model was then pivoted from hybrid to a **pure-monthly subscription ("Website-Abo")**. `/pricing` publishes three owner-confirmed monthly plans — **Start €219 · Growth €390 · Complete €570 per month, NO setup fee** (plus VAT). The website is a **managed subscription, not a one-time handover**: the client owns their domain, content, and data (full export anytime); the build/design/code is licensed while subscribed; cancelling takes the site offline, with an **optional one-time buy-out** to own it outright. Ownership copy states this **honestly** — deliberately NOT iCreate's "you own everything" ambiguity, which in DE is UWG/§305c-§307 BGB risk (see `docs/benchmark/_analysis.md` + the 2026-06-06 decision below). Non-pricing CTAs still route to contact; free tools + the paid "website-check" micro-product are additional lead surfaces.
 
@@ -31,8 +33,8 @@ Berlin SMBs (primary) + Brazilian community in Berlin + Portugal owner-led busin
 
 | # | Item | Owner | Status |
 |---|---|---|---|
-| 1 | Berlin Anmeldung address (street + Bezirk + PLZ) | Founder | DRAFT — populate `src/lib/site.ts` `address.*` |
-| 2 | USt-IdNr from Finanzamt | Founder | DRAFT — populate `src/lib/site.ts` `legal.taxId` |
+| 1 | Berlin Anmeldung address (street + Bezirk + PLZ) | Founder | ✅ CONFIRMED 2026-06-09 — Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg (`site.ts` `address.*`) |
+| 2 | USt-IdNr from Finanzamt | Founder | ✅ RESOLVED 2026-06-09 — **Kleinunternehmer § 19 UStG** (no USt-IdNr; `site.ts` `legal.kleinunternehmer: true`) |
 | 3 | Real domain `breno-bar.com` purchase + Vercel domain attachment | Founder | DRAFT |
 | 4 | MX setup for `hello@breno-bar.com` → forward to gmail (Cloudflare Email Routing or similar) | Founder | DRAFT |
 | 5 | Resend domain verification + `RESEND_API_KEY` populated in Vercel env | Founder | DRAFT — endpoint returns 503 without |

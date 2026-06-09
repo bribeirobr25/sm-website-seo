@@ -1,5 +1,5 @@
 /**
- * Per-locale chrome prose for breno-bar.
+ * Per-locale chrome prose for BAR Agency.
  *
  * One single source for: home · services overview + 4 service detail · portfolio
  * (index + per-entry chrome) · about · contact · imprint · privacy.
@@ -20,7 +20,7 @@ import type { Locale } from './site';
 export interface ServiceStrings {
   name: string;
   shortTagline: string; // 1-line in the services overview card
-  /** Optional <title> override for the detail page. Falls back to `${name}, breno-bar`. */
+  /** Optional <title> override for the detail page. Falls back to `${name}, BAR Agency`. */
   seoTitle?: string;
   /** Optional meta description for the detail page. Falls back to `shortTagline`. */
   seoDescription?: string;
@@ -172,9 +172,9 @@ export interface PageStrings {
 export const PAGE_STRINGS: Record<Locale, PageStrings> = {
   en: {
     home: {
-      title: 'breno-bar · Websites that bring you customers',
+      title: 'BAR Agency · Websites that bring you customers',
       description:
-        'A Berlin web agency for owner-led businesses. Web design, local SEO and Google Maps listing, online stores, business email, and AI tools. English, German, Portuguese.',
+        'A Berlin web agency for owner-led businesses. Web design, local SEO and Google Maps listing, online stores, business email, and AI tools. German and English, more languages on request.',
       heroEyebrow: 'STUDIO · BERLIN',
       heroTitleLines: ['Websites that bring', 'you customers.'],
       heroSubtitle:
@@ -199,7 +199,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       aboutEyebrow: 'About',
       aboutHeading: 'A small studio. No upsell.',
       aboutBody: [
-        "breno-bar is one set of hands, in Berlin. A studio quiet enough to notice what your business actually does. Small enough that you'll always know who built your site.",
+        "BAR Agency is one set of hands, in Berlin. A studio quiet enough to notice what your business actually does. Small enough that you'll always know who built your site.",
         "We don't sell ad campaigns you can't sustain, dashboards you can't read, or growth that doesn't turn into customers. We build the room people walk into. That's the whole pitch.",
       ],
       aboutReadMore: 'Read the studio philosophy →',
@@ -212,7 +212,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Reply within one business day. No sales call. No decks. Just a one-paragraph answer.',
     },
     services: {
-      title: 'Web design, SEO, e-commerce and AI for Berlin businesses, breno-bar',
+      title: 'Web design, SEO, e-commerce and AI for Berlin businesses, BAR Agency',
       description:
         'Web design, local SEO and listings, e-commerce and business email, plus AI and booking tools for small Berlin businesses. Everything your business needs online, from one studio.',
       heroEyebrow: 'Services',
@@ -223,7 +223,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         website: {
           name: 'Web Design',
           shortTagline: 'Custom, mobile-friendly, turning visitors into new clients.',
-          seoTitle: 'Small business website design in Berlin, breno-bar',
+          seoTitle: 'Small business website design in Berlin, BAR Agency',
           seoDescription:
             'Multilingual websites for Berlin restaurants, cafés, salons, and trades. Fast on the worst U-Bahn signal. Live in 3 to 6 weeks. DSGVO and Impressum included.',
           heroEyebrow: 'Service · 01',
@@ -262,7 +262,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         seo: {
           name: 'SEO and Local Listing',
           shortTagline: 'Google, Google Maps, Apple Maps and more. Clients find you first.',
-          seoTitle: 'Local SEO for small Berlin businesses, breno-bar',
+          seoTitle: 'Local SEO for small Berlin businesses, BAR Agency',
           seoDescription:
             'Quiet, patient local SEO over 90 days. Schema, on-page, Search Console. For the bakery, the salon, the dentist, the plumber. One monthly note. No 12-tab dashboards.',
           heroEyebrow: 'Service · 02',
@@ -301,7 +301,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'The first half-second of every local search.',
-          seoTitle: 'Google Business Profile setup and management in Berlin, breno-bar',
+          seoTitle: 'Google Business Profile setup and management in Berlin, BAR Agency',
           seoDescription:
             'Verified ownership, geo-tagged photos, monthly posts, reviews answered within 48 hours. The listing that does the local-search heavy lifting.',
           heroEyebrow: 'Service · 03',
@@ -340,7 +340,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'social-media': {
           name: 'Social media',
           shortTagline: "Two posts a week, in your voice, that don't take your Tuesday.",
-          seoTitle: 'Instagram management for small Berlin businesses, breno-bar',
+          seoTitle: 'Instagram management for small Berlin businesses, BAR Agency',
           seoDescription:
             'Two posts a week, in your voice, drawn from your week. DMs answered on weekdays. No viral promises, no bought followers. Optional, not a retainer trap.',
           heroEyebrow: 'Service · 04 (optional)',
@@ -410,7 +410,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     portfolio: {
-      title: 'Selected work: Berlin web agency portfolio, breno-bar',
+      title: 'Selected work: Berlin web agency portfolio, BAR Agency',
       description:
         'Nine projects across restaurants, cafés, salons, studios, education, and legal. Multilingual, fast, DSGVO-ready. Each entry includes a live link and a short case study.',
       heroEyebrow: 'Portfolio',
@@ -423,11 +423,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       stackLabel: 'Type',
       servicesLabel: 'Services',
       verticalLabel: 'Vertical',
-      detailTitleSuffix: 'Portfolio, breno-bar',
+      detailTitleSuffix: 'Portfolio, BAR Agency',
       detailDescriptionPrefix: 'Case study:',
     },
     about: {
-      title: 'About the studio: Breno Ribeiro, web designer in Berlin, breno-bar',
+      title: 'About the studio: Breno Ribeiro, web designer in Berlin, BAR Agency',
       description:
         'A small Berlin studio building websites that bring owner-led businesses customers. Fair pricing, mobile-first, fast, and here after launch.',
       heroEyebrow: 'Why choose us',
@@ -438,7 +438,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroImageAlt:
         'A quiet Berlin street at dawn. Altbau buildings catching the first warm light, no traffic, no people.',
       intro:
-        'breno-bar is a small Berlin studio, one set of hands from the first sentence to launch. We know the practical work of building a site that earns its keep, in German, English, and other languages you need, and we keep the price within reach of an owner-run business. Everything stays in your name, on accounts you control.',
+        'BAR Agency is a small Berlin studio, one set of hands from the first sentence to launch. We know the practical work of building a site that earns its keep, in German, English, and other languages you need, and we keep the price within reach of an owner-run business. Everything stays in your name, on accounts you control.',
       sections: [
         {
           title: 'Fair, honest pricing',
@@ -460,7 +460,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       foundedNote: 'Founded 2026 by Breno Ribeiro in Berlin.',
     },
     contact: {
-      title: 'Contact, breno-bar',
+      title: 'Contact, BAR Agency',
       description: 'Start a conversation. Reply within one business day.',
       heroEyebrow: 'Contact',
       heroTitle: "Let's talk.",
@@ -489,8 +489,8 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Your message is sent via Resend (EU servers). We never share your data and we delete inquiries 12 months after the last reply.',
     },
     privacy: {
-      title: 'Privacy policy, breno-bar',
-      description: 'GDPR/DSGVO privacy policy for breno-bar. Operated from the EU.',
+      title: 'Privacy policy, BAR Agency',
+      description: 'GDPR/DSGVO privacy policy for BAR Agency. Operated from the EU.',
       headingSuffix: 'Privacy policy',
       lastUpdated: 'Last updated: May 27, 2026',
       sections: [
@@ -533,7 +533,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     imprint: {
-      title: 'Legal notice, breno-bar',
+      title: 'Legal notice, BAR Agency',
       description: 'Information required under § 5 TMG (German Telemedia Act).',
       headingSuffix: 'Legal notice',
       intro: 'Information required under § 5 TMG (German Telemedia Act).',
@@ -552,9 +552,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
   },
   de: {
     home: {
-      title: 'breno-bar · Webseiten, die dir Kund:innen bringen',
+      title: 'BAR Agency · Webseiten, die dir Kund:innen bringen',
       description:
-        'Berliner Webagentur für inhabergeführte Unternehmen. Webdesign, lokales SEO und Eintrag bei Google Maps und Apple Maps, Online-Shops, Business-E-Mail und KI-Tools. Englisch, Deutsch, Portugiesisch.',
+        'Berliner Webagentur für inhabergeführte Unternehmen. Webdesign, lokales SEO und Eintrag bei Google Maps und Apple Maps, Online-Shops, Business-E-Mail und KI-Tools. Deutsch und Englisch, weitere Sprachen auf Anfrage.',
       heroEyebrow: 'STUDIO · BERLIN',
       heroTitleLines: ['Webseiten, die dir', 'Kund:innen bringen.'],
       heroSubtitle:
@@ -579,7 +579,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       aboutEyebrow: 'Studio',
       aboutHeading: 'Ein kleines Studio. Kein Upsell.',
       aboutBody: [
-        'breno-bar ist ein Paar Hände, in Berlin. Ein Studio, leise genug, um zu sehen, was dein Geschäft wirklich tut. Klein genug, dass du immer weißt, wer deine Seite gebaut hat.',
+        'BAR Agency ist ein Paar Hände, in Berlin. Ein Studio, leise genug, um zu sehen, was dein Geschäft wirklich tut. Klein genug, dass du immer weißt, wer deine Seite gebaut hat.',
         'Wir verkaufen keine Werbekampagnen, die du nicht halten kannst, keine Dashboards, die du nicht liest, und kein Wachstum, das nicht zu Kund:innen wird. Wir bauen den Ort, an den die Leute kommen. Das ist das ganze Versprechen.',
       ],
       aboutReadMore: 'Studio-Philosophie lesen →',
@@ -592,7 +592,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Antwort innerhalb eines Werktags. Kein Verkaufsgespräch. Keine Folien. Nur eine Antwort in einem Absatz.',
     },
     services: {
-      title: 'Webdesign, SEO, Online-Shop und KI für Berliner Geschäfte, breno-bar',
+      title: 'Webdesign, SEO, Online-Shop und KI für Berliner Geschäfte, BAR Agency',
       description:
         'Webdesign, lokales SEO und Einträge, Online-Shop und Business-E-Mail sowie KI- und Buchungstools für kleine Berliner Geschäfte. Alles, was dein Geschäft online braucht, aus einem Studio.',
       heroEyebrow: 'Leistungen',
@@ -603,7 +603,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         website: {
           name: 'Webdesign',
           shortTagline: 'Individuell, mobil-optimiert, macht aus Besuchern neue Kund:innen.',
-          seoTitle: 'Webseite für kleine Unternehmen in Berlin, breno-bar',
+          seoTitle: 'Webseite für kleine Unternehmen in Berlin, BAR Agency',
           seoDescription:
             'Mehrsprachige Webseiten für Berliner Cafés, Restaurants, Salons und Handwerk. Schnell auch im schwächsten U-Bahn-Signal. In drei bis sechs Wochen online. DSGVO und Impressum inklusive.',
           heroEyebrow: 'Leistung · 01',
@@ -642,7 +642,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         seo: {
           name: 'SEO und lokale Einträge',
           shortTagline: 'Google, Google Maps, Apple Maps und mehr. Kund:innen finden dich zuerst.',
-          seoTitle: 'Lokales SEO für kleine Berliner Unternehmen, breno-bar',
+          seoTitle: 'Lokales SEO für kleine Berliner Unternehmen, BAR Agency',
           seoDescription:
             'Geduldiges, lokales SEO über 90 Tage. Schema, On-Page, Google Search Console. Für die Bäckerei, den Salon, die Praxis, den Handwerker. Eine Notiz im Monat. Keine zwölf Dashboard-Tabs.',
           heroEyebrow: 'Leistung · 02',
@@ -681,7 +681,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'Die erste halbe Sekunde jeder lokalen Suche.',
-          seoTitle: 'Google Unternehmensprofil einrichten und pflegen, Berlin, breno-bar',
+          seoTitle: 'Google Unternehmensprofil einrichten und pflegen, Berlin, BAR Agency',
           seoDescription:
             'Verifizierte Inhaberschaft, geo-getaggte Fotos, monatliche Beiträge, Rezensionen innerhalb von 48 Stunden beantwortet. Das Profil, das die lokale Sichtbarkeit übernimmt.',
           heroEyebrow: 'Leistung · 03',
@@ -721,7 +721,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           name: 'Social Media',
           shortTagline:
             'Zwei Beiträge pro Woche, in deiner Stimme, die dir den Dienstag nicht stehlen.',
-          seoTitle: 'Instagram-Betreuung für kleine Berliner Geschäfte, breno-bar',
+          seoTitle: 'Instagram-Betreuung für kleine Berliner Geschäfte, BAR Agency',
           seoDescription:
             'Zwei Posts pro Woche, in deiner Stimme, aus deiner Woche heraus. DMs werktags beantwortet. Keine viralen Versprechen, keine gekauften Follower.',
           heroEyebrow: 'Leistung · 04 (optional)',
@@ -795,7 +795,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     portfolio: {
-      title: 'Ausgewählte Arbeiten, Berliner Webagentur, breno-bar',
+      title: 'Ausgewählte Arbeiten, Berliner Webagentur, BAR Agency',
       description:
         'Neun Projekte aus Gastronomie, Beauty, Studio, Bildung und Recht. Mehrsprachig, schnell, DSGVO-konform. Jeder Eintrag mit Live-Link und kurzer Fallstudie.',
       heroEyebrow: 'Portfolio',
@@ -808,11 +808,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       stackLabel: 'Art',
       servicesLabel: 'Leistungen',
       verticalLabel: 'Branche',
-      detailTitleSuffix: 'Portfolio, breno-bar',
+      detailTitleSuffix: 'Portfolio, BAR Agency',
       detailDescriptionPrefix: 'Fallstudie:',
     },
     about: {
-      title: 'Über das Studio: Breno Ribeiro, Webdesigner in Berlin, breno-bar',
+      title: 'Über das Studio: Breno Ribeiro, Webdesigner in Berlin, BAR Agency',
       description:
         'Ein kleines Berliner Studio, das Webseiten baut, die inhabergeführten Geschäften Kund:innen bringen. Faire Preise, fürs Handy gebaut, schnell und auch nach dem Launch da.',
       heroEyebrow: 'Warum wir',
@@ -823,7 +823,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroImageAlt:
         'Eine ruhige Berliner Straße in der Dämmerung. Kahle Baumreihen, Altbauten im Hintergrund, der Fernsehturm in der Ferne, keine Menschen, kein Verkehr.',
       intro:
-        'breno-bar ist ein kleines Berliner Studio, ein Paar Hände vom ersten Satz bis zum Launch. Wir kennen die praktische Arbeit, eine Seite zu bauen, die sich lohnt, auf Deutsch, Englisch und weiteren Sprachen, die du brauchst, und wir halten den Preis im Rahmen für ein inhabergeführtes Geschäft. Alles bleibt auf deinen Namen, auf Konten, die du kontrollierst.',
+        'BAR Agency ist ein kleines Berliner Studio, ein Paar Hände vom ersten Satz bis zum Launch. Wir kennen die praktische Arbeit, eine Seite zu bauen, die sich lohnt, auf Deutsch, Englisch und weiteren Sprachen, die du brauchst, und wir halten den Preis im Rahmen für ein inhabergeführtes Geschäft. Alles bleibt auf deinen Namen, auf Konten, die du kontrollierst.',
       sections: [
         {
           title: 'Faire, ehrliche Preise',
@@ -845,7 +845,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       foundedNote: 'Gegründet 2026 von Breno Ribeiro in Berlin.',
     },
     contact: {
-      title: 'Kontakt, breno-bar',
+      title: 'Kontakt, BAR Agency',
       description: 'Starte ein Gespräch. Antwort innerhalb eines Werktags.',
       heroEyebrow: 'Kontakt',
       heroTitle: 'Reden wir.',
@@ -874,8 +874,8 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Deine Nachricht wird per Resend (EU-Server) versendet. Wir geben deine Daten nicht weiter und löschen Anfragen 12 Monate nach der letzten Antwort.',
     },
     privacy: {
-      title: 'Datenschutzerklärung, breno-bar',
-      description: 'DSGVO-konforme Datenschutzerklärung für breno-bar. Betrieben aus der EU.',
+      title: 'Datenschutzerklärung, BAR Agency',
+      description: 'DSGVO-konforme Datenschutzerklärung für BAR Agency. Betrieben aus der EU.',
       headingSuffix: 'Datenschutzerklärung',
       lastUpdated: 'Stand: 27. Mai 2026',
       sections: [
@@ -918,7 +918,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     imprint: {
-      title: 'Impressum, breno-bar',
+      title: 'Impressum, BAR Agency',
       description: 'Angaben gemäß § 5 TMG.',
       headingSuffix: 'Impressum',
       intro: 'Angaben gemäß § 5 TMG.',
@@ -937,9 +937,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
   },
   'pt-br': {
     home: {
-      title: 'breno-bar · Sites que trazem clientes para você',
+      title: 'BAR Agency · Sites que trazem clientes para você',
       description:
-        'Agência web em Berlim para negócios com dono presente. Web design, SEO local e perfil no Google Maps e Apple Maps, lojas online, e-mail profissional e ferramentas de IA. Em português, alemão e inglês.',
+        'Agência web em Berlim para negócios com dono presente. Web design, SEO local e perfil no Google Maps e Apple Maps, lojas online, e-mail profissional e ferramentas de IA. Em alemão e inglês, mais idiomas sob consulta.',
       heroEyebrow: 'ESTÚDIO · BERLIM',
       heroTitleLines: ['Sites que trazem', 'clientes para você.'],
       heroSubtitle:
@@ -964,7 +964,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       aboutEyebrow: 'Estúdio',
       aboutHeading: 'Um pequeno estúdio. Sem upsell.',
       aboutBody: [
-        'breno-bar é um par de mãos, em Berlim. Um estúdio tranquilo o bastante para perceber o que seu negócio realmente faz. Pequeno o bastante para você sempre saber quem construiu seu site.',
+        'BAR Agency é um par de mãos, em Berlim. Um estúdio tranquilo o bastante para perceber o que seu negócio realmente faz. Pequeno o bastante para você sempre saber quem construiu seu site.',
         'A gente não vende campanhas de anúncios que você não consegue sustentar, dashboards que você não consegue ler, ou crescimento que não vira cliente. A gente constrói o espaço onde as pessoas entram. É essa a proposta toda.',
       ],
       aboutReadMore: 'Ler a filosofia do estúdio →',
@@ -977,7 +977,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Resposta dentro de um dia útil. Sem call comercial. Sem deck. Só uma resposta de um parágrafo.',
     },
     services: {
-      title: 'Web design, SEO, e-commerce e IA para negócios em Berlim, breno-bar',
+      title: 'Web design, SEO, e-commerce e IA para negócios em Berlim, BAR Agency',
       description:
         'Web design, SEO local e presença em mapas, e-commerce e e-mail profissional, além de IA e sistema de agendamento para pequenos negócios em Berlim. Tudo que o seu negócio precisa online, de um só estúdio.',
       heroEyebrow: 'Serviços',
@@ -989,7 +989,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           name: 'Web Design',
           shortTagline:
             'Sob medida, adaptado ao celular, transformando visitantes em novos clientes.',
-          seoTitle: 'Site para pequenos negócios em Berlim, breno-bar',
+          seoTitle: 'Site para pequenos negócios em Berlim, BAR Agency',
           seoDescription:
             'Sites multilíngues para restaurantes, cafés, salões e oficinas em Berlim. Rápidos até no pior sinal de U-Bahn. No ar em 3 a 6 semanas.',
           heroEyebrow: 'Serviço · 01',
@@ -1029,7 +1029,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
           name: 'SEO e presença local',
           shortTagline:
             'Google, Google Maps, Apple Maps e mais. Os clientes encontram você primeiro.',
-          seoTitle: 'SEO local para pequenos negócios em Berlim, breno-bar',
+          seoTitle: 'SEO local para pequenos negócios em Berlim, BAR Agency',
           seoDescription:
             'SEO local paciente, ao longo de 90 dias. Schema, on-page, Google Search Console. Uma nota por mês, sem dashboards intermináveis.',
           heroEyebrow: 'Serviço · 02',
@@ -1068,7 +1068,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'google-business': {
           name: 'Google Business Profile',
           shortTagline: 'O primeiro meio-segundo de toda busca local.',
-          seoTitle: 'Configuração e gestão do perfil Google Empresa em Berlim, breno-bar',
+          seoTitle: 'Configuração e gestão do perfil Google Empresa em Berlim, BAR Agency',
           seoDescription:
             'Posse verificada, fotos geolocalizadas, posts mensais, avaliações respondidas em até 48 horas. O perfil que faz o trabalho pesado da busca local.',
           heroEyebrow: 'Serviço · 03',
@@ -1107,7 +1107,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'social-media': {
           name: 'Redes sociais',
           shortTagline: 'Dois posts por semana, na sua voz, que não roubam sua terça-feira.',
-          seoTitle: 'Gestão de Instagram para pequenos negócios em Berlim, breno-bar',
+          seoTitle: 'Gestão de Instagram para pequenos negócios em Berlim, BAR Agency',
           seoDescription:
             'Dois posts por semana, na sua voz, tirados da sua semana. DMs respondidas em dias úteis. Sem promessas de viralizar, sem seguidores comprados.',
           heroEyebrow: 'Serviço · 04 (opcional)',
@@ -1181,7 +1181,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     portfolio: {
-      title: 'Trabalhos selecionados: portfólio de web design em Berlim, breno-bar',
+      title: 'Trabalhos selecionados: portfólio de web design em Berlim, BAR Agency',
       description:
         'Nove projetos, de restaurantes a salões, estúdios, educação e direito. Multilíngues, rápidos, em conformidade com DSGVO. Cada item inclui um link ao vivo e um curto estudo de caso.',
       heroEyebrow: 'Portfólio',
@@ -1194,11 +1194,11 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       stackLabel: 'Tipo',
       servicesLabel: 'Serviços',
       verticalLabel: 'Segmento',
-      detailTitleSuffix: 'Portfólio, breno-bar',
+      detailTitleSuffix: 'Portfólio, BAR Agency',
       detailDescriptionPrefix: 'Estudo de caso:',
     },
     about: {
-      title: 'Sobre o estúdio: Breno Ribeiro, web designer em Berlim, breno-bar',
+      title: 'Sobre o estúdio: Breno Ribeiro, web designer em Berlim, BAR Agency',
       description:
         'Um pequeno estúdio berlinense que constrói sites que trazem clientes para negócios liderados pelo dono. Preço justo, feito para o celular, rápido e presente depois do lançamento.',
       heroEyebrow: 'Por que a gente',
@@ -1209,7 +1209,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       heroImageAlt:
         'Uma rua berlinense silenciosa no amanhecer. Árvores sem folhas, prédios Altbau ao fundo, a Fernsehturm ao longe, sem pessoas, sem trânsito.',
       intro:
-        'A breno-bar é um pequeno estúdio em Berlim, um par de mãos do primeiro papo até o lançamento. A gente conhece o trabalho prático de construir um site que se paga, em alemão, inglês e outros idiomas que você precisar, e mantém o preço ao alcance de um negócio liderado pelo dono. Tudo fica no seu nome, em contas que você controla.',
+        'A BAR Agency é um pequeno estúdio em Berlim, um par de mãos do primeiro papo até o lançamento. A gente conhece o trabalho prático de construir um site que se paga, em alemão, inglês e outros idiomas que você precisar, e mantém o preço ao alcance de um negócio liderado pelo dono. Tudo fica no seu nome, em contas que você controla.',
       sections: [
         {
           title: 'Preço justo e honesto',
@@ -1231,7 +1231,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       foundedNote: 'Fundado em 2026 por Breno Ribeiro em Berlim.',
     },
     contact: {
-      title: 'Contato, breno-bar',
+      title: 'Contato, BAR Agency',
       description: 'Comece uma conversa. Resposta dentro de um dia útil.',
       heroEyebrow: 'Contato',
       heroTitle: 'Vamos conversar.',
@@ -1260,9 +1260,9 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
         'Sua mensagem é enviada via Resend (servidores na UE). Nunca compartilhamos seus dados e deletamos solicitações 12 meses após a última resposta.',
     },
     privacy: {
-      title: 'Política de privacidade, breno-bar',
+      title: 'Política de privacidade, BAR Agency',
       description:
-        'Política de privacidade conforme o GDPR/DSGVO da breno-bar. Operado a partir da UE.',
+        'Política de privacidade conforme o GDPR/DSGVO da BAR Agency. Operado a partir da UE.',
       headingSuffix: 'Política de privacidade',
       lastUpdated: 'Atualizada em: 27 de maio de 2026',
       sections: [
@@ -1305,7 +1305,7 @@ export const PAGE_STRINGS: Record<Locale, PageStrings> = {
       ],
     },
     imprint: {
-      title: 'Informações legais, breno-bar',
+      title: 'Informações legais, BAR Agency',
       description: 'Informações obrigatórias conforme § 5 TMG (lei alemã).',
       headingSuffix: 'Informações legais',
       intro: 'Informações obrigatórias conforme § 5 TMG (Telemediengesetz alemão).',
