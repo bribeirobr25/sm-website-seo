@@ -86,6 +86,16 @@ export const SITE = {
     ],
   },
 
+  // Payment details, shown in the /contract § 3 (receive-only IBAN + PayPal).
+  payment: {
+    receiver: 'Breno de Azevedo Ribeiro',
+    iban: 'DE84 1001 0178 5276 1098 68',
+    bic: 'REVODEB2',
+    bankName: 'Revolut Bank UAB, Zweigniederlassung Deutschland',
+    bankAddress: 'FORA Linden Palais, Unter den Linden 40, 10117 Berlin, Germany',
+    paypal: 'breno.ribeirobr@gmail.com',
+  },
+
   // Social, confirmed from user
   social: {
     linkedin: 'https://www.linkedin.com/in/bribeirobr/',

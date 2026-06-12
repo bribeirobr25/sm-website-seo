@@ -310,6 +310,12 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
               <li>{c.s3PaymentTerms}</li>
               <li class="out-vat-line">, </li>
             </ul>
+            <div class="contract-payment" style="margin-top:10px;">
+              <p class="contract-p" style="font-weight:600;margin:0 0 2px 0;">{c.s3PaymentHeading}</p>
+              <p class="contract-p" style="margin:0;">{c.s3PaymentReceiver}: {SITE.payment.receiver}</p>
+              <p class="contract-p" style="margin:0;">{c.s3PaymentBank}: IBAN {SITE.payment.iban} · BIC {SITE.payment.bic} · {SITE.payment.bankName}, {SITE.payment.bankAddress}</p>
+              <p class="contract-p" style="margin:0;">PayPal: {SITE.payment.paypal}</p>
+            </div>
           </section>
 
           <section class="contract-clause">

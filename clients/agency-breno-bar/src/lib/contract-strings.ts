@@ -82,6 +82,10 @@ export interface ContractStrings {
   /** Template, replace `{eur}` with the formatted retainer amount. */
   s3RetainerLine: string;
   s3PaymentTerms: string;
+  // Payment-details block (values come from SITE.payment).
+  s3PaymentHeading: string;
+  s3PaymentReceiver: string;
+  s3PaymentBank: string;
   s3VatKleinLine: string;
   /** Template, replace `{net}` / `{vat}` / `{gross}` with formatted amounts. */
   s3VatRegularLine: string;
@@ -174,7 +178,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     plainSummaryLabel: 'In plain words',
     plainSummary:
-      'You pay one monthly fee; we design, build, host, and look after your website and the services in § 2. You own your content, your data, and your domain. Either of us can stop with 14 days’ notice to the end of a month. If you ever want to own the website outright, there is an optional one-time buy-out (§ 3). The formal terms below say all of this precisely; if anything reads unclear, ask before signing.',
+      'You pay one monthly fee; we design, build, host, and look after your website and the services in § 2. You own your content, your data, and your domain. Your billing month runs from your start date (not a fixed calendar date), and either of us can stop with 14 days’ notice to the end of a billing month. If you ever want to own the website outright, there is an optional one-time buy-out (§ 3). The formal terms below say all of this precisely; if anything reads unclear, ask before signing.',
 
     s1Heading: '§ 1   Subject of the Agreement',
     s1Body:
@@ -189,19 +193,22 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     s3BuildFeeLine:
       'Optional one-time buy-out: {eur} net, equivalent to 18 months of the monthly fee. It is owed only if the Client chooses to take the website outright. Once it is paid, the Agency transfers to the Client the rights to the delivered website set out in § 5.',
     s3RetainerLine:
-      'Monthly fee: {eur} net, billed in advance on the 1st of each month, due within 14 days by SEPA transfer. It covers the § 2 services plus hosting, maintenance, security updates, and support, for as long as the subscription runs. There is no separate set-up or build fee.',
+      'Monthly fee: {eur} net, billed one month in advance, the first on the start date (§ 4) and then on the same day of each following month (or the last day of the month where that day does not exist), due within 14 days by bank transfer or PayPal. It covers the § 2 services plus hosting, maintenance, security updates, and support, for as long as the subscription runs. There is no separate set-up or build fee.',
     s3PaymentTerms:
       'Late payment carries statutory interest (§ 288 BGB) plus a € 40 fee. The Agency may pause services on any invoice unpaid 14 days past its due date, until it is settled (see § 4).',
+    s3PaymentHeading: 'Payment to:',
+    s3PaymentReceiver: 'Receiver',
+    s3PaymentBank: 'Bank transfer',
     s3VatKleinLine:
       'As a small business under § 19 UStG, the Agency charges no VAT. The amounts above are final.',
     s3VatRegularLine:
       'Per month: {net} net + 19 % VAT {vat} = {gross} gross. VAT is shown separately on each invoice; any buy-out (§ 3) is invoiced with VAT separately.',
 
     s4Heading: '§ 4   Term and Termination',
-    s4Start: 'This Agreement starts on {date}.',
+    s4Start: 'This Agreement starts on {date} (the start date).',
     s4StartNote: 'Your project will be started within 3 business days.',
     s4MinimumTerm:
-      'The subscription is monthly, with no minimum term. Either Party may cancel in text form (§ 126b BGB) with 14 days’ notice to the end of any calendar month.',
+      'The subscription has no minimum term and runs in billing months anchored to the start date above (so the billing day matches the start date, not a fixed calendar date). Either Party may cancel in text form (§ 126b BGB) with 14 days’ notice to the end of a billing month.',
     s4Notice:
       'Notice must be in text form (§ 126b BGB); email is enough, sent to the email on the cover page.',
     s4ImmediateTermination:
@@ -299,7 +306,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
 
     plainSummaryLabel: 'In einfachen Worten',
     plainSummary:
-      'Du zahlst eine monatliche Gebühr; wir gestalten, bauen, hosten und betreuen deine Website und die Leistungen aus § 2. Deine Inhalte, deine Daten und deine Domain gehören dir. Beide Seiten können mit 14 Tagen Frist zum Monatsende kündigen. Wenn du die Website irgendwann ganz besitzen möchtest, gibt es eine optionale einmalige Ablöse (§ 3). Die formalen Klauseln unten regeln all das genau; wenn etwas unklar ist, frag vor der Unterschrift nach.',
+      'Du zahlst eine monatliche Gebühr; wir gestalten, bauen, hosten und betreuen deine Website und die Leistungen aus § 2. Deine Inhalte, deine Daten und deine Domain gehören dir. Dein Abrechnungsmonat richtet sich nach deinem Projektbeginn (nicht nach einem festen Kalendertag), und beide Seiten können mit 14 Tagen Frist zum Ende eines Abrechnungsmonats kündigen. Wenn du die Website irgendwann ganz besitzen möchtest, gibt es eine optionale einmalige Ablöse (§ 3). Die formalen Klauseln unten regeln all das genau; wenn etwas unklar ist, frag vor der Unterschrift nach.',
 
     s1Heading: '§ 1   Vertragsgegenstand',
     s1Body:
@@ -314,19 +321,22 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     s3BuildFeeLine:
       'Optionale einmalige Ablöse: {eur} netto, entspricht 18 Monaten der Monatsgebühr. Nur geschuldet, wenn der Mandant die Website vollständig übernehmen möchte. Nach Zahlung überträgt die Agentur dem Mandanten die in § 5 genannten Rechte an der bereitgestellten Website.',
     s3RetainerLine:
-      'Monatliche Gebühr: {eur} netto, im Voraus zum 1. jedes Monats abgerechnet, zahlbar innerhalb von 14 Tagen per SEPA-Überweisung. Sie deckt die Leistungen aus § 2 sowie Hosting, Pflege, Sicherheits-Updates und Support für die Laufzeit des Abos. Es fällt keine gesonderte Einrichtungs- oder Aufbaugebühr an.',
+      'Monatliche Gebühr: {eur} netto, einen Monat im Voraus abgerechnet, erstmals zum Projektbeginn (§ 4) und danach jeweils am selben Tag jedes Folgemonats (bzw. am letzten Tag des Monats, falls dieser Tag fehlt), zahlbar innerhalb von 14 Tagen per Banküberweisung oder PayPal. Sie deckt die Leistungen aus § 2 sowie Hosting, Pflege, Sicherheits-Updates und Support für die Laufzeit des Abos. Es fällt keine gesonderte Einrichtungs- oder Aufbaugebühr an.',
     s3PaymentTerms:
       'Bei Zahlungsverzug fallen gesetzliche Verzugszinsen (§ 288 BGB) sowie eine Mahnpauschale von € 40 an. Die Agentur darf ihre Leistungen aussetzen, wenn eine Rechnung mehr als 14 Tage nach Fälligkeit unbezahlt bleibt, bis zur Begleichung (siehe § 4).',
+    s3PaymentHeading: 'Zahlung an:',
+    s3PaymentReceiver: 'Empfänger',
+    s3PaymentBank: 'Banküberweisung',
     s3VatKleinLine:
       'Als Kleinunternehmer nach § 19 UStG berechnet die Agentur keine Umsatzsteuer. Die oben genannten Beträge sind endgültig.',
     s3VatRegularLine:
       'Pro Monat: {net} netto + 19 % USt {vat} = {gross} brutto. Die USt wird auf jeder Rechnung separat ausgewiesen; eine etwaige Ablöse (§ 3) wird mit USt gesondert berechnet.',
 
     s4Heading: '§ 4   Laufzeit und Kündigung',
-    s4Start: 'Dieser Vertrag beginnt am {date}.',
+    s4Start: 'Dieser Vertrag beginnt am {date} (der Projektbeginn).',
     s4StartNote: 'Dein Projekt startet innerhalb von 3 Werktagen.',
     s4MinimumTerm:
-      'Das Abo läuft monatlich, ohne Mindestlaufzeit. Beide Parteien können in Textform (§ 126b BGB) mit einer Frist von 14 Tagen zum Ende eines jeden Kalendermonats kündigen.',
+      'Das Abo hat keine Mindestlaufzeit und läuft in Abrechnungsmonaten, die am oben genannten Projektbeginn ausgerichtet sind (der Abrechnungstag entspricht also dem Projektbeginn, nicht einem festen Kalendertag). Beide Parteien können in Textform (§ 126b BGB) mit einer Frist von 14 Tagen zum Ende eines Abrechnungsmonats kündigen.',
     s4Notice:
       'Die Kündigung erfolgt in Textform (§ 126b BGB); E-Mail genügt, an die auf der Titelseite genannte Adresse.',
     s4ImmediateTermination:

@@ -1,8 +1,8 @@
 # SEO Production Cutover, Keyword Audit, Schema Enhancements
 
-> **Status:** pending real domain (`breno-bar.com` or equivalent), Anmeldung address, Finanzamt USt-IdNr.
+> **Status (updated 2026-06-09):** pending real domain (`breno-bar.com` or equivalent) + Resend production key + lawyer sign-off. ✅ **Resolved 2026-06-09:** Anmeldung address (Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg), VAT status (**Kleinunternehmer § 19 UStG** — no USt-IdNr; imprint VAT line auto-hidden), and the branded OG image (§1.5). Brand display name is now **BAR Agency** (folder/URL/email keep `breno-bar`).
 > **Date drafted:** 2026-05-30. **Last code change applied:** 2026-05-30 (per-page meta refinements + trilingual schema landed in production deploy at 11:21 local).
-> **Single-source checklist** for the moment breno-bar moves off the `vercel.app` subdomain. Plus per-locale keyword targets, plus proposed `schema.ts` enhancements for trilingual signal. Read top-to-bottom in order.
+> **Single-source checklist** for the moment the site moves off the `vercel.app` subdomain. Plus per-locale keyword targets, plus proposed `schema.ts` enhancements for trilingual signal. Read top-to-bottom in order.
 
 ---
 
@@ -14,9 +14,9 @@ Status legend: `[DONE]` shipped and live · `[PENDING DOMAIN]` waiting for `bren
 |---|---|---|
 | §1.1 | Domain anchor (`SITE.url`, `astro.config.ts:site`) | `[PENDING DOMAIN]` |
 | §1.2 | `noindex` default flip + `robots.txt` flip + `Sitemap:` line | `[PENDING DOMAIN]` |
-| §1.3 | DRAFT items (street, PLZ, USt-IdNr) | `[PENDING OWNER]` (Anmeldung + Finanzamt) |
+| §1.3 | DRAFT items (street, PLZ, USt-IdNr) | `[DONE 2026-06-09]` — address confirmed (Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg); **Kleinunternehmer § 19 UStG** (no USt-IdNr) |
 | §1.4 | Real GA4 ID + Search Console verification + sitemap submission | `[PENDING DOMAIN]` |
-| §1.5 | Branded OG image + 3-aspect schema photography | `[PENDING OWNER]` (asset creation) |
+| §1.5 | Branded OG image + 3-aspect schema photography | OG image `[DONE 2026-06-09]` (BAR Agency card); 3-aspect schema photography still `[PENDING OWNER]` |
 | §1.6 | Resend domain verification + production API key | `[PENDING DOMAIN]` |
 | §1.7 | Sentry production project DSN | `[PENDING OWNER]` (verify Vercel env) |
 | §1.8 | GBP listing claim with production URL | `[PENDING DOMAIN]` |
@@ -187,7 +187,7 @@ For each page: **primary intent**, **per-locale target queries** (highest-priori
 | PT-BR | "agência de marketing digital berlim" | very low | low |
 | PT-BR | "criar site em berlim" | very low | low |
 
-**Current meta.**
+**Meta (2026-05-30 snapshot — superseded.** Rebranded to **BAR Agency** + tagline "Websites that bring you customers." + 4-offering catalog on 2026-06-09; `src/lib/page-strings.ts` is the live source of truth.)
 ```
 EN  title: 'breno-bar — Websites worth being proud of.'
 EN  desc:  'A small Berlin studio building websites for owner-led businesses. Website, SEO, Google Business Profile. Trilingual delivery.'

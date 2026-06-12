@@ -1,6 +1,6 @@
 # agency-breno-bar — the agency's own marketing site
 
-**This is a live client build, not a scaffold.** It's `breno-bar`'s own studio website, built from `scaffolds/astro-tier2/`. Tier 2 · Astro 6 + Tailwind v4 + Sentry · trilingual EN/DE/pt-BR · Apple-inspired register.
+**This is a live client build, not a scaffold.** It's the agency's own studio website (display brand **BAR Agency**; the folder slug, Vercel URL, and email keep the `breno-bar` form), built from `scaffolds/astro-tier2/`. Tier 2 · Astro 6 + Tailwind v4 + Sentry · trilingual EN/DE/pt-BR · Apple-inspired register.
 
 **Live (noindex):** https://agency-breno-bar.vercel.app
 
@@ -19,7 +19,7 @@ Requires Node ≥ 22.12 and pnpm. The two free-tool endpoints + the contact form
 
 ## Routes
 
-- **Marketing core** (×3 locales — EN at root, `/de`, `/pt-br`): `/` · `/services` + `/services/[slug]` · `/portfolio` + `/portfolio/[slug]` · `/about` · `/contact` · `/privacy` · `/imprint`
+- **Marketing core** (×3 locales — EN at root, `/de`, `/pt-br`): `/` · `/services` (4-offering overview) + `/services/[slug]` (detail pages for Web Design + SEO only) · `/portfolio` + `/portfolio/[slug]` · `/about` · `/contact` · `/privacy` · `/imprint` · `/contract` (internal, unlinked + noindex)
 - **Inbound funnel** (added 2026-06-04 — see `docs/benchmark/_analysis.md`): `/pricing` · `/website-check` · `/tools` + `/tools/website-scan` + `/tools/gbp-check` (×3 locales)
 - **Local-SEO pages** (German only): `/webdesign-berlin` + 24 `/webdesign-berlin/[slug]` (4 verticals × 6 Bezirke)
 - **SSR endpoints:** `/api/contact` · `/api/site-scan` · `/api/gbp-check`
@@ -28,7 +28,7 @@ Requires Node ≥ 22.12 and pnpm. The two free-tool endpoints + the contact form
 
 The real per-client docs (NOT this code-folder README) are the source of truth:
 
-- **`docs/clients/agency-breno-bar/CLAUDE.md`** — stack, page tree, config-as-code, imported components, DRAFT items, the 2026-06-04 inbound-funnel section. **Read this first.**
+- **`docs/clients/agency-breno-bar/CLAUDE.md`** — stack, page tree, config-as-code, imported components, DRAFT items, the dated change sections (2026-06-04 inbound-funnel · 2026-06-09→12 rebrand + pricing/contract overhaul). **Read this first.**
 - **`docs/clients/agency-breno-bar/BRIEF.md`** — positioning, open questions (incl. funnel DRAFTs #7–#13), decisions log
 - **`docs/clients/agency-breno-bar/design.md`** — palette, typography, composition
 - **`docs/clients/agency-breno-bar/PRODUCTION-CUTOVER.md`** — the go-live checklist (SEO gates, keyword audit, schema)
