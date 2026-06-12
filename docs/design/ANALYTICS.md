@@ -80,7 +80,7 @@ The retainer reporting (Section 7) flows naturally from this set.
 
 ## 2. Event naming convention
 
-**Canonical source: `KPI.md` §Event naming convention.** This section reconciled 2026-05-26 after a 2026-05-25 cross-tree audit found that KPI.md and ANALYTICS.md had drifted (KPI.md `phone_click` vs ANALYTICS.md `phone_link_clicked`). Every shipped demo uses the KPI.md convention; ANALYTICS.md now matches.
+**Canonical source: `KPI.md` §Event naming convention.** This section was reconciled 2026-05-26 after an audit found KPI.md and ANALYTICS.md had drifted (KPI.md `phone_click` vs ANALYTICS.md `phone_link_clicked`). Every shipped demo uses the KPI.md convention; ANALYTICS.md now matches.
 
 `{feature}_{action}` in snake_case. Click events use **bare `_click`** (per KPI.md — shorter, what's actually shipped), not `_clicked`. Completed multi-step actions use `_completed`.
 

@@ -22,15 +22,18 @@ Each archived file:
 From a current doc (e.g. `docs/audit/PENDING.md` "Recently resolved"):
 
 ```markdown
-- ✅ **2026-05-26 (Bonsai full-rule audit)** — All 8 blockers + 19 warnings closed.
-  Full audit detail: `docs/audit/archived/2026-05-26-bonsai-full-audit.md`.
+- ✅ **2026-05-23 (Portfolio rebuild audit)** — All findings closed.
+  Full audit detail: `docs/audit/archived/2026-05-23-portfolio-rebuild-audit.md`.
 ```
 
 When linking, prefer relative paths so the doc still resolves if the parent folder is later renamed.
 
 ## What is currently here
 
-See `git log docs/audit/archived/` for the move history. As of 2026-05-27 the folder contains:
+See `git log docs/audit/archived/` for the move history. The folder is kept lean — only files still cross-referenced by the live rule library or per-client docs are retained:
 
-- 5 files moved 2026-05-26 (`PORTFOLIO-BUILD-RUNBOOK.md`, `PORTFOLIO-BUILD-INSTANTIATION-2026-05-20-GASTRONOMY.md`, `GASTRONOMY-UIUX-UPGRADE-PLAN-2026-05-22.md`, `demo-eiscafe-bellini-RESEARCH.md`, `gastronomy-coffee-RESEARCH-2026-05-22.md`) — one-time initiatives whose deliverables are codified in `docs/design/` rules + `clients/demo-*/` builds
-- The archive-candidacy audit on 2026-05-27 (this current rollover) added more — see git log for the move set
+- `2026-05-12-porto-dos-ribeiros-uiux-review.md` — anti-pattern reference cited by `COLOR.md` + ~11 component spec sheets (the "what failed and why" evidence behind several design rules)
+- `2026-05-23-portfolio-rebuild-audit.md` — origin/rationale cited by 6 component spec sheets (newsletter-mock, booking-mock, press, course-list, photo-grid, menu-card)
+- `PORTFOLIO-BUILD-RUNBOOK.md` — the canonical demo-build workflow, still referenced by live per-client docs (e.g. `docs/clients/demo-eiscafe-bellini/`)
+
+Completed audits with no remaining cross-references (the 2026-05-25 cross-tree audit, the three 2026-05-26 bonsai audits, the gastronomy upgrade plan + instantiation runbook, and the 2026-05-27 archive-candidacy rollover) were deleted in the 2026-06-12 doc-leanness sweep — their findings are codified in `docs/design/` rules + the live `clients/demo-*/` builds, so the audit records carried no further value.

@@ -7,7 +7,7 @@
 → **[`CLAUDE.md`](./CLAUDE.md)** is the master entry point. It documents:
 - The agency's three services (website / GBP / SEO) + five product types + three stack tiers
 - The cold-outreach business model
-- The standards-doc map (20 rules docs under `docs/design/`)
+- The standards-doc map (21 rules docs under `docs/design/`)
 - The "how to start a new client project" workflow
 
 Every Claude Code session for client or agency-template work should read it first.
@@ -17,16 +17,16 @@ Every Claude Code session for client or agency-template work should read it firs
 ```
 CLAUDE.md                       Master entry point — start here
 docs/
-├── audit/                      Cross-client backlog + research + active prospects
-│   ├── PENDING.md              Agency-level backlog aggregator
+├── audit/                      Cross-client backlog + research
+│   ├── PENDING.md              Agency-level backlog aggregator (public stub → private/)
 │   ├── ui-ux-reference-study.md  Measured 24-site UI/UX research
 │   ├── RUNBOOK-real-browser-audit.md  Manual workflow for headless-blocked sites
-│   ├── cafedelcorso.md         Active prospect intake (gastronomy)
-│   └── laudam.md               Active prospect intake (professional-services)
-├── benchmark/                  Competitor captures + analysis + inbound-funnel roadmap (e.g. icreateyoursite.com)
+│   ├── archived/               Read-only historical audits (anti-pattern references)
+│   └── private/                (gitignored) backlog + prospect intakes + research
+├── benchmark/                  Competitor analysis + inbound-funnel roadmap (e.g. icreateyoursite.com)
 ├── clients/
 │   └── archived/               Read-only worked examples of populated per-client docs
-├── design/                     20 standards docs + 12 vertical templates + canonical impls
+├── design/                     21 standards docs + 12 vertical templates + canonical impls
 │   ├── *.md                    TECH · DESIGN-BEST-PRACTICES · SEO · LEGAL · KPI · …
 │   ├── templates/              12 per-vertical templates (gastronomy / beauty / trades / …)
 │   ├── components/             32 component spec sheets + 6 universal primitives

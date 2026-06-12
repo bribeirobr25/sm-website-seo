@@ -75,7 +75,6 @@ Kollwitzstraße 76
 - [ ] Real botanical verification on 2 DRAFT species: Chloroleucon tortum (cold tolerance + cuttings rate) · Serissa japonica (cuttings success rate)
 - [ ] Pricing structure for Workshops + Werkstatt-Stunden (currently no pricing)
 - [ ] Newsletter backend decision (Brevo / Mailjet / ConvertKit — must be EU-hosted per DSGVO)
-- [ ] EN locale routes — full bilingual or DE-only? Currently DE-only with EN data ready in `trees.ts`
 - [ ] geo lat/lng precision: current `52.5378, 13.4194` is approximate; verify against actual Kollwitzplatz pin (~52.5366, 13.4170)
 
 ## 9. Citation priority

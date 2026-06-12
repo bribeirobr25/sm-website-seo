@@ -127,7 +127,7 @@ Cross-client audit + intake artifacts live in `docs/audit/`:
 | File / folder | What it covers |
 |---|---|
 | `PENDING.md` | **Agency-level backlog aggregator** — every unresolved item across all clients + prospects + agency-template work, organized by next-action owner. Single-pane portfolio view. Check it before each cold call and before each production cutover. |
-| `[client-slug].md` | Prospect intake (cold-outreach research) — per `CHECKLIST.md` §9 template. No date suffix. |
+| `private/[client-slug].md` | Prospect intake (cold-outreach research) — per `CHECKLIST.md` §9 template. No date suffix. Lives in the gitignored `private/` folder (intakes hold un-consented prospect data). |
 | `[client-slug]-[YYYY-MM-DD].md` | Site audit (against agency standards) — per `CHECKLIST.md` §8 template. Date-suffixed to pin the audit gate. Amend in place per the §8 supersession convention. |
 | `archived/` | Superseded audit files retained for historical-record value (audit-gate semantics). See `archived/README.md` for the convention — what gets moved here vs deleted outright. Files in `archived/` are read-only; updates go in the current dated audit md in the parent folder. |
 
@@ -137,9 +137,9 @@ Cross-client audit + intake artifacts live in `docs/audit/`:
 
 ### Step 0 — Read the prospect intake first
 
-If a prospect-intake file exists at `docs/audit/[client-slug].md` (per `CHECKLIST.md` §9), read it **before any code**. The intake is the canonical source for every reachable URL the scaffold will pull from. Image sources, brand source signals, contact info, hours discrepancies — all already enumerated there.
+If a prospect-intake file exists at `docs/audit/private/[client-slug].md` (per `CHECKLIST.md` §9), read it **before any code**. The intake is the canonical source for every reachable URL the scaffold will pull from. Image sources, brand source signals, contact info, hours discrepancies — all already enumerated there.
 
-Reference implementations: `docs/audit/cafedelcorso.md`, `docs/audit/laudam.md`.
+Reference implementations: `docs/audit/private/cafedelcorso.md`, `docs/audit/private/laudam.md` (gitignored).
 
 ### Step 1 — Create the client docs
 
@@ -263,7 +263,7 @@ vercel --prod   # Gets a vercel.app URL
 
 ## Current client roster
 
-**Live agency-self marketing site:** `clients/agency-breno-bar/` (display brand **BAR Agency**; folder/URL/email keep the `breno-bar` form) deployed at https://agency-breno-bar.vercel.app (Tier 2 Astro · trilingual EN/DE/pt-BR · Apple-inspired register · Resend-wired contact form). **Inbound-funnel sprint 2026-06-04** (`icreateyoursite.com` benchmark): `/pricing`, paid `/website-check` micro-product, two free lead-tools (`/tools/website-scan` PSI scanner + `/tools/gbp-check`), 24 German `/webdesign-berlin/*` local-SEO pages, home social-proof/promises/FAQ, WhatsApp/phone wired-but-hidden. **Rebrand + overhaul 2026-06-09:** breno-bar → BAR Agency (new favicon/OG); 4-offering catalog (Web Design · SEO and Local Listing · E-Commerce and Business Email · AI Solutions/Booking); pricing add-ons (biz email +€12/mo, languages DE+EN standard + €36/mo per-language, via ⓘ tooltips) + content-update limits; **`/contract` § 2 sourced from `/pricing`** (single source of truth; `SERVICE_SCOPES` deleted; draft banner removed); About reworked; `/tools` in nav; portfolio Bellini swap; real address + Kleinunternehmer § 19 UStG resolved. Pre-production still pending: real domain + Resend API key + lawyer sign-off + funnel DRAFTs. Per-client docs (2026-06-09 section) at `docs/clients/agency-breno-bar/`.
+**Live agency-self marketing site:** `clients/agency-breno-bar/` (display brand **BAR Agency**; folder/URL/email keep the `breno-bar` form) deployed at https://agency-breno-bar.vercel.app (Tier 2 Astro · trilingual EN/DE/pt-BR · Apple-inspired register · Resend-wired contact form). **Inbound-funnel sprint 2026-06-04** (`icreateyoursite.com` benchmark): `/pricing`, paid `/website-check` micro-product, two free lead-tools (`/tools/website-scan` PSI scanner + `/tools/gbp-check`), 24 German `/webdesign-berlin/*` local-SEO pages, home social-proof/promises/FAQ, WhatsApp/phone wired-but-hidden. **Rebrand + overhaul 2026-06-09:** breno-bar → BAR Agency (new favicon/OG); 4-offering catalog (Web Design · SEO and Local Listing · E-Commerce and Business Email · AI Solutions/Booking); pricing add-ons (biz email +€12/mo, languages DE+EN standard + €36/mo per-language, via ⓘ tooltips) + content-update limits; **`/contract` § 2 sourced from `/pricing`** (single source of truth; `SERVICE_SCOPES` deleted; draft banner removed); About reworked; `/tools` in nav; portfolio Bellini swap; real address + Kleinunternehmer § 19 UStG resolved. Pre-production still pending: real domain + Resend API key + lawyer sign-off + funnel DRAFTs. Per-client docs (2026-06-09→12 section) at `docs/clients/agency-breno-bar/`.
 
 **Seven portfolio demos** at `clients/demo-*/`:
 - `demo-bonsai-kodama` (4-locale education/artisan · 134 routes — agency-largest)
@@ -282,7 +282,7 @@ All on `noindex`. Per-client docs at `docs/clients/demo-*/`. Recently resolved e
 
 Per-client doc archives at `docs/clients/archived/reference-solo-barber/` (Tier 2 / BR-LGPD worked example) and `docs/clients/archived/reference-studio-booking/` (Tier 3 / DE-DSGVO worked example) retain the canonical `CLAUDE.md` + `BRIEF.md` + `design.md` shapes.
 
-**Next phase: paying clients.** The rule library is feature-complete + the agency's own site is live. Either pursue Café Del Corso / Laudam (intakes ready in `docs/audit/`) or use the agency site for inbound. See `docs/audit/PENDING.md` for the current backlog and trigger-gated items.
+**Next phase: paying clients.** The rule library is feature-complete + the agency's own site is live. Either pursue Café Del Corso / Laudam (intakes ready in `docs/audit/private/`) or use the agency site for inbound. See `docs/audit/PENDING.md` for the current backlog and trigger-gated items.
 
 ---
 

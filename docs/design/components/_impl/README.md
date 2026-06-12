@@ -27,8 +27,8 @@ The full, current index — **32 canonical components across 6 tiers + 6 univers
 
 ## History
 
-These components were extracted from `clients/reference-solo-barber/` and `clients/reference-studio-booking/` on 2026-05-19 per `docs/audit/the 2026-05-19 restructure` Phase 1. The reference impls were deleted in Phase 6 of the same plan; the working code lives here permanently as the agency-canonical source.
+These components were extracted from `clients/reference-solo-barber/` and `clients/reference-studio-booking/` during the 2026-05-19 component-extraction restructure (logged in `docs/audit/private/PENDING.md` "Recently resolved"). The reference code impls were deleted in the same restructure; the working code lives here permanently as the agency-canonical source. The per-client doc shapes are preserved at `docs/clients/archived/reference-solo-barber/` + `reference-studio-booking/`.
 
 ## Drift prevention
 
-Per the 2026-05-19 restructure §7 R4: each `_impl/` file should remain byte-aligned with the values measured in its spec sheet §3 CSS spec. Quarterly drift check in PENDING.md (calendar trigger 2026-08-19) — copy each file into `scaffolds/astro-tier2/src/components/` temporary tree + `pnpm build` to confirm compilation; revert.
+Per the 2026-05-19 restructure rule R4: each `_impl/` file should remain byte-aligned with the values measured in its spec sheet §3 CSS spec. Quarterly drift check in PENDING.md (calendar trigger 2026-08-19) — copy each file into `scaffolds/astro-tier2/src/components/` temporary tree + `pnpm build` to confirm compilation; revert.
