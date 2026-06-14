@@ -2,7 +2,7 @@
 
 **This is a live client build, not a scaffold.** It's the agency's own studio website (display brand **BAR Agency**; the folder slug, Vercel URL, and email keep the `breno-bar` form), built from `scaffolds/astro-tier2/`. Tier 2 · Astro 6 + Tailwind v4 + Sentry · trilingual EN/DE/pt-BR · dark **"Berlin night"** register (re-skinned 2026-06-13 from the original Apple-inspired light register; legal pages stay light — see `docs/clients/agency-breno-bar/design.md` § "Berlin night").
 
-**Live (noindex):** https://bar-agency.vercel.app — the Berlin-night redesign, deployed 2026-06-14 (new Vercel project `bar-agency`). The legacy `agency-breno-bar.vercel.app` project still shows the old Apple-light build (consolidation pending — see `docs/clients/agency-breno-bar/BRIEF.md` DRAFT #14).
+**Live (noindex):** https://bar-agency.vercel.app — the Berlin-night redesign. Single GitHub-connected Vercel project `bar-agency` (auto-deploys `main`; Root Directory = `clients/agency-breno-bar`); the old `agency-breno-bar` project was deleted 2026-06-14.
 
 ## Run locally
 

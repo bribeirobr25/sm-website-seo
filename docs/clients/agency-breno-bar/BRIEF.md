@@ -1,7 +1,7 @@
 # BAR Agency — BRIEF
 
 **Project:** agency-self marketing site (display brand: **BAR Agency**; folder/URL/email keep the `breno-bar` form)
-**Status:** Demo-deployed at https://bar-agency.vercel.app (noindex; Berlin-night redesign, deployed 2026-06-14). The legacy https://agency-breno-bar.vercel.app project still serves the old Apple-light build (stale — see DRAFT #14). Pre-production: domain + Resend env vars + lawyer sign-off pending (address + USt-IdNr now resolved — see DRAFT table).
+**Status:** Demo-deployed at https://bar-agency.vercel.app (noindex; Berlin-night redesign). Single GitHub-connected Vercel project (auto-deploys `main`); the old `agency-breno-bar` project was deleted 2026-06-14. Pre-production: domain + Resend env vars + lawyer sign-off pending (address + USt-IdNr now resolved — see DRAFT table).
 **Built:** 2026-05-27 · **Inbound-funnel sprint:** 2026-06-04 · **Rebrand + pricing/contract overhaul:** 2026-06-09 to 12 (anniversary billing + § 3 payment details added 06-12 — see the per-client `CLAUDE.md` 2026-06-09→12 section)
 
 ## Owner / data controller
@@ -47,7 +47,7 @@ Berlin SMBs (primary) + Brazilian community in Berlin + Portugal owner-led busin
 | 11 | **(F8)** Real WhatsApp Business number + flip `CONTACT_CHANNELS.visible` | Founder | DRAFT — `contact-channels.ts` |
 | 12 | **(funnel)** Confirm F1 vertical/Bezirk list (currently gastronomie/friseur/praxis/handwerk × 6 Bezirke) | Founder | DRAFT — `local-pages.ts`; defaults shipped |
 | 13 | **(funnel)** Optional `PAGESPEED_API_KEY` for the scan tool | Founder | OPTIONAL — PSI works keyless at low quota |
-| 14 | **(deploy — NEW 2026-06-14)** Two Vercel projects now exist: **`bar-agency`** (`bar-agency.vercel.app` — redesign live, **CLI-deployed, NO Git connection**) and legacy **`agency-breno-bar`** (`agency-breno-bar.vercel.app` — old Apple-light build, Git-connected but **auto-deploy not firing**). Decide the canonical project + consolidate: either retire `agency-breno-bar` and wire GitHub auto-deploy onto `bar-agency`, or keep one and realias. Until consolidated, **`bar-agency` must be redeployed manually** (`cd clients/agency-breno-bar && npx vercel@latest deploy --prod --scope team_yJJIgLwDIgziqWx0pBsiEVlf`; the dir is linked to `bar-agency`). | Founder | DRAFT |
+| 14 | **(deploy)** Vercel project topology | Founder + Claude | ✅ RESOLVED 2026-06-14 — old `agency-breno-bar` project deleted; **`bar-agency` is the single GitHub-connected project** (auto-deploys `main`). **Root Directory set to `clients/agency-breno-bar`** (via API) so the monorepo builds correctly; verified with a git-sourced production build of `e2075e7` (READY · noindex + redesign confirmed on `bar-agency.vercel.app`). |
 
 ## Out of scope (intentional)
 
