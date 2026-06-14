@@ -5,6 +5,10 @@
  * § 2 (services) is filled at runtime from the selected /pricing plan's feature
  * list (FUNNEL pricing tiers) — the single source of truth — so the contract can
  * never drift from the pricing page.
+ * § 3 (payment) also shows an auto-generated contract number
+ * (BAR-<planCode+price>-<client>-<YYMMDD>) used as the header "Contract no." and
+ * the payment reference, a sender line (= client business name), and an explicit
+ * bank-OR-PayPal choice — built client-side in contract.astro, presentation only.
  *
  * **LEGAL CAVEAT, NOT lawyer-reviewed.** Monthly-subscription model ("Website-Abo"):
  * § 3 = monthly fee + optional one-time buy-out (no build fee); § 4 = cancellation
