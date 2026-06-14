@@ -2,8 +2,8 @@
 
 **For:** Claude Code
 **From:** redesign prototype review session (2026-06-12)
-**Project:** `clients/agency-breno-bar/` (BAR Agency — the agency's own marketing site)
-**Source of truth for the look:** `clients/agency-breno-bar/redesign/index.html` (+ its `README.md`)
+**Project:** `clients/baragency/` (BAR Agency — the agency's own marketing site)
+**Source of truth for the look:** `clients/baragency/redesign/index.html` (+ its `README.md`)
 **Mode:** **PLAN-ONLY / Option B.** Produce a written plan, get owner approval, THEN execute. Do not edit source files before the plan is approved. No auto-commit; atomic commits with owner sign-off per the repo workflow.
 
 ---
@@ -32,17 +32,17 @@ Concretely:
 
 ## 2. Non-negotiables — the existing architecture wins every time
 
-These are repo rules from the root `CLAUDE.md`, `docs/design/`, and the per-client `docs/clients/agency-breno-bar/CLAUDE.md`. The redesign adapts to them, not the other way around.
+These are repo rules from the root `CLAUDE.md`, `docs/design/`, and the per-client `docs/clients/baragency/CLAUDE.md`. The redesign adapts to them, not the other way around.
 
 1. **`BaseLayout.astro` is sacred — do NOT rewrite it.** It centralizes title/canonical/OG/hreflang/JSON-LD/BreadcrumbList. There is a documented incident (2026-05-26 Kodama-bonsai) where a hand-rebuilt BaseLayout silently dropped schema + hreflang. Extend via its existing props (`extraSchema`, `localePath`, `ogImage`, etc.) and by editing the global stylesheet it already imports — never by replacing it. The shader/motion get added through a new island/partial that BaseLayout or each page includes, not by forking the layout.
 2. **Trilingual EN / DE / PT-BR is mandatory and parity-checked.** All copy stays in the typed content modules (`site.ts` i18n, `page-strings.ts`, `funnel.ts`, `tools.ts`, `local-pages.ts`). **No hard-coded display strings in components or pages.** `scripts/validate-translations.mjs` must still pass (32 i18n + 125 page-strings keys × 3 locales). If the redesign introduces any new visible string, it goes into the right module in all three locales.
 3. **The prototype's English copy is already the approved source text** (it was lifted from `funnel.ts` / `site.ts` / the schema offer catalog). Reuse the existing keys; do not invent new marketing claims. Where the prototype shows a string that already exists in a content module, wire to that key rather than duplicating.
 4. **GSAP via `pnpm add gsap` — NOT the CDN.** The prototype uses the cdnjs CDN for portability; production pulls GSAP as a dependency per `TECH.md` dependency rules, imported in a client script. Same for the Inter font — keep the existing `@fontsource-variable/inter` self-host, do **not** add the `rsms.me` stylesheet the prototype uses.
 5. **Tailwind v4 + the `@theme` token system.** The redesign is delivered by **editing `src/styles/tokens.css` + `src/styles/global.css`**, not by bolting on a parallel CSS file with hardcoded hexes. Introduce the Berlin-night palette as the token values (or as a dark theme layer) so every component that already consumes `--color-bg`, `--color-text`, `--color-accent`, etc. flips automatically. This is the single highest-leverage move — see §4.
-6. **`noindex` stays.** Demo discipline: every page keeps `noindex` until the owner flips it at production cutover (`docs/clients/agency-breno-bar/PRODUCTION-CUTOVER.md`). Do not touch indexing.
+6. **`noindex` stays.** Demo discipline: every page keeps `noindex` until the owner flips it at production cutover (`docs/clients/baragency/PRODUCTION-CUTOVER.md`). Do not touch indexing.
 7. **Motion safety (from the prototype, keep it):** no-JS → content visible; failed GSAP load → content visible (gate hidden state on a `.motion` class added only after successful init); `prefers-reduced-motion` → static, counters show finals, shader off. WCAG 2.2 AA contrast pairs must hold on the dark register (the prototype's `#7cc0ff` on `#060b14` ≈ 9:1; white on `#0071e3` fills ≈ 4.6:1).
 8. **No full-page scroll-hijack.** The prototype's horizontal work strip is desktop-only inside normal flow — keep that constraint; never pin the whole viewport. (This is a standing UI/UX-audit rule in the repo.)
-9. **Per-client docs are the real docs.** When done, update `docs/clients/agency-breno-bar/CLAUDE.md` (stack/page-tree/imported-components/DRAFT items) and `design.md` (palette/typography) to reflect the new register — the COLOR.md portfolio-diversity note about "Apple-inspired near-white" is now outdated for this client and must be rewritten.
+9. **Per-client docs are the real docs.** When done, update `docs/clients/baragency/CLAUDE.md` (stack/page-tree/imported-components/DRAFT items) and `design.md` (palette/typography) to reflect the new register — the COLOR.md portfolio-diversity note about "Apple-inspired near-white" is now outdated for this client and must be rewritten.
 
 ---
 
@@ -97,11 +97,11 @@ Invert the palette at the token layer in `tokens.css`: bg→`#060b14`, surface�
 
 ## 6. Reference files
 
-- `clients/agency-breno-bar/redesign/index.html` — the look to absorb (CSS + shader + GSAP choreography all inline and commented).
-- `clients/agency-breno-bar/redesign/README.md` — design rationale, deliberate tech decisions, the same integration path summarized.
-- `clients/agency-breno-bar/src/styles/{tokens,global}.css` — where the palette flip lands.
-- `clients/agency-breno-bar/src/components/layout/Header.astro` — nav already contains `/tools`.
-- `clients/agency-breno-bar/src/layouts/BaseLayout.astro` — sacred; extend via props only.
-- `docs/clients/agency-breno-bar/CLAUDE.md` — per-client truth; update at the end.
+- `clients/baragency/redesign/index.html` — the look to absorb (CSS + shader + GSAP choreography all inline and commented).
+- `clients/baragency/redesign/README.md` — design rationale, deliberate tech decisions, the same integration path summarized.
+- `clients/baragency/src/styles/{tokens,global}.css` — where the palette flip lands.
+- `clients/baragency/src/components/layout/Header.astro` — nav already contains `/tools`.
+- `clients/baragency/src/layouts/BaseLayout.astro` — sacred; extend via props only.
+- `docs/clients/baragency/CLAUDE.md` — per-client truth; update at the end.
 
 **First action:** read the four reference files above, then produce the phased plan and present it for approval. Do not edit source until approved.

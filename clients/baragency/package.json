@@ -1,9 +1,9 @@
 {
-  "name": "agency-breno-bar",
+  "name": "baragency",
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "description": "breno-bar — a small Berlin studio building websites for owner-led businesses. Trilingual (EN/DE/PT-BR) agency portfolio + contact form.",
+  "description": "baragency — a small Berlin studio building websites for owner-led businesses. Trilingual (EN/DE/PT-BR) agency portfolio + contact form.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

@@ -259,7 +259,7 @@ Per `LEGAL.md` §Rules at a glance + agency rule. The event records *that* a con
 
 **Allowed identifiers:**
 
-- `business_slug` — agency-side identifier (`demo-bonsai-kodama`, `agency-breno-bar`) — describes the client, not the user
+- `business_slug` — agency-side identifier (`demo-bonsai-kodama`, `baragency`) — describes the client, not the user
 - `service_slug` — what service was selected (`corte`, `barba`, `cabelo`) — describes the offering, not the user
 - `session_id` — ephemeral, generated via `crypto.randomUUID()` and stored only in `sessionStorage` (vanishes on tab close)
 - `consent_record_id` — UUID tied to the consent record, not to the user's identity

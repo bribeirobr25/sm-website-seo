@@ -62,13 +62,13 @@ _None._
 **Fix (optional):** Switch all demo phones to either (a) the explicit reserved range `+49 30 0000 XXXX` or (b) `+49 0152 28817973` (Bundesnetzagentur reserved for fiction/teaching), or (c) leave as-is and accept the de minimis exposure given the `noindex` posture.
 
 ### L2. Founder's personal Gmail is the contact-form fallback
-**File:** `clients/agency-breno-bar/src/pages/api/contact.ts` line 128
+**File:** `clients/baragency/src/pages/api/contact.ts` line 128
 **Pattern matched:** `const notifyTo = import.meta.env.NOTIFICATION_EMAIL ?? 'breno.ribeirobr@gmail.com';`
 **Why low:** Per audit scope, `breno.ribeirobr@gmail.com` is the user's intentional public-facing contact — already excluded from the "leak" definition. Worth one line of acknowledgment: when the repo goes public, anyone reading the source learns this Gmail is the form fallback when `NOTIFICATION_EMAIL` is unset on Vercel. A spammer could harvest it.
 **Fix (optional):** Change the fallback to throw (force-fail-closed) instead of defaulting to a real address. Then the absence of `NOTIFICATION_EMAIL` becomes a deploy-time error instead of a silent email-to-personal-Gmail.
 
 ### L3. Contact-form rate limit is in-memory Map (acknowledged in code comments)
-**File:** `clients/agency-breno-bar/src/pages/api/contact.ts` line 8 + 27
+**File:** `clients/baragency/src/pages/api/contact.ts` line 8 + 27
 **Pattern matched:** `const recentSubmissions = new Map<string, number>();` — comment explicitly says "in-memory; upgrade to Upstash for production volume."
 **Why low:** Serverless cold-starts wipe the Map, so the 30-second rate limit becomes "30 seconds per warm container." A determined spammer can cycle through cold starts. The code is explicitly self-documenting about this gap, so it's not a hidden vulnerability — it's a known limitation the author flagged. The honeypot + min-fill-time defenses still apply.
 **Fix:** Wire Upstash Redis per `INTEGRATIONS.md` §Upstash before going to production with the form (this is the scaffold-tier-3 pattern; the tier-2 scaffold acknowledges the gap).
@@ -109,4 +109,4 @@ _None._
 - Some `grep -rE` invocations with broader regexes were blocked by the sandbox; I substituted narrower searches that achieved the same coverage.
 - No git-log archaeology was performed — only the current-tip state was scanned. A separate audit of git history (e.g. `git log --all -p | scan…`) is recommended if the user ever rotated a secret that may have been committed and then removed.
 - The reviewer-name and prospect-business data flagged under M1/M2 is technically public information (Google reviews, Impressum), so its "leak" framing is contextual, not legal.
-- The contact-form code in `clients/agency-breno-bar` was the only API endpoint reviewed. If the user adds more endpoints to other clients, re-run this audit.
+- The contact-form code in `clients/baragency` was the only API endpoint reviewed. If the user adds more endpoints to other clients, re-run this audit.

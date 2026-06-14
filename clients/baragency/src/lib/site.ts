@@ -1,5 +1,5 @@
 /**
- * Site-wide constants, breno-bar agency (the agency's own marketing site).
+ * Site-wide constants, baragency agency (the agency's own marketing site).
  *
  * Trilingual: EN (root) + DE (/de/) + PT-BR (/pt-br/) per docs/design/I18N.md §17.
  *
@@ -31,19 +31,19 @@ export const SITE = {
   foundedYear: 2026,
 
   // Domain + URLs, demo subdomain for now; flip canonical when real domain arrives
-  url: 'https://agency-breno-bar.vercel.app',
+  url: 'https://bar-agency.vercel.app',
   locale: 'en-US' as const,
 
   // Contact
   // `email` is the PUBLIC display address, shown on every page + the mailto target.
   // `formNotificationEmail` is the BACKEND inbox that the contact form actually delivers to.
-  // For real email-routing on hello@breno-bar.com you'll need a domain MX + forwarding rule
+  // For real email-routing on hello@bar-agency.com you'll need a domain MX + forwarding rule
   // or Resend inbound, until then the form endpoint sends notifications directly to the gmail.
   phone: null, // intentionally hidden, phone CTAs not part of agency's contact-form-first stance
   phoneDisplay: null,
-  email: 'hello@breno-bar.com', // public display + mailto target
+  email: 'hello@bar-agency.com', // public display + mailto target
   formNotificationEmail: 'breno.ribeirobr@gmail.com', // backend inbox; Resend NOTIFICATION_EMAIL env-var overrides
-  formFromAddress: 'hello@breno-bar.com', // Resend From: header (requires domain verified in Resend before sending)
+  formFromAddress: 'hello@bar-agency.com', // Resend From: header (requires domain verified in Resend before sending)
 
   // Address, Berlin studio (confirmed).
   address: {
@@ -73,7 +73,7 @@ export const SITE = {
     kleinunternehmer: true, // § 19 UStG; the contract agency block shows this in place of a USt-IdNr
     registrationCourt: null, // Einzelunternehmer: not in HRB
     registrationNumber: null,
-    dataControllerEmail: 'hello@breno-bar.com',
+    dataControllerEmail: 'hello@bar-agency.com',
     dataControllerPhone: null,
     processors: [
       { name: 'Vercel', purpose: 'Hosting + CDN', location: 'EU (Frankfurt) / US (CDN regional)' },

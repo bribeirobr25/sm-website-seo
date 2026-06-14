@@ -1,8 +1,8 @@
 # Redesign rollout plan — apply the "Berlin night" (v1) register across the live agency site
 
 **Date:** 2026-06-13 · **Author:** Claude Code (planning session) · **Status:** PLAN — awaiting owner approval. **No source files edited yet.**
-**Project:** `clients/agency-breno-bar/` (BAR Agency — the agency's own marketing site)
-**Look to absorb:** `clients/agency-breno-bar/redesign/index.html` (the **v1** prototype) + its `README.md`
+**Project:** `clients/baragency/` (BAR Agency — the agency's own marketing site)
+**Look to absorb:** `clients/baragency/redesign/index.html` (the **v1** prototype) + its `README.md`
 **Supersedes intent of:** `redesign/HANDOVER-TO-CLAUDE-CODE.md` (used as input; this is the full plan it asked for). The owner reviewed both prototypes and chose **v1** (Inter, blue night palette, the v1 layout/style/motion). The `v2.html` serif direction is **not** used.
 
 ---
@@ -155,7 +155,7 @@ Walk every marketing route (`/`, `/services`+detail, `/portfolio`+detail, `/abou
 - **Finding 4:** `grep -c '<h1' ` per built page = exactly 1.
 - **Forms regression:** actually submit `/contact`, `/tools/website-scan`, `/tools/gbp-check` — confirm field `name`s/honeypot/rate-limit intact and endpoints still return success (the re-skin was class-only).
 - **Consent regression:** confirm GA4 stays blocked until accept; banner reopen works.
-- Update `docs/clients/agency-breno-bar/design.md` (palette + type → dark register, with measured AA ratios, incl. the `accent-deep`/`accent-on-surface` split), `CLAUDE.md` (register note + `ShaderHero` in the Imported-components table), and the `COLOR.md` "Apple-inspired near-white" diversity note. **Note re COLOR.md §6.5:** the portfolio-diversity gate governs the *demo* portfolio; the agency's own marketing site is exempt — state this explicitly rather than forcing a ΔE check against bellini/barber.
+- Update `docs/clients/baragency/design.md` (palette + type → dark register, with measured AA ratios, incl. the `accent-deep`/`accent-on-surface` split), `CLAUDE.md` (register note + `ShaderHero` in the Imported-components table), and the `COLOR.md` "Apple-inspired near-white" diversity note. **Note re COLOR.md §6.5:** the portfolio-diversity gate governs the *demo* portfolio; the agency's own marketing site is exempt — state this explicitly rather than forcing a ΔE check against bellini/barber.
 - Keep `noindex`. Atomic commits, owner sign-off, no auto-commit.
 
 ---
@@ -251,7 +251,7 @@ Independent audit `REDESIGN-ROLLOUT-PLAN-AUDIT-2026-06-13.md` reviewed this plan
 **Net effect on the plan:** Phase 1 is re-scoped from "surgical spot-fixes" to **two systematic, grep-enumerated class sweeps** (CTA normalization + accent-text migration) across all marketing pages in both copies + shared components, with the light legal/print pages explicitly excluded. The keystone strategy, phase order, and integration analysis are unchanged and confirmed sound.
 
 ### The grep gate (run before Phase 1 closes; re-run in Phase 6)
-Run from `clients/agency-breno-bar/src` over `pages/**/*.astro` + `components/**/*.astro` (both locale copies):
+Run from `clients/baragency/src` over `pages/**/*.astro` + `components/**/*.astro` (both locale copies):
 1. **`text-bg`** → every hit on a *filled/colored* bg (`bg-text`/`bg-accent`/`bg-bg…hover:bg-accent`) is a night hover-state failure → normalize to `bg-accent text-white hover:bg-accent-deep`. **Exclude** the light pages (`contract`, `de/contract`). *(Run 2026-06-13: ~30 CTA hits enumerated in Phase 1 Sweep A; the contact submit is the priority.)*
 2. **`text-accent-deep`** used as **text/icon** (NOT `bg-accent-deep`) → migrate to `text-accent-on-surface`. **Exclude** light pages (`imprint`, contract). *(Run 2026-06-13: 18 page files + 6 components.)*
 3. **`text-white` / `border-white` / `/85` / `/30` / `/70`** → confirm each sits inside a `.hero-dark`/photo-veil context (legitimate, leave) and not on a now-dark page surface. *(Run 2026-06-13: all legitimate, inside heroes.)*

@@ -121,7 +121,7 @@ export const POST: APIRoute = async ({ request }) => {
       const pageRes = await fetch(target.toString(), {
         redirect: 'follow',
         signal: AbortSignal.timeout(15_000),
-        headers: { 'User-Agent': 'breno-bar-site-scan/1.0 (+https://agency-breno-bar.vercel.app)' },
+        headers: { 'User-Agent': 'baragency-site-scan/1.0 (+https://bar-agency.vercel.app)' },
       });
       https = pageRes.url.startsWith('https:');
       for (const h of SECURITY_HEADERS) {

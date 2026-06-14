@@ -21,7 +21,7 @@ Every time a per-client `BRIEF.md` DRAFT item gets resolved, mark it ✅ in the 
 
 The agency's current state (publicly observable):
 
-- **Live builds:** 7 portfolio demos (`clients/demo-*`) + 1 agency-self build (`clients/agency-breno-bar`) — all `noindex`
+- **Live builds:** 7 portfolio demos (`clients/demo-*`) + 1 agency-self build (`clients/baragency`) — all `noindex`
 - **Two install-ready scaffolds:** `scaffolds/astro-tier2/` (Tier 2) + `scaffolds/nextjs-tier3/` (Tier 3)
 - **Rule library:** feature-complete for the agency's typical client. See `docs/design/` for the canonical rule docs
 - **Prospect pipeline + sales activity:** intentionally not enumerated here; the internal version tracks this

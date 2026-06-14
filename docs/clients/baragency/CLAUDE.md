@@ -1,8 +1,8 @@
 # BAR Agency — per-client CLAUDE.md
 
 **Status:** AGENCY-SELF marketing site. This is the agency's own studio website — not a paying-client demo.
-Live URL: https://bar-agency.vercel.app (noindex; Berlin-night redesign). Single Vercel project **`bar-agency`**, **GitHub-connected** — auto-deploys `main` (Root Directory = `clients/agency-breno-bar`). The old `agency-breno-bar` project was deleted 2026-06-14.
-**Brand display name is "BAR Agency"** (rebranded 2026-06-09 from "breno-bar"). The folder slug (`clients/agency-breno-bar/`) and the email (`hello@breno-bar.com`) keep the `breno-bar` form — those are infra/contact identifiers, not the display brand. The **canonical demo URL is `bar-agency.vercel.app`** (Vercel project `bar-agency`, GitHub-connected) to match the brand; the old `agency-breno-bar` project was deleted 2026-06-14. `SITE.name`/`shortName` = "BAR Agency"; `SITE.legal.legalEntity` = "BAR Agency, Einzelunternehmer".
+Live URL: https://bar-agency.vercel.app (noindex; Berlin-night redesign). Single Vercel project **`bar-agency`**, **GitHub-connected** — auto-deploys `main` (Root Directory = `clients/baragency`). The previous Vercel project was deleted 2026-06-14.
+**Brand display name is "BAR Agency"** (display brand set 2026-06-09). The **folder + package slug is `baragency`** (`clients/baragency/`); the **URL `bar-agency.vercel.app`** and **email `hello@bar-agency.com`** use the hyphenated `bar-agency` form — all infra/contact identifiers, not the display brand. The canonical demo URL is served by the Vercel project `bar-agency` (GitHub-connected). `SITE.name`/`shortName` = "BAR Agency"; `SITE.legal.legalEntity` = "BAR Agency, Einzelunternehmer".
 
 **Inherits:** repo-root `CLAUDE.md` and every rule in `docs/design/`. No matching per-vertical template — the agency itself is `professional-services` with a premium register **(originally Apple-inspired; re-skinned 2026-06-13 to the dark "Berlin night" register — see the 2026-06-13 section below + `design.md`)** that's deliberately distinct from every other demo built on the same library. *(The redesign is **committed (`6b79b92` re-skin + `5e253df` docs) and deployed to `bar-agency.vercel.app`** (noindex), now auto-deploying from `main`.)*
 
@@ -19,7 +19,7 @@ Live URL: https://bar-agency.vercel.app (noindex; Berlin-night redesign). Single
 
 ## 2026-06-13 — "Berlin night" redesign (dark re-skin)
 
-UI/UX-only re-skin of the whole site from the Apple-light register to a dark "Berlin night" register (ported from `redesign/index.html` v1). No content/route/schema changes. **Committed `6b79b92` (re-skin) + `5e253df` (docs), pushed to `main`; deployed 2026-06-14 to the `bar-agency.vercel.app` Vercel project (noindex).** The old `agency-breno-bar` project was deleted and `bar-agency` is now GitHub-connected (auto-deploys `main`; Root Directory = `clients/agency-breno-bar`). Full design rationale in `docs/clients/agency-breno-bar/design.md` (§ "Berlin night register"); rollout plan + audit in `docs/audit/REDESIGN-ROLLOUT-PLAN-2026-06-13.md` (+ `…-AUDIT-…`).
+UI/UX-only re-skin of the whole site from the Apple-light register to a dark "Berlin night" register (ported from `redesign/index.html` v1). No content/route/schema changes. **Committed `6b79b92` (re-skin) + `5e253df` (docs), pushed to `main`; deployed 2026-06-14 to the `bar-agency.vercel.app` Vercel project (noindex).** The previous Vercel project was deleted and `bar-agency` is now GitHub-connected (auto-deploys `main`; Root Directory = `clients/baragency`). Full design rationale in `docs/clients/baragency/design.md` (§ "Berlin night register"); rollout plan + audit in `docs/audit/REDESIGN-ROLLOUT-PLAN-2026-06-13.md` (+ `…-AUDIT-…`).
 
 - **Theme = scoped `.theme-night`, not a hard flip.** Light tokens stay the default `@theme`; `.theme-night` in `tokens.css` overrides the colour vars. `BaseLayout` gained a `theme?: 'light'|'night'` prop **auto-derived from the route** (`/privacy`, `/imprint`, `/contract` → light; else night). Legal/print pages stay light + print-friendly **structurally** (a forgotten prop still resolves light). `noindex` untouched.
 - **New token `--color-accent-on-surface`** decouples accent *text* (eyebrows/links/icons; night `#7cc0ff`) from `--color-accent-deep` (CTA hover-fill, stays dark). All `text-accent-deep` text usages migrated to it.
@@ -41,7 +41,7 @@ UI/UX-only re-skin of the whole site from the Apple-light register to a dark "Be
 ## Common commands
 
 ```bash
-cd clients/agency-breno-bar
+cd clients/baragency
 pnpm install
 pnpm dev                                                  # http://localhost:4321
 pnpm validate                                             # lint + 32+125-key translation parity + build
@@ -93,8 +93,8 @@ Before flipping `noindex` to allow indexing:
 |---|---|---|
 | Berlin Anmeldung address (street + Bezirk + PLZ) | `src/lib/site.ts` `address.*` | ✅ CONFIRMED 2026-06-09 — Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg |
 | USt-IdNr (Finanzamt nach Anmeldung) | `src/lib/site.ts` `legal.taxId` | ✅ RESOLVED 2026-06-09 — **Kleinunternehmer § 19 UStG** (no USt-IdNr; `legal.kleinunternehmer: true`; imprint VAT section auto-hidden, contract shows the Kleinunternehmer line) |
-| Domain — real `breno-bar.com` with MX + Resend verification | Vercel Domains + Resend dashboard | DRAFT |
-| Resend `RESEND_API_KEY` + `RESEND_FROM` + `NOTIFICATION_EMAIL` env vars | Vercel project env vars (+ local `.env` for dev) | **DRAFT** — **email is not yet wired.** Both the **`/contact` form** and the **`/tools/gbp-check`** lead form return a friendly 503 ("Service temporarily unavailable") until all three are set; the forms still render + validate client-side. All three vars are read in `api/contact.ts` + `api/gbp-check.ts`; full list in `.env.example`. |
+| Domain / real email | Vercel Domains + Resend dashboard | ⏸️ NOT PLANNED (2026-06-14) — stays on `bar-agency.vercel.app`; no custom domain or mailbox for now |
+| Resend `RESEND_API_KEY` + `RESEND_FROM` + `NOTIFICATION_EMAIL` env vars | Vercel project env vars (+ local `.env` for dev) | ⏸️ **NOT SET for now (2026-06-14)** — **email is intentionally not wired** (permanent demo). Both the **`/contact` form** and the **`/tools/gbp-check`** lead form render + validate but return a friendly 503 ("Service temporarily unavailable") on submit until all three are set. All three vars are read in `api/contact.ts` + `api/gbp-check.ts`; full list in `.env.example`. |
 | **(funnel) Subscription prices** | `src/lib/funnel.ts` `pricing.tiers[].price` | ✅ CONFIRMED 2026-06-06 — €219/€390/€570 per month, no setup |
 | **(funnel) Lawyer to FINALIZE subscription legal docs** — the plan-driven `/contract` + `/de/contract` (`contract-strings.ts`, plain-language subscription clauses § 3 monthly + optional 18-month buy-out, § 4 cancel→offline, § 5 licence-not-transfer; § 2 reads the selected plan from `/pricing`) · plus AGB · Datenschutz · buy-out contract. NOTE: the on-document "DRAFT — not lawyer-reviewed" red banner was **removed 2026-06-09** per owner request, so the contract no longer self-warns — the legal text is still unreviewed. | German lawyer | 🔴 REQUIRED before charging — not finalized legal text |
 | **(funnel) Public promise numbers** (preview/load/response time) | `src/lib/funnel.ts` `promises.items` | DRAFT — confirm we commit to these publicly |

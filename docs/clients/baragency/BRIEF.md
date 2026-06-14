@@ -1,13 +1,13 @@
 # BAR Agency — BRIEF
 
-**Project:** agency-self marketing site (display brand: **BAR Agency**; folder/URL/email keep the `breno-bar` form)
-**Status:** Demo-deployed at https://bar-agency.vercel.app (noindex; Berlin-night redesign). Single GitHub-connected Vercel project (auto-deploys `main`); the old `agency-breno-bar` project was deleted 2026-06-14. Pre-production: domain + Resend env vars + lawyer sign-off pending (address + USt-IdNr now resolved — see DRAFT table).
+**Project:** agency-self marketing site (display brand: **BAR Agency**; folder/package slug `baragency`; URL `bar-agency.vercel.app`, email `hello@bar-agency.com`)
+**Status:** Demo-deployed at https://bar-agency.vercel.app (noindex; Berlin-night redesign). Single GitHub-connected Vercel project (auto-deploys `main`); the previous Vercel project was deleted 2026-06-14. **For now this stays a permanent noindex demo on `bar-agency.vercel.app` — no custom domain, no real email, no env vars** (the `/contact` + `/tools/gbp-check` forms validate but don't send). Lawyer sign-off still pending if/when charging clients (address + USt-IdNr resolved — see DRAFT table).
 **Built:** 2026-05-27 · **Inbound-funnel sprint:** 2026-06-04 · **Rebrand + pricing/contract overhaul:** 2026-06-09 to 12 (anniversary billing + § 3 payment details added 06-12 — see the per-client `CLAUDE.md` 2026-06-09→12 section)
 
 ## Owner / data controller
 
 - **Founder:** Breno Ribeiro (Berlin-based Einzelunternehmer; sole operator)
-- **Public-facing email:** hello@breno-bar.com (display + mailto target — requires real MX + forwarder before launch)
+- **Public-facing email:** hello@bar-agency.com (display + mailto **placeholder** — no real mailbox/MX; not wired for now per the demo-only decision)
 - **Backend inbox:** breno.ribeirobr@gmail.com — receives every contact-form submission via Resend
 - **LinkedIn:** https://www.linkedin.com/in/bribeirobr/
 - **X:** https://x.com/bribeiro_br
@@ -35,10 +35,10 @@ Berlin SMBs (primary) + Brazilian community in Berlin + Portugal owner-led busin
 |---|---|---|---|
 | 1 | Berlin Anmeldung address (street + Bezirk + PLZ) | Founder | ✅ CONFIRMED 2026-06-09 — Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg (`site.ts` `address.*`) |
 | 2 | USt-IdNr from Finanzamt | Founder | ✅ RESOLVED 2026-06-09 — **Kleinunternehmer § 19 UStG** (no USt-IdNr; `site.ts` `legal.kleinunternehmer: true`) |
-| 3 | Real domain `breno-bar.com` purchase + Vercel domain attachment | Founder | DRAFT |
-| 4 | MX setup for `hello@breno-bar.com` → forward to gmail (Cloudflare Email Routing or similar) | Founder | DRAFT |
-| 5 | Resend domain verification + `RESEND_API_KEY` populated in Vercel env | Founder | DRAFT — endpoint returns 503 without |
-| 6 | Decide whether to flip from `noindex` after #1-5 resolve | Founder | DRAFT — root `CLAUDE.md` demo-discipline rule applies |
+| 3 | Custom domain | Founder | ⏸️ NOT PLANNED (2026-06-14) — stays on `bar-agency.vercel.app`; no custom domain for now |
+| 4 | Real email / MX for `hello@bar-agency.com` | Founder | ⏸️ NOT PLANNED (2026-06-14) — display placeholder only; no mailbox for now |
+| 5 | Resend / env vars (`RESEND_API_KEY` etc.) | Founder | ⏸️ NOT PLANNED (2026-06-14) — no env vars set; `/contact` + `/tools/gbp-check` validate but don't send (intentionally inactive) |
+| 6 | Flip from `noindex` | Founder | ⏸️ NOT NOW (2026-06-14) — stays `noindex` as a permanent demo; root `CLAUDE.md` demo-discipline applies |
 | 7 | **(funnel)** Subscription prices | Founder | ✅ CONFIRMED 2026-06-06 — €219 / €390 / €570 per month, no setup fee (`funnel.ts` `pricing.tiers`) |
 | 7b | **(legal — NEW)** Lawyer must FINALIZE the subscription legal docs: **the `/contract` (`/de/contract`) template** (`src/lib/contract-strings.ts`) is a subscription version — § 3 monthly fee billed **anniversary-based** (on the start date each month, not a fixed 1st; clamped for the 29th–31st) + a derived optional buy-out note (18× the monthly fee, no separate build fee) + the agency payment details (IBAN/BIC + PayPal, from `SITE.payment`), § 4 cancellation→site offline (content/data/domain handed over, not the build) with 14-day notice to the end of a billing month, § 5 licence-not-transfer. The on-document red "DRAFT — NOT LAWYER-REVIEWED" banner was **removed per owner request 2026-06-09** (the contract no longer self-warns). A Berlin Rechtsanwalt must finalize: legal classification (Dienst-/Mietvertrag), § 307 AGB-Kontrolle, Widerrufsrecht for consumers, the § 5 licence + buy-out mechanics, the anniversary-billing + cancellation wording, VAT §19-vs-regular, and the AVV cross-ref · plus AGB · Datenschutzerklärung. | Founder + lawyer | 🔴 REQUIRED before charging — the contract + on-site terms/FAQ are honest summaries, not finalized legal text (and now carry no on-document warning) |
 | 8 | **(funnel)** Public promise numbers (preview/load/response time) | Founder | DRAFT — `funnel.ts` `promises.items` |
@@ -47,7 +47,7 @@ Berlin SMBs (primary) + Brazilian community in Berlin + Portugal owner-led busin
 | 11 | **(F8)** Real WhatsApp Business number + flip `CONTACT_CHANNELS.visible` | Founder | DRAFT — `contact-channels.ts` |
 | 12 | **(funnel)** Confirm F1 vertical/Bezirk list (currently gastronomie/friseur/praxis/handwerk × 6 Bezirke) | Founder | DRAFT — `local-pages.ts`; defaults shipped |
 | 13 | **(funnel)** Optional `PAGESPEED_API_KEY` for the scan tool | Founder | OPTIONAL — PSI works keyless at low quota |
-| 14 | **(deploy)** Vercel project topology | Founder + Claude | ✅ RESOLVED 2026-06-14 — old `agency-breno-bar` project deleted; **`bar-agency` is the single GitHub-connected project** (auto-deploys `main`). **Root Directory set to `clients/agency-breno-bar`** (via API) so the monorepo builds correctly; verified with a git-sourced production build of `e2075e7` (READY · noindex + redesign confirmed on `bar-agency.vercel.app`). |
+| 14 | **(deploy)** Vercel project topology | Founder + Claude | ✅ RESOLVED 2026-06-14 — previous Vercel project deleted; **`bar-agency` is the single GitHub-connected project** (auto-deploys `main`). **Root Directory set to `clients/baragency`** (via API) so the monorepo builds correctly; verified with a git-sourced production build of `e2075e7` (READY · noindex + redesign confirmed on `bar-agency.vercel.app`). |
 
 ## Out of scope (intentional)
 
@@ -79,10 +79,10 @@ Per `docs/design/CHECKLIST.md`:
 | Trilingual (EN/DE/pt-BR) | Demonstrates the agency's i18n capability on its own site | User-confirmed |
 | Browser-locale auto-detect on EN home only | Lets non-EN users land on their language but never bounces manual-switcher choices | User-confirmed 2026-05-27 (revision #3) |
 | `featured: true` on only 3 portfolio entries (bonsai, adele, atem) | 3-column home grid is cleaner than 4-up; diBoaS still on full /portfolio | User-confirmed 2026-05-27 (revision #5) |
-| Hero top-padding tightened from py-32/44/56 to pt-12/16/20 + pb-24/32/40 | "Breath space was too much" — Apple does aggressive vertical rhythm but breno-bar tightens above-the-fold | User-confirmed 2026-05-27 (revision #2) |
+| Hero top-padding tightened from py-32/44/56 to pt-12/16/20 + pb-24/32/40 | "Breath space was too much" — Apple does aggressive vertical rhythm but baragency tightens above-the-fold | User-confirmed 2026-05-27 (revision #2) |
 | DemoBanner removed | Agency's own site is not a portfolio demo, so the disclosure pattern doesn't apply | User-confirmed 2026-05-27 (revision #1) |
 | Phone hidden (`SITE.phone: null`) | Email-first agency, no phone CTAs anywhere | User-confirmed 2026-05-27 (revision #4); **partially superseded 2026-06-04** — WhatsApp/phone now wired-but-hidden (F8) |
-| Email display = `hello@breno-bar.com`, backend = gmail | Public branding vs. real-inbox separation; gmail is the actual delivery target via `formNotificationEmail` | User-confirmed 2026-05-27 (revision #4) |
+| Email display = `hello@bar-agency.com`, backend = gmail | Public branding vs. real-inbox separation; gmail is the actual delivery target via `formNotificationEmail` | User-confirmed 2026-05-27 (revision #4) |
 | **Inbound-funnel sprint** — published pricing, paid website-check micro-product, 2 free tools, 24 German local-SEO pages, home social-proof/promises/FAQ, hidden WhatsApp | Borrow the high-leverage packaging/funnel patterns from the `icreateyoursite.com` benchmark while keeping our engineering + EU-compliance edge | User-directed 2026-06-04; full plan in `docs/benchmark/_analysis.md` |
 | **Pure-monthly subscription model** (€219/€390/€570, no setup) replacing the hybrid build+retainer | Recurring revenue with low entry friction (iCreate proved the no-setup/cancel-anytime model converts) | User-directed 2026-06-06 |
 | **Website is a managed subscription, not a one-time handover** — client owns domain/content/data, the build is licensed while subscribed, optional one-time buy-out | Protects the asset so a no-setup monthly fee adds up (you don't give the working site away free on cancellation) — the exact defence iCreate uses | User-directed 2026-06-06 |

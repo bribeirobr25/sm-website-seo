@@ -2,18 +2,18 @@
 
 **Created:** 2026-06-04
 **Source material:** the 21 captured pages in this folder (`docs/benchmark/*.md`) + the live site https://icreateyoursite.com
-**Target surface for all work below:** our live agency site `clients/agency-breno-bar/` (Tier 2 Astro · trilingual EN/DE/pt-BR), unless a specific item says otherwise.
+**Target surface for all work below:** our live agency site `clients/baragency/` (Tier 2 Astro · trilingual EN/DE/pt-BR), unless a specific item says otherwise.
 **Backlog mirror:** the 9 items are tracked as `F1`–`F9` in `docs/audit/private/PENDING.md` → "2026-06-04 inbound-funnel backlog."
 
 ---
 
 ## Implementation status (updated 2026-06-06)
 
-**✅ F1–F8 BUILT** on `clients/agency-breno-bar/` the same day this plan was written. `pnpm validate` green · 104 static + 3 SSR routes · visual-validated at 375/768/1280 · scanner tested end-to-end · code-review pass fixed 4 issues (explicit-any, sub-AA fine-print, Safari `<summary>` marker, `h1→h3` skip). **F9 deferred** per plan.
+**✅ F1–F8 BUILT** on `clients/baragency/` the same day this plan was written. `pnpm validate` green · 104 static + 3 SSR routes · visual-validated at 375/768/1280 · scanner tested end-to-end · code-review pass fixed 4 issues (explicit-any, sub-AA fine-print, Safari `<summary>` marker, `h1→h3` skip). **F9 deferred** per plan.
 
 **⚠ F2 model pivot (2026-06-06):** this plan recommended a *hybrid* (low-upfront + monthly) model — see Part C "F2" + the Part E guardrail "we use the hybrid." The owner instead chose a **pure-monthly subscription ("Website-Abo")**: **€219 / €390 / €570 per month, no setup fee** (owner-confirmed). To make a no-setup monthly fee safe, the website is a **managed subscription, not a one-time handover** — the client owns domain/content/data, the build/design/code is licensed while subscribed, with an optional one-time buy-out. Crucially, the ownership copy says this **honestly** rather than copying iCreate's "you own everything" (which means only content): in DE that ambiguity is irreführende Werbung (UWG) + a voidable surprising clause (§305c/§307 BGB), and iCreate in fact has **no Terms/Privacy/contract at all** (only a refund policy) — so their model is legally exposed, not "safe." The honest framing gives the same asset-protection without the exposure. The Part C/E "hybrid" wording below is superseded for this client; the real AGB + Datenschutz + buy-out contract need a German lawyer.
 
-Everything stays `noindex` (demo discipline) and every concrete commitment — prices (F2/F4), promise numbers (F5), reviews (F7), the WhatsApp number (F8, wired but `visible: false`) — is **DRAFT pending owner sign-off**. The Part D inputs below are therefore no longer "before we start" but "before it goes production-real." Backlog statuses: `docs/audit/private/PENDING.md` ("2026-06-04 inbound-funnel backlog"). Per-client specifics: `docs/clients/agency-breno-bar/{CLAUDE,BRIEF}.md`.
+Everything stays `noindex` (demo discipline) and every concrete commitment — prices (F2/F4), promise numbers (F5), reviews (F7), the WhatsApp number (F8, wired but `visible: false`) — is **DRAFT pending owner sign-off**. The Part D inputs below are therefore no longer "before we start" but "before it goes production-real." Backlog statuses: `docs/audit/private/PENDING.md` ("2026-06-04 inbound-funnel backlog"). Per-client specifics: `docs/clients/baragency/{CLAUDE,BRIEF}.md`.
 
 Route map: F2 `/pricing` · F4 `/website-check` · F3 `/tools` + `/tools/website-scan` + `/tools/gbp-check` (+ `api/site-scan`, `api/gbp-check`) · F1 `/webdesign-berlin` + 24 `/webdesign-berlin/[slug]` (German) · F5/F6/F7 on the home pages · F8 sitewide hidden `ContactBar`.
 
@@ -118,7 +118,7 @@ Heaviest builds; develop while Phase 2 content matures. Owner chose **both, sequ
 
 **F3a — GBP / Local-SEO checkup (FIRST)**
 - Goal: enter a business name → report on GBP completeness (categories, hours, photos, reviews, NAP consistency) → email-gated full report → "let us fix it" CTA.
-- Tech: needs a server surface. agency-breno-bar is Astro (1 SSR route already) — add an Astro API route / serverless function on Vercel. **Data-source decision needed:** Google Places API (paid per call, most accurate) vs a lighter guided/manual-assisted check vs scraping (fragile, ToS risk). Recommend Places API with a free-tier cap + a per-day rate limit.
+- Tech: needs a server surface. baragency is Astro (1 SSR route already) — add an Astro API route / serverless function on Vercel. **Data-source decision needed:** Google Places API (paid per call, most accurate) vs a lighter guided/manual-assisted check vs scraping (fragile, ToS risk). Recommend Places API with a free-tier cap + a per-day rate limit.
 - Reuses: `SEO.md` local-SEO + GBP optimization, `CITATIONS.md` NAP template, `ANALYTICS.md` (consent-gated event), `FORMS.md` (email capture + honeypot + rate limit), `INTEGRATIONS.md` (Resend for delivering the report).
 - Blocked by: **data-source + API-budget decision (owner/me)**.
 - Effort: ~2–3 days.

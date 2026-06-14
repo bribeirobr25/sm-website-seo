@@ -1,6 +1,7 @@
 # SEO Production Cutover, Keyword Audit, Schema Enhancements
 
-> **Status (updated 2026-06-09):** pending real domain (`breno-bar.com` or equivalent) + Resend production key + lawyer sign-off. ✅ **Resolved 2026-06-09:** Anmeldung address (Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg), VAT status (**Kleinunternehmer § 19 UStG** — no USt-IdNr; imprint VAT line auto-hidden), and the branded OG image (§1.5). Brand display name is now **BAR Agency** (folder/URL/email keep `breno-bar`).
+> **⏸️ Not active for now (2026-06-14):** the site stays a **permanent noindex demo** at `bar-agency.vercel.app` — **no custom domain, real email, or env vars are planned**. This cutover checklist applies only if/when that decision changes.
+> **Status (updated 2026-06-09):** ✅ **Resolved 2026-06-09:** Anmeldung address (Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg), VAT status (**Kleinunternehmer § 19 UStG** — no USt-IdNr; imprint VAT line auto-hidden), and the branded OG image (§1.5). Brand display name is **BAR Agency** (folder/package slug `baragency`; URL/email use the `bar-agency` form).
 > **Date drafted:** 2026-05-30. **Last code change applied:** 2026-05-30 (per-page meta refinements + trilingual schema landed in production deploy at 11:21 local).
 > **Single-source checklist** for the moment the site moves off the `vercel.app` subdomain. Plus per-locale keyword targets, plus proposed `schema.ts` enhancements for trilingual signal. Read top-to-bottom in order.
 
@@ -8,7 +9,7 @@
 
 ## §0. Status summary (what's done, what's waiting)
 
-Status legend: `[DONE]` shipped and live · `[PENDING DOMAIN]` waiting for `breno-bar.com` connection · `[PENDING OWNER]` needs an owner action that the agent cannot do alone (Finanzamt, dashboard account, DNS).
+Status legend: `[DONE]` shipped and live · `[PENDING DOMAIN]` waiting for `bar-agency.vercel.app` connection · `[PENDING OWNER]` needs an owner action that the agent cannot do alone (Finanzamt, dashboard account, DNS).
 
 | Section | Item | Status |
 |---|---|---|
@@ -30,7 +31,7 @@ Status legend: `[DONE]` shipped and live · `[PENDING DOMAIN]` waiting for `bren
 | §3.3 | `businessSchema(locale)` locale-aware description | `[DONE]` |
 | §3.4 | `WebSite.inLanguage` trilingual | `[DONE]` (already correct) |
 | §3.5 | `OfferCatalog` localization | `[DEFERRED]` (after first GSC impressions data) |
-| Side-fix | Title brand-duplication bug (`X — breno-bar · breno-bar`) | `[DONE]` |
+| Side-fix | Title brand-duplication bug (`X — baragency · baragency`) | `[DONE]` |
 
 **Net result.** Every SEO change that does not depend on the real domain has shipped. The site now emits clean per-page titles and descriptions optimized for the per-locale target queries listed in §2, and the JSON-LD surfaces EN + DE + PT-BR keyword variants simultaneously. The `noindex` policy means none of this is visible to Google yet, but the entire payload is ready for the moment §1.1 + §1.2 are flipped.
 
@@ -44,11 +45,11 @@ Each step assumes the previous one is done. Do not skip ahead. The site is curre
 
 | Action | File / location | Detail |
 |---|---|---|
-| Connect domain in Vercel | Vercel dashboard, project `agency-breno-bar` | Add `breno-bar.com` + `www.breno-bar.com`. Set the apex as primary, `www` as redirect. |
-| Update site canonical | `src/lib/site.ts`, line 35 | `url: 'https://breno-bar.com'` (no trailing slash) |
-| Update Astro config | `astro.config.ts`, line 8 | `site: 'https://breno-bar.com'` |
+| Connect domain in Vercel | Vercel dashboard, project `baragency` | Add `bar-agency.vercel.app` + `bar-agency.vercel.app`. Set the apex as primary, `www` as redirect. |
+| Update site canonical | `src/lib/site.ts`, line 35 | `url: 'https://bar-agency.vercel.app'` (no trailing slash) |
+| Update Astro config | `astro.config.ts`, line 8 | `site: 'https://bar-agency.vercel.app'` |
 | Rebuild + redeploy | shell | `pnpm build` then `vercel --prod --prebuilt` |
-| Verify | view-source on `https://breno-bar.com/` | Every `<link rel="canonical">`, `<link rel="alternate" hreflang="...">`, `<meta property="og:url">`, and JSON-LD `@id` / `url` field is anchored to the new domain. |
+| Verify | view-source on `https://bar-agency.vercel.app/` | Every `<link rel="canonical">`, `<link rel="alternate" hreflang="...">`, `<meta property="og:url">`, and JSON-LD `@id` / `url` field is anchored to the new domain. |
 
 **Why this is step 1:** Canonical, hreflang, OG, sitemap, and all three JSON-LD nodes (`ProfessionalService`, `Person`, `WebSite`) derive from `SITE.url`. Fix the anchor first, every downstream signal re-anchors automatically. Then flip the indexing switches.
 
@@ -58,7 +59,7 @@ Each step assumes the previous one is done. Do not skip ahead. The site is curre
 |---|---|---|---|
 | BaseLayout default | `src/layouts/BaseLayout.astro`, line 49 | `noindex = true` | `noindex = false` |
 | robots.txt directive | `public/robots.txt` | `Disallow: /` | `Allow: /` |
-| robots.txt sitemap pointer | `public/robots.txt`, new line | (none) | `Sitemap: https://breno-bar.com/sitemap-index.xml` |
+| robots.txt sitemap pointer | `public/robots.txt`, new line | (none) | `Sitemap: https://bar-agency.vercel.app/sitemap-index.xml` |
 
 Keep the surgical Disallow lines (these stay forever):
 ```
@@ -70,9 +71,9 @@ Disallow: /de/contract
 Keep `noindex={true}` explicit on `src/pages/contract.astro` and `src/pages/de/contract.astro` (internal print form).
 
 **Verify:**
-1. `curl https://breno-bar.com/robots.txt` returns the new file.
+1. `curl https://bar-agency.vercel.app/robots.txt` returns the new file.
 2. View-source on home: no `<meta name="robots" content="noindex, nofollow">` present.
-3. Google Search Console > URL Inspection on `https://breno-bar.com/` returns "URL is on Google" (after submission). Allow 2 to 7 days for first crawl.
+3. Google Search Console > URL Inspection on `https://bar-agency.vercel.app/` returns "URL is on Google" (after submission). Allow 2 to 7 days for first crawl.
 
 ### 1.3. Resolve the 3 DRAFT items so JSON-LD validates `[PENDING OWNER]`
 
@@ -91,10 +92,10 @@ Currently the JSON-LD emits literal placeholder text to Google.
 
 | Action | File / location | Detail |
 |---|---|---|
-| Create GA4 property | analytics.google.com | One property for `breno-bar.com`. Save the `G-XXXXXXX` measurement ID. |
+| Create GA4 property | analytics.google.com | One property for `bar-agency.vercel.app`. Save the `G-XXXXXXX` measurement ID. |
 | Replace GA4 placeholder | `src/layouts/BaseLayout.astro`, lines 162 and 170 | Replace both `G-XXXXXX` occurrences with the real ID. |
-| Create GSC property | search.google.com/search-console | Add as **Domain property** (`breno-bar.com`, DNS verification). The Domain variant covers `http`, `https`, all subdomains, all paths. URL-prefix is a fallback if DNS verification fails. |
-| Submit sitemap | GSC > Sitemaps | Add `https://breno-bar.com/sitemap-index.xml`. Expect "Success" within minutes. |
+| Create GSC property | search.google.com/search-console | Add as **Domain property** (`bar-agency.vercel.app`, DNS verification). The Domain variant covers `http`, `https`, all subdomains, all paths. URL-prefix is a fallback if DNS verification fails. |
+| Submit sitemap | GSC > Sitemaps | Add `https://bar-agency.vercel.app/sitemap-index.xml`. Expect "Success" within minutes. |
 | URL-inspect each top page | GSC > URL Inspection | Run on `/`, `/de`, `/pt-br`, `/services`, `/de/services`, `/pt-br/services`, the 4 service detail pages per locale (12 total), `/portfolio` (3), `/about` (3). Request indexing on each. ~30 URLs total, 30 minutes of work. |
 | Bing Webmaster Tools | bing.com/webmasters | Import from GSC (one click), submit sitemap. Bing is ~3 % of EU search but still worth claiming. |
 
@@ -115,10 +116,10 @@ Edit `src/lib/seo/schema.ts` lines 41-45 to point to the three distinct files. V
 
 | Action | Where | Detail |
 |---|---|---|
-| DNS for `hello@breno-bar.com` | domain registrar | Either MX records pointing to your mailbox provider, or a forwarding rule (Cloudflare Email Routing is the simplest free option) that lands `hello@` in `breno.ribeirobr@gmail.com`. |
-| Resend domain verification | resend.com/domains | Add `breno-bar.com`. Resend gives 3 DNS records (DKIM, SPF, return-path). Add them at the registrar, click "Verify" in Resend. Required before any contact-form email will leave the building. |
+| DNS for `hello@bar-agency.com` | domain registrar | Either MX records pointing to your mailbox provider, or a forwarding rule (Cloudflare Email Routing is the simplest free option) that lands `hello@` in `breno.ribeirobr@gmail.com`. |
+| Resend domain verification | resend.com/domains | Add `bar-agency.vercel.app`. Resend gives 3 DNS records (DKIM, SPF, return-path). Add them at the registrar, click "Verify" in Resend. Required before any contact-form email will leave the building. |
 | Production API key | Vercel env vars | `RESEND_API_KEY = re_...prod...` (production-scoped, separate from any dev key). Set on `Production` environment only. |
-| End-to-end smoke test | `https://breno-bar.com/contact` | Submit the form, confirm receipt at `breno.ribeirobr@gmail.com`, confirm Resend dashboard shows "delivered" not "bounced". |
+| End-to-end smoke test | `https://bar-agency.vercel.app/contact` | Submit the form, confirm receipt at `breno.ribeirobr@gmail.com`, confirm Resend dashboard shows "delivered" not "bounced". |
 
 ### 1.7. Sentry production project `[PENDING OWNER]`
 
@@ -135,7 +136,7 @@ GBP is its own pre-launch deliverable, but the production URL is the value GBP n
 | Action | Where | Detail |
 |---|---|---|
 | Claim / create the listing | business.google.com | Category: **Web designer** (most specific). Secondary categories: **Marketing agency**, **Internet marketing service**. |
-| Set Website URL | GBP > Edit profile > Website | `https://breno-bar.com/` (root). |
+| Set Website URL | GBP > Edit profile > Website | `https://bar-agency.vercel.app/` (root). |
 | Set Service area | GBP | Berlin + 50 km radius (covers all Berlin Bezirke + immediate Brandenburg). |
 | Add 3 verticals to "Services" | GBP > Services | "Website design", "Search engine optimization", "Google Business Profile setup". |
 | Hours | GBP | "By appointment" (matches `SITE.hours.appointment`). |
@@ -143,18 +144,18 @@ GBP is its own pre-launch deliverable, but the production URL is the value GBP n
 
 ### 1.9. HSTS preload-list submission `[PENDING DOMAIN]`
 
-The agency's `vercel.json` already emits the preload-eligible HSTS header (`Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`). Submitting `breno-bar.com` to the shared browser preload list hard-pins it to HTTPS in every Chrome / Firefox / Safari shipped after the next release, closing the first-visit SSL-stripping window that HSTS alone cannot.
+The agency's `vercel.json` already emits the preload-eligible HSTS header (`Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`). Submitting `bar-agency.vercel.app` to the shared browser preload list hard-pins it to HTTPS in every Chrome / Firefox / Safari shipped after the next release, closing the first-visit SSL-stripping window that HSTS alone cannot.
 
 | Action | Where | Detail |
 |---|---|---|
-| Verify the header is live on the new domain | shell | `curl -sI https://breno-bar.com/ \| grep -i strict-transport-security` — confirm the response carries `max-age=63072000; includeSubDomains; preload`. |
-| Verify apex + www both serve HTTPS only | shell | `curl -sI http://breno-bar.com/` and `curl -sI http://www.breno-bar.com/` must both 301/308-redirect to `https://`. Vercel's apex + www config does this automatically; sanity-check before submitting. |
-| Submit to the preload list | https://hstspreload.org/ | Enter `breno-bar.com`. The form validates the 4 prerequisites: valid cert, redirect HTTP → HTTPS on apex, `max-age` ≥ 31536000, both `includeSubDomains` + `preload` directives present. Vercel meets all four. Submit. |
+| Verify the header is live on the new domain | shell | `curl -sI https://bar-agency.vercel.app/ \| grep -i strict-transport-security` — confirm the response carries `max-age=63072000; includeSubDomains; preload`. |
+| Verify apex + www both serve HTTPS only | shell | `curl -sI http://bar-agency.vercel.app/` and `curl -sI http://bar-agency.vercel.app/` must both 301/308-redirect to `https://`. Vercel's apex + www config does this automatically; sanity-check before submitting. |
+| Submit to the preload list | https://hstspreload.org/ | Enter `bar-agency.vercel.app`. The form validates the 4 prerequisites: valid cert, redirect HTTP → HTTPS on apex, `max-age` ≥ 31536000, both `includeSubDomains` + `preload` directives present. Vercel meets all four. Submit. |
 | Track inclusion | the same form | The form's status page shows `pending`, then `preloaded` once it rolls into the next Chrome stable release. Typical timeline: 6 to 12 weeks. |
 
-**One-way door — read before submitting.** HSTS preload is effectively irreversible. Removal requires a formal request and takes 6 to 12 months minimum to propagate. Submitting commits the agency to HTTPS-only on `breno-bar.com` and every subdomain forever. Vercel makes this trivial (free certs, auto-renewal), so it's the right move for a marketing site that owns its DNS, but never preload a domain you might want to point at a non-HTTPS legacy system later.
+**One-way door — read before submitting.** HSTS preload is effectively irreversible. Removal requires a formal request and takes 6 to 12 months minimum to propagate. Submitting commits the agency to HTTPS-only on `bar-agency.vercel.app` and every subdomain forever. Vercel makes this trivial (free certs, auto-renewal), so it's the right move for a marketing site that owns its DNS, but never preload a domain you might want to point at a non-HTTPS legacy system later.
 
-**Why bother:** without preload, a user typing `breno-bar.com` (no protocol) into a fresh browser session that has never visited the site gets one HTTP request before the HSTS header pins them to HTTPS. An active network attacker on that hop (cafe wifi, hostile ISP) can intercept and downgrade. Preload closes this on a per-browser basis the moment the user updates their browser.
+**Why bother:** without preload, a user typing `bar-agency.vercel.app` (no protocol) into a fresh browser session that has never visited the site gets one HTTP request before the HSTS header pins them to HTTPS. An active network attacker on that hop (cafe wifi, hostile ISP) can intercept and downgrade. Preload closes this on a per-browser basis the moment the user updates their browser.
 
 **Do not run §1.9 until §1.1 and §1.2 are clean.** Submitting before the domain serves the correct header is a wasted submission.
 
@@ -189,13 +190,13 @@ For each page: **primary intent**, **per-locale target queries** (highest-priori
 
 **Meta (2026-05-30 snapshot — superseded.** Rebranded to **BAR Agency** + tagline "Websites that bring you customers." + 4-offering catalog on 2026-06-09; `src/lib/page-strings.ts` is the live source of truth.)
 ```
-EN  title: 'breno-bar — Websites worth being proud of.'
+EN  title: 'baragency — Websites worth being proud of.'
 EN  desc:  'A small Berlin studio building websites for owner-led businesses. Website, SEO, Google Business Profile. Trilingual delivery.'
 
-DE  title: 'breno-bar — Webseiten, auf die man stolz sein kann.'
+DE  title: 'baragency — Webseiten, auf die man stolz sein kann.'
 DE  desc:  'Ein kleines Berliner Studio, das Webseiten für inhabergeführte Unternehmen baut. Website, SEO, Google Business Profile. Trilingual.'
 
-PT  title: 'breno-bar — Sites dos quais a gente se orgulha.'
+PT  title: 'baragency — Sites dos quais a gente se orgulha.'
 PT  desc:  'Um pequeno estúdio berlinense que constrói sites para negócios liderados pelo dono. Site, SEO, Google Business Profile. Trilíngue.'
 ```
 
@@ -227,28 +228,28 @@ The DE version adds **"Webdesign"**, **"lokales SEO"**, **"Google Unternehmenspr
 
 **Current meta.**
 ```
-EN  title: 'Services — breno-bar'
+EN  title: 'Services — baragency'
 EN  desc:  'Three core services for owner-led businesses: website creation, search-engine optimization, Google Business Profile setup. Plus optional social-media management.'
 
-DE  title: 'Leistungen — breno-bar'
+DE  title: 'Leistungen — baragency'
 DE  desc:  'Drei Kernleistungen für inhabergeführte Unternehmen: Website-Erstellung, Suchmaschinen-Optimierung, Google Business Profile. Plus optionale Social-Media-Pflege.'
 
-PT  title: 'Serviços — breno-bar'
+PT  title: 'Serviços — baragency'
 PT  desc:  'Três serviços principais para negócios liderados pelo dono: criação de site, SEO, Google Business Profile. Mais gestão opcional de redes sociais.'
 ```
 
-**Audit.** Titles are too generic. "Services — breno-bar" wins zero queries. Should signal both the service area (Berlin) and the audience (small business / inhabergeführt / pequeno negócio).
+**Audit.** Titles are too generic. "Services — baragency" wins zero queries. Should signal both the service area (Berlin) and the audience (small business / inhabergeführt / pequeno negócio).
 
 **Proposed refinements.**
 
 ```
-EN  title: 'Web design, SEO and Google Business Profile services in Berlin — breno-bar'
+EN  title: 'Web design, SEO and Google Business Profile services in Berlin — baragency'
 EN  desc:  'Web design, local SEO, and Google Business Profile setup for small Berlin businesses. Sold one at a time. No upsell, no retainer pressure.'
 
-DE  title: 'Webdesign, SEO und Google Unternehmensprofil aus Berlin — breno-bar'
+DE  title: 'Webdesign, SEO und Google Unternehmensprofil aus Berlin — baragency'
 DE  desc:  'Webdesign, lokales SEO und Google Unternehmensprofil für kleine Berliner Geschäfte. Einzeln verkauft. Kein Upsell, kein Druck auf einen Vertrag.'
 
-PT  title: 'Site, SEO local e Google Business Profile em Berlim — breno-bar'
+PT  title: 'Site, SEO local e Google Business Profile em Berlim — baragency'
 PT  desc:  'Criação de site, SEO local e perfil Google Empresa para pequenos negócios em Berlim. Vendidos um de cada vez. Sem upsell.'
 ```
 
@@ -265,16 +266,16 @@ PT  desc:  'Criação de site, SEO local e perfil Google Empresa para pequenos n
 | PT-BR | "site para restaurante em berlim", "site bilíngue berlim" |
 
 **Current meta.**
-- Title is computed in `services/[slug].astro` as `${s.name} — breno-bar`. So EN renders `'Website — breno-bar'`, DE renders `'Website — breno-bar'`, PT-BR renders `'Site — breno-bar'`.
+- Title is computed in `services/[slug].astro` as `${s.name} — baragency`. So EN renders `'Website — baragency'`, DE renders `'Website — baragency'`, PT-BR renders `'Site — baragency'`.
 - Description is `s.shortTagline`, e.g. EN `'The first room your next customer will walk into.'`
 
-**Audit.** "Website — breno-bar" as a `<title>` is the weakest signal on the site. Wins nothing. The `shortTagline` is voice-poetic and unique to your brand, but Google has no idea this is a Berlin web-design service page from the title.
+**Audit.** "Website — baragency" as a `<title>` is the weakest signal on the site. Wins nothing. The `shortTagline` is voice-poetic and unique to your brand, but Google has no idea this is a Berlin web-design service page from the title.
 
 **Proposed fix** (per `services/[slug].astro` line 19 and `[locale]/services/[slug].astro` line 36, change the title formula):
 
 ```astro
 // Instead of:
-title={`${s.name} — breno-bar`}
+title={`${s.name} — baragency`}
 
 // Use a per-service SEO title pulled from page-strings, e.g.:
 title={s.seoTitle}        // new field in PAGE_STRINGS
@@ -286,13 +287,13 @@ description={s.seoDescription}
 Then add per-locale `seoTitle` + `seoDescription` to each service in `page-strings.ts`:
 
 ```
-website.en  seoTitle: 'Small business website design in Berlin — breno-bar'
+website.en  seoTitle: 'Small business website design in Berlin — baragency'
 website.en  seoDescription: 'Multilingual websites for Berlin restaurants, cafés, salons, and trades. Fast on the worst U-Bahn signal. Live in 3 to 6 weeks. DSGVO + Impressum included.'
 
-website.de  seoTitle: 'Webseite für kleine Unternehmen in Berlin — breno-bar'
+website.de  seoTitle: 'Webseite für kleine Unternehmen in Berlin — baragency'
 website.de  seoDescription: 'Mehrsprachige Webseiten für Berliner Cafés, Restaurants, Salons und Handwerk. Schnell auch im schwächsten U-Bahn-Signal. In drei bis sechs Wochen online. DSGVO und Impressum inklusive.'
 
-website.pt  seoTitle: 'Site para pequenos negócios em Berlim — breno-bar'
+website.pt  seoTitle: 'Site para pequenos negócios em Berlim — baragency'
 website.pt  seoDescription: 'Sites multilíngues para restaurantes, cafés, salões e oficinas em Berlim. Rápidos até no pior sinal de U-Bahn. No ar em 3 a 6 semanas.'
 ```
 
@@ -309,13 +310,13 @@ website.pt  seoDescription: 'Sites multilíngues para restaurantes, cafés, sal�
 **Proposed `seoTitle` + `seoDescription`.**
 
 ```
-seo.en  seoTitle: 'Local SEO for small Berlin businesses — breno-bar'
+seo.en  seoTitle: 'Local SEO for small Berlin businesses — baragency'
 seo.en  seoDescription: 'Quiet, patient local SEO over 90 days. Schema, on-page, Search Console. For the bakery, the salon, the dentist, the plumber. One monthly note. No 12-tab dashboards.'
 
-seo.de  seoTitle: 'Lokales SEO für kleine Berliner Unternehmen — breno-bar'
+seo.de  seoTitle: 'Lokales SEO für kleine Berliner Unternehmen — baragency'
 seo.de  seoDescription: 'Geduldiges, lokales SEO über 90 Tage. Schema, On-Page, Google Search Console. Für die Bäckerei, den Salon, die Praxis, den Handwerker. Eine Notiz im Monat. Keine zwölf Dashboard-Tabs.'
 
-seo.pt  seoTitle: 'SEO local para pequenos negócios em Berlim — breno-bar'
+seo.pt  seoTitle: 'SEO local para pequenos negócios em Berlim — baragency'
 seo.pt  seoDescription: 'SEO local paciente, ao longo de 90 dias. Schema, on-page, Google Search Console. Uma nota por mês, sem dashboards intermináveis.'
 ```
 
@@ -332,13 +333,13 @@ seo.pt  seoDescription: 'SEO local paciente, ao longo de 90 dias. Schema, on-pag
 **Proposed `seoTitle` + `seoDescription`.**
 
 ```
-gbp.en  seoTitle: 'Google Business Profile setup and management in Berlin — breno-bar'
+gbp.en  seoTitle: 'Google Business Profile setup and management in Berlin — baragency'
 gbp.en  seoDescription: 'Verified ownership, geo-tagged photos, monthly posts, reviews answered within 48 hours. The listing that does the local-search heavy lifting.'
 
-gbp.de  seoTitle: 'Google Unternehmensprofil einrichten und pflegen, Berlin — breno-bar'
+gbp.de  seoTitle: 'Google Unternehmensprofil einrichten und pflegen, Berlin — baragency'
 gbp.de  seoDescription: 'Verifizierte Inhaberschaft, geo-getaggte Fotos, monatliche Beiträge, Rezensionen innerhalb von 48 Stunden beantwortet. Das Profil, das die lokale Sichtbarkeit übernimmt.'
 
-gbp.pt  seoTitle: 'Configuração e gestão do perfil Google Empresa em Berlim — breno-bar'
+gbp.pt  seoTitle: 'Configuração e gestão do perfil Google Empresa em Berlim — baragency'
 gbp.pt  seoDescription: 'Posse verificada, fotos geolocalizadas, posts mensais, avaliações respondidas em até 48 horas. O perfil que faz o trabalho pesado da busca local.'
 ```
 
@@ -355,13 +356,13 @@ gbp.pt  seoDescription: 'Posse verificada, fotos geolocalizadas, posts mensais, 
 **Proposed `seoTitle` + `seoDescription`.**
 
 ```
-social.en  seoTitle: 'Instagram management for small Berlin businesses — breno-bar'
+social.en  seoTitle: 'Instagram management for small Berlin businesses — baragency'
 social.en  seoDescription: 'Two posts a week, in your voice, drawn from your week. DMs answered on weekdays. No viral promises, no bought followers. Optional, not a retainer trap.'
 
-social.de  seoTitle: 'Instagram-Betreuung für kleine Berliner Geschäfte — breno-bar'
+social.de  seoTitle: 'Instagram-Betreuung für kleine Berliner Geschäfte — baragency'
 social.de  seoDescription: 'Zwei Posts pro Woche, in deiner Stimme, aus deiner Woche heraus. DMs werktags beantwortet. Keine viralen Versprechen, keine gekauften Follower.'
 
-social.pt  seoTitle: 'Gestão de Instagram para pequenos negócios em Berlim — breno-bar'
+social.pt  seoTitle: 'Gestão de Instagram para pequenos negócios em Berlim — baragency'
 social.pt  seoDescription: 'Dois posts por semana, na sua voz, tirados da sua semana. DMs respondidas em dias úteis. Sem promessas de viralizar, sem seguidores comprados.'
 ```
 
@@ -378,13 +379,13 @@ social.pt  seoDescription: 'Dois posts por semana, na sua voz, tirados da sua se
 **Proposed `seoTitle` + `seoDescription`.**
 
 ```
-portfolio.en  title: 'Selected work: Berlin web agency portfolio — breno-bar'
+portfolio.en  title: 'Selected work: Berlin web agency portfolio — baragency'
 portfolio.en  description: 'Nine projects across restaurants, cafés, salons, studios, education, and legal. Multilingual, fast, DSGVO-ready. The work, in one place.'
 
-portfolio.de  title: 'Ausgewählte Arbeiten, Berliner Webagentur — breno-bar'
+portfolio.de  title: 'Ausgewählte Arbeiten, Berliner Webagentur — baragency'
 portfolio.de  description: 'Neun Projekte aus Gastronomie, Beauty, Studio, Bildung und Recht. Mehrsprachig, schnell, DSGVO-konform. Die Arbeit, an einem Ort.'
 
-portfolio.pt  title: 'Trabalhos selecionados: portfólio de web design em Berlim — breno-bar'
+portfolio.pt  title: 'Trabalhos selecionados: portfólio de web design em Berlim — baragency'
 portfolio.pt  description: 'Nove projetos, de restaurantes a salões, estúdios, educação e direito. Multilíngues, rápidos, em conformidade com DSGVO.'
 ```
 
@@ -402,18 +403,18 @@ These already emit `portfolioCaseSchema` (CreativeWork) per page. The titles + d
 
 | Locale | Query |
 |---|---|
-| EN | "breno ribeiro web designer", "breno-bar studio berlin" |
-| DE | "breno ribeiro webdesigner berlin", "breno-bar studio" |
+| EN | "breno ribeiro web designer", "baragency studio berlin" |
+| DE | "breno ribeiro webdesigner berlin", "baragency studio" |
 | PT-BR | "breno ribeiro web designer berlim", "estúdio brasileiro berlim" |
 
-**Audit.** Current title `'About — breno-bar'` (EN), `'Studio — breno-bar'` (DE), `'Estúdio — breno-bar'` (PT). Good for brand search ("breno-bar about"), too generic for founder search. Add the founder name to the title to win that long-tail.
+**Audit.** Current title `'About — baragency'` (EN), `'Studio — baragency'` (DE), `'Estúdio — baragency'` (PT). Good for brand search ("baragency about"), too generic for founder search. Add the founder name to the title to win that long-tail.
 
 **Proposed.**
 
 ```
-about.en  title: 'About the studio: Breno Ribeiro, web designer in Berlin — breno-bar'
-about.de  title: 'Über das Studio: Breno Ribeiro, Webdesigner in Berlin — breno-bar'
-about.pt  title: 'Sobre o estúdio: Breno Ribeiro, web designer em Berlim — breno-bar'
+about.en  title: 'About the studio: Breno Ribeiro, web designer in Berlin — baragency'
+about.de  title: 'Über das Studio: Breno Ribeiro, Webdesigner in Berlin — baragency'
+about.pt  title: 'Sobre o estúdio: Breno Ribeiro, web designer em Berlim — baragency'
 ```
 
 Descriptions stay as-is, the current copy is good.
@@ -571,7 +572,7 @@ The 4 `Offer.itemOffered.Service` nodes (`schema.ts` lines 96-137) all have Engl
 
 - [ ] All §1 gates done, verified
 - [ ] GSC + Bing sitemap submitted, ~30 URLs individually URL-inspected
-- [ ] Citations claimed: GBP, Apple Business Connect, Bing Places, Yelp.de, Facebook Page, Instagram (already exists, just confirm `breno-bar.com` link in bio per `CITATIONS.md` §2). Skip Sellwerk / 11880 telesales (agency rule).
+- [ ] Citations claimed: GBP, Apple Business Connect, Bing Places, Yelp.de, Facebook Page, Instagram (already exists, just confirm `bar-agency.vercel.app` link in bio per `CITATIONS.md` §2). Skip Sellwerk / 11880 telesales (agency rule).
 - [ ] berlin.de "Wirtschaftsförderung" directory listing requested (the DE-general highest-authority citation per `CITATIONS.md` §3).
 - [ ] Resend "domain verified" check, end-to-end form test
 - [ ] Sentry first-error smoke test
@@ -607,7 +608,7 @@ The 4 `Offer.itemOffered.Service` nodes (`schema.ts` lines 96-137) all have Engl
 
 When the real domain arrives, run in this order:
 
-1. `breno-bar.com` connected in Vercel
+1. `bar-agency.vercel.app` connected in Vercel
 2. `SITE.url` and `astro.config.ts:site` updated to the new domain
 3. DRAFT items resolved (street, PLZ, USt-IdNr)
 4. `BaseLayout.astro:49` flip: `noindex = false`
@@ -624,4 +625,4 @@ When the real domain arrives, run in this order:
 15. ~~Apply §3.1 to §3.3 schema enhancements~~ already shipped 2026-05-30 (skip)
 16. Monitor §4.2 + §4.3 windows.
 
-Done is the day the home page shows up on its own brand search ("breno-bar") within the first 3 results. That should happen 3 to 14 days after the §1 gates are clean.
+Done is the day the home page shows up on its own brand search ("baragency") within the first 3 results. That should happen 3 to 14 days after the §1 gates are clean.

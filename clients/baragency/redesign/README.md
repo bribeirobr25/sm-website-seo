@@ -29,4 +29,4 @@ Playwright + headless Chromium, viewports 375×812 / 768×1024 / 1280×900:
 3. Shader becomes a small inline script or island; keep the CSS-gradient fallback.
 4. Trilingual: move copy into `funnel.ts` / `page-strings.ts` keys (EN here is already the approved source text); DE/PT-BR via the standard `Record<Locale,…>` pattern.
 5. Swap hotlinked images to local `/img/portfolio/...` paths.
-6. Keep `noindex` until the production-cutover gates in `docs/clients/agency-breno-bar/PRODUCTION-CUTOVER.md` pass.
+6. Keep `noindex` until the production-cutover gates in `docs/clients/baragency/PRODUCTION-CUTOVER.md` pass.

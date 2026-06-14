@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://agency-breno-bar.vercel.app',
+  site: 'https://bar-agency.vercel.app',
   trailingSlash: 'never',
   // Hybrid output — pre-render static pages by default, opt-in SSR for the
   // /api/contact endpoint per FORMS.md §Submission endpoint pattern. Vercel

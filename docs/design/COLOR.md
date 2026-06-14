@@ -128,7 +128,7 @@ A `pnpm validate` block does NOT check items 3-6 — those are visual/judgment. 
 
 ## 6.5. Portfolio diversity gate (agency-mandatory before any scaffold)
 
-> **Note on the agency-self site (`clients/agency-breno-bar/`):** it is **not a portfolio demo**, so the cross-demo gate below does not constrain it. Since the 2026-06-13 "Berlin night" redesign it uses a **dark blue-black base** (`--color-bg #060b14` via a `.theme-night` scope; legal pages stay light) — *not* the Apple near-white it launched with. Don't treat it as the portfolio's "near-white" entry.
+> **Note on the agency-self site (`clients/baragency/`):** it is **not a portfolio demo**, so the cross-demo gate below does not constrain it. Since the 2026-06-13 "Berlin night" redesign it uses a **dark blue-black base** (`--color-bg #060b14` via a `.theme-night` scope; legal pages stay light) — *not* the Apple near-white it launched with. Don't treat it as the portfolio's "near-white" entry.
 
 **Rule:** Before committing the `tokens.css` palette for a new client or demo, the responsible Claude session MUST audit the agency's current portfolio (`clients/*/src/styles/tokens.css` + the agency landing page if present) and confirm:
 
