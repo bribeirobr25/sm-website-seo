@@ -28,6 +28,7 @@ const featText = (f: string | { label: string; note: string }): string =>
   typeof f === 'string' ? f : f.label;
 const plans = FUNNEL[locale].pricing.tiers.map((t) => ({
   id: t.id,
+  code: t.id.charAt(0).toUpperCase(),
   name: t.name,
   priceLabel: `${t.price}${t.priceSuffix ?? ''}`,
   priceNum: Number(t.price.replace(/[^0-9.]/g, '')),
@@ -259,6 +260,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
         <header class="mb-14 border-b border-border pb-10">
           <p class="text-xs tracking-[0.18em] uppercase text-text-muted font-medium">{c.contractSubtitle}</p>
           <h1 class="mt-4 font-display text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.05]">{c.contractTitleH1}</h1>
+          <p class="mt-3 text-[13px] text-text-muted tabular">{c.contractNoLabel}: <span class="out-contract-no" style="font-weight:600;">…</span></p>
 
           <div class="mt-12 grid sm:grid-cols-2 gap-10 sm:gap-12">
             <div class="space-y-1.5">
@@ -313,8 +315,12 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
             <div class="contract-payment" style="margin-top:10px;">
               <p class="contract-p" style="font-weight:600;margin:0 0 2px 0;">{c.s3PaymentHeading}</p>
               <p class="contract-p" style="margin:0;">{c.s3PaymentReceiver}: {SITE.payment.receiver}</p>
+              <p class="contract-p" style="font-weight:600;margin:8px 0 2px 0;">{c.s3PayChooseOne}</p>
               <p class="contract-p" style="margin:0;">{c.s3PaymentBank}: IBAN {SITE.payment.iban} · BIC {SITE.payment.bic} · {SITE.payment.bankName}, {SITE.payment.bankAddress}</p>
+              <p class="contract-p" style="margin:1px 0;color:var(--color-text-subtle);font-weight:600;">{c.s3PayOr}</p>
               <p class="contract-p" style="margin:0;">PayPal: {SITE.payment.paypal}</p>
+              <p class="contract-p" style="margin:8px 0 0 0;"><strong>{c.s3PaymentReference}:</strong> <span class="out-contract-no tabular" style="font-weight:600;">…</span></p>
+              <p class="contract-p" style="margin:0;"><strong>{c.s3PaymentSender}:</strong> <span class="out-client-business-name">…</span></p>
             </div>
           </section>
 
@@ -662,6 +668,22 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
       document.querySelectorAll(sel).forEach((el) => { el.textContent = value || ', '; });
     }
 
+    // Contract ID, e.g. BAR-G390-CAFE-260612 — agency · plan+price · client · signature date.
+    // Deterministic from the form (no backend); also quoted as the payment reference.
+    function clientSlug(name) {
+      const s = (name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 4);
+      return s || '____';
+    }
+    function yymmdd6(s) {
+      const d = new Date((s || today) + 'T00:00:00');
+      if (isNaN(d.getTime())) return '______';
+      return `${String(d.getFullYear()).slice(2)}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    }
+    function contractId(plan, businessName, sigDate) {
+      const planSeg = plan ? `${plan.code}${plan.priceNum}` : '____';
+      return `BAR-${planSeg}-${clientSlug(businessName)}-${yymmdd6(sigDate)}`;
+    }
+
     function render() {
       const fd = new FormData(form);
 
@@ -680,6 +702,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
 
       const planId = fd.get('plan');
       const plan = plans.find((p) => p.id === planId);
+      setText('.out-contract-no', contractId(plan, fd.get('client_business_name'), fd.get('date_signature')));
       const planLineEl = document.querySelector('.out-plan-line');
       const container = document.getElementById('services-rendered');
       const noServicesEl = container.querySelector('.out-no-services');

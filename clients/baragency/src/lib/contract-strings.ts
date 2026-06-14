@@ -58,6 +58,8 @@ export interface ContractStrings {
   // Contract body
   contractTitleH1: string;
   contractSubtitle: string;
+  /** Label for the auto-generated contract number, e.g. "Contract no." */
+  contractNoLabel: string;
   agencyHeading: string;
   clientHeading: string;
   agencyAddress: string; // Composite string built at render
@@ -86,6 +88,14 @@ export interface ContractStrings {
   s3PaymentHeading: string;
   s3PaymentReceiver: string;
   s3PaymentBank: string;
+  /** "Pay by ONE of the following" header above the bank/PayPal options. */
+  s3PayChooseOne: string;
+  /** Divider between the bank and PayPal options. */
+  s3PayOr: string;
+  /** Label for the payment reference (the contract ID) the client must quote. */
+  s3PaymentReference: string;
+  /** Label advising the client which name to send the payment under. */
+  s3PaymentSender: string;
   s3VatKleinLine: string;
   /** Template, replace `{net}` / `{vat}` / `{gross}` with formatted amounts. */
   s3VatRegularLine: string;
@@ -170,6 +180,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     contractTitleH1: 'Website Subscription Agreement',
     contractSubtitle:
       'between Agency and Client, a monthly subscription for the services listed in § 2',
+    contractNoLabel: 'Contract no.',
 
     agencyHeading: 'Agency',
     clientHeading: 'Client',
@@ -199,6 +210,10 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     s3PaymentHeading: 'Payment to:',
     s3PaymentReceiver: 'Receiver',
     s3PaymentBank: 'Bank transfer',
+    s3PayChooseOne: 'Pay by ONE of the following (you only need one):',
+    s3PayOr: '— or —',
+    s3PaymentReference: 'Reference (please include on your payment)',
+    s3PaymentSender: 'Sender (please pay as)',
     s3VatKleinLine:
       'As a small business under § 19 UStG, the Agency charges no VAT. The amounts above are final.',
     s3VatRegularLine:
@@ -298,6 +313,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     contractTitleH1: 'Website-Abo-Vertrag',
     contractSubtitle:
       'zwischen Agentur und Mandant, ein Monats-Abo für die in § 2 aufgeführten Leistungen',
+    contractNoLabel: 'Vertrags-Nr.',
 
     agencyHeading: 'Agentur',
     clientHeading: 'Mandant',
@@ -327,6 +343,10 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     s3PaymentHeading: 'Zahlung an:',
     s3PaymentReceiver: 'Empfänger',
     s3PaymentBank: 'Banküberweisung',
+    s3PayChooseOne: 'Zahlung über EINEN der folgenden Wege (nur einer nötig):',
+    s3PayOr: '— oder —',
+    s3PaymentReference: 'Verwendungszweck (bitte bei der Zahlung angeben)',
+    s3PaymentSender: 'Absender (bitte zahlen als)',
     s3VatKleinLine:
       'Als Kleinunternehmer nach § 19 UStG berechnet die Agentur keine Umsatzsteuer. Die oben genannten Beträge sind endgültig.',
     s3VatRegularLine:
