@@ -2,6 +2,7 @@
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
 import Faq from '@/components/sections/Faq.astro';
+import HeroAurora from '@/components/sections/HeroAurora.astro';
 import PromiseStrip from '@/components/sections/PromiseStrip.astro';
 import ReviewsWall from '@/components/sections/ReviewsWall.astro';
 import TrustBadgeRow from '@/components/sections/TrustBadgeRow.astro';
@@ -41,6 +42,7 @@ const faqSchema = faqPageSchema(f.homeFaq.items);
         />
       )}
       <div class="hero-dark__veil" aria-hidden="true"></div>
+      <HeroAurora />
       <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 lg:pt-44 lg:pb-40 text-center">
         <p class="text-xs sm:text-sm tracking-[0.18em] uppercase text-accent-light font-medium mb-8">{p.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(3rem,8vw,7rem)] font-semibold text-white leading-[1.02] tracking-[-0.04em] max-w-4xl mx-auto">
@@ -48,8 +50,8 @@ const faqSchema = faqPageSchema(f.homeFaq.items);
         </h1>
         <p class="mt-8 max-w-xl mx-auto text-lg sm:text-xl text-white/85 leading-[1.5]">{p.heroSubtitle}</p>
         <div class="mt-12 flex flex-wrap gap-3 justify-center">
-          <a href="/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium">Start a project</a>
-          <a href="/portfolio" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full border border-white/30 text-white hover:border-white/70 transition-colors text-base font-medium">See the work →</a>
+          <a href="/contact" data-magnetic class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium">Start a project</a>
+          <a href="/portfolio" data-magnetic class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full border border-white/30 text-white hover:border-white/70 transition-colors text-base font-medium">See the work →</a>
         </div>
       </div>
     </section>
@@ -82,7 +84,7 @@ const faqSchema = faqPageSchema(f.homeFaq.items);
     <section class="section bg-bg" aria-labelledby="services-heading">
       <div class="container-page">
         <div class="max-w-3xl mb-14">
-          <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{p.servicesEyebrow}</p>
+          <p class="text-xs tracking-[0.18em] uppercase text-accent-on-surface font-medium">{p.servicesEyebrow}</p>
           <h2 id="services-heading" class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl text-text font-semibold tracking-[-0.03em] leading-[1.05]">{p.servicesHeading}</h2>
           <p class="mt-6 text-lg text-text-muted leading-[1.5] max-w-2xl">{p.servicesBody}</p>
         </div>
@@ -104,6 +106,7 @@ const faqSchema = faqPageSchema(f.homeFaq.items);
                   class="svc-card-photo__img"
                 />
                 <div class="svc-card-photo__veil" aria-hidden="true"></div>
+                <div class="svc-card-photo__glow" aria-hidden="true"></div>
                 <div class="relative">
                   <h3 class="font-display text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-white">{c.name}</h3>
                   <p class="mt-3 text-sm leading-relaxed max-w-md text-white/85">{c.tagline}</p>
@@ -122,8 +125,8 @@ const faqSchema = faqPageSchema(f.homeFaq.items);
     <section class="section bg-surface" aria-labelledby="portfolio-heading">
       <div class="container-page">
         <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
-          <div class="max-w-xl">
-            <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{p.portfolioEyebrow}</p>
+          <div class="max-w-xl min-w-0">
+            <p class="text-xs tracking-[0.18em] uppercase text-accent-on-surface font-medium">{p.portfolioEyebrow}</p>
             <h2 id="portfolio-heading" class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl text-text font-semibold tracking-[-0.03em] leading-[1.05]">{p.portfolioHeading}</h2>
           </div>
           <a href="/portfolio" class="text-sm text-text-muted hover:text-text transition-colors underline underline-offset-4">{p.portfolioAllLink}</a>
@@ -173,11 +176,11 @@ const faqSchema = faqPageSchema(f.homeFaq.items);
             <div class="hidden lg:block"></div>
           )}
           <div class="order-1 lg:order-2">
-            <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">{p.aboutEyebrow}</p>
+            <p class="text-xs tracking-[0.18em] uppercase text-accent-on-surface font-medium">{p.aboutEyebrow}</p>
             <h2 id="about-heading" class="mt-4 font-display text-4xl sm:text-5xl text-text font-semibold tracking-[-0.03em] leading-[1.05]">{p.aboutHeading}</h2>
             <div class="mt-8 space-y-6 text-lg text-text-muted leading-[1.6]">
               {p.aboutBody.map((para) => <p>{para}</p>)}
-              <p class="pt-2"><a href="/about" class="text-text font-medium underline underline-offset-4 hover:text-accent-deep transition-colors">{p.aboutReadMore}</a></p>
+              <p class="pt-2"><a href="/about" class="text-text font-medium underline underline-offset-4 hover:text-accent-on-surface transition-colors">{p.aboutReadMore}</a></p>
             </div>
           </div>
         </div>
@@ -194,7 +197,7 @@ const faqSchema = faqPageSchema(f.homeFaq.items);
         <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] leading-[1.05] max-w-2xl mx-auto">{p.ctaHeading}</h2>
         <p class="mt-6 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">{p.ctaBody}</p>
         <div class="mt-10">
-          <a href="/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-bg text-text hover:bg-accent hover:text-bg transition-colors text-base font-medium">Start a project</a>
+          <a href="/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium">Start a project</a>
         </div>
       </div>
     </section>

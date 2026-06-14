@@ -36,6 +36,11 @@
   --color-accent-light: #2997ff; /* Apple dark-mode system blue, AA on dark surfaces.
                                      5.55:1 on #1d1d1f (inverted-surface), 7.1:1 on #000.
                                      Use this on bg-inverted-* and inside .hero-dark. */
+  --color-accent-on-surface: #0058b8; /* accent used as TEXT on the page bg (eyebrows/links/icons).
+                                          Light: #0058b8 (= accent-deep, 7.31:1 vs bg). Night: #7cc0ff
+                                          (see .theme-night). Decoupled from --color-accent-deep so the
+                                          CTA-hover-fill role (darken) and the accent-text role can differ
+                                          per theme without either failing WCAG. */
   --color-border: #d2d2d7; /* Apple subtle 1px divider */
   --color-success: #28cd41;
   --color-warning: #ff9500;
@@ -90,4 +95,39 @@
   --tracking-display-sans: -0.022em;
   --tracking-display-serif-caps: 0.025em;
   --tracking-body: -0.005em;
+}
+
+/* ----------------------------------------------------------------------
+ * "Berlin night" dark register — scoped override (redesign 2026-06-13).
+ *
+ * Applied to <body> on MARKETING pages via BaseLayout's `theme` prop /
+ * route-auto-derivation. Legal + print pages (/privacy, /imprint, /contract)
+ * get `.theme-light` (no overrides → the light @theme defaults above), so
+ * legal-page lightness is structural, not opt-out.
+ *
+ * Mechanism: these redefine the color custom properties for the body subtree;
+ * every Tailwind v4 color utility (bg-bg, text-text, border-border, …) reads
+ * `var(--color-*)`, so the whole token-driven surface flips with no markup edit.
+ * The canonical motion/easing/tracking/radii/spacing tokens above are NOT
+ * theme-dependent and are inherited unchanged.
+ *
+ * Palette source: redesign/index.html (v1 prototype). AA verified per COLOR.md §6.
+ * ---------------------------------------------------------------------- */
+.theme-night {
+  --color-bg: #060b14; /* deep night base */
+  --color-surface: #0c1a2b; /* favicon blue — raised surface */
+  --color-surface-elev: #0e1c2f;
+  --color-text: #f4f6fa; /* ~17:1 on bg */
+  --color-text-muted: #93a3ba; /* ~6.9:1 on bg, AA PASS */
+  --color-text-subtle: #7c8ba1; /* ~5.2:1 on bg, AA PASS (normal text) */
+  --color-accent: #0071e3; /* CTA fill — unchanged; white text on it = 4.6:1 AA */
+  --color-accent-deep: #0058b8; /* CTA hover = darken (per COLOR.md); white on it = 7.3:1 — correct on dark too */
+  --color-accent-light: #7cc0ff; /* lightest accent text on dark ≈ 9:1 */
+  --color-accent-on-surface: #7cc0ff; /* accent TEXT on the night bg ≈ 9:1 (eyebrows/links/icons) */
+  --color-border: #1b2940; /* hairline */
+  /* Inverted "tile" bands stay the deepest surfaces on a dark page (rhythm). */
+  --color-inverted-bg: #03070e;
+  --color-inverted-surface: #0c1a2b;
+  --color-inverted-text: #f4f6fa;
+  --color-inverted-text-muted: #93a3ba;
 }

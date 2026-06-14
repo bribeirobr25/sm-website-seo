@@ -1,0 +1,49 @@
+---
+/**
+ * HeroAurora — the v1 "Berlin night" WebGL aurora layer for page heroes.
+ *
+ * Drops INSIDE a `.hero-dark` block, after the (subtle) photo + veil and before
+ * the hero content. Renders two things:
+ *   1. a CSS radial-gradient fallback (always painted — no-JS / no-WebGL safe)
+ *   2. a <canvas> that the global motion island (src/scripts/motion.ts) paints
+ *      the raw-WebGL aurora onto, fading it in once it compiles.
+ *
+ * Decorative only (aria-hidden). The hero content sits above via the hero's
+ * existing `.relative` wrapper (later in source order). Motion safety lives in
+ * the island: prefers-reduced-motion + no-WebGL both fall back to the CSS glow.
+ */
+---
+
+<div class="hero-aurora" aria-hidden="true">
+  <canvas class="hero-aurora__gl"></canvas>
+</div>
+
+<style>
+  .hero-aurora {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* CSS fallback glow — the v1 hero base glow, painted even without WebGL/JS */
+    background:
+      radial-gradient(120% 70% at 72% 8%, rgba(0, 113, 227, 0.3), transparent 60%),
+      radial-gradient(90% 60% at 12% 88%, rgba(33, 84, 141, 0.34), transparent 60%);
+  }
+  .hero-aurora__gl {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    /* Balanced register: aurora and photo both clearly present (~50/50). The
+       island fades the canvas to this target once the shader paints. */
+    opacity: 0;
+    transition: opacity var(--motion-reveal, 800ms) ease;
+  }
+  .hero-aurora__gl.is-painted {
+    opacity: 0.55;
+  }
+  /* No-WebGL / reduced-motion: the island never shows the canvas, the CSS glow
+     above remains. Keep the canvas invisible if the island never runs. */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-aurora__gl { display: none; }
+  }
+</style>

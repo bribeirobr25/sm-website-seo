@@ -25,7 +25,7 @@ const inputCls =
       <ul class="mt-6 space-y-3 list-none p-0">
         {g.checklist.map((c) => (
           <li class="flex items-start gap-3 text-text leading-relaxed">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-1" aria-hidden="true"><path d="m9 11 3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-on-surface shrink-0 mt-1" aria-hidden="true"><path d="m9 11 3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
             <span>{c}</span>
           </li>
         ))}
@@ -58,7 +58,7 @@ const inputCls =
         <input type="email" id="gbp-email" name="email" required maxlength="320" placeholder={g.emailPlaceholder} class={inputCls} />
       </div>
 
-      <button type="submit" id="gbp-submit" class="inline-flex items-center justify-center w-full px-7 py-3 min-h-[52px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-base font-medium disabled:opacity-60 disabled:cursor-wait">
+      <button type="submit" id="gbp-submit" class="inline-flex items-center justify-center w-full px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium disabled:opacity-60 disabled:cursor-wait">
         <span id="gbp-submit-label">{g.submit}</span>
       </button>
       <p class="text-xs text-text-muted leading-relaxed">{g.privacyNote}</p>

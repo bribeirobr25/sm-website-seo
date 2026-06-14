@@ -55,6 +55,12 @@ html {
     line-height: 1.07; /* tighter than 1.15, Apple hero typography signature */
     margin: 0;
     letter-spacing: var(--tracking-display-sans); /* -0.022em, Apple's signature negative tracking */
+    /* i18n safety: long German compound words (e.g. "branchenübergreifend") can
+       exceed a mobile heading's line box. hyphens:auto hyphenates them where the
+       browser has a dictionary (lang is set on <html>); break-word is the
+       no-dictionary fallback. No-op for English/short words. */
+    hyphens: auto;
+    overflow-wrap: break-word;
   }
 
   p {
@@ -159,6 +165,32 @@ html {
   }
 }
 
+/* Hero word-split entrance (v1). The motion island wraps each hero headline
+   word in `.hero-word` (skipped under prefers-reduced-motion / no-JS). Content-
+   safe: the base rule sets NO opacity — words are hidden only by the animation's
+   backwards fill, so if the animation never runs the words stay visible. The
+   global reduced-motion clamp also collapses this to an instant reveal. */
+.hero-word {
+  display: inline-block;
+  /* defensive: an inline-block doesn't break internally, so allow a too-long
+     hero word (German compounds) to break rather than overflow the viewport. */
+  overflow-wrap: anywhere;
+  animation: hero-word-rise var(--motion-warm, 500ms)
+    var(--ease-expo-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  animation-delay: var(--hw-delay, 0ms);
+  will-change: transform, opacity;
+}
+@keyframes hero-word-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Apple-style hero gradient backdrop, radial cool glow */
 .bg-hero-gradient {
   background: radial-gradient(ellipse 80% 50% at 50% 20%, rgba(0, 113, 227, 0.06), transparent 60%),
@@ -175,7 +207,10 @@ html {
    White cascade scoped to the card so children inherit white before the
    body `color: var(--color-text)` rule can shadow them. */
 .svc-card-photo {
-  background-color: var(--color-text);
+  /* Dark backdrop behind the photo+veil. Use an inverted-surface token so the
+     fallback (if the image 404s) stays dark on BOTH themes — on night
+     var(--color-text) would be near-white and white-on-white the text. */
+  background-color: var(--color-inverted-surface);
   color: #ffffff;
 }
 .svc-card-photo__img {
@@ -199,13 +234,35 @@ html {
     rgba(0, 0, 0, 0.22) 100%
   );
 }
+/* v1 cursor glow — a blue radial light that follows the pointer over a service
+   card (the motion island sets --mx/--my). Sits above the veil, below the copy.
+   Fine-pointer enhancement only; opacity is 0 until hover. */
+.svc-card-photo__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--motion-base, 320ms) ease;
+  background: radial-gradient(
+    420px 240px at var(--mx, 50%) var(--my, 50%),
+    rgba(0, 113, 227, 0.28),
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+}
+.svc-card-photo:hover .svc-card-photo__glow {
+  opacity: 1;
+}
 
 /* Dark cinematic hero, photo as backdrop, heavy veil for AA contrast,
    subtle Apple-blue radial glow reinforces the dark+blue+white register.
    Same scoped white cascade as .svc-card-photo to defeat the body color rule. */
 .hero-dark {
-  background-color: #000;
-  color: #ffffff;
+  /* Tokenized so the hero band follows the theme: near-black on light pages
+     (unchanged), the night deepest-surface on marketing pages. The veil below
+     is a black gradient (theme-agnostic) that guarantees AA over any photo. */
+  background-color: var(--color-inverted-bg);
+  color: var(--color-inverted-text);
 }
 .hero-dark__img {
   position: absolute;

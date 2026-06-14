@@ -1,6 +1,7 @@
 ---
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
+import HeroAurora from '@/components/sections/HeroAurora.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { PAGE_STRINGS } from '@/lib/page-strings';
 import { PORTFOLIO, type PortfolioEntry } from '@/lib/portfolio';
@@ -42,6 +43,7 @@ const articleSchema = portfolioCaseSchema({
     <section class="hero-dark relative overflow-hidden">
       <img src={entry.imageSrc} alt={entry.imageAlt[locale]} width="2400" height="1500" loading="eager" fetchpriority="high" decoding="async" class="hero-dark__img" />
       <div class="hero-dark__veil" aria-hidden="true"></div>
+      <HeroAurora />
       <div class="relative container-page pt-12 pb-24 sm:pt-16 sm:pb-32 lg:pb-40">
         <a href="/portfolio" class="inline-block mb-8 text-sm text-white/75 hover:text-white transition-colors">{p.backToPortfolio}</a>
         <div class="max-w-3xl">
@@ -55,11 +57,11 @@ const articleSchema = portfolioCaseSchema({
     <section class="section bg-bg">
       <div class="container-page grid lg:grid-cols-[2fr_1fr] gap-12 lg:gap-20">
         <div>
-          <p class="text-xs tracking-[0.18em] uppercase text-accent-deep font-medium">Case study</p>
+          <p class="text-xs tracking-[0.18em] uppercase text-accent-on-surface font-medium">Case study</p>
           <h2 class="mt-4 font-display text-3xl sm:text-4xl font-semibold tracking-[-0.02em] leading-[1.15] text-text">About this project</h2>
           <p class="mt-8 text-lg text-text-muted leading-[1.65]">{entry.longDescription[locale]}</p>
           <div class="mt-12 flex flex-wrap gap-3">
-            <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-sm font-medium">
+            <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-sm font-medium">
               {p.visitLive} →
             </a>
             <a href="/contact" class="inline-flex items-center justify-center px-6 py-3 min-h-[48px] rounded-full border border-border text-text hover:border-text transition-colors text-sm font-medium">
@@ -84,7 +86,7 @@ const articleSchema = portfolioCaseSchema({
           <div>
             <p class="text-[11px] tracking-[0.12em] uppercase text-text-muted font-medium">{p.visitLive}</p>
             <p class="mt-2 text-sm">
-              <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="text-accent-deep hover:underline underline-offset-4">{p.visitLive} →</a>
+              <a href={entry.liveUrl} target="_blank" rel="noopener noreferrer" class="text-accent-on-surface hover:underline underline-offset-4">{p.visitLive} →</a>
             </p>
           </div>
         </aside>

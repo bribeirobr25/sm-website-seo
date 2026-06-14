@@ -1,6 +1,7 @@
 ---
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
+import HeroAurora from '@/components/sections/HeroAurora.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { PAGE_STRINGS } from '@/lib/page-strings';
 import { heroSrcset } from '@/lib/srcset';
@@ -28,6 +29,7 @@ const p = PAGE_STRINGS[locale].about;
         />
       )}
       <div class="hero-dark__veil" aria-hidden="true"></div>
+      <HeroAurora />
       <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 lg:pt-44 lg:pb-40 max-w-3xl">
         <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{p.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>
@@ -53,7 +55,7 @@ const p = PAGE_STRINGS[locale].about;
       <div class="container-page py-16 text-center">
         <p class="text-text-muted text-sm italic">{p.foundedNote}</p>
         <div class="mt-8">
-          <a href="/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-text text-bg hover:bg-accent-deep transition-colors text-base font-medium">Start a project</a>
+          <a href="/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium">Start a project</a>
         </div>
       </div>
     </section>

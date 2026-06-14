@@ -39,6 +39,9 @@ interface Props {
   localePath?: string;
   /** Pass per-page extra schema (Article / BreadcrumbList already auto-emitted) */
   extraSchema?: Record<string, unknown> | null;
+  /** Visual register (redesign 2026-06-13). Omit to auto-derive from the route:
+   *  legal/print pages → light, everything else → night. Explicit value wins. */
+  theme?: 'light' | 'night';
 }
 
 const {
@@ -50,7 +53,23 @@ const {
   locale = 'en',
   localePath,
   extraSchema = null,
+  theme,
 } = Astro.props;
+
+// "Berlin night" register applies to all marketing pages; legal/print pages stay
+// light + print-friendly. Auto-derived from the route so a forgotten prop on a
+// future legal page still resolves light (structural, not opt-out). An explicit
+// `theme` prop always wins. The class drives the `.theme-night` token overrides
+// in styles/tokens.css.
+const LIGHT_ROUTE_PATTERNS = ['/privacy', '/imprint', '/contract'];
+const bodyTheme =
+  theme === 'light'
+    ? 'theme-light'
+    : theme === 'night'
+      ? 'theme-night'
+      : LIGHT_ROUTE_PATTERNS.some((p) => Astro.url.pathname.includes(p))
+        ? 'theme-light'
+        : 'theme-night';
 
 const t = SITE.i18n[locale];
 const localizedDescription = description ?? t.tagline;
@@ -174,10 +193,10 @@ const breadcrumbSchema = breadcrumbItems
       });
     </script>
   </head>
-  <body>
+  <body class:list={[bodyTheme]}>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-accent focus:text-bg focus:px-4 focus:py-2 focus:z-50"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-accent focus:text-white focus:px-4 focus:py-2 focus:z-50"
     >
       {locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}
     </a>
@@ -206,6 +225,7 @@ const breadcrumbSchema = breadcrumbItems
 
     <script>
       import '@/lib/analytics';
+      import '@/scripts/motion';
     </script>
   </body>
 </html>

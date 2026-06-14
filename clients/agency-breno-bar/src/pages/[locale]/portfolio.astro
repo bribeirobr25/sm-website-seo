@@ -1,6 +1,7 @@
 ---
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
+import HeroAurora from '@/components/sections/HeroAurora.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { PAGE_STRINGS } from '@/lib/page-strings';
 import { PORTFOLIO } from '@/lib/portfolio';
@@ -26,6 +27,7 @@ const prefix = LOCALE_PREFIX[locale];
   <main id="main">
     <section class="hero-dark relative overflow-hidden">
       <div class="hero-dark__veil" aria-hidden="true"></div>
+      <HeroAurora />
       <div class="relative container-page pt-28 pb-24 sm:pt-36 sm:pb-32 max-w-3xl">
         <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{p.heroEyebrow}</p>
         <h1 class="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{p.heroTitle}</h1>

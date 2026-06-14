@@ -27,7 +27,7 @@ const check = 'M20 6 9 17l-5-5';
       ]}
     >
       {tier.popular && (
-        <span class="absolute -top-3 left-8 inline-flex items-center rounded-full bg-accent text-bg text-xs font-medium px-3 py-1">
+        <span class="absolute -top-3 left-8 inline-flex items-center rounded-full bg-accent text-white text-xs font-medium px-3 py-1">
           {ui.popular}
         </span>
       )}
@@ -48,7 +48,7 @@ const check = 'M20 6 9 17l-5-5';
           const note = typeof f === 'string' ? null : f.note;
           return (
             <li class="flex items-start gap-2.5 text-sm text-text leading-relaxed">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-0.5" aria-hidden="true"><path d={check}></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-on-surface shrink-0 mt-0.5" aria-hidden="true"><path d={check}></path></svg>
               <span>
                 {label}
                 {note && (
@@ -67,8 +67,8 @@ const check = 'M20 6 9 17l-5-5';
         class:list={[
           'mt-8 inline-flex items-center justify-center w-full px-6 py-3 min-h-[48px] rounded-full text-base font-medium transition-colors',
           tier.popular
-            ? 'bg-accent text-bg hover:bg-accent-deep'
-            : 'bg-text text-bg hover:bg-accent-deep',
+            ? 'bg-accent text-white hover:bg-accent-deep'
+            : 'border border-text-muted/60 text-text hover:border-text-muted hover:bg-surface',
         ]}
       >
         {tier.cta}

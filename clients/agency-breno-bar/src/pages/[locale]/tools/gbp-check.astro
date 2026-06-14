@@ -2,6 +2,7 @@
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
 import GbpCheckTool from '@/components/sections/GbpCheckTool.astro';
+import HeroAurora from '@/components/sections/HeroAurora.astro';
 import ContactBar from '@/components/ui/ContactBar.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { LOCALE_PREFIX, type Locale } from '@/lib/site';
@@ -28,6 +29,7 @@ const pricingHref = `${prefix}/pricing`;
   <main id="main">
     <section class="hero-dark relative overflow-hidden">
       <div class="hero-dark__veil" aria-hidden="true"></div>
+      <HeroAurora />
       <div class="relative container-page pt-24 pb-20 sm:pt-32 sm:pb-24 max-w-3xl">
         <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{g.eyebrow}</p>
         <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{g.title}</h1>
@@ -42,7 +44,7 @@ const pricingHref = `${prefix}/pricing`;
         <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-[1.06] max-w-2xl mx-auto">{g.ctaHeading}</h2>
         <p class="mt-5 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">{g.ctaBody}</p>
         <div class="mt-9">
-          <a href={pricingHref} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-bg text-text hover:bg-accent hover:text-bg transition-colors text-base font-medium">{g.ctaButton}</a>
+          <a href={pricingHref} class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium">{g.ctaButton}</a>
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 ---
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
+import HeroAurora from '@/components/sections/HeroAurora.astro';
 import ContactBar from '@/components/ui/ContactBar.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import type { Locale } from '@/lib/site';
@@ -25,6 +26,7 @@ const h = TOOLS[locale].hub;
   <main id="main">
     <section class="hero-dark relative overflow-hidden">
       <div class="hero-dark__veil" aria-hidden="true"></div>
+      <HeroAurora />
       <div class="relative container-page pt-24 pb-20 sm:pt-32 sm:pb-24 max-w-3xl">
         <p class="text-xs tracking-[0.18em] uppercase text-accent-light font-medium mb-6">{h.eyebrow}</p>
         <h1 class="font-display text-[clamp(2.5rem,6vw,5rem)] font-semibold text-white leading-[1.04] tracking-[-0.03em]">{h.title}</h1>
@@ -38,7 +40,7 @@ const h = TOOLS[locale].hub;
           <a href={item.href} class="reveal-rise group rounded-[22px] bg-surface border border-border p-8 hover:border-text/30 transition-colors flex flex-col">
             <h2 class="font-display text-2xl font-semibold text-text tracking-[-0.02em]">{item.name}</h2>
             <p class="mt-3 text-text-muted leading-relaxed flex-1">{item.desc}</p>
-            <p class="mt-6 text-sm font-medium text-accent-deep group-hover:translate-x-1 transition-transform">{item.cta} →</p>
+            <p class="mt-6 text-sm font-medium text-accent-on-surface group-hover:translate-x-1 transition-transform">{item.cta} →</p>
           </a>
         ))}
       </div>

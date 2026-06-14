@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header.astro';
  * (anti-slop: no find-and-replace city swaps). Emits Service + FAQPage JSON-LD.
  */
 import Faq from '@/components/sections/Faq.astro';
+import HeroAurora from '@/components/sections/HeroAurora.astro';
 import ContactBar from '@/components/ui/ContactBar.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { LOCAL_PAGES } from '@/lib/local-pages';
@@ -55,6 +56,7 @@ const related = LOCAL_PAGES.filter((p) => p.vertical.slug === v.slug && p.bezirk
   <main id="main">
     <section class="hero-dark relative overflow-hidden">
       <div class="hero-dark__veil" aria-hidden="true"></div>
+      <HeroAurora />
       <div class="relative container-page pt-24 pb-20 sm:pt-32 sm:pb-24 max-w-3xl">
         <nav aria-label="Brotkrumen" class="mb-6 text-sm text-white/70">
           <a href="/webdesign-berlin" class="hover:text-white transition-colors">Webdesign Berlin</a>
@@ -84,7 +86,7 @@ const related = LOCAL_PAGES.filter((p) => p.vertical.slug === v.slug && p.bezirk
         <ul class="mt-10 grid sm:grid-cols-2 gap-x-10 gap-y-4 list-none p-0 max-w-4xl">
           {v.services.map((s) => (
             <li class="flex items-start gap-3 text-text leading-relaxed">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-deep shrink-0 mt-1" aria-hidden="true"><path d={check}></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-on-surface shrink-0 mt-1" aria-hidden="true"><path d={check}></path></svg>
               <span>{s}</span>
             </li>
           ))}
@@ -110,7 +112,7 @@ const related = LOCAL_PAGES.filter((p) => p.vertical.slug === v.slug && p.bezirk
           {related.map((r) => (
             <li>
               <a href={`/webdesign-berlin/${r.slug}`} class="inline-flex items-center gap-1.5 rounded-full bg-surface border border-border px-4 py-2 min-h-[44px] text-sm text-text hover:border-text/30 transition-colors">
-                {r.bezirk.name} <span class="text-accent-deep" aria-hidden="true">→</span>
+                {r.bezirk.name} <span class="text-accent-on-surface" aria-hidden="true">→</span>
               </a>
             </li>
           ))}
@@ -123,7 +125,7 @@ const related = LOCAL_PAGES.filter((p) => p.vertical.slug === v.slug && p.bezirk
         <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.05] max-w-2xl mx-auto">{v.pageNoun} in {b.name}?</h2>
         <p class="mt-6 text-lg text-inverted-text-muted leading-[1.5] max-w-xl mx-auto">Erzähl uns kurz von deinem Betrieb. Wir melden uns innerhalb eines Werktags, mit ehrlichem Rat, nicht mit Verkaufsdruck.</p>
         <div class="mt-10">
-          <a href="/de/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-bg text-text hover:bg-accent hover:text-bg transition-colors text-base font-medium">Kontakt aufnehmen</a>
+          <a href="/de/contact" class="inline-flex items-center justify-center px-7 py-3 min-h-[52px] rounded-full bg-accent text-white hover:bg-accent-deep transition-colors text-base font-medium">Kontakt aufnehmen</a>
         </div>
       </div>
     </section>
