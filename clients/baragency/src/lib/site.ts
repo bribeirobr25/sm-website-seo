@@ -92,7 +92,8 @@ export const SITE = {
     iban: 'DE84 1001 0178 5276 1098 68',
     bic: 'REVODEB2',
     bankName: 'Revolut Bank UAB, Zweigniederlassung Deutschland',
-    bankAddress: 'FORA Linden Palais, Unter den Linden 40, 10117 Berlin, Germany',
+    bankAddressStreet: 'FORA Linden Palais, Unter den Linden 40',
+    bankAddressCity: '10117 Berlin, Germany',
     paypal: 'breno.ribeirobr@gmail.com',
   },
 

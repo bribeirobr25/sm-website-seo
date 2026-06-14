@@ -301,9 +301,9 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
               <p class="contract-p" style="font-weight:600;margin:0 0 2px 0;">{c.s3PaymentHeading}</p>
               <p class="contract-p" style="margin:0;">{c.s3PaymentReceiver}: {SITE.payment.receiver}</p>
               <p class="contract-p" style="font-weight:600;margin:8px 0 2px 0;">{c.s3PayChooseOne}</p>
-              <p class="contract-p" style="margin:0;">{c.s3PaymentBank}: IBAN {SITE.payment.iban} · BIC {SITE.payment.bic} · {SITE.payment.bankName}, {SITE.payment.bankAddress}</p>
+              <p class="contract-p" style="margin:0;"><strong>{c.s3PaymentBank}:</strong> IBAN {SITE.payment.iban}<br />BIC {SITE.payment.bic} · {SITE.payment.bankName},<br />{SITE.payment.bankAddressStreet},<br />{SITE.payment.bankAddressCity}</p>
               <p class="contract-p" style="margin:1px 0;color:var(--color-text-subtle);font-weight:600;">{c.s3PayOr}</p>
-              <p class="contract-p" style="margin:0;">PayPal: {SITE.payment.paypal}</p>
+              <p class="contract-p" style="margin:0;"><strong>PayPal:</strong> {SITE.payment.paypal}</p>
               <p class="contract-p" style="margin:8px 0 0 0;"><strong>{c.s3PaymentReference}:</strong> <span class="out-contract-no tabular" style="font-weight:600;">…</span></p>
               <p class="contract-p" style="margin:0;"><strong>{c.s3PaymentSender}:</strong> <span class="out-client-business-name">…</span></p>
             </div>
