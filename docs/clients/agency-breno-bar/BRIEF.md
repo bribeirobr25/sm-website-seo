@@ -14,7 +14,7 @@
 
 ## Business positioning
 
-Voice "Websites that bring you customers." (was "Websites worth being proud of."), Apple-inspired register. **4-offering catalog** for owner-led businesses (rebranded 2026-06-09):
+Voice "Websites that bring you customers." (was "Websites worth being proud of."). Visual register: originally Apple-inspired, **re-skinned 2026-06-13 to the dark "Berlin night" look** (working tree, not yet deployed — see `design.md` § "Berlin night"). **4-offering catalog** for owner-led businesses (rebranded 2026-06-09):
 
 1. **Web Design** — custom, mobile-first marketing site (detail page `/services/website`)
 2. **SEO and Local Listing** — Google/Maps/Apple Maps + directories (detail page `/services/seo`)

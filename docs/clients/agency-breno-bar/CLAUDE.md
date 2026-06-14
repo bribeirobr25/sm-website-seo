@@ -4,7 +4,7 @@
 Live URL: https://agency-breno-bar.vercel.app (noindex until legal DRAFT items resolve).
 **Brand display name is "BAR Agency"** (rebranded 2026-06-09 from "breno-bar"). The folder slug (`clients/agency-breno-bar/`), the Vercel URL (`agency-breno-bar.vercel.app`), and the email (`hello@breno-bar.com`) keep the `breno-bar` form — those are infra/contact identifiers, not the display brand. `SITE.name`/`shortName` = "BAR Agency"; `SITE.legal.legalEntity` = "BAR Agency, Einzelunternehmer".
 
-**Inherits:** repo-root `CLAUDE.md` and every rule in `docs/design/`. No matching per-vertical template — the agency itself is `professional-services` with an Apple-inspired premium register that's deliberately distinct from every other demo built on the same library.
+**Inherits:** repo-root `CLAUDE.md` and every rule in `docs/design/`. No matching per-vertical template — the agency itself is `professional-services` with a premium register **(originally Apple-inspired; re-skinned 2026-06-13 to the dark "Berlin night" register — see the 2026-06-13 section below + `design.md`)** that's deliberately distinct from every other demo built on the same library. *(The redesign is in the working tree, **not yet committed/deployed** — the live Vercel URL still shows the Apple-light version.)*
 
 ## 2026-06-09 to 12 — rebrand + catalog/pricing/contract overhaul
 
@@ -16,6 +16,17 @@ Live URL: https://agency-breno-bar.vercel.app (noindex until legal DRAFT items r
 - **Portfolio**: Eiscafé Bellini (gastronomy/gelateria) replaced myPlanny.
 - **`/tools`** added to the header nav (2nd, between Services and Pricing) + footer.
 - **About** page reworked to a "Why choose us" hero + 4-reason grid (EN/DE/PT-BR).
+
+## 2026-06-13 — "Berlin night" redesign (dark re-skin)
+
+UI/UX-only re-skin of the whole site from the Apple-light register to a dark "Berlin night" register (ported from `redesign/index.html` v1). No content/route/schema changes. **Working tree only — not yet committed.** Full design rationale in `docs/clients/agency-breno-bar/design.md` (§ "Berlin night register"); rollout plan + audit in `docs/audit/REDESIGN-ROLLOUT-PLAN-2026-06-13.md` (+ `…-AUDIT-…`).
+
+- **Theme = scoped `.theme-night`, not a hard flip.** Light tokens stay the default `@theme`; `.theme-night` in `tokens.css` overrides the colour vars. `BaseLayout` gained a `theme?: 'light'|'night'` prop **auto-derived from the route** (`/privacy`, `/imprint`, `/contract` → light; else night). Legal/print pages stay light + print-friendly **structurally** (a forgotten prop still resolves light). `noindex` untouched.
+- **New token `--color-accent-on-surface`** decouples accent *text* (eyebrows/links/icons; night `#7cc0ff`) from `--color-accent-deep` (CTA hover-fill, stays dark). All `text-accent-deep` text usages migrated to it.
+- **CTAs** normalised to `bg-accent text-white hover:bg-accent-deep` (AA on all states); pricing secondary tiers are **ghost** (`border-text-muted/60`, 3.24:1).
+- **Hero aurora + motion island:** `src/components/sections/HeroAurora.astro` (WebGL aurora canvas + CSS-gradient fallback, painted at ~0.55 over the kept photo) on **every marketing hero**; `src/scripts/motion.ts` (loaded once via BaseLayout) does the raw shader + GSAP magnetic CTAs (lazy) + vanilla word-split entrance + count-up numbers + service-card cursor-glow. **All motion-safe:** reduced-motion / no-JS / failed-GSAP / no-WebGL degrade to the static photo + visible content; LCP stays the hero photo. `gsap` added as a dependency (not CDN).
+- **Chrome:** glass nav + accent logo dot + nav-link hover underline; desktop-nav threshold moved `md`→`lg` (hamburger up to 1024) to fix a 768 header overflow. **Footer unchanged** (inherits dark tokens). German/PT-BR home section headings drop to `text-3xl` on mobile (long-compound overflow); `hyphens:auto`+`overflow-wrap:break-word` on all headings.
+- **Carve-outs preserved:** home About-teaser image, home FAQ + `FAQPage` schema, the 4-column Footer.
 
 ## Stack
 
@@ -44,7 +55,7 @@ PATH=$HOME/.nvm/versions/node/v21.7.3/bin:$PATH vercel --prod --yes
 
 EN at root · DE at `/de/...` · pt-BR at `/pt-br/...`:
 
-- `/` — Apple-style hero + stats strip (10 / 6 / 4) + 4-tile alternating-dark services + 3 featured portfolio + about teaser + dark-bg CTA
+- `/` — dark cinematic hero (WebGL aurora + split-word headline) + stats strip (10 / 6 / 4) + 4-tile services (photo cards + cursor-glow) + 3 featured portfolio + about teaser (image kept) + dark-bg CTA
 - `/services` — overview of 4 services (alternating dark/light tiles)
 - `/services` overview — the 4-offering catalog (Web Design · SEO and Local Listing · E-Commerce and Business Email · AI Solutions/Booking). `/services/[slug]` detail pages exist only for **Web Design + SEO** (×2); `google-business`/`social-media` are retired as standalone pages (still in `ServiceSlug` for portfolio tagging).
 - `/portfolio` — 9-entry grid (6 internal demos + diBoaS + bible-tt + Eiscafé Bellini)
@@ -53,7 +64,7 @@ EN at root · DE at `/de/...` · pt-BR at `/pt-br/...`:
 - `/contact` — Resend-wired form + alternatives (email, LinkedIn, X)
 - `/privacy` — DSGVO 9-section template + dedicated `Contact form` section explaining the Resend flow + 12-month inquiry retention
 - `/imprint` — § 5 TMG template
-- `/404`, `/500` — Apple-clean error pages
+- `/404`, `/500` — dark error pages (one `<h1>` each)
 - `/api/contact` (SSR-only) — POST endpoint; honeypot + 5 s min-fill-time + IP-keyed rate limit + HTML-escape + Reply-To + auto-confirmation
 
 ## Configuration-as-Code
@@ -64,8 +75,10 @@ EN at root · DE at `/de/...` · pt-BR at `/pt-br/...`:
 - `src/lib/services.ts` — service-slug taxonomy + portfolio cross-references
 - `src/lib/seo/schema.ts` — `businessSchema()` + `portfolioCaseSchema()` + (2026-06-04) `faqPageSchema()` + `localServiceSchema()`
 - **(2026-06-04 inbound-funnel)** `src/lib/funnel.ts` — trilingual `FUNNEL` content (promises · reviews · trust badges · home FAQ · pricing · website-check) · `src/lib/tools.ts` — trilingual `TOOLS` content (scan + gbp + hub) · `src/lib/local-pages.ts` — **German-only** `VERTICALS` × `BEZIRKE` → `LOCAL_PAGES` · `src/lib/contact-channels.ts` — hidden WhatsApp/phone config (F8). All four use compile-time `Record<Locale,…>` parity (like `portfolio.ts`), so they stay OUT of the `validate-translations` runtime check.
-- `src/styles/tokens.css` — Apple-inspired palette (#fbfbfd / #1d1d1f / #0071e3) + 22-px radii + Apple-restrained shadows
-- `src/styles/global.css` — Inter-tuned typography + reveal-on-scroll (`animation-timeline: view()`) + bg-hero-gradient + bg-noise utilities
+- `src/styles/tokens.css` — light `@theme` palette (legal/print baseline: #fbfbfd / #1d1d1f / #0071e3) **+ the `.theme-night` dark-register override** (#060b14 / #0c1a2b / #f4f6fa / accent #0071e3 + `--color-accent-on-surface` #7cc0ff) + 22-px radii. See design.md § "Berlin night".
+- `src/styles/global.css` — Inter typography (+`hyphens:auto`/`overflow-wrap` on headings) + reveal-on-scroll (`animation-timeline: view()`) + `.hero-word` word-split + `.svc-card-photo__glow` cursor-glow + bg-hero-gradient/bg-noise
+- `src/components/sections/HeroAurora.astro` — WebGL aurora layer (canvas + CSS-gradient fallback) dropped into every marketing hero
+- `src/scripts/motion.ts` — motion island (raw WebGL shader + GSAP magnetic CTAs + word-split + count-up + cursor-glow), loaded once via BaseLayout; all motion-safe
 
 ## Validation gates
 
@@ -81,7 +94,7 @@ Before flipping `noindex` to allow indexing:
 | Berlin Anmeldung address (street + Bezirk + PLZ) | `src/lib/site.ts` `address.*` | ✅ CONFIRMED 2026-06-09 — Strausberger Pl. 11, 10243 Berlin, Friedrichshain-Kreuzberg |
 | USt-IdNr (Finanzamt nach Anmeldung) | `src/lib/site.ts` `legal.taxId` | ✅ RESOLVED 2026-06-09 — **Kleinunternehmer § 19 UStG** (no USt-IdNr; `legal.kleinunternehmer: true`; imprint VAT section auto-hidden, contract shows the Kleinunternehmer line) |
 | Domain — real `breno-bar.com` with MX + Resend verification | Vercel Domains + Resend dashboard | DRAFT |
-| Resend `RESEND_API_KEY` + `RESEND_FROM` env vars | Vercel project env vars | DRAFT (contact + gbp-check forms return 503 until set) |
+| Resend `RESEND_API_KEY` + `RESEND_FROM` + `NOTIFICATION_EMAIL` env vars | Vercel project env vars (+ local `.env` for dev) | **DRAFT** — **email is not yet wired.** Both the **`/contact` form** and the **`/tools/gbp-check`** lead form return a friendly 503 ("Service temporarily unavailable") until all three are set; the forms still render + validate client-side. All three vars are read in `api/contact.ts` + `api/gbp-check.ts`; full list in `.env.example`. |
 | **(funnel) Subscription prices** | `src/lib/funnel.ts` `pricing.tiers[].price` | ✅ CONFIRMED 2026-06-06 — €219/€390/€570 per month, no setup |
 | **(funnel) Lawyer to FINALIZE subscription legal docs** — the plan-driven `/contract` + `/de/contract` (`contract-strings.ts`, plain-language subscription clauses § 3 monthly + optional 18-month buy-out, § 4 cancel→offline, § 5 licence-not-transfer; § 2 reads the selected plan from `/pricing`) · plus AGB · Datenschutz · buy-out contract. NOTE: the on-document "DRAFT — not lawyer-reviewed" red banner was **removed 2026-06-09** per owner request, so the contract no longer self-warns — the legal text is still unreviewed. | German lawyer | 🔴 REQUIRED before charging — not finalized legal text |
 | **(funnel) Public promise numbers** (preview/load/response time) | `src/lib/funnel.ts` `promises.items` | DRAFT — confirm we commit to these publicly |
@@ -94,12 +107,12 @@ Before flipping `noindex` to allow indexing:
 
 ## Imported components
 
-The agency site uses no canonical components from `docs/design/components/_impl/` directly. All page sections are inline + bespoke to give the Apple register its distinct visual identity. The 4 universal scaffold primitives ARE used:
+The agency site uses no canonical components from `docs/design/components/_impl/` directly. All page sections are inline + bespoke to give the register (now "Berlin night") its distinct visual identity. The 4 universal scaffold primitives ARE used (+ the redesign's `HeroAurora` section + `motion.ts` island — see the 2026-06-13 section):
 
 | Component | Source | Notes |
 |---|---|---|
 | `BaseLayout` | scaffold (extended) | Trilingual hreflang via `LOCALES` iteration; auto-emits BreadcrumbList + per-page schema. Skip-link + locale-detect script inlined here. |
-| `Header` | scaffold (rewritten) | Locale switcher dropdown (EN/DE/PT, 3 entries — distinct from bonsai's 4-locale variant). Apple-clean "Start a project" pill CTA. |
+| `Header` | scaffold (rewritten) | Locale switcher dropdown (EN/DE/PT, 3 entries — distinct from bonsai's 4-locale variant). Blue accent "Start a project" pill + accent logo dot + nav-link hover underline (Berlin-night chrome). Desktop nav at `lg`; hamburger < 1024 (fixes a 768 overflow). |
 | `Footer` | scaffold (rewritten) | 4-column layout. "Manage preferences" + Cookie reopen via `consent:reopen` event. |
 | `CookieBanner` | scaffold (unchanged) | Locale-driven consent strings from `SITE.i18n[locale].consent`. |
 

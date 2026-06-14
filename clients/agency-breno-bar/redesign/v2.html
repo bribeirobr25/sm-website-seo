@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>BAR Agency — Websites that bring you customers · Berlin</title>
+<meta name="description" content="A small Berlin studio for owner-led businesses. Design, build, hosting and care for one flat monthly fee — from €219/mo, no setup cost. EN · DE · PT-BR." />
+<!-- Prototype fonts via CDN for portability. Production self-hosts via @fontsource-variable
+     (Inter + Fraunces) per TECH.md dependency rules — see README. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@400;500;600;700;800&display=swap" />
+<style>
+/* ============================================================
+   BAR Agency — landing redesign v2 · "Berlin Atelier (night)"
+   Evolution of v1: same Berlin-night base + motion-safety + shader,
+   now with editorial-serif display (Fraunces), tonal/material rhythm
+   (deep night → raised glass → one LIGHT spotlight breather), and a
+   single restrained warm ember signal under the cold blue.
+   Mobile-first; motion is an enhancement, never a requirement.
+   ============================================================ */
+:root{
+  /* --- core night palette (carried from v1, AA-verified) --- */
+  --bg:#060b14;              /* deep night — page base */
+  --bg-2:#0c1a2b;            /* favicon blue — the brand anchor / raised surface */
+  --surface:#0e1c2f;
+  --hairline:#1b2940;
+  --text:#f4f6fa;
+  --muted:#93a3ba;
+  --accent:#0071e3;          /* brand blue — FILLS only (CTAs) */
+  --accent-text:#7cc0ff;     /* AA-safe accent for text on night (~9:1) */
+  /* --- new: one warm signal. Hairline glow / kicker tick / quote mark ONLY.
+         Never a second CTA color. This is the "human warmth" under the night. --- */
+  --ember:#e8b07a;
+  --ember-deep:#b46a2c;      /* ember for use on the LIGHT spotlight panel (AA-large) */
+  --live:#3ddc84;            /* semantic: "open for projects" availability dot */
+  /* --- spotlight (the one light breather) --- */
+  --paper:#efe9dd;           /* warm bone — a single owner's voice on warm paper */
+  --paper-2:#e6ded0;
+  --ink:#14171c;             /* near-black text on paper (~15:1) */
+  --ink-muted:#5a5750;       /* attribution on paper (~5:1) */
+  --radius:22px;
+  --radius-sm:14px;
+  --font-display:'Fraunces','Georgia',serif;
+  --font-body:'Inter','Inter var',system-ui,-apple-system,sans-serif;
+  --space:clamp(4.5rem,10vw,9rem);
+  --pad:clamp(1.25rem,4vw,2.5rem);
+  --maxw:1200px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-feature-settings:'ss01','cv05','cv11';
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent);color:#fff}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent-text);outline-offset:3px;border-radius:4px}
+
+/* display type */
+.display{font-family:var(--font-display);font-optical-sizing:auto;font-weight:500;letter-spacing:-.018em;line-height:1.04}
+.italic{font-style:italic}
+
+/* ---------- skip link ---------- */
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#fff;padding:.7rem 1.2rem;z-index:200;border-radius:0 0 12px 0;font-weight:600}
+.skip:focus{left:0}
+
+/* ---------- grain ---------- */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.045;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ---------- header ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem var(--pad);
+  background:color-mix(in srgb,var(--bg) 70%,transparent);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid color-mix(in srgb,var(--hairline) 60%,transparent);
+}
+.nav__logo{font-weight:800;letter-spacing:-.04em;font-size:1.3rem;display:flex;align-items:center;gap:.55rem}
+.nav__logo .dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--accent);display:inline-block;box-shadow:0 0 14px var(--accent)}
+.nav__links{display:none;gap:2rem;font-size:.92rem;color:var(--muted)}
+.nav__links a{transition:color .25s;position:relative}
+.nav__links a::after{content:'';position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:var(--accent-text);transition:right .3s ease}
+.nav__links a:hover{color:var(--text)}
+.nav__links a:hover::after{right:0}
+.btn{
+  display:inline-flex;align-items:center;gap:.55rem;
+  background:var(--accent);color:#fff;font-weight:600;font-size:.95rem;
+  padding:.78rem 1.45rem;border-radius:999px;border:0;cursor:pointer;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;
+  will-change:transform;
+}
+.btn:hover{box-shadow:0 8px 32px rgba(0,113,227,.4)}
+.btn--ghost{background:transparent;border:1px solid var(--hairline);color:var(--text)}
+.btn--ghost:hover{border-color:var(--muted);box-shadow:none}
+.btn--lg{padding:1rem 2rem;font-size:1.05rem}
+.nav .btn{padding:.62rem 1.15rem;font-size:.88rem}
+@media(min-width:768px){.nav__links{display:flex}}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:7rem var(--pad) 0;
+  isolation:isolate;
+}
+#gl{position:absolute;inset:0;z-index:-2;width:100%;height:100%}
+.hero::before{ /* CSS fallback + base glow under the shader — note the faint ember at lower-left */
+  content:'';position:absolute;inset:0;z-index:-3;
+  background:
+    radial-gradient(120% 70% at 72% 10%, rgba(0,113,227,.30), transparent 60%),
+    radial-gradient(80% 55% at 8% 92%, rgba(232,176,122,.10), transparent 60%),
+    radial-gradient(90% 60% at 16% 84%, rgba(33,84,141,.34), transparent 60%),
+    var(--bg);
+}
+.hero::after{ /* bottom fade into page bg */
+  content:'';position:absolute;left:0;right:0;bottom:0;height:32vh;z-index:-1;
+  background:linear-gradient(to bottom,transparent,var(--bg));
+}
+.hero__inner{max-width:var(--maxw);margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;justify-content:center}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.6rem;align-self:flex-start;
+  font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;
+  border:1px solid var(--hairline);border-radius:999px;padding:.45rem 1rem;
+  background:color-mix(in srgb,var(--bg-2) 55%,transparent);
+}
+.eyebrow .dot{width:.42rem;height:.42rem;border-radius:50%;background:var(--live);box-shadow:0 0 10px var(--live);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{
+  font-family:var(--font-display);font-optical-sizing:auto;
+  margin:1.6rem 0 1.5rem;
+  font-size:clamp(2.9rem,10.5vw,8rem);
+  line-height:.99;letter-spacing:-.025em;font-weight:480;
+  max-width:15ch;
+}
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
+.hero h1 .w{display:inline-block;will-change:transform}
+.hero h1 em{font-style:italic;color:var(--accent-text);font-weight:460}
+.hero__sub{font-size:clamp(1.02rem,1.5vw,1.28rem);color:var(--muted);max-width:48ch;margin-bottom:2.2rem;line-height:1.65}
+.hero__sub strong{color:var(--text);font-weight:600}
+.hero__cta{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+/* editorial hero meta strip replaces the lone "scroll" word */
+.hero__meta{
+  max-width:var(--maxw);margin:0 auto;width:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1.4rem 0 1.6rem;border-top:1px solid color-mix(in srgb,var(--hairline) 70%,transparent);
+  font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+}
+.hero__meta .tick{color:var(--ember)}
+.hero__scrollcue{display:flex;align-items:center;gap:.6rem}
+.hero__scrollcue::after{content:'';width:2.6rem;height:1px;background:linear-gradient(90deg,var(--muted),transparent);animation:slide 1.9s infinite}
+@keyframes slide{0%{transform:scaleX(0);transform-origin:left}55%{transform:scaleX(1);transform-origin:left}56%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+@media(max-width:600px){.hero__meta span.hide-sm{display:none}}
+
+/* ---------- editorial index row (replaces v1 marquee cliché) ---------- */
+.index{border-block:1px solid var(--hairline);background:color-mix(in srgb,var(--bg-2) 40%,transparent)}
+.index__inner{max-width:var(--maxw);margin:0 auto;padding:1.6rem var(--pad);display:grid;gap:.9rem}
+.index__k{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-text);font-weight:600}
+.index__list{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem 1rem;font-family:var(--font-display);font-style:italic;font-size:clamp(1.15rem,2.4vw,1.7rem);color:var(--text);font-weight:400}
+.index__list span{display:inline-flex;align-items:baseline;gap:1rem}
+.index__list span::after{content:'·';color:var(--ember)}
+.index__list span:last-child::after{content:''}
+@media(min-width:860px){.index__inner{grid-template-columns:auto 1fr;align-items:center;gap:2.5rem}}
+
+/* ---------- shared section chrome ---------- */
+.section{padding:var(--space) var(--pad)}
+.section__inner{max-width:var(--maxw);margin:0 auto}
+.section__head{margin-bottom:clamp(2.5rem,6vw,4.5rem);max-width:760px}
+.kicker{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-text);font-weight:600;margin-bottom:1.1rem;display:inline-flex;align-items:center;gap:.6rem}
+.kicker::before{content:'';width:1.6rem;height:1px;background:var(--ember)}
+h2{font-family:var(--font-display);font-optical-sizing:auto;font-size:clamp(2rem,4.8vw,3.6rem);line-height:1.04;letter-spacing:-.02em;font-weight:480}
+.section__head p{color:var(--muted);margin-top:1.2rem;font-size:1.05rem;max-width:56ch;line-height:1.65}
+
+/* ---------- promises (typographic commitments) ---------- */
+.promises{border-top:1px solid var(--hairline)}
+.promises__grid{display:grid;gap:1px;background:var(--hairline);border:1px solid var(--hairline);border-radius:var(--radius);overflow:hidden}
+.promise{background:linear-gradient(180deg,color-mix(in srgb,var(--bg-2) 30%,transparent),var(--bg));padding:clamp(1.9rem,4vw,3.2rem);position:relative}
+.promise::before{content:'';position:absolute;top:0;left:clamp(1.9rem,4vw,3.2rem);width:2.2rem;height:2px;background:var(--ember);opacity:.8}
+.promise__num{font-family:var(--font-display);font-size:clamp(3.4rem,8.5vw,6rem);font-weight:440;letter-spacing:-.02em;line-height:1;color:var(--text);display:flex;align-items:baseline;gap:.12em}
+.promise__num small{font-family:var(--font-body);font-size:.28em;color:var(--accent-text);font-weight:600;letter-spacing:0;text-transform:uppercase}
+.promise__label{color:var(--muted);margin-top:1rem;font-size:.99rem;max-width:30ch}
+@media(min-width:768px){.promises__grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ---------- services ---------- */
+.services__grid{display:grid;gap:1rem}
+.svc{
+  position:relative;border-radius:var(--radius);
+  padding:clamp(1.7rem,3.5vw,2.6rem);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--bg-2) 55%,transparent),transparent);
+  overflow:hidden;transition:transform .4s cubic-bezier(.2,.8,.2,1);
+  border:1px solid var(--hairline);
+}
+/* gradient-border on hover via mask trick */
+.svc::after{
+  content:'';position:absolute;inset:0;border-radius:var(--radius);padding:1px;pointer-events:none;
+  background:linear-gradient(140deg,var(--accent),transparent 40%,transparent 60%,color-mix(in srgb,var(--ember) 60%,transparent));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity .45s;
+}
+.svc::before{
+  content:'';position:absolute;inset:0;opacity:0;transition:opacity .45s;pointer-events:none;border-radius:var(--radius);
+  background:radial-gradient(420px 220px at var(--mx,50%) var(--my,0%),rgba(0,113,227,.16),transparent 70%);
+}
+.svc:hover{transform:translateY(-4px)}
+.svc:hover::before,.svc:hover::after{opacity:1}
+.svc__idx{font-family:var(--font-display);font-size:1.4rem;color:var(--accent-text);font-weight:480;letter-spacing:.02em}
+.svc h3{font-size:clamp(1.3rem,2.4vw,1.75rem);letter-spacing:-.015em;font-weight:650;margin:1rem 0 .6rem}
+.svc p{color:var(--muted);font-size:.99rem;max-width:46ch;line-height:1.6}
+@media(min-width:768px){.services__grid{grid-template-columns:1fr 1fr}}
+
+/* ---------- work (framed, with browser chrome + depth) ---------- */
+.work{overflow:clip}
+.work__track{display:flex;flex-direction:column;gap:1.6rem}
+.case{
+  position:relative;border-radius:var(--radius);
+  display:flex;flex-direction:column;
+}
+.case__frame{
+  border-radius:var(--radius);overflow:hidden;border:1px solid var(--hairline);background:var(--bg-2);
+  box-shadow:0 30px 70px -40px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.02);
+  transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s;
+}
+.case:hover .case__frame{transform:translateY(-6px);box-shadow:0 44px 90px -36px rgba(0,113,227,.4)}
+.case__bar{display:flex;align-items:center;gap:.45rem;padding:.7rem .9rem;border-bottom:1px solid var(--hairline);background:color-mix(in srgb,var(--bg) 50%,var(--bg-2))}
+.case__bar i{width:.55rem;height:.55rem;border-radius:50%;background:var(--hairline);display:inline-block}
+.case__bar span{margin-left:.6rem;font-size:.72rem;color:var(--muted);letter-spacing:.04em;font-family:var(--font-body)}
+.case__img{aspect-ratio:16/10;width:100%;object-fit:cover;object-position:top;filter:saturate(.95);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.case:hover .case__img{transform:scale(1.04)}
+.case__meta{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.2rem .35rem .2rem}
+.case__no{font-family:var(--font-display);color:var(--ember);font-size:.95rem;font-style:italic;margin-bottom:.35rem}
+.case__meta h3{font-size:1.2rem;font-weight:650;letter-spacing:-.015em}
+.case__meta p{font-size:.84rem;color:var(--muted);margin-top:.25rem}
+.case__arrow{flex:none;width:2.6rem;height:2.6rem;border:1px solid var(--hairline);border-radius:50%;display:grid;place-items:center;color:var(--muted);transition:all .35s;margin-top:.2rem}
+.case:hover .case__arrow{background:var(--accent);border-color:var(--accent);color:#fff;transform:rotate(-45deg)}
+@media(min-width:1024px){
+  .work__track{flex-direction:row;width:max-content;gap:2.2rem}
+  .case{width:min(46vw,620px);flex:none}
+  .work__pin{display:flex;align-items:center;min-height:100vh}
+}
+
+/* ---------- pricing (raised glass surface) ---------- */
+.pricing{position:relative;background:
+  linear-gradient(180deg,transparent,color-mix(in srgb,var(--bg-2) 50%,transparent) 16%,color-mix(in srgb,var(--bg-2) 50%,transparent) 84%,transparent)}
+.pricing::before,.pricing::after{content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ember) 45%,transparent),transparent)}
+.pricing::before{top:0}.pricing::after{bottom:0}
+.tiers{display:grid;gap:1.1rem}
+.tier{
+  border:1px solid var(--hairline);border-radius:var(--radius);
+  padding:clamp(1.8rem,3vw,2.4rem);position:relative;background:color-mix(in srgb,var(--bg) 88%,var(--bg-2));
+  display:flex;flex-direction:column;
+}
+.tier--pop{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 30px 70px -28px rgba(0,113,227,.5)}
+.tier__pop{
+  position:absolute;top:-.85rem;left:50%;transform:translateX(-50%);
+  background:var(--accent);color:#fff;font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.34rem .95rem;border-radius:999px;white-space:nowrap;box-shadow:0 8px 20px rgba(0,113,227,.4);
+}
+.tier h3{font-family:var(--font-display);font-size:1.55rem;font-weight:520;letter-spacing:-.01em}
+.tier__tag{color:var(--muted);font-size:.9rem;margin-top:.3rem}
+.tier__price{font-family:var(--font-display);margin:1.4rem 0 .25rem;font-size:clamp(2.8rem,5vw,3.6rem);font-weight:460;letter-spacing:-.02em;line-height:1}
+.tier__price small{font-family:var(--font-body);font-size:.32em;color:var(--muted);font-weight:500;letter-spacing:0}
+.tier__note{font-size:.82rem;color:var(--accent-text);margin-bottom:1.4rem}
+.tier ul{list-style:none;display:grid;gap:.6rem;margin-bottom:1.7rem}
+.tier li{font-size:.93rem;color:var(--muted);padding-left:1.45rem;position:relative}
+.tier li::before{content:'';position:absolute;left:0;top:.48em;width:.85rem;height:.85rem;border-radius:50%;
+  background:color-mix(in srgb,var(--accent) 22%,transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 60%,transparent)}
+.tier li.plus{color:var(--text);font-weight:600}
+.tier li.plus::before{background:var(--accent);box-shadow:none}
+.tier .btn{margin-top:auto;justify-content:center}
+.pricing__foot{margin-top:2.2rem;text-align:center;color:var(--muted);font-size:.92rem;max-width:64ch;margin-inline:auto}
+.pricing__foot a{color:var(--accent-text);font-weight:600}
+@media(min-width:900px){.tiers{grid-template-columns:repeat(3,1fr);align-items:stretch}}
+
+/* ---------- trust ---------- */
+.trust{border-block:1px solid var(--hairline);padding:2rem var(--pad)}
+.trust__row{max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;gap:.8rem 2.4rem;justify-content:center}
+.trust__row li{list-style:none;display:flex;align-items:center;gap:.6rem;color:var(--muted);font-size:.9rem}
+.trust__row li::before{content:'✓';color:var(--ember);font-weight:700}
+
+/* ---------- spotlight: the one LIGHT breather (a single owner's voice on warm paper) ---------- */
+.spotlight{background:
+  radial-gradient(120% 100% at 50% 0%, var(--paper), var(--paper-2));
+  color:var(--ink);padding:calc(var(--space)*1.05) var(--pad);position:relative}
+.spotlight__inner{max-width:920px;margin:0 auto;text-align:center}
+.spotlight__mark{font-family:var(--font-display);font-style:italic;font-size:clamp(4rem,12vw,8rem);line-height:.6;color:var(--ember-deep);display:block;height:.55em}
+.spotlight blockquote{font-family:var(--font-display);font-weight:420;font-size:clamp(1.6rem,4.2vw,2.9rem);line-height:1.22;letter-spacing:-.015em;color:var(--ink);margin:1rem auto 2rem;max-width:20ch}
+.spotlight blockquote em{font-style:italic;color:var(--ember-deep)}
+.spotlight figcaption{font-size:.95rem;color:var(--ink-muted)}
+.spotlight figcaption b{color:var(--ink);font-weight:650}
+.spotlight__note{margin-top:2.4rem;font-size:.78rem;color:var(--ink-muted);opacity:.85}
+
+/* ---------- secondary quotes (back on night) ---------- */
+.quotes{display:grid;gap:1rem}
+.quote{border:1px solid var(--hairline);border-radius:var(--radius);padding:1.9rem;background:color-mix(in srgb,var(--bg-2) 35%,transparent)}
+.quote p{font-size:1.02rem;line-height:1.55;letter-spacing:-.005em}
+.quote footer{margin-top:1.3rem;color:var(--muted);font-size:.88rem}
+.quote footer b{color:var(--text);display:block;font-weight:600}
+@media(min-width:768px){.quotes{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- final CTA (ember underglow) ---------- */
+.final{text-align:center;padding-block:calc(var(--space)*1.2);position:relative;isolation:isolate}
+.final::before{content:'';position:absolute;inset:0;z-index:-1;background:
+  radial-gradient(60% 50% at 50% 60%, rgba(0,113,227,.16), transparent 70%),
+  radial-gradient(40% 40% at 50% 100%, rgba(232,176,122,.10), transparent 70%)}
+.final h2{font-size:clamp(2.5rem,7.5vw,5.6rem);max-width:16ch;margin-inline:auto;letter-spacing:-.025em}
+.final h2 em{font-style:italic;color:var(--accent-text)}
+.final p{color:var(--muted);margin:1.5rem auto 2.5rem;max-width:46ch;font-size:1.08rem}
+
+/* ---------- footer ---------- */
+footer.site{
+  border-top:1px solid var(--hairline);padding:2.8rem var(--pad);
+  display:flex;flex-direction:column;gap:1.4rem;align-items:center;text-align:center;
+  color:var(--muted);font-size:.88rem;
+}
+footer.site nav{display:flex;gap:1.6rem;flex-wrap:wrap;justify-content:center}
+footer.site a:hover{color:var(--text)}
+footer.site .fine{opacity:.7}
+
+/* ---------- reveal defaults (no-JS / no-CDN safe: visible) ----------
+   .motion added ONLY after GSAP initializes, so a failed CDN load can
+   never leave content hidden. */
+[data-reveal]{opacity:1;transform:none}
+.motion [data-reveal]{opacity:0;transform:translateY(28px)}
+.w--accent{color:var(--accent-text)}
+section[id]{scroll-margin-top:5.5rem}
+@media(max-width:480px){
+  .eyebrow{font-size:.7rem;letter-spacing:.1em;padding:.4rem .85rem;gap:.5rem}
+}
+
+/* ---------- reduced motion ---------- */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" aria-label="Primary">
+  <a class="nav__logo" href="#top" aria-label="BAR Agency — home">BAR<span class="dot" aria-hidden="true"></span></a>
+  <nav class="nav__links" aria-label="Sections">
+    <a href="#work">Work</a>
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="https://agency-breno-bar.vercel.app/about">About</a>
+  </nav>
+  <a class="btn" href="https://agency-breno-bar.vercel.app/contact">Start a project</a>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top" aria-label="Intro">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="hero__inner">
+      <span class="eyebrow" data-hero><span class="dot" aria-hidden="true"></span>Berlin web studio · open for projects</span>
+      <h1 id="headline">
+        <span class="line">Websites that</span>
+        <span class="line">bring you</span>
+        <span class="line"><em>customers.</em></span>
+      </h1>
+      <p class="hero__sub" data-hero>A small Berlin studio for owner-led businesses. We design, build, host and care for your site — one flat monthly fee, no setup cost. <strong>From €219/mo.</strong></p>
+      <div class="hero__cta" data-hero>
+        <a class="btn btn--lg" data-magnetic href="https://agency-breno-bar.vercel.app/contact">Start a project</a>
+        <a class="btn btn--ghost btn--lg" data-magnetic href="#work">See the work</a>
+      </div>
+    </div>
+    <div class="hero__meta" aria-hidden="true">
+      <span class="hide-sm"><span class="tick">—</span> Designed &amp; built in Berlin</span>
+      <span class="hero__scrollcue">Scroll</span>
+      <span class="hide-sm">EN · DE · PT-BR</span>
+    </div>
+  </section>
+
+  <!-- ============ EDITORIAL INDEX (replaces v1 marquee) ============ -->
+  <div class="index" aria-label="Who we build for">
+    <div class="index__inner">
+      <span class="index__k">We build for</span>
+      <div class="index__list">
+        <span>Cafés</span><span>Friseure</span><span>Praxen</span><span>Handwerk</span><span>Studios</span><span>Restaurants</span><span>Boutiquen</span><span>Ateliers</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PROMISES ============ -->
+  <section class="section promises" aria-labelledby="promises-h">
+    <div class="section__inner">
+      <div class="section__head" data-reveal>
+        <span class="kicker">What you can count on</span>
+        <h2 id="promises-h">Clear commitments,<br>not vague promises.</h2>
+      </div>
+      <div class="promises__grid">
+        <div class="promise" data-reveal>
+          <div class="promise__num"><span data-count="5">5</span> <small>days</small></div>
+          <p class="promise__label">to your first working preview</p>
+        </div>
+        <div class="promise" data-reveal>
+          <div class="promise__num"><small>&lt;</small> <span data-count="24">24</span> <small>h</small></div>
+          <p class="promise__label">reply on business days</p>
+        </div>
+        <div class="promise" data-reveal>
+          <div class="promise__num"><span data-count="20">20</span><small>+</small></div>
+          <p class="promise__label">local listings — Google Maps, Apple Maps &amp; more</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="section" id="services" aria-labelledby="services-h">
+    <div class="section__inner">
+      <div class="section__head" data-reveal>
+        <span class="kicker">What we do</span>
+        <h2 id="services-h">Everything your business needs online. No upsell.</h2>
+      </div>
+      <div class="services__grid">
+        <article class="svc" data-reveal>
+          <span class="svc__idx">01</span>
+          <h3>Web Design</h3>
+          <p>Custom, mobile-first, multilingual sites that turn visitors into clients — cookie consent and legal pages included.</p>
+        </article>
+        <article class="svc" data-reveal>
+          <span class="svc__idx">02</span>
+          <h3>SEO &amp; Local Listing</h3>
+          <p>Be found first: local SEO, schema markup, Google Search Console, and 20+ listings across Google Maps, Apple Maps and more.</p>
+        </article>
+        <article class="svc" data-reveal>
+          <span class="svc__idx">03</span>
+          <h3>E-Commerce &amp; Business Email</h3>
+          <p>An online store selling 24/7 with secure checkout, plus professional email on your own domain that builds trust.</p>
+        </article>
+        <article class="svc" data-reveal>
+          <span class="svc__idx">04</span>
+          <h3>AI Solutions &amp; Booking</h3>
+          <p>Chatbots, automation and a booking system that capture inquiries and save you hours — while you run the business.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK ============ -->
+  <section class="section work" id="work" aria-labelledby="work-h">
+    <div class="section__inner">
+      <div class="section__head" data-reveal>
+        <span class="kicker">Selected work</span>
+        <h2 id="work-h">Built here. Live now.</h2>
+        <p>Every site below runs on the same engineering standards we'd bring to yours — fast, accessible, GDPR-clean.</p>
+      </div>
+    </div>
+    <div class="work__pin">
+      <div class="work__track section__inner" id="workTrack">
+        <a class="case" data-reveal href="https://demo-bonsai-kodama.vercel.app" target="_blank" rel="noopener">
+          <div class="case__frame">
+            <div class="case__bar" aria-hidden="true"><i></i><i></i><i></i><span>kodama-bonsai.de</span></div>
+            <img class="case__img" src="https://agency-breno-bar.vercel.app/img/portfolio/portfolio-bonsai-kodama.webp" alt="Kodama Bonsai website — hero section" width="1600" height="1000" loading="lazy" />
+          </div>
+          <div class="case__meta">
+            <div>
+              <div class="case__no">(01)</div>
+              <h3>Kodama Bonsai</h3>
+              <p>Education · Artisan — 4 languages, 134 routes</p>
+            </div>
+            <span class="case__arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+        <a class="case" data-reveal href="https://demo-restaurant-adele.vercel.app" target="_blank" rel="noopener">
+          <div class="case__frame">
+            <div class="case__bar" aria-hidden="true"><i></i><i></i><i></i><span>restaurant-adele.de</span></div>
+            <img class="case__img" src="https://agency-breno-bar.vercel.app/img/portfolio/portfolio-restaurant-adele.webp" alt="Restaurant Adele website — hero section" width="1600" height="1000" loading="lazy" />
+          </div>
+          <div class="case__meta">
+            <div>
+              <div class="case__no">(02)</div>
+              <h3>Restaurant Adèle</h3>
+              <p>Gastronomy · Fine dining — reservation flow</p>
+            </div>
+            <span class="case__arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+        <a class="case" data-reveal href="https://demo-yoga-atem-studio.vercel.app" target="_blank" rel="noopener">
+          <div class="case__frame">
+            <div class="case__bar" aria-hidden="true"><i></i><i></i><i></i><span>atem-studio.de</span></div>
+            <img class="case__img" src="https://agency-breno-bar.vercel.app/img/portfolio/portfolio-yoga-atem-studio.webp" alt="ATEM Yoga Studio website — hero section" width="1600" height="1000" loading="lazy" />
+          </div>
+          <div class="case__meta">
+            <div>
+              <div class="case__no">(03)</div>
+              <h3>ATEM Studio</h3>
+              <p>Yoga · Wellness — class schedule</p>
+            </div>
+            <span class="case__arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRICING (raised glass surface) ============ -->
+  <section class="section pricing" id="pricing" aria-labelledby="pricing-h">
+    <div class="section__inner">
+      <div class="section__head" data-reveal>
+        <span class="kicker">Website subscription</span>
+        <h2 id="pricing-h">One monthly price. Your whole web presence, handled.</h2>
+        <p>No setup fee. Cancel monthly. Your domain and content always stay yours — and you can buy the site outright whenever you like.</p>
+      </div>
+      <div class="tiers">
+        <article class="tier" data-reveal>
+          <h3>Start</h3>
+          <p class="tier__tag">Get online properly.</p>
+          <p class="tier__price">€219<small>/mo</small></p>
+          <p class="tier__note">No setup fee · cancel monthly</p>
+          <ul>
+            <li>Custom one-page website, mobile-first &amp; fast</li>
+            <li>Bilingual: German + English</li>
+            <li>1 business email on your domain</li>
+            <li>Domain, SSL &amp; EU hosting included</li>
+            <li>10 content updates / month</li>
+          </ul>
+          <a class="btn btn--ghost" href="https://agency-breno-bar.vercel.app/pricing">Start here</a>
+        </article>
+        <article class="tier tier--pop" data-reveal>
+          <span class="tier__pop">Most chosen</span>
+          <h3>Growth</h3>
+          <p class="tier__tag">The one most businesses need.</p>
+          <p class="tier__price">€390<small>/mo</small></p>
+          <p class="tier__note">No setup fee · cancel monthly</p>
+          <ul>
+            <li class="plus">Everything in Start, plus:</li>
+            <li>Up to 5 custom pages, premium design</li>
+            <li>Local SEO + Google Business Profile</li>
+            <li>Simple online store or booking</li>
+            <li>1 SEO article + 20 updates / month</li>
+          </ul>
+          <a class="btn" href="https://agency-breno-bar.vercel.app/pricing">Choose Growth</a>
+        </article>
+        <article class="tier" data-reveal>
+          <h3>Complete</h3>
+          <p class="tier__tag">Your digital presence, handled.</p>
+          <p class="tier__price">€570<small>/mo</small></p>
+          <p class="tier__note">No setup fee · cancel monthly</p>
+          <ul>
+            <li class="plus">Everything in Growth, plus:</li>
+            <li>Up to 12 pages, full store or booking</li>
+            <li>AI chatbot or automation</li>
+            <li>Ongoing SEO + 2 articles / month</li>
+            <li>40 updates / month + priority support</li>
+          </ul>
+          <a class="btn btn--ghost" href="https://agency-breno-bar.vercel.app/pricing">Go Complete</a>
+        </article>
+      </div>
+      <p class="pricing__foot" data-reveal>Prefer to own it outright? We quote one-time builds too — and every subscription has a one-time buy-out. <a href="https://agency-breno-bar.vercel.app/pricing">Full pricing &amp; fair terms →</a></p>
+    </div>
+  </section>
+
+  <!-- ============ TRUST ============ -->
+  <div class="trust" role="presentation">
+    <ul class="trust__row">
+      <li>GDPR-compliant by default</li>
+      <li>Made in Berlin</li>
+      <li>WCAG 2.2 AA accessible</li>
+      <li>Domain &amp; content stay yours</li>
+    </ul>
+  </div>
+
+  <!-- ============ SPOTLIGHT — the one light breather ============ -->
+  <section class="spotlight" aria-labelledby="spot-h">
+    <div class="spotlight__inner">
+      <span class="spotlight__mark" aria-hidden="true">&ldquo;</span>
+      <h2 id="spot-h" class="display" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">In their words</h2>
+      <blockquote data-reveal>They built exactly what we needed and explained every step in plain language. <em>No jargon, no upsell.</em></blockquote>
+      <figcaption data-reveal><b>Adèle Restaurant</b> · Restaurant owner, Berlin</figcaption>
+      <p class="spotlight__note">Example quote while our first subscription clients go live.</p>
+    </div>
+  </section>
+
+  <!-- ============ SECONDARY QUOTES (back on night) ============ -->
+  <section class="section" aria-label="More owner voices">
+    <div class="section__inner">
+      <div class="quotes">
+        <blockquote class="quote" data-reveal>
+          <p>"Fast, honest, and the site actually brings in bookings. We should have done it a year ago."</p>
+          <footer><b>ATEM Studio</b>Yoga studio owner · Berlin</footer>
+        </blockquote>
+        <blockquote class="quote" data-reveal>
+          <p>"Trilingual from day one, and our Google listing finally looks the part. Worth every euro."</p>
+          <footer><b>diBoaS</b>diBoaS Finance owner · Berlin</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="section final" aria-labelledby="final-h">
+    <div class="section__inner">
+      <span class="kicker" data-reveal style="justify-content:center">Ready when you are</span>
+      <h2 id="final-h" data-reveal>Tell us about <em>your business.</em></h2>
+      <p data-reveal>We'll recommend the right plan — honestly, even if it's the smallest one.</p>
+      <a class="btn btn--lg" data-magnetic data-reveal href="https://agency-breno-bar.vercel.app/contact">Get in touch</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <a class="nav__logo" href="#top">BAR<span class="dot" aria-hidden="true"></span></a>
+  <nav aria-label="Footer">
+    <a href="https://agency-breno-bar.vercel.app/portfolio">Portfolio</a>
+    <a href="https://agency-breno-bar.vercel.app/pricing">Pricing</a>
+    <a href="https://agency-breno-bar.vercel.app/imprint">Imprint</a>
+    <a href="https://agency-breno-bar.vercel.app/privacy">Privacy</a>
+    <a href="mailto:hello@breno-bar.com">hello@breno-bar.com</a>
+  </nav>
+  <p class="fine">© 2026 BAR Agency · Berlin — designed &amp; built in Berlin. No templates.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script>
+/* ============================================================
+   Motion + WebGL. Everything is an enhancement:
+   - no-JS → all content visible (reveal classes gated on .motion)
+   - prefers-reduced-motion → static page, counters show finals
+   - no WebGL → CSS gradient fallback already painted
+   ============================================================ */
+(function(){
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.classList.add('js');
+  if (reduced) document.documentElement.classList.add('reduced');
+
+  /* ---------- WebGL aurora (custom shader — lighter than three.js).
+     v2: deep night with a faint warm ember bleed at the low edge so the
+     cold blue and the warm signal meet in the hero. ---------- */
+  function initGL(){
+    if (reduced) return;
+    var canvas = document.getElementById('gl');
+    var gl = canvas.getContext('webgl', {alpha:true, antialias:false, powerPreference:'low-power'});
+    if (!gl) { canvas.style.display='none'; return; }
+
+    var vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+    var fs = [
+      'precision mediump float;',
+      'uniform vec2 r;uniform float t;uniform vec2 m;',
+      'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+      'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);',
+      ' return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}',
+      'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*n(p);p*=2.05;a*=.5;}return v;}',
+      'void main(){',
+      ' vec2 uv=gl_FragCoord.xy/r; vec2 q=uv; q.x*=r.x/r.y;',
+      ' float T=t*.045;',
+      ' vec2 drift=vec2(T*.6+m.x*.18, -T*.35+m.y*.12);',
+      ' float f=fbm(q*1.6+drift);',
+      ' float f2=fbm(q*3.2-drift*1.4+f);',
+      ' float glow=smoothstep(.35,.95,f*.65+f2*.5);',
+      ' float band=smoothstep(.85,.1,abs(uv.y-.32-f*.22));',
+      ' vec3 deep=vec3(.024,.043,.078);',
+      ' vec3 navy=vec3(.047,.102,.169);',
+      ' vec3 blue=vec3(0.,.443,.890);',
+      ' vec3 ice =vec3(.486,.753,1.);',
+      ' vec3 ember=vec3(.91,.69,.48);',
+      ' vec3 col=mix(deep,navy,glow);',
+      ' col=mix(col,blue,band*glow*.55);',
+      ' col=mix(col,ice,pow(band*glow,3.)*.35);',
+      ' float warm=smoothstep(.55,.0,uv.y)*smoothstep(.55,.0,uv.x);',  // low-left ember bleed
+      ' col=mix(col,ember,warm*fbm(q*2.2-drift)*.10);',
+      ' float vig=smoothstep(1.25,.35,length(uv-vec2(.5,.42)));',
+      ' col*=mix(.75,1.,vig);',
+      ' gl_FragColor=vec4(col,1.);',
+      '}'
+    ].join('\n');
+
+    function sh(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);
+      if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){canvas.style.display='none';return null;}return s;}
+    var v=sh(gl.VERTEX_SHADER,vs), f=sh(gl.FRAGMENT_SHADER,fs);
+    if(!v||!f) return;
+    var prog=gl.createProgram();gl.attachShader(prog,v);gl.attachShader(prog,f);gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){canvas.style.display='none';return;}
+    gl.useProgram(prog);
+    var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    var loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    var uR=gl.getUniformLocation(prog,'r'),uT=gl.getUniformLocation(prog,'t'),uM=gl.getUniformLocation(prog,'m');
+
+    var mx=0,my=0,tmx=0,tmy=0;
+    addEventListener('pointermove',function(e){tmx=(e.clientX/innerWidth-.5);tmy=(e.clientY/innerHeight-.5);},{passive:true});
+
+    function resize(){
+      var dpr=Math.min(devicePixelRatio||1,1.5);
+      var w=canvas.clientWidth,hh=canvas.clientHeight;
+      if(canvas.width!==w*dpr||canvas.height!==hh*dpr){canvas.width=w*dpr;canvas.height=hh*dpr;gl.viewport(0,0,canvas.width,canvas.height);}
+    }
+    addEventListener('resize',resize,{passive:true});
+
+    var visible=true;
+    new IntersectionObserver(function(en){visible=en[0].isIntersecting;},{threshold:0}).observe(canvas);
+    var t0=performance.now();
+    (function frame(now){
+      requestAnimationFrame(frame);
+      if(!visible)return;
+      resize();
+      mx+=(tmx-mx)*.04; my+=(tmy-my)*.04;
+      gl.uniform2f(uR,canvas.width,canvas.height);
+      gl.uniform1f(uT,(now-t0)/1000);
+      gl.uniform2f(uM,mx,my);
+      gl.drawArrays(gl.TRIANGLES,0,3);
+    })(t0);
+  }
+  initGL();
+
+  /* ---------- GSAP choreography ---------- */
+  var motionDone = false;
+  function initMotion(){
+    if (motionDone || reduced || !window.gsap || !window.ScrollTrigger) return;
+    motionDone = true;
+    document.documentElement.classList.add('motion');
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero headline: split each .line into word spans. Lines containing <em>
+    // keep the accent (italic, accent-text) applied during the split.
+    document.querySelectorAll('#headline .line').forEach(function(line){
+      var accent = !!line.querySelector('em');
+      var words = line.textContent.trim().split(/\s+/);
+      line.innerHTML = words.map(function(w){
+        return '<span class="w'+(accent?' w--accent':'')+'"'+(accent?' style="font-style:italic"':'')+'>'+w+'</span>';
+      }).join(' ');
+    });
+    gsap.from('#headline .w',{yPercent:118,duration:1.1,ease:'expo.out',stagger:.07,delay:.1});
+    gsap.from('[data-hero]',{y:26,opacity:0,duration:.9,ease:'power3.out',stagger:.12,delay:.55});
+
+    // Generic reveals
+    ScrollTrigger.batch('[data-reveal]',{
+      start:'top 88%',
+      onEnter:function(els){gsap.to(els,{y:0,opacity:1,duration:.85,ease:'power3.out',stagger:.09,overwrite:true});}
+    });
+
+    // Counters
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      var end=parseInt(el.getAttribute('data-count'),10);
+      var obj={v:0};
+      ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:function(){
+        gsap.to(obj,{v:end,duration:1.4,ease:'power2.out',onUpdate:function(){el.textContent=Math.round(obj.v);}});
+      }});
+    });
+
+    // Horizontal work scroll — desktop only, content remains in normal flow on mobile
+    ScrollTrigger.matchMedia({
+      '(min-width: 1024px)': function(){
+        var track=document.getElementById('workTrack');
+        var pin=document.querySelector('.work__pin');
+        var dist=track.scrollWidth - document.documentElement.clientWidth + 80;
+        if (dist>0){
+          gsap.to(track,{x:-dist,ease:'none',scrollTrigger:{trigger:pin,start:'top top',end:'+='+dist,scrub:.6,pin:true,anticipatePin:1}});
+        }
+      }
+    });
+
+    // Service card cursor glow
+    document.querySelectorAll('.svc').forEach(function(card){
+      card.addEventListener('pointermove',function(e){
+        var b=card.getBoundingClientRect();
+        card.style.setProperty('--mx',((e.clientX-b.left)/b.width*100)+'%');
+        card.style.setProperty('--my',((e.clientY-b.top)/b.height*100)+'%');
+      },{passive:true});
+    });
+
+    // Magnetic buttons — fine pointers only
+    if (matchMedia('(pointer:fine)').matches){
+      document.querySelectorAll('[data-magnetic]').forEach(function(btn){
+        var qx=gsap.quickTo(btn,'x',{duration:.35,ease:'power3'}),
+            qy=gsap.quickTo(btn,'y',{duration:.35,ease:'power3'});
+        btn.addEventListener('pointermove',function(e){
+          var b=btn.getBoundingClientRect();
+          qx((e.clientX-b.left-b.width/2)*.25);
+          qy((e.clientY-b.top-b.height/2)*.25);
+        });
+        btn.addEventListener('pointerleave',function(){qx(0);qy(0);});
+      });
+    }
+  }
+
+  if (document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){ setTimeout(initMotion,0); });
+  } else { setTimeout(initMotion,0); }
+  addEventListener('load', initMotion);
+})();
+</script>
+</body>
+</html>

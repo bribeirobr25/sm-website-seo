@@ -2,7 +2,42 @@
 
 **Project:** agency-self marketing site
 **Vertical:** professional-services (agency / studio)
-**Closest template fit:** `docs/design/templates/professional-services.md` Archetype A (single-operator studio). Visual register adapted toward Apple.com's marketing language.
+**Closest template fit:** `docs/design/templates/professional-services.md` Archetype A (single-operator studio).
+
+> **Current register: "Berlin night" (dark) — redesign 2026-06-13.** The site was re-skinned from the original Apple-light register to a dark, cinematic "Berlin night" look (ported from `redesign/index.html` v1). **The current live marketing register is documented in the "Redesign — 'Berlin night'" section directly below this banner** (dark palette, WebGL aurora hero, GSAP motion: word-split / count-up / magnetic / cursor-glow). **Every section *after* that — Palette decision, Typography, Spacing, Motion, Composition, the hero/photography decisions — documents the *original* Apple-light register**, which is now only (a) the **light baseline used on legal/print pages** and (b) a historical record; "Berlin night" supersedes those wherever they conflict. *(Redesign is in the working tree, not yet committed/deployed.)*
+
+## Redesign — "Berlin night" register (2026-06-13)
+
+Re-skin of the live multi-page site to a dark register; UI/UX only, no content/route/schema changes. Delivered token-first; legal pages stay light.
+
+**Theme delivery — scoped, not a hard flip.** The light tokens remain the default `@theme`; a `.theme-night` override block in `tokens.css` redefines the colour custom properties for the dark register. `BaseLayout` applies the class to `<body>` via a `theme?: 'light'|'night'` prop **auto-derived from the route** (`/privacy`, `/imprint`, `/contract` → light; everything else → night; explicit prop wins). So legal-page lightness is structural — a forgotten prop on a future legal page still resolves light. Marketing pages flip automatically because every component consumes the tokens.
+
+**Night palette (`.theme-night`)** — AA-verified per `COLOR.md §6`:
+
+| Token | Hex | Role | Contrast |
+|---|---|---|---|
+| `--color-bg` | `#060b14` | deep-night base | — |
+| `--color-surface` | `#0c1a2b` | favicon-blue raised surface | — |
+| `--color-surface-elev` | `#0e1c2f` | cards | — |
+| `--color-text` | `#f4f6fa` | primary | ~17:1 on bg |
+| `--color-text-muted` | `#93a3ba` | secondary | ~6.9:1 (AA) |
+| `--color-text-subtle` | `#7c8ba1` | small print | ~5.2:1 (AA) |
+| `--color-accent` | `#0071e3` | CTA fill (unchanged) | white-on-it 4.6:1 (AA) |
+| `--color-accent-deep` | `#0058b8` | CTA hover (darken) | white-on-it 7.3:1 |
+| `--color-accent-light` | `#7cc0ff` | lightest accent text on dark | ~9:1 |
+| `--color-accent-on-surface` | `#7cc0ff` | **NEW** semantic token — accent **text** on the page bg (eyebrows/links/icons) | ~9:1 |
+| `--color-border` | `#1b2940` | hairline | — |
+| `--color-inverted-bg/surface` | `#03070e` / `#0c1a2b` | deepest bands | — |
+
+**Key colour decision — accent split.** The codebase overloaded `accent-deep` for *both* CTA-hover-fill *and* accent text on bg. On dark these diverge (a hover fill must stay dark so white text holds AA; accent *text* on near-black must be light). Resolution: `accent-deep` stays dark (CTA hover); a new **`--color-accent-on-surface`** carries accent text (light `#0058b8`, night `#7cc0ff`). All `text-accent-deep` text/icon usages were migrated to it; CTA `hover:bg-accent-deep` untouched.
+
+**CTAs.** Every CTA normalised to `bg-accent text-white hover:bg-accent-deep` (all 4 states AA). Pricing hierarchy (v1): popular tier filled; secondary tiers **ghost** (`border-text-muted/60`, 3.24:1 border ≥ WCAG 1.4.11).
+
+**Typography.** Inter Variable retained (self-hosted). Marketing-hero headlines use a CSS word-split entrance; the editorial type scale is unchanged. DE/PT-BR home section headings drop to `text-3xl` on mobile so long German compounds ("branchenübergreifend") don't overflow (`hyphens:auto` + `overflow-wrap:break-word` on all headings as a safety net).
+
+**Hero + motion.** Every marketing hero keeps its photo + veil and layers a **WebGL aurora** (`HeroAurora.astro` + a raw-shader/GSAP island `src/scripts/motion.ts`) at ~0.55 painted opacity (photo + aurora both visible). Motion: word-split entrance, count-up numbers (PromiseStrip), magnetic hero CTAs, service-card cursor-glow. **All gated** — no-JS / failed-GSAP / `prefers-reduced-motion` / no-WebGL all degrade to the static photo + visible content. LCP stays the hero photo (canvas never steals it). GSAP via `pnpm` (lazy, marketing-hero-CTA pages only).
+
+**Chrome.** Glass nav + accent logo dot + nav-link hover underline. Header desktop-nav threshold moved `md`→`lg` (hamburger up to 1024) so the nav + CTA + locale don't overflow at 768. Footer **unchanged** (inherits dark tokens). `noindex` held.
 
 ## Palette decision
 

@@ -1,8 +1,8 @@
 # agency-breno-bar — the agency's own marketing site
 
-**This is a live client build, not a scaffold.** It's the agency's own studio website (display brand **BAR Agency**; the folder slug, Vercel URL, and email keep the `breno-bar` form), built from `scaffolds/astro-tier2/`. Tier 2 · Astro 6 + Tailwind v4 + Sentry · trilingual EN/DE/pt-BR · Apple-inspired register.
+**This is a live client build, not a scaffold.** It's the agency's own studio website (display brand **BAR Agency**; the folder slug, Vercel URL, and email keep the `breno-bar` form), built from `scaffolds/astro-tier2/`. Tier 2 · Astro 6 + Tailwind v4 + Sentry · trilingual EN/DE/pt-BR · dark **"Berlin night"** register (re-skinned 2026-06-13 from the original Apple-inspired light register; legal pages stay light — see `docs/clients/agency-breno-bar/design.md` § "Berlin night").
 
-**Live (noindex):** https://agency-breno-bar.vercel.app
+**Live (noindex):** https://agency-breno-bar.vercel.app — the **deployed** site still shows the Apple-light register; the Berlin-night redesign is in the working tree, **not yet committed/deployed**.
 
 ## Run locally
 
