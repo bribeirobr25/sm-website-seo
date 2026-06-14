@@ -1,10 +1,10 @@
 # BAR Agency — per-client CLAUDE.md
 
 **Status:** AGENCY-SELF marketing site. This is the agency's own studio website — not a paying-client demo.
-Live URL: https://agency-breno-bar.vercel.app (noindex until legal DRAFT items resolve).
-**Brand display name is "BAR Agency"** (rebranded 2026-06-09 from "breno-bar"). The folder slug (`clients/agency-breno-bar/`), the Vercel URL (`agency-breno-bar.vercel.app`), and the email (`hello@breno-bar.com`) keep the `breno-bar` form — those are infra/contact identifiers, not the display brand. `SITE.name`/`shortName` = "BAR Agency"; `SITE.legal.legalEntity` = "BAR Agency, Einzelunternehmer".
+Live URL: https://bar-agency.vercel.app (noindex; Berlin-night redesign deployed 2026-06-14). The legacy https://agency-breno-bar.vercel.app project still exists but serves the old Apple-light build (stale — its GitHub auto-deploy isn't firing; consolidation is an open decision, BRIEF.md DRAFT #14).
+**Brand display name is "BAR Agency"** (rebranded 2026-06-09 from "breno-bar"). The folder slug (`clients/agency-breno-bar/`) and the email (`hello@breno-bar.com`) keep the `breno-bar` form — those are infra/contact identifiers, not the display brand. The **canonical demo URL moved to `bar-agency.vercel.app`** (new Vercel project `bar-agency`, 2026-06-14) to match the brand; the legacy `agency-breno-bar.vercel.app` project still exists. `SITE.name`/`shortName` = "BAR Agency"; `SITE.legal.legalEntity` = "BAR Agency, Einzelunternehmer".
 
-**Inherits:** repo-root `CLAUDE.md` and every rule in `docs/design/`. No matching per-vertical template — the agency itself is `professional-services` with a premium register **(originally Apple-inspired; re-skinned 2026-06-13 to the dark "Berlin night" register — see the 2026-06-13 section below + `design.md`)** that's deliberately distinct from every other demo built on the same library. *(The redesign is in the working tree, **not yet committed/deployed** — the live Vercel URL still shows the Apple-light version.)*
+**Inherits:** repo-root `CLAUDE.md` and every rule in `docs/design/`. No matching per-vertical template — the agency itself is `professional-services` with a premium register **(originally Apple-inspired; re-skinned 2026-06-13 to the dark "Berlin night" register — see the 2026-06-13 section below + `design.md`)** that's deliberately distinct from every other demo built on the same library. *(The redesign is **committed (`6b79b92` re-skin + `5e253df` docs, pushed to `main`) and deployed 2026-06-14 to `bar-agency.vercel.app`** (noindex); the legacy `agency-breno-bar.vercel.app` still serves the old Apple-light build.)*
 
 ## 2026-06-09 to 12 — rebrand + catalog/pricing/contract overhaul
 
@@ -19,7 +19,7 @@ Live URL: https://agency-breno-bar.vercel.app (noindex until legal DRAFT items r
 
 ## 2026-06-13 — "Berlin night" redesign (dark re-skin)
 
-UI/UX-only re-skin of the whole site from the Apple-light register to a dark "Berlin night" register (ported from `redesign/index.html` v1). No content/route/schema changes. **Working tree only — not yet committed.** Full design rationale in `docs/clients/agency-breno-bar/design.md` (§ "Berlin night register"); rollout plan + audit in `docs/audit/REDESIGN-ROLLOUT-PLAN-2026-06-13.md` (+ `…-AUDIT-…`).
+UI/UX-only re-skin of the whole site from the Apple-light register to a dark "Berlin night" register (ported from `redesign/index.html` v1). No content/route/schema changes. **Committed `6b79b92` (re-skin) + `5e253df` (docs), pushed to `main`; deployed 2026-06-14 to the new `bar-agency.vercel.app` Vercel project (noindex) via the Vercel CLI** (the legacy `agency-breno-bar` project's GitHub auto-deploy isn't firing — see BRIEF.md DRAFT #14). Full design rationale in `docs/clients/agency-breno-bar/design.md` (§ "Berlin night register"); rollout plan + audit in `docs/audit/REDESIGN-ROLLOUT-PLAN-2026-06-13.md` (+ `…-AUDIT-…`).
 
 - **Theme = scoped `.theme-night`, not a hard flip.** Light tokens stay the default `@theme`; `.theme-night` in `tokens.css` overrides the colour vars. `BaseLayout` gained a `theme?: 'light'|'night'` prop **auto-derived from the route** (`/privacy`, `/imprint`, `/contract` → light; else night). Legal/print pages stay light + print-friendly **structurally** (a forgotten prop still resolves light). `noindex` untouched.
 - **New token `--color-accent-on-surface`** decouples accent *text* (eyebrows/links/icons; night `#7cc0ff`) from `--color-accent-deep` (CTA hover-fill, stays dark). All `text-accent-deep` text usages migrated to it.
