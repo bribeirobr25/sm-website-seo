@@ -117,6 +117,8 @@ lerna-debug.log*
 .claude/cache/
 .claude/.todo
 .claude/logs/
+.claude/*.lock
+.claude/scheduled_tasks.lock
 
 
 # OS junk -------------------------------------------------------------------
