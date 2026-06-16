@@ -56,6 +56,14 @@ interface PricingContent {
   heroSubtitle: string;
   draftNote: string;
   tiers: PackageTier[];
+  socialAddon: {
+    eyebrow: string;
+    heading: string;
+    subtitle: string;
+    rows: { plan: string; price: string; posts: string }[];
+    additionalNote: string;
+    fineprint: string;
+  };
   outroNote: string;
   customHeading: string;
   customBody: string;
@@ -271,12 +279,39 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
             'AI chatbot or automation',
             'Ongoing SEO strategy + 2 articles / month',
             'Google Business management (reviews, posts, Q&A)',
+            'Social media included: 1 channel, 8 posts / month (3 short videos + 5 image/text) — 2 posts/week',
             'Advanced analytics dashboard',
             '40 content updates / month',
             'Priority support + quarterly review',
           ],
         },
       ],
+      socialAddon: {
+        eyebrow: 'Social media',
+        heading: 'Add social media',
+        subtitle:
+          'Regular posts that reach your customers — planned, designed and published by us.',
+        rows: [
+          {
+            plan: 'Start',
+            price: '+€95/mo',
+            posts: '4 posts/month (1 short video + 3 image/text)',
+          },
+          {
+            plan: 'Growth',
+            price: '+€129/mo',
+            posts: '5 posts/month (2 short videos + 3 image/text)',
+          },
+          {
+            plan: 'Complete',
+            price: 'Included',
+            posts: '8 posts/month (3 short videos + 5 image/text)',
+          },
+        ],
+        additionalNote: 'Each additional channel, same post count: +€75/month',
+        fineprint:
+          'Social media, honestly priced. We plan, design and publish your posts — short videos and image/text — on a channel of your choice (Instagram, Facebook, LinkedIn or TikTok). Complete includes one channel; on Start and Growth you add social media optionally. Each additional channel is €75/month. Cancel monthly, like everything we do.',
+      },
       outroNote:
         'No setup fee, no long contracts, cancel any month. Your domain and content always stay yours; if you cancel, the managed site goes offline, but a one-time buy-out lets you take the site itself and run it on your own.',
       customHeading: 'Prefer to own it outright?',
@@ -528,13 +563,13 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
         },
         {
           id: 'growth',
-          name: 'Wachstum',
+          name: 'Growth',
           tagline: 'Das, was die meisten brauchen.',
           price: '390 €',
           priceSuffix: '/Mon.',
           priceNote: 'Keine Einrichtung · monatlich kündbar',
           popular: true,
-          cta: 'Wachstum wählen',
+          cta: 'Growth wählen',
           features: [
             'Alles aus Start, plus:',
             'Bis zu 5 individuelle Seiten, Premium-Design',
@@ -552,15 +587,15 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
         },
         {
           id: 'complete',
-          name: 'Komplett',
+          name: 'Complete',
           tagline: 'Deine Online-Präsenz, erledigt.',
           price: '570 €',
           priceSuffix: '/Mon.',
           priceNote: 'Keine Einrichtung · monatlich kündbar',
           popular: false,
-          cta: 'Komplett nehmen',
+          cta: 'Complete nehmen',
           features: [
-            'Alles aus Wachstum, plus:',
+            'Alles aus Growth, plus:',
             'Bis zu 12 Seiten',
             {
               label: '5 Business-E-Mails auf deiner Domain',
@@ -570,12 +605,39 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
             'KI-Chatbot oder Automatisierung',
             'Laufende SEO-Strategie + 2 Artikel / Monat',
             'Google-Unternehmensprofil-Pflege (Bewertungen, Beiträge, Q&A)',
+            'Social Media inklusive: 1 Kanal, 8 Beiträge / Monat (3 Kurzvideos + 5 Bild/Text) — 2 Beiträge/Woche',
             'Erweitertes Analytics-Dashboard',
             '40 Inhaltsänderungen / Monat',
             'Priorisierter Support + Quartals-Review',
           ],
         },
       ],
+      socialAddon: {
+        eyebrow: 'Social Media',
+        heading: 'Social Media dazubuchen',
+        subtitle:
+          'Regelmäßige Beiträge, die deine Kundschaft erreichen — von uns geplant, gestaltet und veröffentlicht.',
+        rows: [
+          {
+            plan: 'Start',
+            price: '+95 €/Mon.',
+            posts: '4 Beiträge/Monat (1 Kurzvideo + 3 Bild/Text)',
+          },
+          {
+            plan: 'Growth',
+            price: '+129 €/Mon.',
+            posts: '5 Beiträge/Monat (2 Kurzvideos + 3 Bild/Text)',
+          },
+          {
+            plan: 'Complete',
+            price: 'Inklusive',
+            posts: '8 Beiträge/Monat (3 Kurzvideos + 5 Bild/Text)',
+          },
+        ],
+        additionalNote: 'Jeder weitere Kanal mit gleicher Beitragsanzahl: +75 €/Monat',
+        fineprint:
+          'Social Media, ehrlich gerechnet. Wir planen, gestalten und veröffentlichen deine Beiträge — Kurzvideos und Bild/Text — auf einem Kanal deiner Wahl (Instagram, Facebook, LinkedIn oder TikTok). Beim Complete-Paket ist ein Kanal bereits enthalten; bei Start und Growth buchst du Social Media optional dazu. Jeder weitere Kanal kostet 75 €/Monat. Monatlich kündbar, wie alles bei uns.',
+      },
       outroNote:
         'Keine Einrichtungsgebühr, keine langen Verträge, monatlich kündbar. Domain und Inhalte bleiben immer deins; bei Kündigung geht die betreute Seite offline, aber mit einer einmaligen Ablöse übernimmst du die Seite selbst und betreibst sie eigenständig weiter.',
       customHeading: 'Lieber ganz besitzen?',
@@ -800,7 +862,7 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       tiers: [
         {
           id: 'start',
-          name: 'Início',
+          name: 'Start',
           tagline: 'Entre no ar do jeito certo.',
           price: '219 €',
           priceSuffix: '/mês',
@@ -827,15 +889,15 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
         },
         {
           id: 'growth',
-          name: 'Crescimento',
+          name: 'Growth',
           tagline: 'O que a maioria precisa.',
           price: '390 €',
           priceSuffix: '/mês',
           priceNote: 'Sem setup · cancele quando quiser',
           popular: true,
-          cta: 'Escolher Crescimento',
+          cta: 'Escolher Growth',
           features: [
-            'Tudo do Início, mais:',
+            'Tudo do Start, mais:',
             'Até 5 páginas sob medida, design premium',
             {
               label: '3 e-mails profissionais no seu domínio',
@@ -851,15 +913,15 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
         },
         {
           id: 'complete',
-          name: 'Completo',
+          name: 'Complete',
           tagline: 'Sua presença digital, resolvida.',
           price: '570 €',
           priceSuffix: '/mês',
           priceNote: 'Sem setup · cancele quando quiser',
           popular: false,
-          cta: 'Ir de Completo',
+          cta: 'Ir de Complete',
           features: [
-            'Tudo do Crescimento, mais:',
+            'Tudo do Growth, mais:',
             'Até 12 páginas',
             {
               label: '5 e-mails profissionais no seu domínio',
@@ -869,12 +931,39 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
             'Chatbot de IA ou automação',
             'Estratégia de SEO contínua + 2 artigos / mês',
             'Gestão do Perfil da Empresa no Google (avaliações, posts, Q&A)',
+            'Mídia social incluída: 1 canal, 8 posts / mês (3 vídeos curtos + 5 imagem/texto) — 2 posts/semana',
             'Dashboard avançado de analytics',
             '40 alterações de conteúdo / mês',
             'Suporte prioritário + revisão trimestral',
           ],
         },
       ],
+      socialAddon: {
+        eyebrow: 'Mídia social',
+        heading: 'Adicionar mídia social',
+        subtitle:
+          'Posts regulares que alcançam seus clientes — planejados, criados e publicados por nós.',
+        rows: [
+          {
+            plan: 'Start',
+            price: '+95 €/mês',
+            posts: '4 posts/mês (1 vídeo curto + 3 imagem/texto)',
+          },
+          {
+            plan: 'Growth',
+            price: '+129 €/mês',
+            posts: '5 posts/mês (2 vídeos curtos + 3 imagem/texto)',
+          },
+          {
+            plan: 'Complete',
+            price: 'Incluído',
+            posts: '8 posts/mês (3 vídeos curtos + 5 imagem/texto)',
+          },
+        ],
+        additionalNote: 'Cada canal adicional, mesma quantidade de posts: +75 €/mês',
+        fineprint:
+          'Mídia social, com preço honesto. Nós planejamos, criamos e publicamos seus posts — vídeos curtos e imagem/texto — em um canal à sua escolha (Instagram, Facebook, LinkedIn ou TikTok). O Complete já inclui um canal; no Start e no Growth você adiciona mídia social opcionalmente. Cada canal adicional custa 75 €/mês. Cancele mensalmente, como tudo o que fazemos.',
+      },
       outroNote:
         'Sem taxa de setup, sem contratos longos, cancele a qualquer mês. Domínio e conteúdo são sempre seus; se cancelar, o site gerenciado sai do ar, mas uma compra única (buy-out) permite levar o site e rodá-lo por conta própria.',
       customHeading: 'Prefere ser dono por completo?',
