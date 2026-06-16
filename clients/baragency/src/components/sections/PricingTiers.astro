@@ -28,6 +28,8 @@ interface Props {
     toggleLabel: string;
     totalLabel: string;
     includedLabel: string;
+    additionalNote: string;
+    detailsLink: string;
   };
 }
 const { tiers, ui, ctaHref, socialAddon } = Astro.props;
@@ -85,10 +87,20 @@ const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
             </span>
             <span class="social-sim__addon tabular">{socialRow.price}</span>
           </label>
-          <p class="social-sim__total" hidden aria-live="polite">
-            <span class="social-sim__total-label">{socialAddon.totalLabel}</span>
-            <span class="social-sim__total-price tabular">{totalPrice}{tier.priceSuffix}</span>
-          </p>
+          <div class="social-sim__reveal" hidden>
+            <p class="social-sim__total" aria-live="polite">
+              <span class="social-sim__total-label">{socialAddon.totalLabel}</span>
+              <span class="social-sim__total-price tabular">{totalPrice}{tier.priceSuffix}</span>
+            </p>
+            <p class="social-sim__posts">
+              <span>{socialRow.posts}</span>
+              <button type="button" class="info-tip" aria-label={socialAddon.additionalNote} aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                <span class="info-tip__bubble" role="tooltip">{socialAddon.additionalNote}</span>
+              </button>
+            </p>
+            <a href="#social-media" class="social-sim__link">{socialAddon.detailsLink}</a>
+          </div>
         </div>
       ) : null}
 
@@ -248,8 +260,34 @@ const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
     font-size: 14px;
     color: var(--color-text-muted);
   }
-  .social-sim__total[hidden] {
+  .social-sim__reveal[hidden] {
     display: none;
+  }
+  .social-sim__posts {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+  .social-sim__posts .info-tip {
+    color: var(--color-text-subtle);
+    cursor: help;
+  }
+  .social-sim__link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-accent-on-surface);
+    text-decoration: none;
+  }
+  .social-sim__link::after {
+    content: ' ↓';
+  }
+  .social-sim__link:hover {
+    text-decoration: underline;
   }
   .social-sim__total-price {
     font-family: var(--font-display, inherit);
@@ -292,8 +330,8 @@ const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
   // Social-media simulator: toggle reveals the combined-total line.
   document.querySelectorAll<HTMLInputElement>('.social-sim__toggle').forEach((toggle) => {
     toggle.addEventListener('change', () => {
-      const total = toggle.closest('.social-sim')?.querySelector('.social-sim__total');
-      total?.toggleAttribute('hidden', !toggle.checked);
+      const reveal = toggle.closest('.social-sim')?.querySelector('.social-sim__reveal');
+      reveal?.toggleAttribute('hidden', !toggle.checked);
     });
   });
 </script>

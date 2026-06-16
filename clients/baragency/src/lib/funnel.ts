@@ -64,6 +64,8 @@ interface PricingContent {
     toggleLabel: string;
     totalLabel: string;
     includedLabel: string;
+    detailsLink: string;
+    channels: string[];
     additionalNote: string;
     fineprint: string;
   };
@@ -291,10 +293,12 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       ],
       socialAddon: {
         eyebrow: 'Social media',
-        heading: 'Add social media',
+        heading: 'How social media works',
         toggleLabel: 'Add social media',
         totalLabel: 'Total with social media',
         includedLabel: 'Social media included',
+        detailsLink: 'See social media details',
+        channels: ['Instagram', 'Facebook', 'LinkedIn', 'TikTok'],
         subtitle:
           'Regular posts that reach your customers — planned, designed and published by us.',
         rows: [
@@ -620,10 +624,12 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       ],
       socialAddon: {
         eyebrow: 'Social Media',
-        heading: 'Social Media dazubuchen',
+        heading: 'So funktioniert Social Media',
         toggleLabel: 'Social Media dazubuchen',
         totalLabel: 'Gesamt mit Social Media',
         includedLabel: 'Social Media inklusive',
+        detailsLink: 'Social-Media-Details ansehen',
+        channels: ['Instagram', 'Facebook', 'LinkedIn', 'TikTok'],
         subtitle:
           'Regelmäßige Beiträge, die deine Kundschaft erreichen — von uns geplant, gestaltet und veröffentlicht.',
         rows: [
@@ -949,10 +955,12 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       ],
       socialAddon: {
         eyebrow: 'Mídia social',
-        heading: 'Adicionar mídia social',
+        heading: 'Como funciona a mídia social',
         toggleLabel: 'Adicionar mídia social',
         totalLabel: 'Total com mídia social',
         includedLabel: 'Mídia social incluída',
+        detailsLink: 'Ver detalhes da mídia social',
+        channels: ['Instagram', 'Facebook', 'LinkedIn', 'TikTok'],
         subtitle:
           'Posts regulares que alcançam seus clientes — planejados, criados e publicados por nós.',
         rows: [
