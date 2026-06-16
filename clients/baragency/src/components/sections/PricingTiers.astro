@@ -4,20 +4,48 @@
  * Prop-driven. Content from FUNNEL[locale].pricing.tiers + .ui. The "popular"
  * tier gets the accent treatment + badge. CTA points at the contact page
  * (ctaHref), no payment is taken on-site. Pure monthly, no setup fee.
+ *
+ * In-card social-media simulator: each Start/Growth card has an "Add social
+ * media" toggle that reveals the combined monthly total (plan + add-on);
+ * Complete shows a static "included" line. The total is computed at build time
+ * by swapping the number inside the locale-formatted price string, so currency
+ * formatting stays locale-correct. Progressive enhancement: no-JS still shows
+ * the base price + the add-on figure; the toggle just reveals the total line.
  */
 import type { PackageTier } from '@/lib/funnel';
 
+interface SocialRow {
+  plan: string;
+  price: string;
+  posts: string;
+}
 interface Props {
   tiers: readonly PackageTier[];
   ui: { popular: string };
   ctaHref: string;
+  socialAddon: {
+    rows: SocialRow[];
+    toggleLabel: string;
+    totalLabel: string;
+    includedLabel: string;
+  };
 }
-const { tiers, ui, ctaHref } = Astro.props;
+const { tiers, ui, ctaHref, socialAddon } = Astro.props;
 const check = 'M20 6 9 17l-5-5';
+const onlyDigits = (s: string): number => Number(s.replace(/[^\d]/g, '')) || 0;
+const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
 ---
 
 <div class="grid lg:grid-cols-3 gap-6 items-start">
-  {tiers.map((tier) => (
+  {tiers.map((tier) => {
+    const socialRow = socialByPlan.get(tier.name);
+    const addonAmount = socialRow ? onlyDigits(socialRow.price) : 0;
+    const socialIncluded = !!socialRow && addonAmount === 0;
+    const totalPrice =
+      socialRow && addonAmount > 0
+        ? tier.price.replace(/[\d][\d.,]*/, String(onlyDigits(tier.price) + addonAmount))
+        : null;
+    return (
     <div
       class:list={[
         'reveal-rise relative rounded-[22px] p-8 flex flex-col h-full border',
@@ -42,6 +70,28 @@ const check = 'M20 6 9 17l-5-5';
         </p>
         <p class="mt-1 text-xs text-text-muted">{tier.priceNote}</p>
       </div>
+
+      {socialIncluded ? (
+        <p class="social-sim social-sim--included mt-5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-on-surface shrink-0" aria-hidden="true"><path d={check}></path></svg>
+          <span>{socialAddon.includedLabel}</span>
+        </p>
+      ) : socialRow ? (
+        <div class="social-sim mt-5">
+          <label class="social-sim__row">
+            <span class="social-sim__lead">
+              <input type="checkbox" class="social-sim__toggle" />
+              <span>{socialAddon.toggleLabel}</span>
+            </span>
+            <span class="social-sim__addon tabular">{socialRow.price}</span>
+          </label>
+          <p class="social-sim__total" hidden aria-live="polite">
+            <span class="social-sim__total-label">{socialAddon.totalLabel}</span>
+            <span class="social-sim__total-price tabular">{totalPrice}{tier.priceSuffix}</span>
+          </p>
+        </div>
+      ) : null}
+
       <ul class="mt-7 space-y-3 list-none p-0 flex-1">
         {tier.features.map((f) => {
           const label = typeof f === 'string' ? f : f.label;
@@ -74,7 +124,8 @@ const check = 'M20 6 9 17l-5-5';
         {tier.cta}
       </a>
     </div>
-  ))}
+    );
+  })}
 </div>
 
 <style>
@@ -121,8 +172,98 @@ const check = 'M20 6 9 17l-5-5';
     opacity: 1;
     visibility: visible;
   }
+
+  /* In-card social-media simulator */
+  .social-sim {
+    border-top: 1px solid var(--color-border);
+    padding-top: 16px;
+  }
+  .social-sim--included {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+  .social-sim__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text);
+    user-select: none;
+  }
+  .social-sim__lead {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .social-sim__addon {
+    color: var(--color-accent-on-surface);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .social-sim__toggle {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 38px;
+    height: 22px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--color-border);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.18s ease;
+  }
+  .social-sim__toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+    transition: transform 0.18s ease;
+  }
+  .social-sim__toggle:checked {
+    background: var(--color-accent);
+  }
+  .social-sim__toggle:checked::after {
+    transform: translateX(16px);
+  }
+  .social-sim__toggle:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .social-sim__total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+  .social-sim__total[hidden] {
+    display: none;
+  }
+  .social-sim__total-price {
+    font-family: var(--font-display, inherit);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .info-tip__bubble {
+    .info-tip__bubble,
+    .social-sim__toggle,
+    .social-sim__toggle::after {
       transition: none;
     }
   }
@@ -146,5 +287,13 @@ const check = 'M20 6 9 17l-5-5';
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') tips.forEach((t) => t.setAttribute('aria-expanded', 'false'));
+  });
+
+  // Social-media simulator: toggle reveals the combined-total line.
+  document.querySelectorAll<HTMLInputElement>('.social-sim__toggle').forEach((toggle) => {
+    toggle.addEventListener('change', () => {
+      const total = toggle.closest('.social-sim')?.querySelector('.social-sim__total');
+      total?.toggleAttribute('hidden', !toggle.checked);
+    });
   });
 </script>

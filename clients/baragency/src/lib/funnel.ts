@@ -61,6 +61,9 @@ interface PricingContent {
     heading: string;
     subtitle: string;
     rows: { plan: string; price: string; posts: string }[];
+    toggleLabel: string;
+    totalLabel: string;
+    includedLabel: string;
     additionalNote: string;
     fineprint: string;
   };
@@ -289,6 +292,9 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       socialAddon: {
         eyebrow: 'Social media',
         heading: 'Add social media',
+        toggleLabel: 'Add social media',
+        totalLabel: 'Total with social media',
+        includedLabel: 'Social media included',
         subtitle:
           'Regular posts that reach your customers — planned, designed and published by us.',
         rows: [
@@ -615,6 +621,9 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       socialAddon: {
         eyebrow: 'Social Media',
         heading: 'Social Media dazubuchen',
+        toggleLabel: 'Social Media dazubuchen',
+        totalLabel: 'Gesamt mit Social Media',
+        includedLabel: 'Social Media inklusive',
         subtitle:
           'Regelmäßige Beiträge, die deine Kundschaft erreichen — von uns geplant, gestaltet und veröffentlicht.',
         rows: [
@@ -941,6 +950,9 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
       socialAddon: {
         eyebrow: 'Mídia social',
         heading: 'Adicionar mídia social',
+        toggleLabel: 'Adicionar mídia social',
+        totalLabel: 'Total com mídia social',
+        includedLabel: 'Mídia social incluída',
         subtitle:
           'Posts regulares que alcançam seus clientes — planejados, criados e publicados por nós.',
         rows: [
