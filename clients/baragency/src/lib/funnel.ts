@@ -48,6 +48,25 @@ export interface PackageTier {
   cta: string;
 }
 
+export interface AddonPricing {
+  /** per extra language, /mo */
+  language: number;
+  /** per extra mailbox, /mo */
+  mailbox: number;
+  /** first social channel by plan; Complete = 0 (one channel included) */
+  socialFirstChannel: Record<'start' | 'growth' | 'complete', number>;
+  /** any plan, per extra channel, /mo */
+  socialAdditionalChannel: number;
+}
+export interface BillingPricing {
+  /** yearly prepay discount, e.g. 0.15 */
+  yearlyDiscount: number;
+  monthlyLabel: string;
+  yearlyLabel: string;
+  yearlySuffix: string;
+  yearlyNote: string;
+}
+
 interface PricingContent {
   metaTitle: string;
   metaDescription: string;
@@ -56,6 +75,8 @@ interface PricingContent {
   heroSubtitle: string;
   draftNote: string;
   tiers: PackageTier[];
+  addons: AddonPricing;
+  billing: BillingPricing;
   socialAddon: {
     eyebrow: string;
     heading: string;
@@ -212,6 +233,19 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
         'Design, build, hosting, updates, and support for one flat monthly fee, no setup cost. Cancel anytime; your domain and content always stay yours, and you can buy the site outright whenever you like.',
       draftNote:
         'Per month, net (plus VAT where applicable). Includes hosting, updates, and support, no setup fee.',
+      addons: {
+        language: 36,
+        mailbox: 12,
+        socialFirstChannel: { start: 95, growth: 129, complete: 0 },
+        socialAdditionalChannel: 75,
+      },
+      billing: {
+        yearlyDiscount: 0.15,
+        monthlyLabel: 'Monthly',
+        yearlyLabel: 'Yearly (save 15%)',
+        yearlySuffix: '/yr',
+        yearlyNote: 'Pay 12 months up front, save 15% (≈ 1.8 months free).',
+      },
       tiers: [
         {
           id: 'start',
@@ -543,6 +577,19 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
         'Design, Aufbau, Hosting, Updates und Support für eine feste Monatsgebühr, ohne Einrichtungskosten. Jederzeit kündbar; Domain und Inhalte bleiben immer deins, und die Seite kannst du jederzeit ganz übernehmen.',
       draftNote:
         'Pro Monat, netto (zzgl. USt., falls anwendbar). Inkl. Hosting, Updates und Support, keine Einrichtungsgebühr.',
+      addons: {
+        language: 36,
+        mailbox: 12,
+        socialFirstChannel: { start: 95, growth: 129, complete: 0 },
+        socialAdditionalChannel: 75,
+      },
+      billing: {
+        yearlyDiscount: 0.15,
+        monthlyLabel: 'Monatlich',
+        yearlyLabel: 'Jährlich (15% sparen)',
+        yearlySuffix: '/Jahr',
+        yearlyNote: 'Zahle 12 Monate im Voraus, spare 15% (≈ 1,8 Monate gratis).',
+      },
       tiers: [
         {
           id: 'start',
@@ -874,6 +921,19 @@ export const FUNNEL: Record<Locale, FunnelContent> = {
         'Design, construção, hospedagem, atualizações e suporte por uma taxa mensal fixa, sem custo de setup. Cancele quando quiser; domínio e conteúdo são sempre seus, e você pode comprar o site por completo a qualquer momento.',
       draftNote:
         'Por mês, líquido (mais impostos, se aplicável). Inclui hospedagem, atualizações e suporte, sem taxa de setup.',
+      addons: {
+        language: 36,
+        mailbox: 12,
+        socialFirstChannel: { start: 95, growth: 129, complete: 0 },
+        socialAdditionalChannel: 75,
+      },
+      billing: {
+        yearlyDiscount: 0.15,
+        monthlyLabel: 'Mensal',
+        yearlyLabel: 'Anual (economize 15%)',
+        yearlySuffix: '/ano',
+        yearlyNote: 'Pague 12 meses adiantado, economize 15% (≈ 1,8 mês grátis).',
+      },
       tiers: [
         {
           id: 'start',

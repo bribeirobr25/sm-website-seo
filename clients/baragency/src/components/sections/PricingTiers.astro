@@ -1,18 +1,22 @@
 ---
 /**
  * PricingTiers (F2), monthly-subscription package cards ("Website-Abo").
- * Prop-driven. Content from FUNNEL[locale].pricing.tiers + .ui. The "popular"
- * tier gets the accent treatment + badge. CTA points at the contact page
- * (ctaHref), no payment is taken on-site. Pure monthly, no setup fee.
+ * Prop-driven. Content from FUNNEL[locale].pricing.tiers + .ui + .billing. The
+ * "popular" tier gets the accent treatment + badge. CTA → contact page; no
+ * payment on-site. Pure monthly, no setup fee.
  *
- * In-card social-media simulator: each Start/Growth card has an "Add social
- * media" toggle that reveals the combined monthly total (plan + add-on);
- * Complete shows a static "included" line. The total is computed at build time
- * by swapping the number inside the locale-formatted price string, so currency
- * formatting stays locale-correct. Progressive enhancement: no-JS still shows
- * the base price + the add-on figure; the toggle just reveals the total line.
+ * Billing toggle (monthly / yearly): both price sets are computed at BUILD time
+ * and rendered; a segmented toggle flips `data-billing-view` on the wrapper and
+ * CSS swaps `.bill-monthly` ↔ `.bill-yearly`. No client math, no flash, no-JS
+ * shows monthly. Yearly = whole-euro `round(monthly × 12 × (1−discount))` on the
+ * AGGREGATE, so every shown figure is a clean discounted euro amount.
+ *
+ * In-card social-media simulator: Start/Growth cards toggle "Add social media"
+ * → combined total (monthly or yearly, matching the billing view) + post detail
+ * + ⓘ(extra-channel) + a link to the explainer section. Complete shows "included".
  */
-import type { PackageTier } from '@/lib/funnel';
+import type { BillingPricing, PackageTier } from '@/lib/funnel';
+import type { Locale } from '@/lib/site';
 
 interface SocialRow {
   plan: string;
@@ -23,6 +27,8 @@ interface Props {
   tiers: readonly PackageTier[];
   ui: { popular: string };
   ctaHref: string;
+  locale: Locale;
+  billing: BillingPricing;
   socialAddon: {
     rows: SocialRow[];
     toggleLabel: string;
@@ -32,115 +38,192 @@ interface Props {
     detailsLink: string;
   };
 }
-const { tiers, ui, ctaHref, socialAddon } = Astro.props;
+const { tiers, ui, ctaHref, locale, billing, socialAddon } = Astro.props;
 const check = 'M20 6 9 17l-5-5';
 const onlyDigits = (s: string): number => Number(s.replace(/[^\d]/g, '')) || 0;
 const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
+
+// Locale-correct thousands separator + € placement (matches the tier price style).
+const NUM_LOCALE: Record<Locale, string> = { en: 'en-US', de: 'de-DE', 'pt-br': 'pt-BR' };
+const fmtNum = (n: number): string =>
+  new Intl.NumberFormat(NUM_LOCALE[locale], { maximumFractionDigits: 0 }).format(n);
+const euro = (n: number, sample: string): string =>
+  sample.trim().startsWith('€') ? `€${fmtNum(n)}` : `${fmtNum(n)} €`;
+const D = billing.yearlyDiscount;
+const yearly = (monthly: number): number => Math.round(monthly * 12 * (1 - D));
 ---
 
-<div class="grid lg:grid-cols-3 gap-6 items-start">
-  {tiers.map((tier) => {
-    const socialRow = socialByPlan.get(tier.name);
-    const addonAmount = socialRow ? onlyDigits(socialRow.price) : 0;
-    const socialIncluded = !!socialRow && addonAmount === 0;
-    const totalPrice =
-      socialRow && addonAmount > 0
-        ? tier.price.replace(/[\d][\d.,]*/, String(onlyDigits(tier.price) + addonAmount))
-        : null;
-    return (
-    <div
-      class:list={[
-        'reveal-rise relative rounded-[22px] p-8 flex flex-col h-full border',
-        tier.popular
-          ? 'bg-surface-elev border-accent shadow-elev lg:-mt-2'
-          : 'bg-surface-elev border-border',
-      ]}
-    >
-      {tier.popular && (
-        <span class="absolute -top-3 left-8 inline-flex items-center rounded-full bg-accent text-white text-xs font-medium px-3 py-1">
-          {ui.popular}
-        </span>
-      )}
-      <div>
-        <h2 class="font-display text-2xl font-semibold text-text tracking-[-0.02em]">{tier.name}</h2>
-        <p class="mt-2 text-sm text-text-muted">{tier.tagline}</p>
-      </div>
-      <div class="mt-6">
-        <p class="flex items-baseline gap-1">
-          <span class="font-display text-4xl font-semibold text-text tracking-[-0.03em] tabular">{tier.price}</span>
-          <span class="text-base text-text-muted">{tier.priceSuffix}</span>
-        </p>
-        <p class="mt-1 text-xs text-text-muted">{tier.priceNote}</p>
-      </div>
+<div data-billing-view="monthly">
+  <div class="bill-toggle" role="group" aria-label={billing.monthlyLabel + ' / ' + billing.yearlyLabel}>
+    <button type="button" class="bill-toggle__btn is-active" data-bill="monthly" aria-pressed="true">{billing.monthlyLabel}</button>
+    <button type="button" class="bill-toggle__btn" data-bill="yearly" aria-pressed="false">{billing.yearlyLabel}</button>
+  </div>
 
-      {socialIncluded ? (
-        <p class="social-sim social-sim--included mt-5">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-on-surface shrink-0" aria-hidden="true"><path d={check}></path></svg>
-          <span>{socialAddon.includedLabel}</span>
-        </p>
-      ) : socialRow ? (
-        <div class="social-sim mt-5">
-          <label class="social-sim__row">
-            <span class="social-sim__lead">
-              <input type="checkbox" class="social-sim__toggle" />
-              <span>{socialAddon.toggleLabel}</span>
-            </span>
-            <span class="social-sim__addon tabular">{socialRow.price}</span>
-          </label>
-          <div class="social-sim__reveal" hidden>
-            <p class="social-sim__total" aria-live="polite">
-              <span class="social-sim__total-label">{socialAddon.totalLabel}</span>
-              <span class="social-sim__total-price tabular">{totalPrice}{tier.priceSuffix}</span>
-            </p>
-            <p class="social-sim__posts">
-              <span>{socialRow.posts}</span>
-              <button type="button" class="info-tip" aria-label={socialAddon.additionalNote} aria-expanded="false">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-                <span class="info-tip__bubble" role="tooltip">{socialAddon.additionalNote}</span>
-              </button>
-            </p>
-            <a href="#social-media" class="social-sim__link">{socialAddon.detailsLink}</a>
-          </div>
-        </div>
-      ) : null}
-
-      <ul class="mt-7 space-y-3 list-none p-0 flex-1">
-        {tier.features.map((f) => {
-          const label = typeof f === 'string' ? f : f.label;
-          const note = typeof f === 'string' ? null : f.note;
-          return (
-            <li class="flex items-start gap-2.5 text-sm text-text leading-relaxed">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-on-surface shrink-0 mt-0.5" aria-hidden="true"><path d={check}></path></svg>
-              <span>
-                {label}
-                {note && (
-                  <button type="button" class="info-tip" aria-label={note} aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-                    <span class="info-tip__bubble" role="tooltip">{note}</span>
-                  </button>
-                )}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-      <a
-        href={ctaHref}
+  <div class="grid lg:grid-cols-3 gap-6 items-start">
+    {tiers.map((tier) => {
+      const planNum = onlyDigits(tier.price);
+      const socialRow = socialByPlan.get(tier.name);
+      const addonNum = socialRow ? onlyDigits(socialRow.price) : 0;
+      const socialIncluded = !!socialRow && addonNum === 0;
+      // monthly
+      const monthlyTotalStr = addonNum > 0 ? euro(planNum + addonNum, tier.price) : null;
+      // yearly (whole-euro, discounted aggregate)
+      const yearlyPlanNum = yearly(planNum);
+      const yearlyPlanStr = euro(yearlyPlanNum, tier.price);
+      const yearlyTotalNum = addonNum > 0 ? yearly(planNum + addonNum) : null;
+      const yearlyTotalStr = yearlyTotalNum != null ? euro(yearlyTotalNum, tier.price) : null;
+      const yearlyAddonStr = yearlyTotalNum != null ? `+${euro(yearlyTotalNum - yearlyPlanNum, tier.price)}${billing.yearlySuffix}` : null;
+      return (
+      <div
         class:list={[
-          'mt-8 inline-flex items-center justify-center w-full px-6 py-3 min-h-[48px] rounded-full text-base font-medium transition-colors',
+          'reveal-rise relative rounded-[22px] p-8 flex flex-col h-full border',
           tier.popular
-            ? 'bg-accent text-white hover:bg-accent-deep'
-            : 'border border-text-muted/60 text-text hover:border-text-muted hover:bg-surface',
+            ? 'bg-surface-elev border-accent shadow-elev lg:-mt-2'
+            : 'bg-surface-elev border-border',
         ]}
       >
-        {tier.cta}
-      </a>
-    </div>
-    );
-  })}
+        {tier.popular && (
+          <span class="absolute -top-3 left-8 inline-flex items-center rounded-full bg-accent text-white text-xs font-medium px-3 py-1">
+            {ui.popular}
+          </span>
+        )}
+        <div>
+          <h2 class="font-display text-2xl font-semibold text-text tracking-[-0.02em]">{tier.name}</h2>
+          <p class="mt-2 text-sm text-text-muted">{tier.tagline}</p>
+        </div>
+        <div class="mt-6">
+          <p class="flex items-baseline gap-1">
+            <span class="bill-monthly font-display text-4xl font-semibold text-text tracking-[-0.03em] tabular">{tier.price}</span>
+            <span class="bill-monthly text-base text-text-muted">{tier.priceSuffix}</span>
+            <span class="bill-yearly font-display text-4xl font-semibold text-text tracking-[-0.03em] tabular">{yearlyPlanStr}</span>
+            <span class="bill-yearly text-base text-text-muted">{billing.yearlySuffix}</span>
+          </p>
+          <p class="mt-1 text-xs text-text-muted">
+            <span class="bill-monthly">{tier.priceNote}</span>
+            <span class="bill-yearly">{billing.yearlyNote}</span>
+          </p>
+        </div>
+
+        {socialIncluded ? (
+          <p class="social-sim social-sim--included mt-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-on-surface shrink-0" aria-hidden="true"><path d={check}></path></svg>
+            <span>{socialAddon.includedLabel}</span>
+          </p>
+        ) : socialRow ? (
+          <div class="social-sim mt-5">
+            <label class="social-sim__row">
+              <span class="social-sim__lead">
+                <input type="checkbox" class="social-sim__toggle" />
+                <span>{socialAddon.toggleLabel}</span>
+              </span>
+              <span class="social-sim__addon tabular">
+                <span class="bill-monthly">{socialRow.price}</span>
+                <span class="bill-yearly">{yearlyAddonStr}</span>
+              </span>
+            </label>
+            <div class="social-sim__reveal" hidden>
+              <p class="social-sim__total" aria-live="polite">
+                <span class="social-sim__total-label">{socialAddon.totalLabel}</span>
+                <span class="social-sim__total-price tabular">
+                  <span class="bill-monthly">{monthlyTotalStr}{tier.priceSuffix}</span>
+                  <span class="bill-yearly">{yearlyTotalStr}{billing.yearlySuffix}</span>
+                </span>
+              </p>
+              <p class="social-sim__posts">
+                <span>{socialRow.posts}</span>
+                <button type="button" class="info-tip" aria-label={socialAddon.additionalNote} aria-expanded="false">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                  <span class="info-tip__bubble" role="tooltip">{socialAddon.additionalNote}</span>
+                </button>
+              </p>
+              <a href="#social-media" class="social-sim__link">{socialAddon.detailsLink}</a>
+            </div>
+          </div>
+        ) : null}
+
+        <ul class="mt-7 space-y-3 list-none p-0 flex-1">
+          {tier.features.map((f) => {
+            const label = typeof f === 'string' ? f : f.label;
+            const note = typeof f === 'string' ? null : f.note;
+            return (
+              <li class="flex items-start gap-2.5 text-sm text-text leading-relaxed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-on-surface shrink-0 mt-0.5" aria-hidden="true"><path d={check}></path></svg>
+                <span>
+                  {label}
+                  {note && (
+                    <button type="button" class="info-tip" aria-label={note} aria-expanded="false">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                      <span class="info-tip__bubble" role="tooltip">{note}</span>
+                    </button>
+                  )}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+        <a
+          href={ctaHref}
+          class:list={[
+            'mt-8 inline-flex items-center justify-center w-full px-6 py-3 min-h-[48px] rounded-full text-base font-medium transition-colors',
+            tier.popular
+              ? 'bg-accent text-white hover:bg-accent-deep'
+              : 'border border-text-muted/60 text-text hover:border-text-muted hover:bg-surface',
+          ]}
+        >
+          {tier.cta}
+        </a>
+      </div>
+      );
+    })}
+  </div>
 </div>
 
 <style>
+  /* Billing toggle */
+  .bill-toggle {
+    display: inline-flex;
+    margin: 0 auto 32px;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    gap: 2px;
+  }
+  div[data-billing-view] > .bill-toggle {
+    display: flex;
+    width: max-content;
+    margin-inline: auto;
+  }
+  .bill-toggle__btn {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 18px;
+    min-height: 40px;
+    border-radius: 999px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .bill-toggle__btn.is-active {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .bill-toggle__btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Billing view switch: monthly default; toggle flips visibility */
+  [data-billing-view='monthly'] .bill-yearly {
+    display: none;
+  }
+  [data-billing-view='yearly'] .bill-monthly {
+    display: none;
+  }
+
   .info-tip {
     position: relative;
     display: inline-flex;
@@ -251,6 +334,9 @@ const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
+  .social-sim__reveal[hidden] {
+    display: none;
+  }
   .social-sim__total {
     display: flex;
     align-items: baseline;
@@ -259,9 +345,6 @@ const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
     margin-top: 12px;
     font-size: 14px;
     color: var(--color-text-muted);
-  }
-  .social-sim__reveal[hidden] {
-    display: none;
   }
   .social-sim__posts {
     display: flex;
@@ -301,7 +384,8 @@ const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
   @media (prefers-reduced-motion: reduce) {
     .info-tip__bubble,
     .social-sim__toggle,
-    .social-sim__toggle::after {
+    .social-sim__toggle::after,
+    .bill-toggle__btn {
       transition: none;
     }
   }
@@ -332,6 +416,22 @@ const socialByPlan = new Map(socialAddon.rows.map((r) => [r.plan, r] as const));
     toggle.addEventListener('change', () => {
       const reveal = toggle.closest('.social-sim')?.querySelector('.social-sim__reveal');
       reveal?.toggleAttribute('hidden', !toggle.checked);
+    });
+  });
+
+  // Billing toggle: flip data-billing-view on the wrapper; CSS swaps the price sets.
+  document.querySelectorAll('.bill-toggle').forEach((group) => {
+    const wrapper = group.closest('[data-billing-view]');
+    const buttons = group.querySelectorAll<HTMLButtonElement>('.bill-toggle__btn');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        wrapper?.setAttribute('data-billing-view', btn.dataset.bill || 'monthly');
+        buttons.forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle('is-active', on);
+          b.setAttribute('aria-pressed', String(on));
+        });
+      });
     });
   });
 </script>

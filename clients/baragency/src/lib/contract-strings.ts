@@ -5,20 +5,25 @@
  * § 2 (services) is filled at runtime from the selected /pricing plan's feature
  * list (FUNNEL pricing tiers) — the single source of truth — so the contract can
  * never drift from the pricing page.
- * § 3 (payment) also shows an auto-generated contract number
- * (BAR-<planCode+price>-<client>-<YYMMDD>) used as the header "Contract no." and
- * the payment reference, a sender line (= client business name), and an explicit
- * bank-OR-PayPal choice — built client-side in contract.astro, presentation only.
+ * Add-ons + billing (2026-06-16): the form has steppers for extra languages /
+ * mailboxes / social channels + a social checkbox + a monthly/yearly radio. They
+ * fold into ONE canonical monthlyTotal (numbers from FUNNEL.pricing.addons) that
+ * drives the § 2 add-on line items, the buy-out (18× total), VAT, the yearly
+ * figure, AND the auto-generated contract number (BAR-<planCode><monthlyTotal>-
+ * <client>-<YYMMDD>) — header "Contract no." + the payment reference. Yearly =
+ * round(monthlyTotal × 12 × 0.85), a fixed 12-month prepaid term. The agency
+ * signature column carries a simulated "BAR" mark (signature.ts). All client-side.
  *
  * **LEGAL CAVEAT, NOT lawyer-reviewed.** Monthly-subscription model ("Website-Abo"):
- * § 3 = monthly fee + optional one-time buy-out (no build fee); § 4 = cancellation
- * takes the site offline (only content/data/domain handed over, not the build); § 5
- * = the website is LICENSED for the subscription term, not transferred. Plain-language
- * clauses (statutes in parentheses) + a top "In plain words" summary; legal substance
- * unchanged. Before ANY use, a Berlin-licensed Rechtsanwalt must finalize the German
- * text: legal classification (Dienst-/Mietvertrag), § 307 BGB AGB-Kontrolle,
- * Widerrufsrecht for consumers, the § 5 licence + buy-out mechanics, and the AVV
- * (Art. 28 GDPR) cross-reference.
+ * § 3 = monthly fee (or yearly prepaid) + optional one-time buy-out (no build fee);
+ * § 4 = monthly cancellation OR a fixed 12-month yearly term (no refund except
+ * Widerrufsrecht); § 5 = the website is LICENSED for the term, not transferred.
+ * Plain-language clauses (statutes in parentheses) + a top "In plain words" summary.
+ * Before ANY use, a Berlin-licensed Rechtsanwalt must finalize the German text:
+ * legal classification (Dienst-/Mietvertrag), § 305c/§ 307 BGB AGB-Kontrolle
+ * (incl. the yearly fixed term + no-refund), Widerrufsrecht for consumers, the § 5
+ * licence + buy-out mechanics, the AVV (Art. 28 GDPR) cross-reference, AND whether
+ * the pre-printed simulated signature is acceptable at all.
  */
 
 export type LocaleEnDe = 'en' | 'de';
@@ -138,6 +143,27 @@ export interface ContractStrings {
   signatureDateLabel: string;
   signatureLineLabel: string;
 
+  // Add-ons + billing — form controls
+  billingLabel: string;
+  billingMonthly: string;
+  billingYearly: string;
+  addonLanguages: string;
+  addonMailboxes: string;
+  addonSocial: string;
+  addonSocialChannels: string;
+  // §2 add-on line templates ({count}/{price})
+  s2AddonLanguage: string;
+  s2AddonMailbox: string;
+  s2AddonSocialFirst: string;
+  s2AddonSocialExtra: string;
+  // §3 yearly + payment reference
+  s3RetainerLineYearly: string;
+  s3YearlyDiscountLine: string;
+  s3ReferenceNote: string;
+  // §4 yearly fixed-term variant
+  s4MinimumTermYearly: string;
+  // pre-printed agency signature
+  signatureSpecimenNote: string;
   footerNote: string;
 }
 
@@ -272,6 +298,26 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     signatureDateLabel: 'Date',
     signatureLineLabel: 'Signature',
 
+    billingLabel: 'Billing cycle',
+    billingMonthly: 'Monthly',
+    billingYearly: 'Yearly — 12-month term, save 15%',
+    addonLanguages: 'Extra languages (beyond German + English)',
+    addonMailboxes: 'Extra mailboxes',
+    addonSocial: 'Add social media (1 channel)',
+    addonSocialChannels: 'Extra social channels',
+    s2AddonLanguage: '+ {count} additional language(s), {price}/mo each',
+    s2AddonMailbox: '+ {count} additional mailbox(es), {price}/mo each',
+    s2AddonSocialFirst: '+ Social media: 1 channel, {price}/mo',
+    s2AddonSocialExtra: '+ {count} additional social channel(s), {price}/mo each',
+    s3RetainerLineYearly:
+      'Yearly fee: {eur} net, billed once, in advance, for a fixed 12-month term, due within 14 days by bank transfer or PayPal. It covers the § 2 services plus hosting, maintenance, security updates, and support for the term. The 15 % yearly discount is already included. There is no separate set-up or build fee.',
+    s3YearlyDiscountLine:
+      'Yearly prepayment: a 15 % discount is applied to the full monthly total (plan and add-ons); {eur} net is billed once, in advance, for the 12-month term.',
+    s3ReferenceNote: 'This reference identifies your contract and plan — it is not the amount due.',
+    s4MinimumTermYearly:
+      'With yearly prepayment the subscription runs as a fixed 12-month term beginning on the start date above, paid in advance. It does not cancel monthly: either Party may give notice in text form (§ 126b BGB) to the end of the 12-month term; absent notice it renews for a further 12 months. Prepaid months are not refunded on early cancellation, except where a statutory right of withdrawal (Widerrufsrecht) applies.',
+    signatureSpecimenNote:
+      'Specimen of the agency’s signature; the binding signature is applied when the Agreement is executed.',
     footerNote: 'Website Subscription Agreement, draft (not lawyer-reviewed) · Page',
   },
   de: {
@@ -405,6 +451,27 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     signatureDateLabel: 'Datum',
     signatureLineLabel: 'Unterschrift',
 
+    billingLabel: 'Abrechnungszeitraum',
+    billingMonthly: 'Monatlich',
+    billingYearly: 'Jährlich — 12 Monate Laufzeit, 15 % sparen',
+    addonLanguages: 'Zusätzliche Sprachen (über Deutsch + Englisch hinaus)',
+    addonMailboxes: 'Zusätzliche Postfächer',
+    addonSocial: 'Social Media dazubuchen (1 Kanal)',
+    addonSocialChannels: 'Zusätzliche Social-Media-Kanäle',
+    s2AddonLanguage: '+ {count} zusätzliche Sprache(n), je {price}/Mon.',
+    s2AddonMailbox: '+ {count} zusätzliche(s) Postfach/Postfächer, je {price}/Mon.',
+    s2AddonSocialFirst: '+ Social Media: 1 Kanal, {price}/Mon.',
+    s2AddonSocialExtra: '+ {count} zusätzliche(r) Social-Media-Kanal/Kanäle, je {price}/Mon.',
+    s3RetainerLineYearly:
+      'Jahresgebühr: {eur} netto, einmalig im Voraus für eine feste Laufzeit von 12 Monaten abgerechnet, zahlbar innerhalb von 14 Tagen per Banküberweisung oder PayPal. Sie deckt die Leistungen aus § 2 sowie Hosting, Pflege, Sicherheits-Updates und Support für die Laufzeit. Der jährliche Rabatt von 15 % ist bereits enthalten. Es fällt keine gesonderte Einrichtungs- oder Aufbaugebühr an.',
+    s3YearlyDiscountLine:
+      'Jahresvorauszahlung: Auf den vollen Monatsbetrag (Plan und Zusatzleistungen) wird ein Rabatt von 15 % gewährt; {eur} netto werden einmalig im Voraus für die 12-monatige Laufzeit berechnet.',
+    s3ReferenceNote:
+      'Dieser Verwendungszweck identifiziert deinen Vertrag und Plan — er ist nicht der fällige Betrag.',
+    s4MinimumTermYearly:
+      'Bei Jahresvorauszahlung läuft das Abo als feste Laufzeit von 12 Monaten ab dem oben genannten Projektbeginn, im Voraus bezahlt. Es ist nicht monatlich kündbar: Beide Parteien können in Textform (§ 126b BGB) zum Ende der 12-Monats-Laufzeit kündigen; ohne Kündigung verlängert es sich um weitere 12 Monate. Vorausbezahlte Monate werden bei vorzeitiger Kündigung nicht erstattet, außer wenn ein gesetzliches Widerrufsrecht besteht.',
+    signatureSpecimenNote:
+      'Musterunterschrift der Agentur; die verbindliche Unterschrift wird bei Vertragsschluss geleistet.',
     footerNote: 'Website-Abo-Vertrag, Entwurf (nicht anwaltlich geprüft) · Seite',
   },
 };

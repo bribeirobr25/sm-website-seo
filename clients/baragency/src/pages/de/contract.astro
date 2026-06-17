@@ -8,6 +8,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { CONTRACT_STRINGS } from '@/lib/contract-strings';
 import { FUNNEL } from '@/lib/funnel';
+import { SIGNATURE_SVG } from '@/lib/signature';
 import { SITE } from '@/lib/site';
 
 const locale = 'de' as const;
@@ -27,6 +28,8 @@ const plans = FUNNEL[locale].pricing.tiers.map((t) => ({
   priceNum: Number(t.price.replace(/[^0-9.]/g, '')),
   features: t.features.map(featText),
 }));
+const addons = FUNNEL[locale].pricing.addons;
+const billing = FUNNEL[locale].pricing.billing;
 
 const agencyAddressLine = [
   SITE.address.street,
@@ -184,11 +187,47 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
               <span class="form-step__title">{c.pricingLabel}</span>
             </legend>
             <div class="form-step__body space-y-5">
+              <div>
+                <span class="form-label" id="billing-label">{c.billingLabel}</span>
+                <div role="radiogroup" aria-labelledby="billing-label" class="grid sm:grid-cols-2 gap-3">
+                  <label class="vat-card">
+                    <input type="radio" name="billing_cycle" value="monthly" checked class="vat-card__input" />
+                    <span class="vat-card__label">{c.billingMonthly}</span>
+                  </label>
+                  <label class="vat-card">
+                    <input type="radio" name="billing_cycle" value="yearly" class="vat-card__input" />
+                    <span class="vat-card__label">{c.billingYearly}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <label class="block">
+                  <span class="form-label">{c.addonLanguages}</span>
+                  <input type="number" name="addon_languages" min="0" step="1" value="0" class="ag-input tabular" inputmode="numeric" />
+                </label>
+                <label class="block">
+                  <span class="form-label">{c.addonMailboxes}</span>
+                  <input type="number" name="addon_mailboxes" min="0" step="1" value="0" class="ag-input tabular" inputmode="numeric" />
+                </label>
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <label class="vat-card" style="align-items:center;">
+                  <input type="checkbox" name="addon_social_enabled" class="vat-card__input" />
+                  <span class="vat-card__label">{c.addonSocial}</span>
+                </label>
+                <label class="block">
+                  <span class="form-label">{c.addonSocialChannels}</span>
+                  <input type="number" name="addon_social_extra_channels" min="0" step="1" value="0" class="ag-input tabular" inputmode="numeric" />
+                </label>
+              </div>
+
               <label class="block sm:max-w-xs">
                 <span class="form-label">{c.retainerFee}</span>
                 <div class="ag-input-currency">
                   <span class="ag-input-currency__symbol" aria-hidden="true">€</span>
-                  <input type="number" name="price_retainer" min="0" step="0.01" placeholder="0,00" class="ag-input ag-input--currency tabular" inputmode="decimal" />
+                  <input type="number" name="price_retainer" readonly class="ag-input ag-input--currency tabular" />
                 </div>
                 <span class="form-hint out-retainer-hint">{c.retainerFeeHint}</span>
               </label>
@@ -294,6 +333,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
             <ul class="contract-list">
               <li class="out-build-line">, </li>
               <li class="out-retainer-line">, </li>
+              <li class="out-yearly-line" style="display:none;">, </li>
               <li>{c.s3PaymentTerms}</li>
               <li class="out-vat-line">, </li>
             </ul>
@@ -306,6 +346,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
               <p class="contract-p" style="margin:0;"><strong>PayPal:</strong> {SITE.payment.paypal}</p>
               <p class="contract-p" style="margin:8px 0 0 0;"><strong>{c.s3PaymentReference}:</strong> <span class="out-contract-no tabular" style="font-weight:600;">…</span></p>
               <p class="contract-p" style="margin:0;"><strong>{c.s3PaymentSender}:</strong> <span class="out-client-business-name">…</span></p>
+              <p class="contract-p out-reference-note" style="margin:4px 0 0 0;font-size:13px;color:var(--color-text-subtle);">, </p>
             </div>
           </section>
 
@@ -313,7 +354,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
             <h2 class="contract-h2">{c.s4Heading}</h2>
             <ul class="contract-list">
               <li class="out-start-line">, </li>
-              <li>{c.s4MinimumTerm}</li>
+              <li class="out-term-line">{c.s4MinimumTerm}</li>
               <li>{c.s4Notice}</li>
               <li>{c.s4ImmediateTermination}</li>
               <li>{c.s4HandoverObligation}</li>
@@ -359,8 +400,11 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
               <p class="text-[11px] uppercase tracking-[0.15em] text-text-muted font-semibold mb-3">{c.agencyHeading}</p>
               <p class="text-[14px] font-medium text-text leading-relaxed">{SITE.founder}</p>
               <p class="text-[13px] text-text-muted leading-relaxed">{SITE.legal.legalEntity}</p>
-              <div class="sig-line"><span class="sig-label">{c.signaturePlace}, {c.signatureDateLabel}</span></div>
-              <div class="sig-line"><span class="sig-label">{c.signatureLineLabel}</span></div>
+              <div class="sig-fill"><span>Berlin, <span class="out-sig-date">…</span></span></div>
+              <div class="sig-line" style="margin-top:0;"><span class="sig-label">{c.signaturePlace}, {c.signatureDateLabel}</span></div>
+              <div class="sig-fill" set:html={SIGNATURE_SVG}></div>
+              <div class="sig-line" style="margin-top:0;"><span class="sig-label">{c.signatureLineLabel}</span></div>
+              <p class="sig-specimen">{c.signatureSpecimenNote}</p>
             </div>
             <div>
               <p class="text-[11px] uppercase tracking-[0.15em] text-text-muted font-semibold mb-3">{c.clientHeading}</p>
@@ -555,6 +599,22 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
       text-transform: uppercase;
       letter-spacing: 0.1em;
     }
+    .sig-fill {
+      display: flex;
+      align-items: flex-end;
+      min-height: 2.6rem;
+      padding-bottom: 0.25rem;
+      color: var(--color-text);
+      font-size: 14px;
+    }
+    .sig-fill svg { width: 132px; height: auto; }
+    .sig-specimen {
+      margin-top: 0.5rem;
+      font-size: 10px;
+      font-style: italic;
+      color: var(--color-text-subtle);
+      line-height: 1.4;
+    }
     .tabular { font-variant-numeric: tabular-nums; }
 
     @media print {
@@ -581,7 +641,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
     .contract-doc article { background: white; }
   </style>
 
-  <script is:inline define:vars={{ locale, strings: CONTRACT_STRINGS[locale], plans, buyoutMonths: BUYOUT_MONTHS }}>
+  <script is:inline define:vars={{ locale, strings: CONTRACT_STRINGS[locale], plans, buyoutMonths: BUYOUT_MONTHS, addons, billing }}>
     const form = document.getElementById('contract-form');
     const formPanel = document.getElementById('form-panel');
     const toggleBtn = document.getElementById('toggle-form-btn');
@@ -643,6 +703,10 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
       if (!Number.isFinite(n)) return '€, ';
       return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(n);
     }
+    function eurInt(n) {
+      if (!Number.isFinite(n)) return '€, ';
+      return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+    }
     function dateNice(s) {
       if (!s) return ', ';
       const d = new Date(s + 'T00:00:00');
@@ -664,8 +728,8 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
       if (isNaN(d.getTime())) return '______';
       return `${String(d.getFullYear()).slice(2)}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
     }
-    function contractId(plan, businessName, sigDate) {
-      const planSeg = plan ? `${plan.code}${plan.priceNum}` : '____';
+    function contractId(plan, monthlyTotal, businessName, sigDate) {
+      const planSeg = plan && monthlyTotal > 0 ? `${plan.code}${monthlyTotal}` : '____';
       return `BAR-${planSeg}-${clientSlug(businessName)}-${yymmdd6(sigDate)}`;
     }
 
@@ -686,7 +750,28 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
 
       const planId = fd.get('plan');
       const plan = plans.find((p) => p.id === planId);
-      setText('.out-contract-no', contractId(plan, fd.get('client_business_name'), fd.get('date_signature')));
+
+      // ---- Add-ons + billing: ONE canonical monthlyTotal feeds ID, buy-out, VAT, yearly (audit A2) ----
+      const nLang = Math.max(0, parseInt(fd.get('addon_languages') || '0', 10) || 0);
+      const nMail = Math.max(0, parseInt(fd.get('addon_mailboxes') || '0', 10) || 0);
+      const nExtraCh = Math.max(0, parseInt(fd.get('addon_social_extra_channels') || '0', 10) || 0);
+      const socialIncluded = !!plan && plan.id === 'complete';
+      const socialEnabled = socialIncluded || fd.get('addon_social_enabled') === 'on';
+      const planBase = plan ? plan.priceNum : 0;
+      const socialFirst = plan && socialEnabled && !socialIncluded ? (addons.socialFirstChannel[plan.id] || 0) : 0;
+      const monthlyTotal = planBase + nLang * addons.language + nMail * addons.mailbox + socialFirst + nExtraCh * addons.socialAdditionalChannel;
+
+      // read-only retainer field mirrors the computed total (single source of truth)
+      const retEl = form.querySelector('[name=price_retainer]');
+      if (retEl) retEl.value = monthlyTotal > 0 ? String(monthlyTotal) : '';
+
+      const isYearly = (fd.get('billing_cycle') || 'monthly') === 'yearly';
+      const yearlyTotal = Math.round(monthlyTotal * 12 * (1 - billing.yearlyDiscount));
+      const billedAmount = isYearly ? yearlyTotal : monthlyTotal;
+      const buyout = monthlyTotal * buyoutMonths;
+
+      setText('.out-contract-no', contractId(plan, monthlyTotal, fd.get('client_business_name'), fd.get('date_signature')));
+
       const planLineEl = document.querySelector('.out-plan-line');
       const container = document.getElementById('services-rendered');
       const noServicesEl = container.querySelector('.out-no-services');
@@ -695,8 +780,14 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
         planLineEl.style.display = '';
         planLineEl.textContent = strings.s2PlanLine.replace('{plan}', plan.name).replace('{price}', plan.priceLabel);
         noServicesEl.style.display = 'none';
-        // §2 wird direkt aus dem gewählten /pricing-Plan gefüllt — der Quelle der Wahrheit.
-        plan.features.forEach((feat) => {
+        // §2: plan feature list (source of truth) + the selected add-ons as line items.
+        const lines = plan.features.slice();
+        if (nLang > 0) lines.push(strings.s2AddonLanguage.replace('{count}', String(nLang)).replace('{price}', eurInt(addons.language)));
+        if (nMail > 0) lines.push(strings.s2AddonMailbox.replace('{count}', String(nMail)).replace('{price}', eurInt(addons.mailbox)));
+        // Complete already lists included social in its plan features; only Start/Growth add a line.
+        if (!socialIncluded && socialEnabled) lines.push(strings.s2AddonSocialFirst.replace('{price}', eurInt(addons.socialFirstChannel[plan.id] || 0)));
+        if (nExtraCh > 0) lines.push(strings.s2AddonSocialExtra.replace('{count}', String(nExtraCh)).replace('{price}', eurInt(addons.socialAdditionalChannel)));
+        lines.forEach((feat) => {
           const li = document.createElement('li');
           li.className = 'feat-item';
           li.textContent = feat;
@@ -707,27 +798,37 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
         noServicesEl.style.display = '';
       }
 
-      const retainer = parseFloat(fd.get('price_retainer') || '0');
-      // Ablöse = immer 18 Monatsgebühren (abgeleitet, kein Eingabefeld).
-      const build = retainer * buyoutMonths;
       const vatStatus = fd.get('vat_status') || 'kleinunternehmer';
-
       document.querySelector('.out-build-line').textContent =
-        strings.s3BuildFeeLine.replace('{eur}', build > 0 ? eur(build) : '€, (keine Ablöse)');
-      document.querySelector('.out-retainer-line').textContent =
-        strings.s3RetainerLine.replace('{eur}', retainer > 0 ? eur(retainer) : '€, (keine Abo-Gebühr)');
-      // Ablöse als kleiner Hinweis unter dem Gebühren-Feld (kein Eingabefeld).
+        strings.s3BuildFeeLine.replace('{eur}', buyout > 0 ? eur(buyout) : '€, (keine Ablöse)');
+      document.querySelector('.out-retainer-line').textContent = isYearly
+        ? strings.s3RetainerLineYearly.replace('{eur}', billedAmount > 0 ? eur(billedAmount) : '€, ')
+        : strings.s3RetainerLine.replace('{eur}', billedAmount > 0 ? eur(billedAmount) : '€, (keine Abo-Gebühr)');
       document.querySelector('.out-retainer-hint').textContent =
-        strings.retainerFeeHint.replace('{eur}', retainer > 0 ? eur(build) : '—');
+        strings.retainerFeeHint.replace('{eur}', buyout > 0 ? eur(buyout) : '—');
+
+      const yearlyLineEl = document.querySelector('.out-yearly-line');
+      if (isYearly && billedAmount > 0) {
+        yearlyLineEl.style.display = '';
+        yearlyLineEl.textContent = strings.s3YearlyDiscountLine.replace('{eur}', eur(billedAmount));
+      } else {
+        yearlyLineEl.style.display = 'none';
+      }
 
       if (vatStatus === 'kleinunternehmer') {
         document.querySelector('.out-vat-line').textContent = strings.s3VatKleinLine;
       } else {
-        const net = retainer; // monatlicher Abo-Nettobetrag; eine etwaige einmalige Ablöse wird separat berechnet
+        const net = billedAmount; // billed amount (monthly or yearly); any one-time buy-out is invoiced separately
         const vat = net * 0.19;
         const gross = net + vat;
         document.querySelector('.out-vat-line').textContent = strings.s3VatRegularLine.replace('{net}', eur(net)).replace('{vat}', eur(vat)).replace('{gross}', eur(gross));
       }
+
+      setText('.out-reference-note', strings.s3ReferenceNote);
+      setText('.out-sig-date', dateNice(fd.get('date_signature')));
+
+      const termEl = document.querySelector('.out-term-line');
+      if (termEl) termEl.textContent = isYearly ? strings.s4MinimumTermYearly : strings.s4MinimumTerm;
 
       const startDate = fd.get('date_start');
       document.querySelector('.out-start-line').textContent =
@@ -738,9 +839,14 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
     // des Plans (in render() gerendert).
     function applyPlan(planId) {
       const plan = plans.find((p) => p.id === planId);
-      if (!plan) return;
-      if (plan.priceNum) {
-        form.querySelector('[name=price_retainer]').value = String(plan.priceNum);
+      const cb = form.querySelector('[name=addon_social_enabled]');
+      if (!cb) return;
+      if (plan && plan.id === 'complete') {
+        cb.checked = true;
+        cb.disabled = true; // social is included in Complete
+      } else {
+        if (cb.disabled) cb.checked = false; // leaving Complete clears the forced state
+        cb.disabled = false;
       }
     }
 
@@ -751,6 +857,7 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
       render();
       persist();
     });
+    applyPlan(form.querySelector('[name=plan]:checked')?.value);
     render();
 
     printBtn.addEventListener('click', () => window.print());
