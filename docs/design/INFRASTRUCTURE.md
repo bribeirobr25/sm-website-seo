@@ -35,7 +35,7 @@ This document captures the **infrastructure scaffold every agency-built site nee
 | Sentry — server-side error tracking | DSN-wired error capture on every server-side surface (form endpoints, Astro middleware, Next.js routes). `send_default_pii: false` enforced. | `LEGAL.md` §Rules at a glance + `RELIABILITY.md` §9 | 🔴 Production blocker for Tier 2+ — silent server errors otherwise |
 | Per-client rollback drill | Documented in client `CLAUDE.md` | `RELIABILITY.md` §10 | 🟠 5-min restore unverified |
 
-**Net:** all six components together = one infrastructure scaffold. Build once per agency tooling decision; reuse across every project.
+**Net:** all seven components together = one infrastructure scaffold. Build once per agency tooling decision; reuse across every project.
 
 ---
 
@@ -375,10 +375,10 @@ Drill once per client at the production cutover gate; re-drill quarterly per ret
 
 | Project state | Action |
 |---|---|
-| **Net-new client (greenfield)** | Drop all 5 components in *during scaffold*, before the first commit. Adds ~30 min to the initial scaffold. Pays back on every audit. |
+| **Net-new client (greenfield)** | Drop all 7 components in *during scaffold*, before the first commit. Adds ~30 min to the initial scaffold. Pays back on every audit. |
 | **Existing build going to production for the first time** | Drop in as Phase A of the production cutover (see `CHECKLIST.md` §1, §2). Required to pass the reliability rubric. |
 | **Retainer client failing the quarterly audit** | Drop in as part of the audit fix list. Treat as 🔴 production blocker. |
-| **Demo phase (`noindex` set)** | All five components are still strongly recommended even in demo. The CI workflow + custom error pages cost nothing to add early; security headers + uptime monitor can wait until the `noindex` flip if needed. |
+| **Demo phase (`noindex` set)** | All seven components are still strongly recommended even in demo. The CI workflow + custom error pages cost nothing to add early; security headers + uptime monitor can wait until the `noindex` flip if needed. |
 
 **Anti-pattern:** waiting until production cutover to discover the infrastructure debt. By that point, the cold call is done, the client is excited, and "we need 30 more minutes" reads as agency unpreparedness. Drop the scaffold in at scaffold time.
 

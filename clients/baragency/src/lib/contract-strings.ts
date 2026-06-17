@@ -320,7 +320,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
       'With yearly prepayment the subscription runs as a fixed 12-month term beginning on the start date above, paid in advance. It does not cancel monthly: either Party may give notice in text form (§ 126b BGB) to the end of the 12-month term; absent notice it renews for a further 12 months. Prepaid months are not refunded on early cancellation, except where a statutory right of withdrawal (Widerrufsrecht) applies.',
     signatureSpecimenNote:
       'Specimen of the agency’s signature; the binding signature is applied when the Agreement is executed.',
-    footerNote: 'Website Subscription Agreement, draft (not lawyer-reviewed) · Page',
+    footerNote: 'Website Subscription Agreement, draft (not lawyer-reviewed)',
   },
   de: {
     pageTitle: 'Website-Abo-Vertrag, ausfüllen, drucken, unterschreiben',
@@ -475,6 +475,6 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
       'Bei Jahresvorauszahlung läuft das Abo als feste Laufzeit von 12 Monaten ab dem oben genannten Projektbeginn, im Voraus bezahlt. Es ist nicht monatlich kündbar: Beide Parteien können in Textform (§ 126b BGB) zum Ende der 12-Monats-Laufzeit kündigen; ohne Kündigung verlängert es sich um weitere 12 Monate. Vorausbezahlte Monate werden bei vorzeitiger Kündigung nicht erstattet, außer wenn ein gesetzliches Widerrufsrecht besteht.',
     signatureSpecimenNote:
       'Musterunterschrift der Agentur; die verbindliche Unterschrift wird bei Vertragsschluss geleistet.',
-    footerNote: 'Website-Abo-Vertrag, Entwurf (nicht anwaltlich geprüft) · Seite',
+    footerNote: 'Website-Abo-Vertrag, Entwurf (nicht anwaltlich geprüft)',
   },
 };

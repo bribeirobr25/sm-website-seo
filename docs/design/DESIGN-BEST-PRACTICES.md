@@ -604,7 +604,7 @@ If you find yourself pasting the exact same `<Button variant="primary">…</Butt
 
 ### CTA contrast — all 4 states must pass WCAG 2.2 AA (added 2026-05-25)
 
-Every interactive button — primary, secondary, ghost, custom inline CTA — must maintain WCAG 2.2 AA contrast in **all four states**: default, hover, focus, and active. The single most common production bug surfaced repeatedly across the agency's 6 portfolio demos is **hover states that decrease contrast** by darkening the background without updating the text color, producing a "dark bg + dark text" muddy unreadable state.
+Every interactive button — primary, secondary, ghost, custom inline CTA — must maintain WCAG 2.2 AA contrast in **all four states**: default, hover, focus, and active. The single most common production bug surfaced repeatedly across the agency's 7 portfolio demos is **hover states that decrease contrast** by darkening the background without updating the text color, producing a "dark bg + dark text" muddy unreadable state.
 
 **Hard rule:** the text/background contrast ratio at hover state must be **≥ default-state contrast OR ≥ 4.5:1**, whichever is lower. Hover may make the button "feel pressed" but must never reduce readability.
 

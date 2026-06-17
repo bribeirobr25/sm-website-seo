@@ -28,7 +28,7 @@ Requires Node ≥ 22.12 and pnpm. The two free-tool endpoints + the contact form
 
 The real per-client docs (NOT this code-folder README) are the source of truth:
 
-- **`docs/clients/baragency/CLAUDE.md`** — stack, page tree, config-as-code, imported components, DRAFT items, the dated change sections (2026-06-04 inbound-funnel · 2026-06-09→12 rebrand + pricing/contract overhaul). **Read this first.**
+- **`docs/clients/baragency/CLAUDE.md`** — stack, page tree, config-as-code, imported components, DRAFT items, the dated change sections (2026-06-04 inbound-funnel · 2026-06-09→12 rebrand + pricing/contract overhaul · 2026-06-16→17 contract add-ons + monthly/yearly billing + simulated signature + form-UI modernization). **Read this first.**
 - **`docs/clients/baragency/BRIEF.md`** — positioning, open questions (incl. funnel DRAFTs #7–#13), decisions log
 - **`docs/clients/baragency/design.md`** — palette, typography, composition
 - **`docs/clients/baragency/PRODUCTION-CUTOVER.md`** — the go-live checklist (SEO gates, keyword audit, schema)

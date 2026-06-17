@@ -152,7 +152,7 @@ When auditing a client's existing site, reference these specs by file path. Exam
 
 Documented anti-patterns or "skip these" decisions:
 
-- **Generic carousel / slider** — per `DESIGN-BEST-PRACTICES.md §912` anti-pattern + research-confirmed <1% interaction past slide 1. The BeforeAfterSlider is a different beast with clear purpose.
+- **Generic carousel / slider** — per `DESIGN-BEST-PRACTICES.md §15` anti-pattern + research-confirmed <1% interaction past slide 1. The BeforeAfterSlider is a different beast with clear purpose.
 - **Toasts / notifications** — landing-page stacks don't need transient UI; success states go in Dialog or inline form states.
 - **Skeleton loaders** — Astro/Next SSG ship HTML on first paint. Only relevant in Tier-3 dashboards (Type 5, quote-per-project).
 - **Breadcrumbs (visual component)** — most builds are flat 3-5 pages. Emit `BreadcrumbList` JSON-LD schema without a visual component.

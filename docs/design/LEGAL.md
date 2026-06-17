@@ -469,7 +469,7 @@ When COPPA applies:
 
 Applies across all 4 jurisdictions. The banner is the same UI; the per-jurisdiction differences are in **copy** and **default state** (opt-in for EU/BR/PT, opt-out for US), not in component structure.
 
-**Scope of this spec:** the rule + the test. **The actual reference component ships in Batch 3** of the expansion plan as part of `INTEGRATIONS.md` / reference implementations. Until then, every production build must satisfy the rules below with custom code or a vetted third-party widget (iubenda, CookieYes, Cookiebot).
+**Scope of this spec:** the rule + the test. **The reference component ships as the Tier 0 universal primitive `CookieBanner`** (`docs/design/components/_impl/CookieBanner.astro` + `.tsx`, locale-aware) and is pre-wired into both agency scaffolds (`scaffolds/astro-tier2/src/components/ui/CookieBanner.astro` · `scaffolds/nextjs-tier3/src/components/ui/CookieBanner.tsx`). A production build may also satisfy the rules below with a vetted third-party widget (iubenda, CookieYes, Cookiebot).
 
 ### Consent-first script-blocking rule
 
@@ -601,7 +601,7 @@ For US-only sites (no EU/BR/PT exposure):
         async></script>
 ```
 
-The banner UI calls `window.__applyConsent({ analytics: true, marketing: false, functional: true })` on Save. The full banner UI ships in Batch 3.
+The banner UI calls `window.__applyConsent({ analytics: true, marketing: false, functional: true })` on Save. The full banner UI ships as the `CookieBanner` universal primitive (`docs/design/components/_impl/CookieBanner.astro` + `.tsx`), pre-wired into both scaffolds.
 
 ---
 
@@ -708,4 +708,4 @@ This doc encodes engineering-implementation patterns. It does not encode legal a
 - `INFRASTRUCTURE.md` §Error tracking — Sentry recipe with `send_default_pii: false` (the in-code enforcement of the no-PII rule)
 - `ANALYTICS.md` §Consent gating — implementation pattern for the consent-first script-blocking rule documented here
 - `FORMS.md` — contact form data collection feeds Privacy Policy §What we collect
-- Per-vertical templates (Batch 2/3) — vertical-specific legal callouts (Education COPPA, Health DSGVO Art. 9, Pro Services confidentiality)
+- Per-vertical templates (`docs/design/templates/`) — vertical-specific legal callouts (Education COPPA, Health DSGVO Art. 9, Pro Services confidentiality)

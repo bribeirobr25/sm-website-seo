@@ -794,7 +794,7 @@ Audits are point-in-time snapshots. When work after the audit changes its findin
 
 **Distinct from §8.** Section 8 audits an *existing site* against agency standards. Section 9 captures *prospect research* — public information about a business the agency is considering as a client, before any code is written, before the cold call is made.
 
-Save the result to `docs/audit/[business-slug].md` (no date suffix — the file evolves as the conversation progresses). Reference implementations: `docs/audit/cafedelcorso.md`, `docs/audit/laudam.md`.
+Save the result to `docs/audit/private/[business-slug].md` (no date suffix — the file evolves as the conversation progresses; the `private/` folder is gitignored because intakes hold un-consented prospect data). Reference implementations: `docs/audit/private/cafedelcorso.md`, `docs/audit/private/laudam.md`.
 
 **The intake exists for one reason:** to give the scaffold step (and the cold-call step) a single source of truth for *every reachable URL and asset of the prospect*. Per `DESIGN-BEST-PRACTICES.md` §3 "Sourcing photos and favicon from the prospect intake," the scaffold reads this file and pulls assets from the listed URLs.
 
@@ -890,7 +890,7 @@ Save the result to `docs/audit/[business-slug].md` (no date suffix — the file 
 
 ### How the intake flows into the scaffold
 
-1. `docs/audit/[slug].md` is created (this template) — usually by the user, from public-data research.
+1. `docs/audit/private/[slug].md` is created (this template) — usually by the user, from public-data research.
 2. Claude reads it as the **first action** when starting any new client project, before scaffolding.
 3. Asset URLs feed the photo + favicon sourcing workflow (§Sourcing photos and favicon from the prospect intake).
 4. Brand inventory feeds the palette sourcing workflow (§Sourcing the palette).

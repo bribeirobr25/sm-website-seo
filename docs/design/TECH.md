@@ -1577,8 +1577,8 @@ pnpm validate     # Full validation pipeline (tier-appropriate; see QUALITY.md)
 
 ## Imported components
 
-The agency ships a canonical reference library at `docs/design/components/` (8
-components derived from the 24-site UI/UX reference study). List the
+The agency ships a canonical reference library at `docs/design/components/` (32
+canonical components + 6 universal primitives). List the
 components imported into THIS client below, with the spec-sheet path. This
 gives reviewers a one-shot view of "which canonical patterns are in use, and
 where to find the per-vertical token swaps + WCAG cross-references."
