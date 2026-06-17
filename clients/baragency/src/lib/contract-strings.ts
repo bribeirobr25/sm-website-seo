@@ -151,6 +151,7 @@ export interface ContractStrings {
   addonMailboxes: string;
   addonSocial: string;
   addonSocialChannels: string;
+  addonsLabel: string;
   // §2 add-on line templates ({count}/{price})
   s2AddonLanguage: string;
   s2AddonMailbox: string;
@@ -305,6 +306,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     addonMailboxes: 'Extra mailboxes',
     addonSocial: 'Add social media (1 channel)',
     addonSocialChannels: 'Extra social channels',
+    addonsLabel: 'Add-ons',
     s2AddonLanguage: '+ {count} additional language(s), {price}/mo each',
     s2AddonMailbox: '+ {count} additional mailbox(es), {price}/mo each',
     s2AddonSocialFirst: '+ Social media: 1 channel, {price}/mo',
@@ -458,6 +460,7 @@ export const CONTRACT_STRINGS: Record<LocaleEnDe, ContractStrings> = {
     addonMailboxes: 'Zusätzliche Postfächer',
     addonSocial: 'Social Media dazubuchen (1 Kanal)',
     addonSocialChannels: 'Zusätzliche Social-Media-Kanäle',
+    addonsLabel: 'Zusatzleistungen',
     s2AddonLanguage: '+ {count} zusätzliche Sprache(n), je {price}/Mon.',
     s2AddonMailbox: '+ {count} zusätzliche(s) Postfach/Postfächer, je {price}/Mon.',
     s2AddonSocialFirst: '+ Social Media: 1 Kanal, {price}/Mon.',

@@ -198,51 +198,63 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
               <span class="form-step__num" aria-hidden="true">3</span>
               <span class="form-step__title">{c.pricingLabel}</span>
             </legend>
-            <div class="form-step__body space-y-5">
+            <div class="form-step__body space-y-6">
               <div>
                 <span class="form-label" id="billing-label">{c.billingLabel}</span>
-                <div role="radiogroup" aria-labelledby="billing-label" class="grid sm:grid-cols-2 gap-3">
-                  <label class="vat-card">
-                    <input type="radio" name="billing_cycle" value="monthly" checked class="vat-card__input" />
-                    <span class="vat-card__label">{c.billingMonthly}</span>
+                <div class="seg" role="radiogroup" aria-labelledby="billing-label">
+                  <label class="seg__opt">
+                    <input type="radio" name="billing_cycle" value="monthly" checked />
+                    <span>{c.billingMonthly}</span>
                   </label>
-                  <label class="vat-card">
-                    <input type="radio" name="billing_cycle" value="yearly" class="vat-card__input" />
-                    <span class="vat-card__label">{c.billingYearly}</span>
+                  <label class="seg__opt">
+                    <input type="radio" name="billing_cycle" value="yearly" />
+                    <span>{c.billingYearly}</span>
                   </label>
                 </div>
               </div>
 
-              <div class="grid sm:grid-cols-2 gap-4">
-                <label class="block">
-                  <span class="form-label">{c.addonLanguages}</span>
-                  <input type="number" name="addon_languages" min="0" step="1" value="0" class="ag-input tabular" inputmode="numeric" />
-                </label>
-                <label class="block">
-                  <span class="form-label">{c.addonMailboxes}</span>
-                  <input type="number" name="addon_mailboxes" min="0" step="1" value="0" class="ag-input tabular" inputmode="numeric" />
-                </label>
-              </div>
-
-              <div class="grid sm:grid-cols-2 gap-4">
-                <label class="vat-card" style="align-items:center;">
-                  <input type="checkbox" name="addon_social_enabled" class="vat-card__input" />
-                  <span class="vat-card__label">{c.addonSocial}</span>
-                </label>
-                <label class="block">
-                  <span class="form-label">{c.addonSocialChannels}</span>
-                  <input type="number" name="addon_social_extra_channels" min="0" step="1" value="0" class="ag-input tabular" inputmode="numeric" />
-                </label>
-              </div>
-
-              <label class="block sm:max-w-xs">
-                <span class="form-label">{c.retainerFee}</span>
-                <div class="ag-input-currency">
-                  <span class="ag-input-currency__symbol" aria-hidden="true">€</span>
-                  <input type="number" name="price_retainer" readonly class="ag-input ag-input--currency tabular" />
+              <div>
+                <span class="form-label">{c.addonsLabel}</span>
+                <div class="addon-list">
+                  <div class="addon-row">
+                    <span class="addon-row__label">{c.addonLanguages}</span>
+                    <div class="stepper">
+                      <button type="button" class="stepper__btn" data-step="-1" aria-label="−" tabindex="-1">−</button>
+                      <input type="number" name="addon_languages" min="0" step="1" value="0" class="stepper__input tabular" inputmode="numeric" aria-label={c.addonLanguages} />
+                      <button type="button" class="stepper__btn" data-step="1" aria-label="+" tabindex="-1">+</button>
+                    </div>
+                  </div>
+                  <div class="addon-row">
+                    <span class="addon-row__label">{c.addonMailboxes}</span>
+                    <div class="stepper">
+                      <button type="button" class="stepper__btn" data-step="-1" aria-label="−" tabindex="-1">−</button>
+                      <input type="number" name="addon_mailboxes" min="0" step="1" value="0" class="stepper__input tabular" inputmode="numeric" aria-label={c.addonMailboxes} />
+                      <button type="button" class="stepper__btn" data-step="1" aria-label="+" tabindex="-1">+</button>
+                    </div>
+                  </div>
+                  <label class="addon-row addon-row--switch">
+                    <span class="addon-row__label">{c.addonSocial}</span>
+                    <input type="checkbox" name="addon_social_enabled" class="ag-switch__input" />
+                  </label>
+                  <div class="addon-row">
+                    <span class="addon-row__label">{c.addonSocialChannels}</span>
+                    <div class="stepper">
+                      <button type="button" class="stepper__btn" data-step="-1" aria-label="−" tabindex="-1">−</button>
+                      <input type="number" name="addon_social_extra_channels" min="0" step="1" value="0" class="stepper__input tabular" inputmode="numeric" aria-label={c.addonSocialChannels} />
+                      <button type="button" class="stepper__btn" data-step="1" aria-label="+" tabindex="-1">+</button>
+                    </div>
+                  </div>
                 </div>
-                <span class="form-hint out-retainer-hint">{c.retainerFeeHint}</span>
-              </label>
+              </div>
+
+              <div class="price-summary">
+                <div class="price-summary__row">
+                  <span class="price-summary__label out-summary-label">{c.billingMonthly}</span>
+                  <span class="price-summary__amount out-summary-amount tabular">—</span>
+                </div>
+                <p class="price-summary__hint out-retainer-hint">{c.retainerFeeHint}</p>
+                <input type="hidden" name="price_retainer" />
+              </div>
 
               <div>
                 <span class="form-label" id="vat-label">{c.vatLabel}</span>
@@ -510,14 +522,6 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
     }
     textarea.ag-input { min-height: 96px; font-family: var(--font-body); }
 
-    /* Currency-prefix input wrapper */
-    .ag-input-currency { position: relative; }
-    .ag-input-currency__symbol {
-      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-      color: var(--color-text-subtle); font-size: 15px;
-      pointer-events: none;
-    }
-    .ag-input--currency { padding-left: 30px; }
 
     /* Service cards, compact, scope hidden until checked */
     .svc-card {
@@ -583,6 +587,53 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
       font-size: 14px;
       color: var(--color-text);
       line-height: 1.4;
+    }
+
+    /* Segmented toggle (billing cycle) */
+    .seg { display: flex; gap: 4px; padding: 4px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; }
+    .seg__opt {
+      flex: 1; display: flex; align-items: center; justify-content: center; text-align: center;
+      min-height: 44px; padding: 8px 12px; border-radius: 10px;
+      font-size: 13px; font-weight: 500; color: var(--color-text-subtle); cursor: pointer;
+      transition: background var(--motion-fast) var(--ease-apple-smooth), color var(--motion-fast) var(--ease-apple-smooth);
+    }
+    .seg__opt > input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    .seg__opt:has(input:checked) { background: var(--color-accent); color: #fff; }
+    .seg__opt:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+    /* Add-on rows (grouped) */
+    .addon-list { display: flex; flex-direction: column; border: 1px solid var(--color-border); border-radius: 14px; overflow: hidden; }
+    .addon-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px; min-height: 60px; }
+    .addon-row + .addon-row { border-top: 1px solid var(--color-border); }
+    .addon-row--switch { cursor: pointer; }
+    .addon-row__label { font-size: 14px; color: var(--color-text); line-height: 1.4; }
+
+    /* Stepper */
+    .stepper { display: inline-flex; align-items: center; flex-shrink: 0; border: 1px solid var(--color-border); border-radius: 9999px; background: var(--color-bg); }
+    .stepper__btn { width: 40px; height: 40px; border: 0; background: transparent; color: var(--color-text); font-size: 20px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background var(--motion-fast) var(--ease-apple-smooth); }
+    .stepper__btn:first-child { border-radius: 9999px 0 0 9999px; }
+    .stepper__btn:last-child { border-radius: 0 9999px 9999px 0; }
+    .stepper__btn:hover { background: var(--color-surface); }
+    .stepper__input { width: 42px; height: 40px; border: 0; border-inline: 1px solid var(--color-border); text-align: center; background: transparent; color: var(--color-text); font-size: 15px; font-variant-numeric: tabular-nums; -moz-appearance: textfield; appearance: textfield; }
+    .stepper__input::-webkit-outer-spin-button, .stepper__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .stepper__input:focus-visible { outline: none; box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--color-accent), transparent 70%); }
+
+    /* Switch (social add-on) */
+    .ag-switch__input { appearance: none; -webkit-appearance: none; position: relative; flex-shrink: 0; width: 44px; height: 26px; border-radius: 9999px; background: var(--color-border); cursor: pointer; margin: 0; transition: background var(--motion-fast) var(--ease-apple-smooth); }
+    .ag-switch__input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / 0.25); transition: transform var(--motion-fast) var(--ease-apple-smooth); }
+    .ag-switch__input:checked { background: var(--color-accent); }
+    .ag-switch__input:checked::after { transform: translateX(18px); }
+    .ag-switch__input:disabled { opacity: 0.5; cursor: not-allowed; }
+    .ag-switch__input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+    /* Live price summary */
+    .price-summary { border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-surface); padding: 16px 18px; }
+    .price-summary__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .price-summary__label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-subtle); }
+    .price-summary__amount { font-family: var(--font-display); font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: var(--color-text); }
+    .price-summary__hint { margin-top: 8px; font-size: 12px; line-height: 1.45; color: var(--color-text-subtle); }
+    @media (prefers-reduced-motion: reduce) {
+      .seg__opt, .stepper__btn, .ag-switch__input, .ag-switch__input::after { transition: none; }
     }
 
     .contract-body { color: var(--color-text); }
@@ -822,6 +873,8 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
         : strings.s3RetainerLine.replace('{eur}', billedAmount > 0 ? eur(billedAmount) : '€, (no monthly fee entered)');
       document.querySelector('.out-retainer-hint').textContent =
         strings.retainerFeeHint.replace('{eur}', buyout > 0 ? eur(buyout) : '—');
+      setText('.out-summary-label', isYearly ? strings.billingYearly : strings.billingMonthly);
+      setText('.out-summary-amount', billedAmount > 0 ? eur(billedAmount) : '—');
 
       const yearlyLineEl = document.querySelector('.out-yearly-line');
       if (isYearly && billedAmount > 0) {
@@ -875,6 +928,17 @@ const taxIdDisplay = SITE.legal.kleinunternehmer
     });
     applyPlan(form.querySelector('[name=plan]:checked')?.value);
     render();
+
+    // Steppers: +/- buttons adjust the number input + fire input (→ render + persist).
+    document.querySelectorAll('.stepper__btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const input = btn.parentElement.querySelector('.stepper__input');
+        if (!input) return;
+        const min = Number(input.min) || 0;
+        input.value = String(Math.max(min, (parseInt(input.value, 10) || 0) + (Number(btn.dataset.step) || 0)));
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+    });
 
     printBtn.addEventListener('click', () => window.print());
 
